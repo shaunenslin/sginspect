@@ -6,6 +6,7 @@
 
 function AppRoutes($routeProvider, DaoSvc){
     $routeProvider.when("/officialevents", {templateUrl:"views/officialEvents.html"});
+    $routeProvider.when("/SgUsers",{templateUrl:"js/sginspect/view/SgUsers.html"});
 }
 
 function TestCtrl($templateCache) {
