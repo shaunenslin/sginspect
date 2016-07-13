@@ -1,0 +1,129 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h4 class="modal-title">Login</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" ng-hide="Modalstate === 'register'">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input ng-model="user.UserID" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input ng-model="user.Password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>  
+                    <div style="height:35px;">
+                        <button ng-click="loginClicked()" type="submit" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-ok"></span> Sign In</button>
+                        <button ng-if="settings.allowRegister" ng-click="ChangeModalState()"  class="btn btn-info pull-left"><span class="fa fa-pencil"></span> Register</button>
+                        <button ng-if="settings.allowTour"     ng-click="tourClicked()"       style="margin-left:5px;" class="btn btn-info pull-left"><span class="fa fa-bus"></span> Take a Tour</button>
+                    </div>
+                    <a ng-click="remindMeClicked()" style="margin-top:18px;">Forgot your password?</a>
+                </form>
+
+                <div ng-show="Modalstate === 'register'">   
+                    <div ng-hide="registeredOK">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li ng-class="(!activeTab || activeTab===0 ? 'active': '')"><a ng-click="tabClicked(0)">Existing Customers</a></li>
+                            <li ng-class="(activeTab===1 ? 'active': '')"><a ng-click="tabClicked(1)">New Customers</a></li>
+                        </ul>
+                        <div ng-show="activeTab===0">
+                            <form name="existform" ng-submit="RegisterClicked()">
+                                <p  style="margin-top:10px; padding:5px;" class="bg-info">Existing customers, enter your details below and click on Send. We will call you back shortly with a username.</p>
+                                <div class="form-group">
+                                    <label for="AccountID">Account Number</label>
+                                    <!--Change This AccountID Model-->
+                                    <input ng-model="user.AccountID" class="form-control" id="AccountID" placeholder="Your account number" required>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="userName">Your Name</label>
+                                    <input type="text" ng-model="user.UserName" class="form-control" id="UserName" placeholder="Your full name" required>
+                                </div>
+
+                                 <div class="form-group">
+                                    <label for="userMail">Email address</label>
+                                    <input type="email" ng-model="user.UserEmail" class="form-control" id="UserMail" placeholder="Email address" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="MobileNo">Mobile Number</label>
+                                    <input ng-model="user.MobileNo" type="tel" class="form-control" id="MobileNo" placeholder="Your contact number">
+                                </div>  
+
+                                <button ng-click="ChangeModalState()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span>Back</button>
+                                <button type="submit" ng-disabled="existform.$invalid" class="btn btn-success pull-right"><span class="glyphicon glyphicon-ok"></span> Send</button>
+                            </form>
+                        </div>
+                        <div ng-show="activeTab===1">
+                            <form name="newform" ng-submit="RegisterClicked()">
+                                <p  style="margin-top:10px; padding:5px;" class="bg-info">Not a customer yet? Enter details below and we will call you back shortly.</p>
+                                <div class="form-group">
+                                    <label for="NameID">Company Name</label>
+                                    <!--Change This AccountID Model-->
+                                    <input required ng-model="user.AccountID" class="form-control" name="NameID" placeholder="Your registered company name" ng-class="{error: newform.NameID.$dirty && newform.NameID.$invalid}">
+                                </div>
+                                 <div class="form-group">
+                                    <label for="userName">Your Name</label>
+                                    <input required type="text" ng-model="user.UserName" class="form-control" id="UserName" placeholder="Your full name" required>
+                                </div>
+
+                                 <div class="form-group">
+                                    <label for="userMail">Email address</label>
+                                    <input required type="email" ng-model="user.UserEmail" class="form-control" name="UserMail" placeholder="Email address" >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="MobileNo">Mobile Number</label>
+                                    <input required ng-model="user.MobileNo" type="text" class="form-control" id="MobileNo" placeholder="Your contact number">
+                                </div>  
+                                <div class="form-group">
+                                    <label for="MobileNo">Telephone Number</label>
+                                    <input required ng-model="user.TelNo" type="text" class="form-control" id="MobileNo" placeholder="Your contact number">
+                                </div>  
+                                <div class="form-group">
+                                    <label for="Address1">Physical Address</label>
+                                    <input required ng-model="user.Address1" type="text" class="form-control" id="Address1" placeholder="Address line 1">
+                                    <input required ng-model="user.Address2" type="text" class="form-control" id="Address2" placeholder="Address line 2">
+                                    <input required ng-model="user.PostCode" type="text" class="form-control" id="Address2" placeholder="Postal Code">
+                                    <select required ng-model="user.Province" type="text" class="form-control" id="Address2" placeholder="Province">
+                                        <option value="" disabled selected>Select your Province</option>
+                                        <option selected>Gauteng</option>
+                                        <option>Western Cape</option>
+                                        <option>Eastern Cape</option>
+                                        <option>Northen Cape</option>
+                                        <option>Mpumalanga</option>
+                                        <option>KwaZulu-Natal</option>
+                                        <option>Limpopo</option>
+                                        <option>North West</option>
+                                        <option>Free State</option>
+                                    </select>    
+                                </div>  
+                                <div class="form-group">
+                                    <label for="VATNo">VAT Number</label>
+                                    <input required ng-model="user.VATNo" type="tel" class="form-control" id="VATNo" placeholder="Your VAT number">
+                                </div>  
+                                  
+                                <button ng-click="ChangeModalState()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span>Back</button>
+                                <button type="submit" ng-disabled="newform.$invalid" class="btn btn-success pull-right"><span class="glyphicon glyphicon-ok"></span> Send</button>
+                            </form>
+                        </div>
+                    </div>    
+                </div>
+
+                <div ng-hide="message === undefined" class="alert alert-success infopanel">{{message}}</div>
+                <div ng-hide="errormessage === undefined" class="alert alert-danger infopanel">{{errormessage}}</div>
+
+                <div ng-hide="syncProgress.length===0" id="resultsdiv" class="alert alert-success" style="margin-top:20px;">
+                    <table>
+                        <tr ng-repeat="item in syncProgress">
+                            <td>{{item}}</td>
+                        </tr>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div ng-controller="ChoiceTreeCtrl">
+
+    <nav class="navbar navbar-inverse" role="navigation">
+        <button ng-click="backBtnClicked()" type="button" class="btn btn-default navbar-btn">
+            <span class="glyphicon glyphicon-chevron-left"></span> Back
+        </button>
+        <div class="btn-group pull-right" style="margin-top: 5px;">       
+            <button ng-if="checkedlist.length !== 0" ng-click="clearClicked()" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Clear all</button>
+            <button ng-if="checkedlist.length !== 0" ng-click="chooseClicked()" type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Choose</button>
+        </div>
+    </nav>
+
+    <choicetreedir></choicetreedir>
+   
+</div>

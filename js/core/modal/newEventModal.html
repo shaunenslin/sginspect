@@ -1,0 +1,46 @@
+<div class="modal" tabindex="-1" role="dialog" ng-controller="GroupsCtrl">
+    <div class="modal-dialog">
+        <div class="modal-content">
+             <div class="modal-header" style="background-color: #F9FAFC">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 ng-if="eventtype === 'new'" class="modal-title"><span class="fa fa-calendar-o"></span> Create a new event</h4>
+                <h4 ng-if="eventtype !== 'new'" class="modal-title"><span class="fa fa-calendar-o"></span> {{eventtype}}</h4>
+             </div>
+            <div class="inset">      
+                <div class="form-group">
+                    <label for="name">Event Name</label>
+                    <input type="text" ng-model="event.Subject" class="form-control" id="name" placeholder="Event Name">
+                </div>
+                <div class="form-group">
+                    <label for="description">Event Description</label>
+                    <input type="text" ng-model="event.Notes"class="form-control" id="description" placeholder="Enter an event description">
+                </div>
+                <div class="form-group">
+                    <label for="description"><i class="fa fa-calendar"></i> Start Date</label>
+                    
+                    <input type="text" class="form-control" ng-model="event.duedate" name="date" use-native="true" autoclose="true" data-date-format="longDate" bs-datepicker placeholder="Start Date">
+                </div>
+                <div class="form-group">
+                    <label for="description"><i class="fa fa-clock-o"></i> Start Time</label>
+                    <input type="text" class="form-control" size="8" ng-model="event.duetime"  use-native="true" name="time" bs-timepicker data-time-format="HH:mm" data-length="1" data-minute-step="1" data-arrow-behavior="picker" placeholder="Start Time">
+                </div>
+                <div class="form-group">
+                    <label for="duration">Duration</label>
+                    <input type="number" ng-model="event.Duration"class="form-control" id="duration">
+                </div>
+                <div class="checkbox" ng-if="currentGroup.isAdmin && currentGroup.isPublic">
+                    <label>
+                      <input type="checkbox" ng-model="event.isPublic"> Official Event
+                    </label>
+                </div>  
+                
+               <div class="alert alert-danger" role="alert" ng-if="errMsg" ng-bind="errMsg"></div>
+            </div>  
+            <div class="modal-footer" style="background-color: #F9FAFC">
+                <button type="button" class="btn btn-default" ng-click="$hide()"><span class="fa fa-close"></span> Cancel</button>
+                <button type="button" class="btn btn-danger" ng-click="deleteEvent()" ng-if="(currentGroup.isAdmin || user.UserID === event.CreatedBy) && (event.EventID > 0)"><span class="fa fa-trash-o"></span> Delete</button>
+                <button type="submit" class="btn btn-success" ng-click="saveEvent()" ng-if="(currentGroup.isAdmin || user.UserID === event.CreatedBy) || (event.EventID === 0)"><span class="fa fa-save"></span> Save</button>
+            </div>
+        </div>
+    </div>
+</div>

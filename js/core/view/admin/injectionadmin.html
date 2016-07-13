@@ -1,0 +1,88 @@
+<div ng-controller="InjectionAdminCtrl" style="padding-top:10px;padding-bottom:50px;" class="inset" >
+	<div class"inset">
+		<div id="list" ng-if="!mode && !id">
+			<ul class="list-group" style="margin-top:10px">
+				<a href="#/injectionadmin/{{$index}}" ng-repeat="row in injections" class="list-group-item">
+					<div class="row">
+						<div class="col-xs-2 col-sm-2 col-md-2">{{row.SupplierID}}</div>
+						<div class="hidden-xs col-sm-2 col-md-2">{{row.ID}}</div>
+						<div class="hidden-xs col-sm-5 col-md-5">{{row.Routes}}</div>
+						<div class="hidden-xs col-sm-2 col-md-2">{{row.App}}</div>
+						<div class="col-sm-1"><span class="glyphicon glyphicon-chevron-right pull-right"></span></div>
+					</div>
+				</a>
+			</ul>
+		</div>
+		<div ng-if="id === 'new' || id && !functionId">
+			<div ng-if="!functionId" class="btn-group btn-group-justified" role="group" aria-label="...">
+			  	<div class="btn-group" role="group" ng-click="headerClicked('Details')">
+        	  	    <button type="button" ng-class="activetab === 'Details' ? 'btn btn-primary' : 'btn btn-default'">Details</button>
+        	  	</div>
+        		<div class="btn-group" ng-click="headerClicked('Functions')" role="group">
+        		    <button type="button" ng-class="activetab === 'Functions' ? 'btn btn-primary' : 'btn btn-default'">Functions</button>
+        		</div>
+			</div>
+
+		    <div ng-if="activetab === 'Functions'" id="list">
+		   	<!--  Clicking new should call #/injections/:Id/functions/new -->
+		   		<div id="list" ng-if="mode === 'functions'">
+					<a type="button" href="#/injectionadmin/{{id}}/functions/new" class="btn btn-default pull-right" style="margin-top:10px; margin-bottom: 10px;">
+	  				 	<span class="fa fa-plus"></span> New Function
+					</a>
+					<ul class="list-group" style="margin-top:10px; clear : both">
+						<a href="#/injectionadmin/{{$index}}/functions/{{$index}}" ng-repeat="row in injection.Functions" class="list-group-item">
+						<div class="row" style="font-size: 20px; margin-left: 2px;">{{row.Name}}</div>
+							<div class="row">
+								<div class="col-xs-11 col-sm-11 col-md-11">{{injection.FunctionsCode[$index] | limitTo:100}}</div>
+								<div class="col-sm-1"><span class="glyphicon glyphicon-chevron-right pull-right"></span></div>
+							</div>
+						</a>
+					</ul>
+				</div>
+		    </div>
+
+		    <div ng-if="activetab ==='Details'">
+		    	<form class="form-horizontal" style="padding-top: 10px">
+	      		    <div class="form-group">
+	      		        <label for="ID" class="col-sm-2">ID:</label>
+	      		        <div class="col-sm-10"><input type="text" class="form-control" placeholder="Name of page eg. test.html" ng-model="injection.ID" id="ID" ng-disabled="mode === 'edit'"></div>
+	      		    </div>
+	      		    <div class="form-group">
+	      		        <label for="Routes" class="col-sm-2">Routes:</label>
+	      		        <div class="col-sm-10"><input type="text" class="form-control" placeholder="Route for this injection eg. /test" ng-model="injection.Routes" id="Routes"></div>
+	      		    </div>
+	      		    <div class="form-group">
+	      		        <label for="Globals" class="col-sm-2">Globals:</label>
+	      		        <div class="col-sm-10"><textarea  style="width : 100%" rows="2" placeholder="JSON array of global variables.eg.{'user':{'firstName':'shaun'},{'lastName':'enslin'}}" ng-model="injection.Globals" id="Globals"></textarea></div>
+	      		    </div>
+						<div class="form-group">
+								<label for="HTML" class="col-sm-2">HTML:</label>
+								<div class="col-sm-10"><textarea placeholder="Eg. <div>Hello {{ctrl.globals.name}}</div><button ng-click='ctrl.filter()'>Click to filter</button>" style="width : 100%" rows="30" ng-model="injection.HTML" id="HTML" ></textarea></div>
+						</div>
+	      		</form>
+	      		<button ng-if="activetab ==='Details' && id !== 'new'" type="button" class="btn btn-danger btn-round pull-right" style="margin-top: 100px" ng-click="deleteInjection()"><span class="fa fa-trash"></span></button>
+		    </div>
+		</div>
+		<div ng-if="mode === 'functions'">
+			<div ng-if="functionId === 'new' || functionId">
+		    	<form class="form-horizontal" style="padding-top: 10px">
+	      		    <div class="form-group">
+	      		       	<label for="Name" class="col-sm-2">Name:</label>
+	      		       	<div class="col-sm-10"><input type="text" class="form-control" placeholder="Name of function eg. constructor" ng-model="functionobj.Name" id="Name"></div>
+	      		    </div>
+	      		    <div class="form-group">
+	      		        <label for="Parameters" class="col-sm-2">Parameters:</label>
+	      		        <div class="col-sm-10"><input type="text" class="form-control" placeholder="List paramaters as comma seperated list" ng-model="functionobj.Parameters" id="Parameters"></div>
+	      		    </div>
+	      		    <div class="form-group">
+	      		        <label for="FunctionsCode" class="col-sm-2">Code:</label>
+	      		        <div class="col-sm-10"><textarea rows="30" style="width : 100%;" placeholder="EG. alert(this.ctrl.myglobals;); this.$scope.address = 'Joburg';" ng-model="functionobj.Code" id="FunctionsCode"></textarea></div>
+	      		    </div>
+	      		</form>
+	      	</div>
+	      	<button type="button" class="btn btn-danger btn-lg btn-round pull-right" style="margin-top: 300px" ng-click="deleteFunction()" ng-if="functionId && functionId !== 'new'"><span class="fa fa-trash"></span>
+	      	</button>
+	    </div>
+	    <div class="alert alert-info" role="alert" ng-if="warningMsg" ng-bind="warningMsg"></div>
+	</div>
+</div>

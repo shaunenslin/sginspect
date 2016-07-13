@@ -1,0 +1,23 @@
+<div class="aside" tabindex="-1" role="dialog" >
+  <div class="aside-dialog">
+    <div class="aside-content">
+        <div class="aside-header" ng-show="title">
+            <button type="button" class="close" ng-click="$hide()">&times;</button>
+            <!--<h4 class="aside-title" ng-bind="title"></h4>-->
+            <img style="display: block; margin:auto; margin-top:5px;" src="{{Settings.logo}}">
+        </div>
+        <div class="aside-body">
+            <div  id="sidebar"> 
+                <ng-include src="'js/core/view/menu.html'"></ng-include>
+            </div>
+        </div>
+        <!--
+        <div class="aside-footer">
+            <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+        </div>
+        -->
+    </div>
+  </div>
+</div>
+        <!--<navigation></navigation>-->
+

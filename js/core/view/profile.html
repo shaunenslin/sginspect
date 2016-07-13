@@ -1,0 +1,36 @@
+<div ng-controller="ProfileCtrl">
+    <div class="inset" style="padding-top:5px;">
+        <form>
+            <div class="h2">
+                <span class="img-thumbnail glyphicon glyphicon-user"></span> {{user.Name}}
+            </div>
+
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" ng-model="user.Name">
+            </div>
+
+            <div ng-if="user.UserID !== user.Email" class="form-group">
+              <label for="UserID">User ID</label>
+              <input type="text" ng-disabled="true" class="form-control" id="UserID" value="{{user.UserID}}">
+            </div>
+            <div class="form-group">
+              <label for="Email">Email address</label>
+              <input type="email" ng-disabled="true" class="form-control" id="Email" ng-model="user.Email">
+            </div>
+            <div ng-if="user.RepID !== null" class="form-group">
+              <label for="AccountID">My Account / Rep Code</label>
+              <input type="text" ng-disabled="true" class="form-control" id="AccountID" value="{{user.RepID}}">
+            </div>
+
+            <div class="form-group">
+              <label for="tel">Mobile number</label>
+              <input type="tel" class="form-control" id="tel" ng-model="user.Tel" placeholder="eg. +27821231234" >
+            </div>
+
+        </form>
+        <button type="button" class="btn btn-primary btn-block" style="margin-right: 5px;" ng-click="changePasswordClicked()">
+            <span class="glyphicon glyphicon-pencil" style="font-size: 14px"></span> Change Password
+        </button>
+    </div>
+</div>

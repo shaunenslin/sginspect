@@ -1,0 +1,20 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #F9FAFC">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title">{{yesno.title}}</h4>
+            </div>
+
+            <div class="inset">
+                <h5>{{yesno.message}}</h5>
+            </div>
+
+            <div class="modal-footer" style="background-color: #F9FAFC">
+                <button type="button" class="btn btn-danger" ng-click="yesnoClicked(false, id);$hide()">No</button>
+                <button type="button" class="btn btn-success" ng-click="yesnoClicked(true, id);$hide()" ng-disabled="message.Message.length < 1">Yes</button>
+            </div>
+        </div>
+
+    </div>
+</div>

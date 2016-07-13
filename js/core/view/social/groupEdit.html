@@ -1,0 +1,66 @@
+<div ng-controller="GroupEditCtrl">      
+    <div id="header" class="socialGroupBG" style="padding:5px;">
+        <div class="container">
+            <div class="thumbnail pull-left socialGroupThumbnail">
+                <img ng-show="groupIMG" src="{{groupIMG}}" class="img-rounded img-responsive"></img>
+                <div ng-show="!groupIMG" ><span class="fa fa-pencil-square fa-5x"></span></div>
+            </div>
+            <div class="updateImage hidden-xs" ng-hide="id === 'new'">
+                <a data-toggle="collapse" data-target="#uploadCollapse" aria-expanded="false" aria-controls="uploadCollapse" >
+                    <span class="glyphicon glyphicon-camera" style="margin-right: 10px;"></span>Update Picture
+                </a>
+            </div>
+            <div class="pull-right h1 socialGroupH1" style="color:whitesmoke">{{group.Name}}</div>
+        </div>
+
+        
+    </div>
+
+    <div id="body" class="inset">
+        <div class="collapse" id="uploadCollapse">
+            <div class="well" >
+                <em>You can upload a new image for your Group. First select an image by clicking on 'Choose File', then click the upload button. <br>Please note that to work, your image should be a JPEG and no greater that 100kb.</em>
+                <form id="file-form" method="POST" role="form" class="form-inline">
+                    <div class="form-group">
+                        <input id="file-select" type="file" capture="camera" accept="image/*">
+                    </div>
+                    <button type="button" style="margin-top: 5px;" id="upload-button" class="btn btn-success" ng-click="postImage()"><span class="fa fa-upload"> Upload</button>
+                </form>
+            </div>
+        </div>
+        <!--<jsonform formid="session.formid" fields="session.displayfields" asyncRslt="[]" json="group" settings="session.settings"></jsonform> -->
+        <div ng-show="id === 'new'" class="alert alert-info" role="alert"><span class="fa fa-quote-left"></span> Create a new group and then upload an image for your group. People can then search and request to join your group.</div>
+        <form class="form-horizontal" style="font-size: large; padding-left:15px; padding-right:15px;">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <div class="">
+                    <input ng-model="group.Name" type="text" class="form-control" id="name" placeholder="Enter a group name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Owner" class="control-label">Contact Name</label>
+                <div class="">
+                    <input ng-model="group.Owner" type="text" class="form-control" id="Owner" placeholder="Enter a contact name for this group">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Tel" class="control-label">Group Contact #</label>
+                <div class="">
+                    <input ng-model="group.Tel" type="text" class="form-control" id="Tel" placeholder="Enter a contact telephone number for this group">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Area" class="control-label">Area</label>
+                <div class="">
+                    <input ng-model="group.Area" type="text" class="form-control" id="Area" placeholder="Enter the area you operate from">
+                    <!--<input ng-model="group.Area" type="text" id="Area" class="form-control" ng-autocomplete="result1" details="details1" options="options1"/>-->
+                </div>
+            </div>
+            
+        </form>
+        <a ng-click="delete()" class="btn btn-danger btn-block" ng-hide="id === 'new'">Delete</a>
+        
+        <div class="alert alert-success" role="alert" ng-if="successMsg">{{successMsg}}</div>
+        <div class="alert alert-danger" role="alert" ng-if="errorMsg" ng-bind="errorMsg"></div>        
+    </div>
+</div>    

@@ -1,0 +1,71 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h4 class="modal-title">Settings</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Tree Settings -->
+                <form ng-hide="field.Type !== 'Tree'" role="form">
+                    <div class="form-group">
+                        <label for="tableTxt">Local Table</label>
+                        <input ng-model="defaultData.table" type="text" class="form-control" id="tableTxt" placeholder="The local table name">
+                    </div>
+                    <div class="form-group">
+                        <label for="tableTxt">Code</label>
+                        <input ng-model="defaultData.code" type="text" class="form-control" id="tableTxt" placeholder="Field contianing the code">
+                    </div>
+                    <div class="form-group">
+                        <label for="tableTxt">Description</label>
+                        <input ng-model="defaultData.description" type="text" class="form-control" id="tableTxt" placeholder="Field contianing the description">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input ng-model="defaultData.multiselect" type="checkbox"> Multi Select
+                        </label>
+                    </div>
+                </form>
+                <!-- ListBoxAsync Settings -->
+                <form role="form" ng-hide="field.Type !== 'ListboxAsync'">
+                    <label for="local">Local</label>
+                    <input type="radio" ng-model="defaultData.type" id="local" value="local"  checked>
+                    <label for="http" style="padding-left: 10px">Http</label>
+                    <input type="radio" ng-model="defaultData.type" id="Http" value="http" style="padding-left: 10px">
+                </form>
+                <form ng-hide="field.Type !== 'ListboxAsync'" role="form">
+                    <div class="form-group" ng-show="defaultData.type === 'local'">
+                        <label for="table">Table</label>
+                        <input ng-model="defaultData.table" type="text" class="form-control" id="table" placeholder="The local table name">
+                        <label for="tableTxt">Code</label>
+                        <input ng-model="defaultData.Code" type="text" class="form-control" id="Code" placeholder="Code">
+                        <label for="tableTxt">Description</label>
+                        <input ng-model="defaultData.Description" type="text" class="form-control" id="Descripttion" placeholder="Decription">
+                    </div>
+                    <div class="form-group" ng-show="defaultData.type === 'http'">
+                        <label for="tableTxt">Table</label>
+                        <input ng-model="defaultData.table" type="text" class="form-control" id="tableTxt" placeholder="The database table name">
+                        <label for="tableTxt">Code</label>
+                        <input ng-model="defaultData.Code" type="text" class="form-control" id="Code" placeholder="Code">
+                        <label for="tableTxt">Description</label>
+                        <input ng-model="defaultData.Description" type="text" class="form-control" id="Descripttion" placeholder="Decription">
+                        <label for="tableTxt">Params</label>
+                        <input ng-model="defaultData.Params" type="text" class="form-control" id="Params" placeholder="Where Clause">
+                    </div>
+                </form>
+                <form ng-hide="field.Type !== 'Checkbox'" role="form">
+                    <div class="form-group">
+                        <label for="righthandlabel">Right hand label</label>
+                        <input ng-model="defaultData" type="text" class="form-control" id="righthandlabel" placeholder="Right hand label">
+                    </div>
+                    <div>
+                        <p>Enter a label which can appear on the right hand side of the checkbox</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="settingsOK()">OK</button>
+                <button class="btn btn-warning" ng-click="settingsCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>    

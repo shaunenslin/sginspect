@@ -1,0 +1,28 @@
+<div  ng-controller="WelcomeCtrl" ng-show="loggedIn" style="background: url('{{settings.splash}}') no-repeat center center fixed; 
+                                                            height: 100vh;
+                                                            -webkit-background-size: cover;
+                                                            -moz-background-size: cover;
+                                                            -o-background-size: cover;
+                                                            background-size: cover;">
+
+    <div ng-include="'views/welcome.html'"></div>
+
+    <script type="text/ng-template" id="syncingModal.html">
+        <div class="modal-body">
+            <h4>Synchronising...</h4>
+            <div ng-hide="message === undefined" class="alert alert-success infopanel">{{message}}</div>
+            <div ng-hide="errormessage === undefined" class="alert alert-danger infopanel">{{errormessage}}</div>
+
+            <div ng-hide="syncProgress.length===0" id="resultsdiv" class="alert alert-success" style="margin-top:20px;">
+                <table>
+                    <tr ng-repeat="item in syncProgress">
+                        <td>{{item.substr(0,80)}}</td>
+                    </tr>
+                </table>
+            </div> 
+
+        </div>
+    </script>
+    
+    
+</div>

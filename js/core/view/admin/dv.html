@@ -1,0 +1,140 @@
+
+<div ng-controller="DVCtrl">
+	<div class="inset">
+		<div id="list" ng-show="mode==='list'" style="padding-top:10px;">
+			<div class="row">
+				<div class="row" style="margin-left:10px; margin-right:5px;">
+					<div class="col-xs-3  col-sm-2">Attribute</div>
+	                <div class="col-xs-5  col-sm-4">Label</div>
+	        	</div>
+			</div>
+			<ul class="list-group" style="margin-top: 10px" >
+				<a href="#/dv/possiblevalues/{{row.RTAttribute}}"ng-repeat="row in attributes" class="list-group-item">
+					<span class="glyphicon glyphicon-chevron-right pull-right"></span>
+					<div class="row">
+						<div class="col-xs-3  col-sm-2">{{row.RTAttribute}}</div>
+						<div class="col-xs-5  col-sm-4">{{row.Label}}</div>
+					</div>
+				</a>
+			</ul>
+		</div>
+
+		<div ng-if="mode ==='possiblevalues'">
+			<form name="searchForm" ng-submit="searchClicked()" role="form" style="padding-top: 10px; padding-bottom: 10px;">
+				<div class="input-group">
+					<input ng-model="form.searchText" type="text" class="form-control" placeholder="{{placeholder}}">
+					<span class="input-group-btn"><submit class="btn btn-success" type="submit">Search</submit></span>
+				</div>
+			</form>
+
+			<ul class="list-group" style="margin-top: 10px">
+				<a href="#/dv/values/{{id}}/{{row.Result}}" ng-repeat="row in PossibleValues" class="list-group-item">
+					<span class="glyphicon glyphicon-chevron-right pull-right"></span>
+					<div class="row">
+						<div ng-if="!row.Name" class="col-xs-11">{{row.Result}}</div>
+						<div ng-if="row.Name" class="col-xs-3">{{row.Result}}</div>
+						<div ng-if="row.Name" class="col-xs-8">{{row.Name}}</div>
+					</div>
+				</a>
+			</ul>
+		</div>
+
+		<div ng-if="mode ==='values'">
+			<div class="alert alert-danger" role="alert" ng-if="errorMsg" ng-bind="errorMsg"></div>
+			<ul class="nav nav-tabs" role="tablist" style="padding-top:10px;">
+				<li ng-repeat="tab in tabs" role="presentation" ng-class="activeTab===$index?'active':''" id="{{tab.title}}">
+					<a ng-click="tabclicked($index)">{{tab.title}}</a>
+				</li>
+			</ul>
+			<div class="inset" id="valuesContent">
+				<form ng-submit="addRow()" name="addForm" role="form" novalidate style="padding-top:10px;padding-bottom:10px;">
+					<div class="row" style="background-color:#494949; color:white">
+						<div class="col-xs-2" style="padding: 2px;">Deal</div>
+						<div class="col-xs-2" style="padding: 2px;">From</div>
+						<div class="col-xs-2" style="padding: 2px;">To</div>
+					</div>
+					<div class="row" style="background-color: #c5c3c2;">
+						<div class="col-xs-2" style="padding: 2px;">
+						    <input name="Deal" type="text" class="form-control" ng-model="newrow.Deal" name="Deal" placeholder="Deal Description" >
+						</div>
+						<div class="col-xs-2" style="padding: 2px;">
+							<input name="FromDate" type="text" class="form-control" ng-model="newrow.FromDate" name="fromdate" bs-datepicker date-format="yyyy-MM-dd" >
+						</div>
+						<div class="col-xs-2" style="padding: 2px;">
+							<input name="ToDate" ng-model="newrow.ToDate" type="text" class="form-control" date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker placeholder=" Date"  />
+						</div>
+						<div class="col-xs-2" style="padding: 2px;">
+							<div class="checkbox">
+							    <label><input type="checkbox" ng-model="newrow.Rebate"> Collect Rebate</label>
+							</div>
+						</div>
+					</div>
+					<div class="row" style="background-color: #c5c3c2;padding-bottom:5px;">
+						<div class="col-xs-5" style="padding: 2px;">
+							<!-- <input required name="id" type="text"                      ng-model="newrow[conditions.Product.DiscountField]" placeholder="Search" typeahead="row.result as row.result for row in fetchProductPossibleValues($viewValue)" typeahead-loading="loadingLocations" class="form-control"> -->
+		    				<input ng-change="fetchProductPossibleValues()" ng-model="searchStr" ng-model-options="{debounce : 200}" required id="productid" name="id" type="text" class="form-control" data-animation="am-flip-x" bs-options="row as row.result for row in typeAheadValues" placeholder="Search for product" data-min-length="0" bs-typeahead>
+						</div>
+						<div class="col-xs-2" style="padding: 2px;">
+							<input id="qtylow" name="QtyLow"  ng-model="newrow.QtyLow" min="0" type="number" class="form-control" style="text-align: right" placeholder="QtyLow"  />
+						</div>
+						<div class="col-xs-2" style="padding: 2px;">
+							<input id="qtyhigh" name="QtyHigh" ng-model="newrow.QtyHigh" min="0" type="number" class="form-control" style="text-align: right" placeholder="QtyHigh"  />
+						</div>
+						<div class="col-xs-2" style="padding: 2px;">
+		          <span>
+			                	<input id="pricebox" name="Discount" ng-if="tab.Type==='PRICE'" ng-model="newrow.Price" class="form-control" type="number" style="text-align: right" placeholder="eg. 1.20 for R1.20"/>
+				                <input id="discountbox"    name="Price" ng-if="tab.Type==='DISCOUNT'" ng-model="newrow.Discount" class="form-control" type="number" style="text-align: right" placeholder="eg. 10 for 10%"/>
+							</span>
+						</div>
+						<div class="col-xs-1">
+							<button id="addBtn" type="submit" class="btn btn-success"><span class="fa fa-plus" style="font-size:20px;"></span></button>
+						</div>
+					</div>
+				</form>
+				<div class="row" style="background-color:#494949; color:white" ng-hide="discountValues.length === 0">
+					<div class="col-xs-5">{{conditions.Product.DiscountField}}</div>
+					<div class="col-xs-1">Low</div>
+					<div class="col-xs-1">High</div>
+					<div class="col-xs-2">{{discount.Type}}</div>
+				</div>
+				<div ng-repeat="row in discountValues" ng-class="row.changed ? 'row warning': row.Deleted ? 'row danger':'row'" >
+					<div ng-click="dealClicked(row.Deal)" class="row" ng-show="$index == 0 || row.prev !== discountValues[$index - 1].prev" style="background-color:#c5c3c2; margin-left:0px; margin-right:0px;">
+						<div class="col-xs-2" style="padding: 2px; padding-left:18px;">{{row.Deal}}</div>
+						<div class="col-xs-2" style="padding: 2px;">{{row.FromDate}}</div>
+						<div class="col-xs-2" style="padding: 2px;">{{row.ToDate}}</div>
+						<div class="col-xs-4" style="padding: 2px;">&nbsp;</div>
+						<div class="col-xs-2" style="padding: 2px;"><a ng-click="selectAllClicked()">Select All</a></div>
+					</div>
+					<div class="col-xs-5" style="padding: 2px;">
+						<input disabled required name="id" type="text" typeahead-min-length="2" ng-model="row[conditions.Product.DiscountField]" class="form-control">
+					</div>
+					<div class="col-xs-1" style="padding: 2px;">
+						<input disabled name="QtyLow"  ng-model="row.QtyLow" min="0" type="number" class="form-control" style="text-align: right" placeholder="QtyLow"  />
+					</div>
+					<div class="col-xs-1" style="padding: 2px;">
+						<input disabled name="QtyHigh" ng-model="row.QtyHigh" min="0" type="number" class="form-control" style="text-align: right" placeholder="QtyHigh"  />
+					</div>
+					<div class="col-xs-3" style="padding: 2px;">
+	                	<span>
+	                		<div class="input-group">
+  								<span class="input-group-addon">{{tab.Type==='PRICE' ? 'R':'%'}}</span>
+		                		<input name="Discount" ng-if="tab.Type==='PRICE'" ng-model="row.Price" class="form-control" type="number" ng-change="rowChange($index)" style="text-align: right" placeholder="R"/>
+			                	<input name="Price" ng-if="tab.Type==='DISCOUNT'" ng-model="row.Discount" class="form-control" type="number" ng-change="rowChange($index)" style="text-align: right" placeholder="%"/>
+							</div>
+						</span>
+					</div>
+					<div class="col-xs-1">
+						<div class="checkbox" style="padding-left: 10px;"> <input type="checkbox" ng-model="row.Rebate" ng-change="rowChange($index)" >Rebate</div>
+					</div>
+					<div class="col-xs-1">
+						<a ng-if="!row.broken" ng-click="deleteRow($index)" class="btn btn-danger"><span ng-class="row.Deleted ? 'fa fa-undo' : 'fa fa-trash'" style="font-size:20px;"></span></a>
+						<i ng-if="row.broken" class="fa fa-exclamation-triangle"></i>
+					</div>
+				</div>
+			</div>
+			<button ng-if="discountValues.length > 0" title="Download discount csv file" type="button" class="file-exchange" csv-header="getcsvHeader()" ng-csv="getCsvData()" filename="{{heading}}.csv"><span class="fa fa-file-excel-o" aria-hidden="true"></span></button>
+		</div>
+
+		<div class="alert alert-info" role="alert" ng-if="InfoMsg"><span class="fa fa-info-circle"></span> {{InfoMsg}}</div>
+	</div>
+</div>

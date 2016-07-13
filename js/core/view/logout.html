@@ -1,0 +1,13 @@
+<div ng-controller="LogoutCtrl">
+    <div ng-if="showMessage" class="alert alert-danger"><span class="fa fa-ban"></span> You have unsent items, please perform a Sync before logging out</div>
+    <div class="well center-block row" style='max-width: 600px;'>
+        <div class="col-md-6"><bold>Are you sure you want to logout?</bold></div>
+
+        <div class="col-md-6">
+            <div class="btn-group">
+                <button ng-click="logout()" type="button" ng-disabled="disableLogout" class="btn btn-danger">Yes, log me out</button>
+                <button ng-click="back()"type="button" class="btn btn-primary">No</button>
+            </div>
+        </div>
+    </div>
+</div>

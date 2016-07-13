@@ -1,0 +1,79 @@
+<div ng-controller="ProdEditCtrl">    
+    <div class="inset" style="padding-top:20px;">
+        <div id="list" ng-show="mode==='list'" >
+            <form class="form-horizontal" style="padding-left:15px; padding-right:15px;" ng-submit="searchClicked()">
+                <div class="form-group">
+                  <label class="sr-only" for="exampleInputAmount"></label>
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search" ng-model="searchString">
+                      <a class="btn btn-primary input-group-addon" ng-click="searchClicked()" type="submit">Search</a>
+                  </div>
+                </div>                
+            </form> 
+ 
+            <ul class="list-group" style="margin-top: 10px" >
+               <a href="#/prodedit/form/{{$index}}" ng-repeat="row in products" class="list-group-item">
+               		<span class="glyphicon glyphicon-chevron-right pull-right"></span>
+                   	<div class="row">
+                       <div class="col-xs-3 col-sm-3 col-md-2">{{row.ProductID}}</div>
+                       <div class="col-xs-8 col-sm-5 col-md-5">{{row.Description}}</div>
+                       <div class="hidden-xs col-sm-3 col-md-1">{{row.CategoryName}}</div>
+                       <div class="hidden-xs hidden-sm col-md-1">{{row.UNIT}}</div>
+                       <div class="hidden-xs hidden-sm col-md-2">{{row.UserField01}}</div>
+                   	</div>
+               </a>
+            </ul>
+        </div>
+        <div id="form" ng-show="mode==='form'">
+           <form class="form-horizontal">
+                <div class="form-group">
+                 <label for="ProductID" class="col-sm-2">ProductID</label>
+                 <div class="col-sm-10"><input type="text" class="form-control" ng-disabled="id !== 'new'" ng-model="product.ProductID" id="ProductID"></div>
+                </div>
+                <div class="form-group">
+                 <label for="Description" class="col-sm-2">Description</label>
+                 <div class="col-sm-10"><input type="text" ng-model="product.Description" class="form-control" id="Description"></div>
+                </div>
+                <div class="form-group">
+                 <label for="CategoryName" class="col-sm-2">CategoryName</label>
+                 <div class="col-sm-10"><input type="text" ng-model="product.CategoryName" class="form-control" id="CategoryName"></div>
+                </div>
+                <div class="form-group">
+                 <label for="VAT" class="col-sm-2">TAX</label>
+                 <div class="col-sm-10"><input type="number" ng-model="product.VAT" class="form-control" id="VAT"></div>
+                </div>
+                <div class="form-group">
+                 <label for="Barcode" class="col-sm-2">Barcode</label>
+                 <div class="col-sm-10"><input type="text" ng-model="product.Barcode" class="form-control" id="Barcode"></div>
+                </div>
+                <div class="form-group">
+                 <label for="Unit" class="col-sm-2">Unit</label>
+                 <div class="col-sm-10"><input type="text" ng-model="product.Unit" class="form-control" id="Unit"></div>
+                </div>
+                <div class="form-group">
+                 <label for="UserField01" class="col-sm-2">UserField01</label>
+                 <div class="col-sm-10"><input type="text" ng-model="product.UserField01" class="form-control" id="UserField01"></div>
+                </div>
+                <div class="form-group">
+                 <label for="UserField02" class="col-sm-2">UserField02</label>
+                 <div class="col-sm-10"><input type="text" ng-model="product.UserField02" class="form-control" id="UserField02"></div>
+                </div>
+                <div class="form-group">
+                 <label for="UserField03" class="col-sm-2">UserField03</label>
+                 <div class="col-sm-10"><input type="text" ng-model="product.UserField03" class="form-control" id="UserField03"></div>
+                </div>
+                <div class="form-group">
+                 <label for="UserField04" class="col-sm-2">UserField04</label>
+                 <div class="col-sm-10"><input type="text" ng-model="product.UserField04" class="form-control" id="UserField04"></div>
+                </div>
+                <div class="form-group">
+                 <label for="UserField05" class="col-sm-2">UserField05</label>
+                 <div class="col-sm-10"><input type="text" ng-model="product.UserField05" class="form-control" id="UserField05"></div>
+                </div>
+                <button type="button" ng-click="deleteObj()" class="btn btn-danger btn-block"><span class="glyphicon glyphicon-floppy-remove"></span> Delete</button>
+           </form>
+       </div>
+       <div class="alert alert-success" role="alert" ng-if="successMsg">{{successMsg}}</div>
+       <div class="alert alert-danger" role="alert" ng-if="errorMsg" ng-bind="errorMsg"></div>
+   </div>
+</div>

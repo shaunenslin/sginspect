@@ -1,0 +1,50 @@
+<div ng-controller="FormTypeCtrl">    
+		 <div class="inset" style="padding-top:30px;">
+			       <div id="list" ng-show="mode==='list'">
+			                    
+			           <!-- FormType List results -->
+			           <ul class="list-group" style="margin-top: 10px;" >
+			              <a href="#/formtype/{{row.FormTypeID}}" ng-repeat="row in FormTypes" class="list-group-item">
+			                  <div class="row">
+			                      <div class="col-xs-3 col-sm-3 col-md-2">{{row.FormName}}</div>
+			                      <div class="col-xs-4 col-sm-9 col-md-10"><span class="glyphicon glyphicon-chevron-right pull-right"></span></div>
+			                  </div>
+			              </a>
+			           </ul>
+			       </div>
+			
+				   <!-- FormType Form results -->
+       <div id="form" ng-show="mode==='form'">
+       
+	          <form class="form-horizontal">
+		               <div class="form-group">
+		                	<label for="ForAccountGrp" class="col-sm-2">Account Group</label>
+		                	<div class="col-sm-10"><input type="text" class="form-control" ng-model="FormType.ForAccountGrp" id="ForAccountGrp"></div>
+		               </div>
+		               <div class="form-group">
+	                   		<label for="ForAccountID" class="col-sm-2">AccountID</label>
+	                   		<div class="col-sm-10"><input type="text"  class="form-control"  ng-model="FormType.ForAccountID" id="ForAccountID"></div>
+	               		</div>             		
+	               		<div class="form-group">
+	                   		<label for="FormName" class="col-sm-2">Form Name</label>
+	                   		<div class="col-sm-10"><input type="text"  class="form-control"  ng-model="FormType.FormName" id="FormName"></div>
+	               		</div>             		
+	               		<div class="form-group" ng-hide="id==='new'">
+	                   		<label for="FormTypeID" class="col-sm-2">FormTypeID</label>
+	                   		<div class="col-sm-10"><input type="number"  class="form-control" ng-disabled="id!=='new'"  ng-model="FormType.FormTypeID" id="FormTypeID"></div>
+	               		</div>		
+	              		<div class="form-group">
+		                    <label for="HasFormItems" class="col-sm-2">Has Form Items</label>
+		                    <div class="col-sm-1"><input type="checkbox" ng-model="FormType.HasFormItems" id="HasFormItems"></div>
+	                   </div>              		
+	              		<div class="form-group">
+	                  		<label for="MustSelectAccount" class="col-sm-2">Must Select Account</label>
+	                  		<div class="col-sm-1"><input type="checkbox" ng-model="FormType.MustSelectAccount" id="MustSelectAccount"></div>
+	              		</div>	
+		               <button type="button" ng-click="deleteFormType()" class="btn btn-danger btn-block" ng-hide="id==='new'"><span class="glyphicon glyphicon-floppy-remove"></span> Delete</button>
+		          </form>
+      </div>
+			      <div class="alert alert-success" role="alert" ng-if="successMsg">{{successMsg}}</div>
+			      <div class="alert alert-danger" role="alert" ng-if="errorMsg" ng-bind="errorMsg"></div>
+		  </div>
+</div>

@@ -1,0 +1,207 @@
+<div ng-controller="GroupsCtrl">  
+    <div ng-show="mode==='list'" class="inset" style="padding-top: 10px;">
+        <jsoncards  
+            url="GetStoredProc?StoredProc=social_mygroups_readlist&params=({{user.SupplierID}}|%27{{user.UserID}}%27)" 
+            successMsg="successMsg" 
+            errorMsg="errorMsg" 
+            heading-field="Name"  
+            onfetch="onfetch"
+            id-field="GroupID" 
+            href="groups" 
+            default-icon="fa fa-users">
+        </jsoncards>
+    </div>
+
+    <div ng-if="mode==='form'">
+        <div id="group_header" class="socialGroupBG">  
+            <div class="container">
+                <div class="thumbnail pull-left socialGroupThumbnail">
+                    <img ng-show="groupIMG" ng-src="{{currentGroup.image}}" class="img-rounded img-responsive"></img>
+                </div>
+                <div class="pull-right">    
+                    <div class="h1 socialGroupH1">{{currentGroup.Name}}</div>
+                    <div class="pull-right">
+                        <div ng-if="view === 'dashboard'" class="panel" style=" text-align: center;  width: 60px;height: 60px;margin-top: 15px" ng-click="newMessageClicked()">
+                            <span class="fa fa-comment-o" style="font-size : 35px; margin-top: 10px"></span>     
+                        </div>
+                        <div ng-if="view !== 'dashboard' && view !== 'events'" class="panel" style=" text-align: center;  width: 60px;height: 60px;margin-top: 15px; visibility: hidden">
+
+                        </div>
+                        <div class="panel" ng-if="view === 'events'" style=" text-align: center;  width: 60px;height: 60px;margin-top: 15px" ng-click="newEventClicked()">
+                            <span class="fa fa-plus" style="font-size : 40px; margin-top: 10px"></span>     
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="group_body" class="inset">
+         <div class="container">
+           <div  class="navbar navbar-default navbar-fixed-bottom wrapper-footer" style="padding: 7px">
+            <div class="row">
+            	<div class="col-xs-3" role="group" align ="center">
+                    <a href="#groups/" ng-class="view === 'groups' ?  'footerActive' : 'footerInactive' " ng-click="groupClicked()"> <span class="glyphicon glyphicon-list-alt"></span></a>
+                </div>
+					<div class="col-xs-3" role="group" align ="center">
+                    <a href="#groups/{{currentGroup.GroupID}}/dashboard"  ng-class="view === 'dashboard' ? 'footerActive' : 'footerInactive' " ng-click="view = 'dashboard'"> <span class="glyphicon glyphicon-home"></span></a>
+                    
+                </div>
+                <div class="col-xs-3" role="group" align ="center">
+                    <a href="#groups/{{currentGroup.GroupID}}/members"  ng-class="view === 'members' ? 'footerActive' : 'footerInactive' " ng-click="view = 'members';"> <span class="glyphicon glyphicon-user"></span></a>
+                    
+                </div>
+                <div class="col-xs-3" role="group" align ="center">
+                    <a href="#groups/{{currentGroup.GroupID}}/events" ng-class="view === 'events' ?  'footerActive' : 'footerInactive' " ng-click="view = 'events'"> <span class="glyphicon glyphicon-calendar"></span></a>
+                    
+                </div>
+            </div>
+            <div class="row">
+            	<div class="col-xs-3" role="group" align ="center">
+                    <a href="#groups/" ng-class="view === 'groups' ? 'footerActive' : 'footerInactive'  " ng-click="groupClicked()">Groups</a>
+                </div>
+                <div class="col-xs-3" role="group" align ="center">
+                    <a href="#groups/{{currentGroup.GroupID}}/dashboard"  ng-class="view === 'dashboard' ? 'footerActive' : 'footerInactive' " ng-click="view = 'dashboard'">Dashboard</a>
+                </div>
+                <div class="col-xs-3" role="group" align ="center">
+                    <a href="#groups/{{currentGroup.GroupID}}/members"  ng-class="view === 'members' ? 'footerActive' : 'footerInactive' " ng-click="view = 'members';">Members</a>
+                </div>
+                <div class="col-xs-3" role="group" align ="center">
+                    <a href="#groups/{{currentGroup.GroupID}}/events" ng-class="view === 'events' ?  'footerActive' : 'footerInactive' " ng-click="view = 'events'">Events</a>
+                </div>
+            </div>
+            
+            
+           </div>
+          </div>
+             <!-- Dashboard Screen -->
+            <div role="tabpanel" ng-show="view === 'dashboard'">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" ng-class="activetab === 'timeline' || activetab === undefined ? 'active' : '' "><a  ng-click="activetab = 'timeline'; fetchtimeline();" aria-controls="timeline" role="tab" data-toggle="tab">Timeline</a></li>
+                    <li role="presentation" ng-class="activetab === 'leaderboard' ? 'active' : ''"><a ng-click="activetab = 'leaderboard'; fetchleaderboard();" aria-controls="leaderboard" role="tab" data-toggle="tab">LeaderBoard</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content dashboard-tab" style="padding:5px; background-color: #F5F5F5; opacity:0.9; ">
+                    <!--Timeline Panel -->
+                    <div role="tabpanel"  ng-class="activetab === 'timeline' || activetab === undefined ? 'active tab-pane' : 'tab-pane' "  id="timeline">
+                        <!--<timeline supplierid="{{currentGroup.SupplierID}}" groupid="{{currentGroup.GroupID}}"></timeline>--> 
+                        <div class="row timeline" ng-repeat="row in timelines">
+                            <div id="icon" class="col-md-1 col-sm-1 col-xs-2"><span  style="font-size: 25px" class="{{row.icon}}"> </span></div> 
+                            <div class="col-md-11 col-sm-11 col-xs-10">
+                                <div><strong>#{{row.subject}}</strong><span class="pull-right" style="font-size: small; color: gray">{{ row.date | date : 'd MMM : ha' }}</span></div>
+                                <div>{{row.message}} <span ng-if="row.notifType === 3" ng-click="newMessageClicked()" class="fa fa-reply-all pull-right" style="font-size: 18px;"></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel"  ng-class="activetab === 'leaderboard' ? 'active tab-pane' : 'tab-pane' " id="leaderboard">
+                        <div class="btn-group" role="group">
+                            <button type="button" ng-class="period === 'w' || period === undefined ? 'btn btn-primary' : 'btn btn-default'" ng-click="period = 'w'; fetchleaderboard('w');">Week</button>
+                            <button type="button" ng-class="period === 'm'  ? 'btn btn-primary' : 'btn btn-default' " ng-click="period = 'm'; fetchleaderboard('m');">Month</button>
+                            <button type="button" ng-class="period === 'y' ? 'btn btn-primary' : 'btn btn-default' " ng-click="period = 'y'; fetchleaderboard('y')">Year</button>
+                        </div>
+
+                        <div class="table-responsive" style="margin-top: 10px" ng-if="leaderboard.length > 0">
+                            <table class="table table-striped table-bordered">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Activities</th>
+                                    <th>Orders</th>
+                                </tr>
+                                <!-- <a ng-click="memberClicked(currentGroup.GroupID, row.UserID, 'dashboard')"> -->
+                                <tr ng-repeat="row in leaderboard" ng-click="memberClicked(currentGroup.GroupID, row.UserID, 'dashboard')">
+                                        <td>{{row.Name}}</td>
+                                        <td>{{row.AccountActivities}}</td>
+                                        <td>{{row.AccountOrders}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="view === 'members'">
+                <div class="alert alert-warning" ng-if="requestCounter > 0 && currentGroup.isAdmin" style="margin-top: 10px">
+                    <p  ng-if="requestCounter === 1">
+                            {{requestCounter}} member has requested to join your group and needs your approval
+                    </p>
+                    <p  ng-if="requestCounter > 1">
+                            {{requestCounter}} members has requested to join your group and needs your approval
+                    </p>
+
+                </div>
+                <ul class="list-group"  >
+                    <a ng-repeat="row in members" class="list-group-item" ng-click="memberClicked(currentGroup.GroupID, row.UserID, 'members')">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-4 col-md-4">{{row.Name}}</div>
+                            <div class="hidden-xs col-sm-5 col-md-5">
+                                <p ng-if="row.LastCheckIn === 0">Today</p>
+                                <p ng-if="row.LastCheckIn === 1">Yesterday</p>
+                                <p ng-if="row.LastCheckIn > 1">{{row.LastCheckIn}} days ago</p>
+                            </div>
+                            <div class="col-xs-4 col-sm-3 col-md-3" ng-if="currentGroup.isAdmin">
+                                <div class="btn-group pull-right" role="group" ng-if="!row.Accepted">
+                                    <button type="button" class="btn btn-success btn-sm" ng-click="memberapproved($index); $event.preventDefault(); $event.stopPropagation();"><span class="fa fa-check"></span></button>
+                                    <button type="button" class="btn btn-danger btn-sm" ng-click="memberremoved($index); $event.preventDefault(); $event.stopPropagation();"><span class="fa fa-times"></span></button>
+                                </div>
+                                <div ng-if="row.Accepted" class="btn btn-danger pull-right btn-sm" ng-click="memberremoved($index); $event.preventDefault(); $event.stopPropagation();"><span class="fa fa-trash-o"></span></div>
+                            </div>
+                        </div>
+                    </a>
+               </ul>
+                <a ng-click="inviteUsers()" class="btn btn-success btn-block"><span class="fa fa-reply-all"></span> Invite people to your group</a>
+            </div>
+
+            <div ng-if="view === 'events'" style="margin-top: 20px" >
+                <!--<table style="width : 100%">
+                    <td>
+                        <div class="btn-group btn-group-xs pull-left">
+                          <label ng-class="calendarView === 'month' ? 'btn btn-primary' :'btn btn-default'" ng-model="calendarView" btn-radio="'month'">Month</label>
+                          <label ng-class="calendarView === 'week' ? 'btn btn-primary' :'btn btn-default'"  ng-model="calendarView" btn-radio="'week'">Week</label>
+                          <label ng-class="calendarView === 'day' ? 'btn btn-primary' :'btn btn-default'" ng-model="calendarView" btn-radio="'day'">Day</label>
+                        </div>
+                    </td>
+                    <td > <h6 style="font-weight: 700; text-align: center" class="text-center cal-heading">{{ calendarControl.getTitle() }}</h6></td>
+                    <td>
+                        <div class="btn-group btn-group-xs pull-right">
+                            <button class="btn btn-primary" ng-click="calendarControl.prev()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                            <button class="btn btn-default hidden-xs" ng-click="setCalendarToToday()">Today</button>
+                            <button class="btn btn-primary" ng-click="calendarControl.next()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                        </div>
+                    </td>
+                </table>-->
+                <div style="width: 100%; padding-bottom: 20px;text-align: center;">
+                    <div class="btn-group btn-group-xs pull-left">
+                        <label ng-class="calendarView === 'month' ? 'btn btn-primary' :'btn btn-default'" ng-model="calendarView" btn-radio="'month'">Month</label>
+                        <label ng-class="calendarView === 'week' ? 'btn btn-primary' :'btn btn-default'"  ng-model="calendarView" btn-radio="'week'">Week</label>
+                        <label ng-class="calendarView === 'day' ? 'btn btn-primary' :'btn btn-default'" ng-model="calendarView" btn-radio="'day'">Day</label>
+                    </div>
+                    <h6 style="font-weight: 700; display: inline" class="text-center cal-heading">{{ calendarControl.getTitle() }}</h6>
+                    <div class="btn-group btn-group-xs pull-right">
+                        <button class="btn btn-primary" ng-click="calendarControl.prev()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                        <button class="btn btn-default hidden-xs" ng-click="setCalendarToToday()">Today</button>
+                        <button class="btn btn-primary" ng-click="calendarControl.next()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                    </div>
+                </div>
+                <div>   
+                    <mwl-calendar
+                        calendar-events="events"
+                        calendar-view="calendarView"
+                        calendar-current-day="calendarDay"
+                        calendar-control="calendarControl"
+                        calendar-event-click="eventClicked($event)"
+                        calendar-edit-event-click="eventEdited($event)"
+                        calendar-delete-event-click="eventDeleted($event)"
+                        calendar-auto-open="false"
+                        calendar-week-title-label="Week : {week}"
+                        calendar-day-title-label="{day}"
+                   ></mwl-calendar>
+                </div>
+        </div>
+    </div>
+    <div>
+        <div class="alert alert-success" role="alert" ng-if="successMsg" style="margin-top: 10px">{{successMsg}}</div>
+        <div class="alert alert-danger" role="alert" ng-if="errorMsg" style="margin-top: 10px" ng-bind="errorMsg"></div>        
+    </div>
+    
+</div>    

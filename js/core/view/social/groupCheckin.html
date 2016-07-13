@@ -1,0 +1,52 @@
+
+<div ng-controller="GroupCheckinCtrl" class="checkinbody">
+    <div class="inset" style="padding-top: 20px;">
+        <div class="alert alert-success" role="alert" ng-if="successMsg"><span class="fa fa-check-circle"></span> {{successMsg}}</div>
+        <div class="alert alert-danger" role="alert" ng-if="errorMsg" ng-bind="errorMsg"></div>
+        
+        <form>
+        <div ng-if="events.length >0" class="form-group">
+            <label for="event" >Group Event</label>
+            <div class="list-group" id="event">
+                <a class="list-group-item {{!row.active ? '':'active'}}" ng-repeat="row in events" ng-click="eventClicked($index)">
+                    <p class="list-group-item-text">{{row.Subject}}</p>
+                </a>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn {{checkin.ActivityType!=='Cycling'?'btn-default':'btn-primary'}}" ng-click="activityTypeClicked('Cycling')">Cycling</button>
+                <button type="button" class="btn {{checkin.ActivityType!=='Running'?'btn-default':'btn-primary'}}" ng-click="activityTypeClicked('Running')">Running</button>
+                <button type="button" class="btn {{checkin.ActivityType!=='Swimming'?'btn-default':'btn-primary'}}" ng-click="activityTypeClicked('Swimming')">Swimming</button>
+                <button type="button" class="btn {{checkin.ActivityType!=='Other'?'btn-default':'btn-primary'}}" ng-click="activityTypeClicked('Swimming')">Other</button>
+            </div >  
+        </div>   
+        
+        <div class="form-group">
+            <label for="location" ><span class="fa fa-map-marker"></span> Location</label>
+            <input id="location" class="form-control" type="text" ng-model="checkin.Location"  />
+        </div>
+        
+        
+        <div class="form-group">
+            <label for="duration" ><span class="fa fa-clock-o"></span> Duration</label>
+            <input ng-model="checkin.Notes" type="number" class="form-control"  id="duration" placeholder="eg. 1.13 for 1 hour 13 minutes">
+         </div>
+        
+        <div class="form-group">
+            <label for="distance" ><span class="fa fa-bicycle"></span> Distance</label>
+            <input ng-model="checkin.Value" type="number" class="form-control"  id="distance" placeholder="eg. 23 for 23km">
+        </div>
+        <div class="form-group form-inline">
+            <label class="control-label" ><i class="fa fa-calendar"></i> Date</label><br>
+            <div class="form-group">
+                <input type="text" size="20" class="form-control" ng-model="checkin.CreatedOn" date-format="longDate" data-autoclose="1" placeholder="Date" use-native="true" bs-datepicker>
+            </div>
+            <div class="form-group">
+                <input type="text" size="10" class="form-control" ng-model="checkin.CreatedOn" data-autoclose="1" placeholder="Time" bs-timepicker>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>

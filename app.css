@@ -1,0 +1,286 @@
+body {
+    background-color: #f9fafc;
+}
+
+/*
+.content:before {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: -1;
+
+  display: block;
+  background-image: url('http://666a658c624a3c03a6b2-25cda059d975d2f318c03e90bcf17c40.r92.cf1.rackcdn.com/unsplash_527bf56961712_1.JPG');
+  width: 1200px;
+  height: 800px;
+
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+
+.content {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+*/
+
+.viewbody {
+//background: url('img/viewbg.jpg'); //no-repeat center center fixed;
+    background-repeat: repeat-y;
+    background-position: top;
+    background-origin: content-box;
+    height: 100vh;
+
+}
+
+.checkinbody {
+    /*    background: url('img/checkinbg.jpg'); //no-repeat center center fixed;
+        background-repeat: repeat-y;
+        background-position: top;
+        background-origin: content-box;*/
+    height: 100vh;
+}
+
+.form-control{
+    border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+}
+
+.center-div {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+};
+
+
+.img {
+    margin: 5px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.card-img{
+    margin-left: auto;
+    margin-right: auto;
+
+    /* position: inherit; */
+}
+
+.cardThumb{
+    width:95%;
+    height:95%;
+    vertical-align: middle;
+    left: 50%;
+}
+
+.inner-img {
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top : 0;
+    left: 0;
+    bottom : 0;
+    right :0;
+}
+
+.carousel-caption{
+
+    top : 50px;
+    bottom: 0;
+    color: black;
+}
+
+.carousel-caption .jumbotron{
+    background-color: rgba(255,255,255,0.8);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    text-shadow: none;
+    text-align:  left;
+
+}
+
+.carousel-caption .jumbotron H1{
+    font-weight: 500;
+}
+
+
+.container{
+    width : 100%;
+    margin : 0;
+}
+
+.nav.navbar-nav.side-nav.menu li a{
+    /* color : black; */
+}
+
+.aside .aside-dialog .aside-header {
+    background: #31373C;
+}
+
+.breadcrumback{
+    color : #428bca;
+}
+
+breadcrumback:hover{
+    text-decoration: underline;
+}
+
+.updateImage{
+    background: #31373D;
+    color: white;
+    opacity: 0.9;
+    position: relative;
+    top: 140px;
+    left: 0px;
+    height: 33px;
+    width: 151px;
+    padding-top: 8px;
+    padding-left: 13px;
+}
+.updateImage a {
+    position: relative;
+    top: -185px;
+    left: 0px;
+    color: white;
+}
+
+.cardImges{
+    max-width:180px;
+    max-height:180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cardBox {
+    position: relative;
+    /* width:200px; */
+    height:160px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+
+
+
+}
+
+div.panel-body.cardBox{
+    padding-bottom: 0px;
+    border-top: sold grey;
+}
+
+div.panel.panel-default.group-panel{
+    background-color: rgba(0,0,0,0);
+    border : none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+
+
+div.panel.panel-default.group-panel img{
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+
+}
+
+div.panel-footer.group-footer{
+    background-color: rgba(0,0,0,0);
+    border : none;
+    padding-top: 0px;
+}
+
+@media all and (min-width: 500px) {
+    .cardBox {
+        height:200px;
+    }
+}
+
+.cctableheading th{
+    text-align: center;
+}
+
+.cc-red {
+    color: #c0392b;
+}
+
+.cc-orange {
+    color: #f39c12;
+}
+
+.cc-green {
+    color: #27ae60;
+}
+
+.calendar_default_corner{
+    display: none;
+}
+
+.wrapper-footer{
+    margin-left: 200px;
+}
+
+@media (max-width:991px) {
+    .wrapper-footer{
+        margin-left: 0px;
+    }
+}
+
+.total-panel {
+    background-color: #458CC8; /*#31373D;*/
+    border-radius: 5px;
+    margin: 5px;
+    margin-right: 20px;
+    color: white;
+    min-width: 220px;
+}
+.total-panel td {
+    padding: 1px 10px 1px 10px;
+    text-align: center;
+    color: #F8F8F8;
+    font-size: small;
+}
+.total-panel td.total {
+    border-top: 1px dotted #ccc;
+    font-size: large;
+    color: white;
+    font-weight: bold;
+}
+.total-panel td.left {
+    border-right: 1px dotted #ccc;
+}
+canvas.jSignature.signatureField {
+    border: solid rgba(0,0,0,0.18) !important;
+}
+.file-exchange {
+    position: fixed;
+    cursor: pointer;
+    width: 55px;
+    height: 55px;
+    background-color: #2ecc71;
+    bottom: 10px;
+    right: 20px;
+    z-index: 999;
+    border-radius: 100%;
+    border: none;
+    /*margin-right: 20px;*/
+
+}
+.fa.fa-file-excel-o{
+    font-size: 25px;
+    font-weight: 300;
+    color: white
+}

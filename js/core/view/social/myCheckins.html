@@ -1,0 +1,94 @@
+   <div ng-controller="MyCheckins">    
+    <div class="inset" style="padding-top:20px;">
+        <div class="alert alert-success" role="alert" ng-if="deletedMsg"><span class="fa fa-thumbs-up">{{deletedMsg}}</div>
+        <div class="alert alert-success" role="alert" ng-if="successMsg"><span class="fa fa-thumbs-up">{{successMsg}}</div>
+        <div class="alert alert-danger" role="alert" ng-if="errorMsg" ng-bind="errorMsg"></div>
+        <div class="alert alert-warning" role="alert" ng-if="infoMsg"><span class="fa fa-quote-left"></span> {{infoMsg}}</div>
+        
+        
+        <div class="row socialMySessionsCards" ng-repeat="row in json" ng-if="mode==='list'">
+            <div id="icon" class="col-xs-2 col-sm-3 col-md-3 " ng-if="outerWidth > 500">
+                <map center="{{row.Latitude}}, {{row.Longitude}}" zoom="12" class="img-responsive" style="max-height:120px;">
+                    <marker position="[{{row.Latitude}}, {{row.Longitude}}]" />
+                    <shape name="circle" radius="400" center="[{{row.Latitude}}, {{row.Longitude}}]" radius="4000" />
+                </map>
+            </div>        
+            <div class="col-xs-8 col-sm-8 col-md-8 " ng-click="rowClicked(row, $index)">
+                <div class="row" id="date">
+                    <div>{{ row.CreatedOn | date : 'd MMM h:mma' }}</div>
+                </div>
+                <div class="row">
+                    <h2 class="col-xs-5 socialCardsH2">{{row.Value}} km</h2>
+                    <h2 class="col-xs-5 socialCardsH2">{{row.Notes}} </h2>
+                    <span class="col-xs-2 {{(row.ActivityType==='Cycling' ? 'fa fa-bicycle' : 'fa fa-road')}} " style="font-size: 25px;margin-top:22px;"></span>
+                </div>    
+                <div class="row" id="location">
+                    <div>{{row.Location}}</div>
+                </div>  
+            </div>
+            <div class="col-xs-2" ng-if="outerWidth < 500">
+                &nbsp;
+            </div>
+            <div class=" col-xs-2 col-md-1 col-sm-1" style="margin-top:43px;">
+                <span style="font-size: 20px" class="hidden-sm hidden-md hidden-lg fa fa-chevron-right pull-right" > </span>
+                
+                <a ng-if="isUser" class="hidden-xs btn btn-danger pull-right" ng-click="delete(row,$index)" >
+                    <span style="font-size: 20px" class="fa fa-trash" > </span>
+                </a>
+            </div> 
+        </div>
+        
+        <div ng-if="mode==='form'">
+            <div class="row well">
+                <map center="{{currentCheckin.Latitude}}, {{currentCheckin.Longitude}}" zoom="12" class="img-responsive col-xs-7" style="max-height:200px;height:180px">
+                    <marker position="[{{currentCheckin.Latitude}}, {{currentCheckin.Longitude}}]" />
+                    <shape name="circle" radius="400" center="[{{currentCheckin.Latitude}}, {{currentCheckin.Longitude}}]" radius="4000" />
+                </map>
+                <div class="col-xs-5">
+                    <div class="h1 row">{{currentCheckin.Value}} km</div>
+                    <div class="socialMySessionsTag">Distance</div>
+                    <h1 class="row">{{currentCheckin.Notes}}</h1>
+                    <div class="socialMySessionsTag">Duration</div>
+                </div>
+            </div>  
+            <form>
+                <div class="form-group">
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn {{currentCheckin.ActivityType!=='Cycling'?'btn-default':'btn-primary'}}" ng-click="activityTypeClicked('Cycling')">Cycling</button>
+                        <button type="button" class="btn {{currentCheckin.ActivityType!=='Running'?'btn-default':'btn-primary'}}" ng-click="activityTypeClicked('Running')">Running</button>
+                        <button type="button" class="btn {{currentCheckin.ActivityType!=='Walking'?'btn-default':'btn-primary'}}" ng-click="activityTypeClicked('Walking')">Walking</button>
+                    </div >  
+                </div> 
+                <div class="form-group">
+                  <label for="location"><span class="fa fa-map-marker"></span> Location</label>
+                  <input type="text" class="form-control" id="location" ng-model="currentCheckin.Location" placeholder="No Location">
+                </div>              
+         
+                <div class="form-group">
+                  <label for="duration"><span class="fa fa-clock-o"></span> Duration</label>
+                  <input type="number" class="form-control" id="duration" ng-model="currentCheckin.Time" placeholder="No Duration">
+                </div>
+                
+                <div class="form-group">
+                    <label for="distance" ><span class="fa fa-bicycle"></span> Distance</label>
+                    <input ng-model="currentCheckin.Value" type="number" class="form-control"  id="distance" placeholder="eg. 23 for 23km">
+                </div>
+                
+                 <div class="form-group form-inline">
+                    <label class="control-label" ><i class="fa fa-calendar"></i> Date</label><br>
+                    <div class="form-group">
+                        <input type="text" size="20" class="form-control" ng-model="currentCheckin.CreatedOn" date-format="longDate" data-autoclose="1" placeholder="Date" use-native="true" bs-datepicker>
+                            </div>
+                    <div class="form-group">
+                        <input type="text" size="10" class="form-control" ng-model="currentCheckin.CreatedOn" data-autoclose="1" placeholder="Time" bs-timepicker>
+                    </div>
+                </div>
+                
+            </form>
+            <button class="btn btn-danger btn-block" ng-if="isUser" ng-click="delete(currentCheckin,index)" >
+                <span style="font-size: 20px" class="fa fa-trash" > Delete</span>
+            </button>
+            
+        </div>        
+    </div>
+</div>

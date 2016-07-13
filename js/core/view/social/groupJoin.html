@@ -1,0 +1,21 @@
+<div ng-controller="GroupJoinCtrl"> 
+    <div class="inset" style="padding-top: 10px;">
+        <div class="input-group" style="margin-bottom: 10px;">
+            <input ng-model="searchText" type="text" class="form-control ng-pristine ng-valid" placeholder="{{placeholder}}">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">Search</button>
+            </span>
+        </div>
+        <div class="alert alert-success" role="alert" ng-if="successMsg"><span class="fa fa-quote-left"></span>  {{successMsg}}</div>
+        <div class="alert alert-danger" role="alert" ng-if="errorMsg" ng-bind="errorMsg"></div>
+        
+            <a ng-hide="row.show === false" ng-click="save(row)" class="list-group-item {{row.class}}" ng-repeat="row in groups">
+                <span class="badge" ng-show="row.class==='list-group-item-success'">Accepted</span>
+                <span class="badge" ng-show="row.class==='list-group-item-warning'">Requested</span>
+                <img src="{{row.image}}" class="pull-left joinimg" alt="">
+                <h4 class="list-group-item-heading">{{row.Name}}</h4>
+                <p class="list-group-item-text">{{row.Area}}</p>              
+            </a>
+    </div>
+    
+</div>    

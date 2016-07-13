@@ -1,0 +1,72 @@
+{'xsl':'
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
+<xsl:template match="/">
+<html>
+<head>
+<title>Rapidtrade Order</title>
+<style>
+  .heading {text-align:right;font-family:Geneva,Verdana,Arial,Helvetica,sans-serif;font-size:20pt;color:#AAA;margin:0;}
+  .address {text-align:left;font-family:Geneva,Verdana,Arial,Helvetica,sans-serif;font-size:10pt;color:black;vertical-align:top;}
+  .itemh {font-weight:bold;padding:10px 5px 5px 5px;border-top:solid 1px #AAA;border-bottom:solid 1px #AAA;text-align:right;font-family:Geneva,Verdana,Arial,Helvetica,sans-serif;font-size:10pt;color:#000;}
+  .item {padding:5px;text-align:left;font-family:Geneva,Verdana,Arial,Helvetica,sans-serif;font-size:10pt;color:#000; }
+</style>
+</head>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" bgcolor="#EEE" style="background:#EEE;">
+<div style="background:#EEE;width:100%">
+<table border="0" cellpadding="0" cellspacing="0" width="800" bgcolor="#FFF" style="padding:10px;background:#FFF;">
+  <tr>
+    <td width="360" valign="bottom"> <IMG src="{*/Logo}"/></td>
+    <td width="440" valign="bottom"> <p class="heading">Order Confirmation</p></td>
+  </tr>
+  <tr><td colspan="2"><p style="border-top:solid 2px #AAA;"></p></td></tr>
+  <tr>
+    <td class="address">
+      <b>Ordered By: </b><xsl:value-of select="*/UserID"/><br/>
+      <b>Account: </b><xsl:value-of select="*/AccountID"/><br/><br/>
+      <b>For: </b><br/>
+      <xsl:value-of select="*/DeliveryName"/><br/>
+      <xsl:value-of select="*/DeliveryAddress1"/> <br/>
+      <xsl:value-of select="*/DeliveryAddress2"/><br/>
+      <xsl:value-of select="*/DeliveryAddress3"/><br/>
+      <xsl:value-of select="*/DeliveryAddress4"/><br/>
+      <b>Email: </b><xsl:value-of select="*/Email"/><br/>
+    </td>
+    <td>
+      <p class="address">
+        <b>Order ID: </b><xsl:value-of select="*/OrderID"/><br/>
+        <b>Comment: </b><xsl:value-of select="*/Comments"/><br/>
+      </p>
+      
+      <p class="address">
+        <b>Total (exc): </b><xsl:value-of select="*/TotalExc"/><br/>
+        <b>Total (inc): </b><xsl:value-of select="*/TotalInc"/><br/>
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr valign="bottom" style="border-top:solid 1px #AAA;border-bottom:solid 1px #AAA;">
+          <td style="width=30px"> </td> <td class="itemh">Item</td><td class="itemh">Product</td><td class="itemh">Description</td><td class="itemh">Qty Ordered</td><td class="itemh">Price</td> <td class="itemh">Value</td>
+        </tr>
+        <xsl:for-each select="*/ArrayOfOrderItems/OrderItems">
+          <tr>
+            <td style="width=30px"><IMG src="{/Image}"/></td>
+            <td class="item"><xsl:value-of select="ItemID"/></td>
+            <td class="item"><xsl:value-of select="ProductID"/></td>
+            <td class="item"><xsl:value-of select="Description"/></td>
+            <td class="item"><xsl:value-of select="Quantity"/></td>
+            <td class="item"><xsl:value-of select="Nett"/></td>
+            <td class="item"><xsl:value-of select="Value"/> </td>
+          </tr>
+        </xsl:for-each>
+      </table>
+    </td>
+  </tr>
+</table>
+</div>    
+</body>
+</html>
+</xsl:template>
+</xsl:stylesheet>'}

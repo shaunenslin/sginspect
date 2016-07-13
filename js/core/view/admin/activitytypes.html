@@ -1,0 +1,96 @@
+<div ng-controller="ActivityTypesCtrl">
+	<div class="inset" style="padding-top:10px;">
+    	<div id="list" ng-show="mode==='list'">
+           <!-- List results -->
+           <div class="row" style="padding-left: 7px;">
+	           	<div class="col-xs-6 h4">Label</div>
+	           	<div class="col-xs-2 h4">Group</div>
+	           	<div class="col-xs-1 h4">Camera</div>
+	           	<div class="col-xs-1 h4">GPS</div>
+	           	<div class="col-xs-1 h4">Date</div>
+           </div>
+           <ul class="list-group" >
+              <a href="#/activitytypes/form/{{$index}}" ng-repeat="row in list" class="list-group-item">
+              	  <span class="glyphicon glyphicon-chevron-right pull-right"></span>
+                  <div class="row">
+                      <div class="col-xs-6">{{row.Label}}</div>
+                      <div class="col-xs-2">{{row.ForAccntGroup}}</div>
+                      <div class="col-xs-1"><span class="fa fa-check-square-o" ng-if="row.AllowPicture"></span><span class="fa fa-square-o" ng-if="!row.AllowPicture"></span></div>
+                      <div class="col-xs-1"><span class="fa fa-check-square-o" ng-if="row.AllowGPS"></span><span class="fa fa-square-o" ng-if="!row.AllowGPS"></span></div>
+                      <div class="col-xs-1"><span class="fa fa-check-square-o" ng-if="row.DueDateAllowed"></span><span class="fa fa-square-o" ng-if="!row.DueDateAllowed"></span></div>
+                      <div class="col-xs-1"></div>
+                  </div>
+              </a>
+           </ul>
+       </div>
+
+       <div id="form" ng-show="mode==='form'">
+          <form class="form-horizontal">
+               	<div class="form-group">
+                	<label for="ActivityTypeID" class="col-sm-2">ID</label>
+                	<div class="col-sm-10"><input type="text" class="form-control" ng-disabled="id !== 'new'" ng-model="object.ActivityTypeID" id="ActivityTypeID"></div>
+               	</div>
+               	<div class="form-group">
+                	<label for="Label" class="col-sm-2">Label</label>
+                	<div class="col-sm-10"><input type="text" class="form-control" ng-model="object.Label" id="Label"></div>
+               	</div>
+                <div class="form-group">
+                  <label for="SortOrder" class="col-sm-2">Sort Order</label>
+                  <div class="col-sm-10"><input type="number" class="form-control" ng-model="object.SortOrder" id="SortOrder"></div>
+                </div>
+
+               	<div class="form-group">
+                	<label for="Label" class="col-sm-2">Type</label>
+                	<div class="col-sm-10">
+          					<div class="btn-group" role="group" aria-label="...">
+      					  		<button type="button" ng-click="changeEventType(0)" ng-class="object.FieldType==0 ? 'btn btn-default active' : 'btn btn-default' ">Text</button>
+      					  		<button type="button" ng-click="changeEventType(1)" ng-class="object.FieldType==1 ? 'btn btn-default active' : 'btn btn-default' ">Number</button>
+      					  		<button type="button" ng-click="changeEventType(2)" ng-class="object.FieldType==2 ? 'btn btn-default active' : 'btn btn-default' ">Currency</button>
+      					  		<button type="button" ng-click="changeEventType(4)" ng-class="object.FieldType==4 ? 'btn btn-default active' : 'btn btn-default' ">List Box</button>
+      						  </div>
+                	</div>
+               	</div>
+
+               	<div class="panel panel-default">
+               		<div class="panel-heading">Options</div>
+				  	<div class="panel-body">
+				    	<div class="form-group">
+		                	<div style="padding-left:7px;"><input id="date" 		type="checkbox" aria-label="arialabel" ng-model="object.DueDateAllowed"> User can change the date</div>
+                      <div style="padding-left:7px;"><input id="time" type="checkbox" aria-label="arialabel" ng-model="object.DueTimeAllowed"> User can change the time</div>
+		                	<div style="padding-left:7px;"><input id="pic" 			type="checkbox" aria-label="arialabel" ng-model="object.AllowPicture"> User can take a picture</div>
+		                	<div style="padding-left:7px;"><input id="gps" 			type="checkbox" aria-label="arialabel" ng-model="object.AllowGPS"> Capture GPS location</div>
+                      <div style="padding-left:7px;"><input id="duration" type="checkbox" aria-label="arialabel" ng-model="object.AllowDuration"> Duration</div>
+		                	<div style="padding-left:7px;"><input id="contacts" type="checkbox" aria-label="arialabel" ng-model="object.AllowContact"> Select contacts</div>
+                      		<div style="padding-left:7px;"><input id="pipeline" type="checkbox" aria-label="arialabel" ng-model="object.AllowPipeline"> Pipeline Activity</div>
+                      		<div ng-if="object.AllowPipeline">
+                  				<label style="padding-left: 6px;" for="PercentageComplete" class="col-sm-2">Percentage Complete</label>
+                  				<div class="col-sm-10"><input type="number"  class="form-control" ng-model="object.PercentageComplete" id="PercentageComplete"></div>
+                			</div>
+		               	</div>
+				  	</div>
+				</div>
+				<div class="panel panel-default" ng-if="object.FieldType==4">
+					<div class="panel-heading">Listbox options</div>
+				  	<div class="panel-body">
+				  			<form name="listboxForm" role="form" style="background-color: grey">
+				  				<div class="input-group">
+                     <input id="options" type="text" class="form-control" ng-model="form.newFreeAttribute" placeholder="New option" >
+                     <span class="input-group-btn">
+                    		<button id="addoption" class="btn btn-primary" type="button" ng-click="addListboxOption()"><span class="fa fa-plus"></button>
+                     </span>
+                	</div>
+                </form>
+				  		<div ng-repeat="row in options" class="input-group" style="padding:2px;">
+				  			<input class="form-control" type="text" ng-model="row">
+				  			<span class="input-group-btn">
+                	<button class="btn btn-danger" type="button" ng-click="deleteListboxOption($index)"><span class="fa fa-trash"></span></button>
+                </span>
+				  		</div>
+				  	</div>
+				</div>
+
+        <button type="button" ng-click="deleteObject()" class="btn btn-danger btn-block"><span class="glyphicon glyphicon-floppy-remove"></span> Delete</button>
+          </form>
+      </div>
+  </div>
+</div>

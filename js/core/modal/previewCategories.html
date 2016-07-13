@@ -1,0 +1,34 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+
+            <div class="inset">
+                <!--<generictable ng-if="previewjson.length > 1" table="previewjson" label="Preview"></generictable>-->
+                <table class="table table-bordered">
+                    <tr>
+                        <td>ProductID</td>
+                        <td>Description</td>
+                        <td>Category Name</td>
+                    </tr>
+                    <tr ng-repeat="preview in previewjson">
+                        <td>{{preview.ProductID}}</td>
+                        <td>{{preview.Description}}</td>
+                        <td>{{preview.CategoryName}}</td>
+                    </tr>
+                </table>
+
+                <div class="alert alert-info" ng-if="previewjson.length == 0"><p>There are currently no products in this category</p></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()">Cancel</button>
+                
+            </div>
+        </div>
+
+    </div>
+</div>

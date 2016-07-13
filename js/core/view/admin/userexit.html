@@ -1,0 +1,42 @@
+<div ng-controller="UserExitCtrl">    
+<div class="inset" style="padding-top: 20px;">
+    <div id="list" ng-show="mode==='list'">
+       <!-- List results -->
+       <ul class="list-group" style="margin-top: 10px" >
+          <a href="#/userexit/form/{{$index}}" ng-repeat="row in usercodes" class="list-group-item">
+          	  <span class="glyphicon glyphicon-chevron-right pull-right"></span>
+              <div class="row">
+                  <div class="col-xs-3 col-sm-6 col-md-5">{{row.UserExitID}}</div>
+                  <div class="col-xs-8 col-sm-3 col-md-2">{{row.UserID}}</div>
+                  <div class="hidden-xs col-sm-3 col-md-2">{{row.Date}}</div>
+                  <div class="hidden-xs hidden-sm col-md-2">{{row.Version}}</div>
+              </div>
+          </a>
+       </ul>
+    </div>
+
+    <div id="form" ng-show="mode==='form'">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="UserExitID" class="col-sm-2">UserExitID</label>
+                <div class="col-sm-10">
+                    <input ng-if="id !== 'new'" type="text" class="form-control" ng-model="usercode.UserExitID" id="UserExitID">
+                    <select ng-if="id === 'new'" ng-required="true" ng-model="usercode.UserExitID" class="form-control" id="UserExitID" ng-options="userexit.UserExitID as userexit.UserExitID for userexit in userexits"  >
+                        <option value="">-- choose --</option>
+                    </select>
+                </div>
+            </div>
+            <div ng-show="usercode.UserExitID">
+                <div class="alert alert-info" role="alert" ng-if="userexit.Description" ng-bind="userexit.Description"></div>
+                <h4>{{userexit.Signature}} {</h4>
+                <textarea class="form-control" rows="10" ng-model="usercode.Code" id="Code"></textarea>
+                <h4>}</h4>
+            </div>
+            <button type="button" ng-click="deleteObj()" class="btn btn-danger btn-block"><span class="glyphicon glyphicon-floppy-remove"></span> Delete</button>
+        </form>
+    </div>
+    <div class="alert alert-success" role="alert" ng-if="successMsg">{{successMsg}}</div>
+    <div class="alert alert-danger" role="alert" ng-if="errorMsg" ng-bind="errorMsg"></div>
+    <div class="alert alert-info" role="alert" ng-if="warningMsg" ng-bind="warningMsg"></div>
+  </div>
+</div>

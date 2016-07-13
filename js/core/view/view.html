@@ -1,0 +1,11 @@
+<div ng-controller="ViewCtrl">
+    <div class="inset">
+    <h3 ng-hide="session.settings.heading === undefined || hideheading" >
+        <span ng-hide="session.settings.img === undefined" class="{{session.settings.img}}" style="display:inline;width:40px;height:40px;font-size: 1.0em;"></span>
+        {{session.settings.heading}}
+    </h3>
+    <div ng-hide="errormessage === undefined" class="alert alert-danger" >{{errormessage}}</div>
+    <jsontable ng-hide="session.settings.type !== 'table'" formid="session.formid" fields="session.displayfields" json="session.jsonArray" settings="session.settings"></jsontable>
+    <jsonform ng-hide="session.settings.type !== 'form'" formid="session.formid" fields="session.displayfields" asyncRslt="[]" json="session.jsonObj" settings="session.settings"></jsonform>
+    </div>
+</div>

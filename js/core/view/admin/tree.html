@@ -1,0 +1,144 @@
+<div ng-controller="TreeCtrl">
+    <div class="inset" style="padding-top: 20px;">
+
+        <!--Deals With The The Showing Of All The Users In this SupplierID-->
+        <div class=" list-group" ng-show="mode === 'list' ">
+            <a href="#/tree/form/{{tree.TreeID}}" class="list-group-item" ng-repeat="tree in trees" >
+            	<span class="glyphicon glyphicon-chevron-right pull-right"></span>
+            	<div class="row">
+            	  <div  class="col-xs-3">{{tree.Description}}</div>
+                  <div  class="col-xs-3">{{tree.ParentTreeID}}</div>
+                  <div  class="col-xs-3">{{tree.Tips}}</div>
+                </div>  
+            </a>
+        </div>
+
+        <!-- Deals With Weather The User Edits or Adds A New Record to the This SupplierID's User-->
+        <div ng-show="mode ===  'form' ">
+            <form style="margin-top: 5px">
+
+                <div role="tabpanel">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" ng-class="activetab == 'basic' || activetab == undefined ? 'active' : '' " ><a href="" aria-controls="basic" role="tab" data-toggle="tab" ng-click="activetab = 'basic' ">General</a></li>
+                        <li role="presentation" ng-class="activetab == 'advanced' ? 'active' : '' "><a href="" aria-controls="profile" role="tab" data-toggle="tab" ng-click="activetab = 'advanced'">Advanced</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content inset">
+                        <div role="tabpanel" class="tab-pane" id="basoc" ng-class="activetab == 'basic' || activetab == undefined ? 'active' : '' " >
+                            <div class="form-group">
+                                <label for="TreeID">TreeID</label>
+                                <input type="text" class="form-control" id="TreeID" ng-model="treeEdit.TreeID" ng-disabled="id !== 'new'">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="Description">Description</label>
+                                <input type="text" class="form-control" id="Description" ng-model="treeEdit.Description">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ParentTreeID">ParentTreeID</label>
+                                <input type="text" class="form-control" id="ParentTreeID" ng-model="treeEdit.ParentTreeID" placeholder="mainmenu or none">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Tags">Tags</label>
+                                <input type="text" class="form-control" id="Tags" ng-model="treeEdit.Tags">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Tips">Path</label>
+                                <input type="text" class="form-control" id="Tips" ng-model="treeEdit.Tips"  placeholder="eg. #/view/MYHISTORY">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="SortOrder">SortOrder</label>
+                                <input type="number" class="form-control" id="SortOrder" ng-model="treeEdit.SortOrder">
+                            </div>
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-checked="treeEdit.HasChildren" ng-model="treeEdit.HasChildren"> HasChildren
+                                </label>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="profile" ng-class="activetab == 'advanced' ? 'active' : ''">
+                            <div class="form-group">
+                                <label for="ID">Displayfields ID</label>
+                                <input type="text" class="form-control" id="ID" ng-model="JSONField.id">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="heading">Heading</label>
+                                <input type="text" class="form-control" id="Heading" ng-model="JSONField.heading">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="icon">img</label>
+                                <select  class="form-control" ng-model="JSONField.img" id="icon" ng-options="type for type in options[2]">
+                                    <option value="">-- choose an icon --</option>
+                                </select>
+                            </div>
+
+                            <h5 ng-show="treeEdit.Tips.indexOf('#/view') > -1">View Settings</h5>
+                            <div class="well" ng-show="treeEdit.Tips.indexOf('#/view') > -1 || treeEdit.Tips.indexOf('#/drill') > -1">
+
+                                <div class="form-group">
+                                    <label for="type">Type</label>
+                                    <select  class="form-control" ng-model="JSONField.type" id="type" ng-options="type for type in options[0]">
+                                        <option value="">-- choose a type --</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="mode">Mode</label>
+                                    <select  class="form-control" ng-model="JSONField.mode" id="mode" ng-options="type for type in options[1]">
+                                        <option value="">-- choose a mode --</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" ng-if="JSONField.mode == 'drilldown' ">
+                                    <label for="ddID">Drill Down Url</label>
+                                    <input type="text" class="form-control" id="ddurl" ng-model="JSONField.drilldownurl">
+                                </div>
+
+                                <div class="form-group" ng-if="JSONField.mode == 'drilldown' ">
+                                    <label for="ddurl">Drill Down ID</label>
+                                    <input type="text" class="form-control" id="ddID" ng-model="JSONField.drilldownid">
+                                </div>
+
+                                <div class="form-group" >
+                                    <label for="url">url</label>
+                                    <input type="text" class="form-control" id="url" ng-model="JSONField.url">
+                                </div>
+
+                                <div class="checkbox" ng-if="JSONField.mode == 'edit' ">
+                                    <label>
+                                        <input type="checkbox" ng-checked="JSONField.canDelete" ng-model="JSONField.canDelete"> canDelete
+                                    </label>
+                                </div>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-checked="JSONField.backbutton" ng-model="JSONField.backbutton"> Back Button
+                                    </label>
+                                </div>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-checked="JSONField.nocache" ng-model="JSONField.nocache"> noCache
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" ng-hide="id === 'new'" ng-click="delete()" class="btn btn-danger btn-block"><span class="glyphicon glyphicon-floppy-remove"></span> Delete</button>
+            </form>
+        </div>
+    </div>
+</div>

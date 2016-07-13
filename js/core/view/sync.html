@@ -1,0 +1,23 @@
+<div ng-controller="SyncCtrl">
+    <div class="inset" style="padding-top:20px;">
+        <form role="form" ng-submit="loginClicked()">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input ng-disabled="true" ng-model="user.UserID" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input ng-model="user.Password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>  
+            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+            <a ng-click="remindMeClicked()" style="margin-top:18px;">Forgot your password?</a>
+        </form>
+        <div ng-hide="syncProgress.length===0" id="resultsdiv" class="alert alert-info" style="margin-top:20px;">
+            <table>
+                <tr ng-repeat="item in syncProgress">
+                    <td>{{item}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
