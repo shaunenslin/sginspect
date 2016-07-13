@@ -23,7 +23,7 @@ coreApp.service('SyncSvc', function($http, GlobalSvc, DaoSvc, Settings, OptionSv
         // var table_url = Settings.url + "Get?method=usercode_readsingle&SupplierID='"+ this.supplierID + "'&UserExit='sync.synctables'"
         // var keys_url = Settings.url + "Get?method=usercode_readsingle&SupplierID='"+ this.supplierID + "'&UserExit='sync.tablekeys'"
         //var keys_url = Settings.url + "GetStoredProc?StoredProc=usercode_readsingle&params=("+ this.supplierID + "|'sync.tablekeys')";
-        var Oncomplete = function(){
+        // var Oncomplete = function(){
             $this.postObjectsArray = [];
             DaoSvc.cursor('Unsent',
                 function(json){
@@ -37,9 +37,9 @@ coreApp.service('SyncSvc', function($http, GlobalSvc, DaoSvc, Settings, OptionSv
                     $this.postObjects(0, $scope);
                 }
             );
-        };
+        // };
 
-        var startTime = new Date().getTime();
+       /* var startTime = new Date().getTime();
         $http({
             method: 'GET',
             url: table_url,
@@ -73,7 +73,7 @@ coreApp.service('SyncSvc', function($http, GlobalSvc, DaoSvc, Settings, OptionSv
                     }
                 }
                 $scope.$emit('UNLOAD');
-            });
+            });*/
 
     };
 
