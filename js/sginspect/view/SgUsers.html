@@ -20,8 +20,8 @@
                   <div  class="col-xs-2">{{user.Name}}</div>
                   <div  class="col-xs-2">{{user.UserID}}</div>
                   <span class="col-xs-2" ng-if="user.IsAdmin">Admin</span>
-                  <span class="col-xs-2">{{user.Tel}}</span>
-            	  <div  class="col-xs-1">{{user.Deleted}}</div>
+                  <div class="col-xs-2">{{user.Tel}}</div>
+            	  <div  class="col-xs-1" ng-if="user.Deleted !== true">Y</div>
                   <!-- <div  class="col-xs-2">{{user.LastLoginDate | date:'shortDate'}}</div>-->
               	</div>
               	<!--
@@ -58,8 +58,8 @@
                 </div> -->
 
                 <div class="form-group">
-                    <label for="Name">Phone number</label>
-                    <input type="text" class="form-control" id="Name" ng-model="userEdit.Tel">
+                    <label for="Tel">Phone number</label>
+                    <input type="text" class="form-control" id="Tel" ng-model="userEdit.Tel">
                 </div>
 
                 <div class="form-group">
