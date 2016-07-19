@@ -25,7 +25,7 @@ coreApp.constant('Settings', {
 
 
 	//SG Admin
-    url: 'http://www.super-trade.co.za:8083/rest/index.php/',
+    url: 'http://www.super-trade.co.za:8084/rest/index.php/',
     supplierID: 'SGA',
     logo: 'http://www.sgadmin.co.za/logo/SG-Admin-sm.png',
     splash:  'img/groupbg.jpg',
