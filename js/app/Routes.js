@@ -8,6 +8,8 @@ function AppRoutes($routeProvider, DaoSvc){
     $routeProvider.when("/officialevents", {templateUrl:"views/officialEvents.html"});
     $routeProvider.when("/SgUsers",{templateUrl:"js/sginspect/view/SgUsers.html"});
     $routeProvider.when('/SgUsers/:mode/:id',{templateUrl : "js/sginspect/view/SgUsers.html"});
+    $routeProvider.when("/Clients",{templateUrl:"js/sginspect/view/Clients.html"});
+    $routeProvider.when('/Clients/:mode/:id',{templateUrl : "js/sginspect/view/Clients.html"});
 }
 
 function TestCtrl($templateCache) {

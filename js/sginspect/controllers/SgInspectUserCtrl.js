@@ -23,22 +23,8 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
 
     $scope.deleteUser = function(){
         $scope.$emit('LOAD');
-        if (!confirm('Are you sure you want to delete this user ?')) return;
-        success = function(){
-            $scope.$emit('UNLOAD');
-            $alert({ content: "User Deleted Ok", duration: 4, placement: 'top-right', type: 'success', show: true});
-            sessionStorage.removeItem("UsersCache");
-            $location.path('/SgUsers');
-        };
-
-        error = function(){
-            $scope.$emit('UNLOAD');
-            $alert({ content: "Error Deleting User", duration: 4, placement: 'top-right', type: 'danger', show: true});
-            $location.path('/SgUsers');
-        };
-
-        var url = Settings.url + 'View/ModifyAll?table=users&type=delete';
-        GlobalSvc.postData(url,$scope.userEdit,success,error,'users','modify',false,true);
+        $scope.userEdit.Active = 0;
+        save();
     };
 
     $scope.saveUser = function(){
