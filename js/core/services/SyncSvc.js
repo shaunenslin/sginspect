@@ -20,8 +20,8 @@ coreApp.service('SyncSvc', function($http, GlobalSvc, DaoSvc, Settings, OptionSv
         $this.syncRetry = $this.syncRetry ? $this.syncRetry : 0;
         $scope.syncProgress = [];
         $scope.syncProgress.push('Starting a sync');
-        /*var table_url = Settings.url + "Get?method=usercode_readsingle&SupplierID='"+ this.supplierID + "'&UserExit='sync.synctables'"
-        var keys_url = Settings.url + "Get?method=usercode_readsingle&SupplierID='"+ this.supplierID + "'&UserExit='sync.tablekeys'"*/
+        // var table_url = Settings.url + "Get?method=usercode_readsingle&SupplierID='"+ this.supplierID + "'&UserExit='sync.synctables'"
+        // var keys_url = Settings.url + "Get?method=usercode_readsingle&SupplierID='"+ this.supplierID + "'&UserExit='sync.tablekeys'"
         //var keys_url = Settings.url + "GetStoredProc?StoredProc=usercode_readsingle&params=("+ this.supplierID + "|'sync.tablekeys')";
         // var Oncomplete = function(){
             $this.postObjectsArray = [];
@@ -39,7 +39,7 @@ coreApp.service('SyncSvc', function($http, GlobalSvc, DaoSvc, Settings, OptionSv
             );
         // };
 
-        /*var startTime = new Date().getTime();
+       /* var startTime = new Date().getTime();
         $http({
             method: 'GET',
             url: table_url,
