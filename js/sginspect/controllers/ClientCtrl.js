@@ -15,9 +15,15 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 	}
 
    $scope.deleteClient = function(){
-        $scope.$emit('LOAD');
-        $scope.clientEdit.Active = 0;
-        save();
+        var Active = confirm('Are you sure you want to delete this client ?');
+        if (Active === true) {
+            $scope.$emit('LOAD');
+            $scope.clientEdit.Active = 0;
+            save();
+        } else{
+            return;
+        }
+        
     };
     $scope.saveClient = function(){
         savebtnClicked = true;
