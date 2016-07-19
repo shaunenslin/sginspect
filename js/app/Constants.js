@@ -61,7 +61,7 @@ coreApp.constant('Settings', {
     workflow : { 
         audit : [
             {route:'selectclient'},
-            {route:'scanlicence'},
+            {route:'scanlicense'},
             {route:'vinphoto'},
             {route:'vinmatch'},
             {route:'licensephoto'},
