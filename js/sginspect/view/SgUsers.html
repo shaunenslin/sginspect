@@ -1,7 +1,6 @@
 <div ng-controller="SgInspectUserCtrl">
     <div class="inset" style="padding-top: 15px;">
 
-        <!--Deals With The The Showing Of All The Users In this SupplierID-->
         <div class=" list-group" ng-show="mode === 'list' " >
             <div class="row">
                 <div class="row" style="margin-left:10px; margin-right:5px;">
@@ -21,20 +20,12 @@
                   <div  class="col-xs-2">{{user.UserID}}</div>
                   <div class="col-xs-2"><span ng-if="user.IsAdmin">Admin</span></div>
                   <div class="col-xs-2">{{user.Tel}}</div>
-            	  <div  class="col-xs-1" ng-if="user.Deleted !== true">Y</div>
-                  <!-- <div  class="col-xs-2">{{user.LastLoginDate | date:'shortDate'}}</div>-->
+            	  <div  class="col-xs-1" ng-if="user.Active == true">Y</div>
               	</div>
-              	<!--
-                <p ng-if="user.UserID !== user.Email">{{user.UserID}}</p>
-                <p style="font-weight: bold">{{user.Name}} <span class="badge pull-right" ng-if="user.IsAdmin">Admin</span></p>
-                <p>{{user.Email}}</p>
-                -->
             </a>
         </div>
         <!-- Deals With Weather The User Edits or Adds A New Record to the This SupplierID's User-->
         <div ng-show="mode ===  'form'" >
-            <!-- <a ng-click="backbtnClicked()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
-            <div class="btn btn-success" ng-click="saveUser()"><span class="glyphicon glyphicon-floppy-save"></span> Save</div> -->
             <form style="margin-top: 5px">
 
                 <div class="form-group">
@@ -52,11 +43,6 @@
                     <input type="text" class="form-control" id="UserID" ng-model="userEdit.UserID" ng-disabled="id !== 'new'">
                 </div>
 
-                <!-- <div class="form-group">
-                    <label for="Password">Password</label>
-                    <input type="text" class="form-control" id="Password" ng-model="userEdit.PasswordHash">
-                </div> -->
-
                 <div class="form-group">
                     <label for="Tel">Phone number</label>
                     <input type="text" class="form-control" id="Tel" ng-model="userEdit.Tel">
@@ -64,15 +50,7 @@
 
                 <div class="form-group">
                     <label for="Role">Role</label>
-                    <!-- <select  class="form-control" ng-model="userEdit.Role" id="Role" ng-options="role for role in userEdit.Role">
-                        <option value="">-- Role --</option>
-                    </select> -->
                 </div>
-
-               <!--  <div class="form-group">
-                    <label for="RepID">{{(userEdit.IsRep) ? 'Rep ID' : 'Account ID'}}</label>
-                    <input type="text" class="form-control" id="RepID" ng-model="userEdit.RepID">
-                </div> -->
 
                 <div class="checkbox">
                     <label>
