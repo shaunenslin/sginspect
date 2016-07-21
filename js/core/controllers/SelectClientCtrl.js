@@ -46,12 +46,10 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		$alert({content: "Vehicle number 'IG1YY23671299872' scanned successfully. Please Press 'Next' to continue", duration:6, placement:'top-right', type:'success', show:true});
 	}
 
-	// For Task2
 	$scope.onVinBackClicked = function(){
 		$location.path(Settings.workflow[$routeParams.inspectiontype][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1));
 	}
 
-	// For Task2
 	$scope.onVinPictureNextClicked = function(){
 		var key = $scope.Form.FormID + '_vin.png';
 		CaptureImageSvc.savePhoto(key, $scope.image);
