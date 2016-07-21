@@ -90,7 +90,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     		$scope.users = JSON.parse(sessionStorage.getItem( "UsersCache"));
     		$scope.$emit('UNLOAD');
     	} else {
-	        var url = Settings.url + 'Get?method=Users_readlist';
+	        var url = Settings.url + 'GetStoredProc?StoredProc=usp_user_readlist&params=('+ user.SupplierID +')';
 	        console.log(url);
 	        $http.get(url).success(function(data){
 	            $scope.users = data;
