@@ -2,7 +2,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.isPhoneGap = Settings.isPhoneGap;
 
 	function newObject(){
-		$scope.form = {
+		$scope.Form = {
 			FormType: $routeParams.inspectiontype,
 			ClientID: "",
 			FormID: GlobalSvc.getGUID()
@@ -10,12 +10,27 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	$scope.onNextClicked = function(){
-		if (!$scope.form.ClientID){
-			$alert({content: "Please select a Client before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
-			return;
+		 // Path is generic to cater for all navigation scenarios
+		var path = Settings.workflow[$routeParams.inspectiontype][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
+		if ($routeParams.screennum == 0){
+			if (!$scope.Form.ClientID){
+				$alert({content: "Please select a Client before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
+				return;
+			}
+
+		}else if($routeParams.screennum == 2){
+			var key = $scope.Form.FormID + '_vin.png';
+			$scope.Form.vinimage = key;
+			sessionStorage.setItem('currentImage', $scope.image);
+			CaptureImageSvc.savePhoto(key, $scope.image);
+		}else if ($routeParams.screennum == 3){
+			if ($scope.Form.vinmatch === undefined){
+				$alert({content: "Please select an option below before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
+				return;
+			}
 		}
-		sessionStorage.setItem('currentForm', JSON.stringify($scope.form));
-		$location.path(Settings.workflow[$routeParams.inspectiontype][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1));
+		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
+		$location.path(path);
 	}
 
 	function fetchClients(){
@@ -34,28 +49,14 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	$scope.onBackClicked = function(){
-		$location.path(Settings.workflow[$routeParams.inspectiontype][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1));
-	}
-
-	$scope.onScanClicked = function(){
-		$location.path(Settings.workflow[$routeParams.inspectiontype][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1));
+		var path = $routeParams.screennum == 0 ? '/admin' : Settings.workflow[$routeParams.inspectiontype][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
+		$location.path(path);
 	}
 
 	$scope.nfcScan = function(){
 		$scope.VinNumber = "IG1YY23671299872";
-		$alert({content: "Vehicle number 'IG1YY23671299872' scanned successfully. Please Press 'Next' to continue", duration:6, placement:'top-right', type:'success', show:true});
-	}
-
-	$scope.onVinBackClicked = function(){
-		$location.path(Settings.workflow[$routeParams.inspectiontype][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1));
-	}
-
-	$scope.onVinPictureNextClicked = function(){
-		var key = $scope.Form.FormID + '_vin.png';
-		CaptureImageSvc.savePhoto(key, $scope.image);
-		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
-		$location.path(Settings.workflow[$routeParams.inspectiontype][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1));
-		
+		sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
+		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully. Please Press 'Next' to continue", duration:6, placement:'top-right', type:'success', show:true});
 	}
 
 	$scope.onPhotoClicked = function(){
@@ -82,27 +83,38 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		}
 	}
 
+	$scope.matchClicked = function(clickVal){
+		$scope.Form.vinmatch = (clickVal === 'match') ? true : false;
+	}
+
 
 	function constructor(){
+		$scope.$emit('LOAD');
+		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
+		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
+        $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon : true});
 		if ($routeParams.screennum == 0){
-			$scope.inspectiontype = 'client';
-			$scope.$emit('heading',{heading: 'Audit', icon : 'fa fa-check-square-o'});
-            $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: function(){window.history.back();}});
-            $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon : true});
+			$scope.view = 'client';
 			newObject();
 			fetchClients();
 		} else if ($routeParams.screennum == 1){
-			$scope.inspectiontype = 'licence';
-			$scope.$emit('heading',{heading: 'Scan', icon : 'fa fa-search'});
-			$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: function(){$scope.onBackClicked();}});
-            $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onScanClicked, rightIcon : true});
+			$scope.$emit('UNLOAD');
+			sessionStorage.removeItem('currentImage');
+			sessionStorage.removeItem('currentVinNumber');
+			$scope.view = 'licence';
             $scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
 		} else if ($routeParams.screennum == 2){
-			$scope.inspectiontype = 'vinpicture';
-			$scope.$emit('heading',{heading: 'Vin Picture', icon : 'fa fa-file-image-o'});
-			$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onVinBackClicked});
-			$scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onVinPictureNextClicked, rightIcon : true});
+			$scope.$emit('UNLOAD');
+			$scope.view = 'vinpicture';
+			$scope.image = sessionStorage.getItem('currentImage');
 			$scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
+		} else if ($routeParams.screennum == 3){
+			$scope.$emit('UNLOAD');
+			$scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
+			$scope.view = 'vinmatch';
+			$scope.image = sessionStorage.getItem('currentImage');
+			$scope.VinNumber = sessionStorage.getItem('currentVinNumber');
+
 		}
 	}
 	constructor();

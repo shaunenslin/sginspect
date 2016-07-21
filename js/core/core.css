@@ -812,4 +812,8 @@ span.fa.fa-pencil-square.fa-5x{
     font-weight: 300;
     color: #fff;
 }
-
+.center-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
