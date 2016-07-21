@@ -32,7 +32,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         $scope.$emit('LOAD');
         if($routeParams.id === 'new'){
             //Checking if the user already exists //this Code Could Be Improved
-            $http.get(Settings.url + 'GetStoredProc?StoredProc=usp_user_readsingle&params=("'+ $scope.userEdit.UserID +'")').success(function(data){
+            $http.get(Settings.url + 'GetStoredProc?StoredProc=User_ReadSingle&params=("'+ $scope.userEdit.UserID +'")').success(function(data){
                 //get the First Object because it comes back as array
                 if(data.length){
                     delete $scope.errorMsg;
@@ -51,7 +51,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
 
     function save(){
         sessionStorage.removeItem( "UsersCache");
-        var url = Settings.url + 'StoredProcModify?StoredProc=User_modify';
+        var url = Settings.url + '"Post?method=User_modify"';
         GlobalSvc.postData(url,$scope.userEdit,function(){
             $scope.$emit('UNLOAD');
             $scope.successMsg = 'User saved Ok';
@@ -70,7 +70,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     		$scope.users = JSON.parse(sessionStorage.getItem( "UsersCache"));
     		$scope.$emit('UNLOAD');
     	} else {
-	        var url = Settings.url + 'GetStoredProc?StoredProc=usp_user_readlist&params=('+ user.SupplierID +')';
+	        var url = Settings.url + 'Get?method=Users_readlist';
 	        console.log(url);
 	        $http.get(url).success(function(data){
 	            $scope.users = data;
