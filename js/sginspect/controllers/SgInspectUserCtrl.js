@@ -71,7 +71,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
 
     function save(){
         sessionStorage.removeItem( "UsersCache");
-        var url = Settings.url + '"StoredProcModify?StoredProc=usp_user_modify2"';
+        var url = Settings.url + 'Post?method=usp_user_modify2';
         GlobalSvc.postData(url,$scope.userEdit,function(){
             $scope.$emit('UNLOAD');
             $scope.successMsg = 'User saved Ok';
