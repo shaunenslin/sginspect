@@ -65,7 +65,7 @@ coreApp.constant('Settings', {
         audit : [
             {route:'selectclient'},
             {route:'scanlicense'},
-            {route:'vinphoto'},
+            {route:'vinpicture'},
             {route:'vinmatch'},
             {route:'licensephoto'},
             {route:'licensematch'},

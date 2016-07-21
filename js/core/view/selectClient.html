@@ -10,7 +10,23 @@
 	    </div>
    </form>
    <div style="margin-top: 15px;" ng-if="inspectiontype == 'licence'">
-   		<img class="img-responsive" alt="Vehicle Licence number" style="display: block; margin-left: auto; margin-right: auto" src="/img/licencedisk.png">
+   		<img style="display: block; margin-left: auto; margin-right: auto" align="middle" class="img-responsive" src="/img/licencedisk.png">
    		<button ng-click="nfcScan()" style="margin-top: 15px;" class="btn btn-primary btn-block"  type="button">Scan <span class="fa fa-search"></span></button>
+   </div>
+   <div style="margin-top: 10px;" ng-if="inspectiontype =='vinpicture'">
+   		<img style="display: block; margin-left: auto; margin-right: auto" align="middle" class="img-responsive" ng-if="image" ng-src="{{image}}">
+   		<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked()" class="selectactivitytype">
+    		<i class="fa fa-camera">Capture</i>
+		</button>
+
+		<!-- Opens up a collapse when we are not -->
+		<div style="margin-top:10px;" class="well well-sm">
+			<form  id="file-form" method="POST" role="form" class="form-inline" ng-if="!isPhoneGap">
+			<div class="form-group">
+		      <input class="col-xs-8" id="file-select" type="file" capture="camera" accept="image/*">
+		      <button ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
+			</div>
+		</form>
+		</div>
    </div>
 </div>

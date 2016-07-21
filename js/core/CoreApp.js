@@ -57,7 +57,9 @@ var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap",
     $routeProvider.when('/injectionadmin/:id/:mode/:functionId',{templateUrl :"js/core/view/admin/injectionadmin.html"});
     $routeProvider.when('/selectclient/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
     $routeProvider.when('/scanlicense/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
-    $routeProvider.when('/licensematch/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
+    $routeProvider.when('/vinpicture/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
+    $routeProvider.when('/vinmatch/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
+    $routeProvider.when('/vinscan/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
 
     //Social Routes
     $routeProvider.when("/mycheckins", {templateUrl:"js/core/view/social/myCheckins.html"});
