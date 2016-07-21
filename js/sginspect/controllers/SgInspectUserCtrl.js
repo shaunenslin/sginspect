@@ -7,26 +7,46 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     var user = GlobalSvc.getUser();
 
     function newUserObject(){
-        var user = {};
-        user.UserID = "";
-        user.PasswordHash = "";
-        user.Name = "";
-        user.IsLockedOut = "";
-        user.LastLoginDate = "";
-        user.Email = "";
-        user.Active = 1;
-        user.IsAdmin = false;
-        user.Tel = "";
-        user.Role = null;
-        return user;
+       var newUser = {};
+        newUser.SupplierID = user.SupplierID;
+        newUser.UserID = "";
+        newUser.Name = "";
+        newUser.PasswordHash = "";
+        newUser.PasswordSalt = null;
+        newUser.AddressID = "";
+        newUser.IsLockedOut = "";
+        newUser.LastLoginDate = "";
+        newUser.FailedPasswordAttemptCount = "";
+        newUser.Email = "";
+        newUser.Country = null;
+        newUser.Deleted = 0;
+        newUser.RepID = null;
+        newUser.Manager = null;
+        newUser.IsAdmin = false;
+        newUser.IsRep =false;
+        newUser.IsManager = false;
+        newUser.DailySummary = false;
+        newUser.WeeklySummary = false;
+        newUser.MonthlyKPI = false;
+        newUser.AllCustomers = false;
+        newUser.NumCustomers = false;
+        newUser.Role = null;
+        newUser.Tel = "";
+
+        return newUser;
     }
 
-    $scope.deleteUser = function(){
-        $scope.$emit('LOAD');
-        $scope.userEdit.Active = 0;
-        save();
+       $scope.deleteUser = function(){
+        var Active = confirm('Are you sure you want to delete this user ?');
+        if (Active === true) {
+            $scope.$emit('LOAD');
+            $scope.userEdit.Deleted = 1;
+            save();
+        } else{
+            return;
+        }
+        
     };
-
     $scope.saveUser = function(){
         savebtnClicked = true;
         $scope.$emit('LOAD');
