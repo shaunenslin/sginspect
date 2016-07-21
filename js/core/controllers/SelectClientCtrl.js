@@ -8,6 +8,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			FormID: GlobalSvc.getGUID()
 		}
 	}
+
 	$scope.onNextClicked = function(){
 		if (!$scope.form.ClientID){
 			$alert({content: "Please select a Client before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
@@ -29,7 +30,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			},function(){
 				$scope.$emit('UNLOAD');
 				$scope.$apply();
-			
 		});
 	}
 
@@ -61,10 +61,10 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.onPhotoClicked = function(){
 		var reader = new FileReader();
 		reader.addEventListener("load", function () {
-    			$scope.image = reader.result;
-    			$alert({content:"Image captured successfully", duration:6, placement:'top-right', type:'success', show:true});
-    			$scope.$apply();
-  			}, false);
+			$scope.image = reader.result;
+			$alert({content:"Image captured successfully", duration:6, placement:'top-right', type:'success', show:true});
+			$scope.$apply();
+  		}, false);
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
 				reader.readAsDataURL(img);
