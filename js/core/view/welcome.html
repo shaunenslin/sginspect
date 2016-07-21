@@ -4,9 +4,17 @@
                                                             -moz-background-size: cover;
                                                             -o-background-size: cover;
                                                             background-size: cover;">
-
-    <div ng-include="'views/welcome.html'"></div>
-
+    <div class="inset" style="padding-top: 15px;">
+        <div class=" list-group">
+            <div class="row" style="text-align:center;border:1px">
+                <a href='#/SgUsers' class="btn btn-default btn-lg active" style="width:100%">User Management</a><br>
+                <a href='#/Clients' class="btn btn-default btn-lg active" style="width:100%">Client Management</a><br>
+                <a href='#/Suppliers' class="btn btn-default btn-lg active" style="width:100%">Supplier Management</a>
+            </div>
+        </div>
+    </div>           
+<!--     <div ng-include="'views/welcome.html'"></div>
+ -->
     <script type="text/ng-template" id="syncingModal.html">
         <div class="modal-body">
             <h4>Synchronising...</h4>
