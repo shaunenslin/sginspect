@@ -18,7 +18,17 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				return;
 			}
 
+		}else if ($routeParams.screennum == 1){
+			if (!$scope.VinNumber){
+				$alert({content: "Please scan license disk continuing !", duration:6, placement:'top-right', type:'danger', show:true});
+				return;
+			}
+
 		}else if($routeParams.screennum == 2){
+			if(!$scope.image) {
+				$alert({content: "Please capture the VIN picture before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
+				return;
+			}
 			var key = $scope.Form.FormID + '_vin.png';
 			$scope.Form.vinimage = key;
 			sessionStorage.setItem('currentImage', $scope.image);
@@ -29,6 +39,10 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				return;
 			}
 		} else if ($routeParams.screennum == 4){
+			if(!$scope.image) {
+				$alert({content: "Please capture the Licene Plate Number picture before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
+				return;
+			}
 			var key = $scope.Form.FormID + 'reg.png';
 			$scope.Form.regimage = key;
 			sessionStorage.setItem('currentLicenceImage', $scope.image);
