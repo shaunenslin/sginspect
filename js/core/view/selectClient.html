@@ -1,4 +1,5 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="SelectClientCtrl">
+	<!-- Screen 1 SelectClient -->
 	<form ng-if="view === 'client'" style="margin-top: 10px;" class="form-horizontal">
 		<div class="form-group">
 	        <label for="client" class="col-sm-2">Client *</label>
@@ -9,17 +10,22 @@
 	        </div>
 	    </div>
 	</form>
+
+	<!-- Screen 2 Scan -->
 	<div style="margin-top: 10px;" ng-if="view === 'licence'">
 		<img  align="middle" class="img-responsive center-img" src="/img/licencedisk.png">
 		<button ng-click="nfcScan()" style="margin-top: 15px;" class="btn btn-primary btn-block"  type="button">Scan <span class="fa fa-search"></span></button>
 	</div>
+
+	<!-- Screen 3 VinPicture -->
 	<div style="margin-top: 10px;" ng-if="view ==='vinpicture'">
 		<img align="middle" class="img-responsive center-img" ng-if="image" ng-src="{{image}}">
-		<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked()" class="selectactivitytype">
-		<i class="fa fa-camera">Capture</i>
-		</button>
+		<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
+		<div style="margin-top: 15px" ng-if="!capture" class="alert alert-info">
+            	<p><i class="fa fa-info"></i> Please capture a picture of the VIN number</p>
+        </div>
 		<div ng-if="!isPhoneGap" style="margin-top:10px;" class="well well-sm">
-			<form  id="file-form" method="POST" role="form" class="form-inline">
+			<form style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
 				<div class="form-group">
 				  <input class="col-xs-8" id="file-select" type="file" capture="camera" accept="image/*">
 				  <button ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
@@ -27,12 +33,41 @@
 			</form>
 		</div>
    </div>
+
+   <!-- Screen 4 VinMatch -->
    <div style="margin-top: 10px;" ng-if="view === 'vinmatch'">
-   		 <div style="margin-top: 15px" class="alert alert-info">
+   		<div style="margin-top: 15px" class="alert alert-info">
             <p><i class="fa fa-info"></i> Do the VIN Numbers match ?</p>
         </div>
    		<img id="img-border" class="center-img img-responsive"  align="middle" ng-src="{{image}}">
    		<h4 style="margin-top: 10px; text-align: center; margin-right: 70px;"><b>Licence Disk : {{VinNumber}}</b></h4>
+   		<button ng-click="matchClicked('match')" class="btn btn-success col-xs-6">Match</button><button ng-click="matchClicked('')" class="btn btn-danger col-xs-6">No match</button>
+   </div>
+
+	<!-- Screen 5 LicensePhoto -->
+   <div style="margin-top: 10px;" ng-if="view === 'licensephoto'">
+   		<div style="margin-top: 15px" ng-if="!capture" class="alert alert-info">
+            <p><i class="fa fa-info"></i> Please capture a picture of the License Plate</p>
+        </div>
+   		<img align="middle" class="img-responsive center-img" ng-if="image" ng-src="{{image}}">
+		<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
+        <div ng-if="!isPhoneGap" style="margin-top:10px;" class="well well-sm">
+			<form style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
+				<div class="form-group">
+				  <input class="col-xs-8" id="file-select" type="file" capture="camera" accept="image/*">
+				  <button ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
+				</div>
+			</form>
+		</div>
+   </div>
+
+   <!-- Screen 6 LicenceMatch -->
+   <div style="margin-top: 10px;" ng-if="view === 'licensematch'">
+   		<div style="margin-top: 15px" class="alert alert-info">
+            <p><i class="fa fa-info"></i> Do the Registration Numbers Match ?</p>
+        </div>
+        <img id="img-border" class="center-img img-responsive"  align="middle" ng-src="{{image}}">
+   		<h4 style="margin-top: 10px; text-align: center; margin-right: 70px;"><b>Licence Plate : {{RegNumber}}</b></h4>
    		<button ng-click="matchClicked('match')" class="btn btn-success col-xs-6">Match</button><button ng-click="matchClicked()" class="btn btn-danger col-xs-6">No match</button>
    </div>
 </div>

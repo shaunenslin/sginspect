@@ -60,6 +60,8 @@ var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap",
     $routeProvider.when('/vinpicture/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
     $routeProvider.when('/vinmatch/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
     $routeProvider.when('/licensephoto/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
+    $routeProvider.when('/licensematch/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
+    $routeProvider.when('/auditform/:inspectiontype/:screennum', {templateUrl : "js/core/view/selectClient.html"});
 
     //Social Routes
     $routeProvider.when("/mycheckins", {templateUrl:"js/core/view/social/myCheckins.html"});
