@@ -28,10 +28,11 @@
 		</div>
    </div>
    <div style="margin-top: 10px;" ng-if="view === 'vinmatch'">
-   		<div class="well"><b> Do the VIN Numbers match ?</b></div>
-   		<h4 style="text-decoration: underline"><b>Photo</b></h4>
-   		<img class="center-img img-responsive"  align="middle" ng-src="{{image}}">
-   		<h4 style="margin-top: 10px; text-decoration: underline"><b> Licence Disk : <p style=" text-align: center;">{{VinNumber}}</p></b></h4>
-   		<button ng-click="matchClicked('match')" ng-class="(Form.vinmatch == true) ? 'btn btn-success col-xs-6' : 'btn btn-primary col-xs-6'">Match</button><button ng-click="matchClicked()" ng-class="(Form.vinmatch == false) ? 'btn btn-success col-xs-6' : 'btn btn-primary col-xs-6'">No match</button>
+   		 <div style="margin-top: 15px" class="alert alert-info">
+            <p><i class="fa fa-info"></i> Do the VIN Numbers match ?</p>
+        </div>
+   		<img id="img-border" class="center-img img-responsive"  align="middle" ng-src="{{image}}">
+   		<h4 style="margin-top: 10px; text-align: center; margin-right: 70px;"><b>Licence Disk : {{VinNumber}}</b></h4>
+   		<button ng-click="matchClicked('match')" class="btn btn-success col-xs-6">Match</button><button ng-click="matchClicked()" class="btn btn-danger col-xs-6">No match</button>
    </div>
 </div>
