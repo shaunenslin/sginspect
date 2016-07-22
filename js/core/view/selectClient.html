@@ -1,0 +1,37 @@
+<div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="SelectClientCtrl">
+	<form ng-if="view === 'client'" style="margin-top: 10px;" class="form-horizontal">
+		<div class="form-group">
+	        <label for="client" class="col-sm-2">Client *</label>
+	        <div class="col-sm-10">
+	        	<select class="form-control" ng-model="Form.ClientID" ng-options="client.ClientID as client.Name for client in Clients">
+    				<option value="">-- Please select a Client --</option>
+				</select>
+	        </div>
+	    </div>
+	</form>
+	<div style="margin-top: 10px;" ng-if="view === 'licence'">
+		<img  align="middle" class="img-responsive center-img" src="/img/licencedisk.png">
+		<button ng-click="nfcScan()" style="margin-top: 15px;" class="btn btn-primary btn-block"  type="button">Scan <span class="fa fa-search"></span></button>
+	</div>
+	<div style="margin-top: 10px;" ng-if="view ==='vinpicture'">
+		<img align="middle" class="img-responsive center-img" ng-if="image" ng-src="{{image}}">
+		<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked()" class="selectactivitytype">
+		<i class="fa fa-camera">Capture</i>
+		</button>
+		<div ng-if="!isPhoneGap" style="margin-top:10px;" class="well well-sm">
+			<form  id="file-form" method="POST" role="form" class="form-inline">
+				<div class="form-group">
+				  <input class="col-xs-8" id="file-select" type="file" capture="camera" accept="image/*">
+				  <button ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
+				</div>
+			</form>
+		</div>
+   </div>
+   <div style="margin-top: 10px;" ng-if="view === 'vinmatch'">
+   		<div class="well"><b> Do the VIN Numbers match ?</b></div>
+   		<h4 style="text-decoration: underline"><b>Photo</b></h4>
+   		<img class="center-img img-responsive"  align="middle" ng-src="{{image}}">
+   		<h4 style="margin-top: 10px; text-decoration: underline"><b> Licence Disk : <p style=" text-align: center;">{{VinNumber}}</p></b></h4>
+   		<button ng-click="matchClicked('match')" ng-class="(Form.vinmatch == true) ? 'btn btn-success col-xs-6' : 'btn btn-primary col-xs-6'">Match</button><button ng-click="matchClicked()" ng-class="(Form.vinmatch == false) ? 'btn btn-success col-xs-6' : 'btn btn-primary col-xs-6'">No match</button>
+   </div>
+</div>

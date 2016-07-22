@@ -2,22 +2,22 @@ coreApp.constant('Settings', {
 
 
      //DEMO - RapidAdmin Settings
-	/*
-	dbName: 			'Core',
-    url: 				'http://api.rapidtrade.biz/rest/' ,//'http://www.super-trade.co.za:8084/rest/', 'http://api.rapidtrade.biz/rest/' ,
-	dynamoUrl:			'http://api.rapidtrade.biz/rest/' ,
-    phpServer: 			true,
+    /*
+    dbName:             'Core',
+    url:                'http://api.rapidtrade.biz/rest/' ,//'http://www.super-trade.co.za:8084/rest/', 'http://api.rapidtrade.biz/rest/' ,
+    dynamoUrl:          'http://api.rapidtrade.biz/rest/' ,
+    phpServer:          true,
     allowRequestRegister: false,
-    allowSelfRegister: 	true,
-    allowTour: 			false,
-    appName: 			'AngularCore',
-    navColor: 			'#31373B',
-    supplierID: 		'DEMO',
-    logo: 				'img/logo.png',
-    splash: 			'http://www.rapidtrade.biz/splash/GSCNZ/splash3.jpg',
-    dotnetPostUrl: 		'http://api.rapidtrade.biz/rest/post/post.aspx',
-    imageUrl: 			'http://app1.rapidtrade.biz/rest/Files/GetProductImage',
-	*/
+    allowSelfRegister:  true,
+    allowTour:          false,
+    appName:            'AngularCore',
+    navColor:           '#31373B',
+    supplierID:         'DEMO',
+    logo:               'img/logo.png',
+    splash:             'http://www.rapidtrade.biz/splash/GSCNZ/splash3.jpg',
+    dotnetPostUrl:      'http://api.rapidtrade.biz/rest/post/post.aspx',
+    imageUrl:           'http://app1.rapidtrade.biz/rest/Files/GetProductImage',
+    */
 
     version: '1.66',
     showVersion: true,
@@ -49,7 +49,9 @@ coreApp.constant('Settings', {
         {table: 'DisplayFields', method: 'Sync2'},
         {table: 'SGISuppliers', alternateLink : "http://www.super-trade.co.za:8084/rest/index.php/GetStoredProc/Sync?StoredProc=supplieris_sync&Params=(0)&table=SGISuppliers"},
         {table: 'SGIClients', alternateLink : "http://www.super-trade.co.za:8084/rest/index.php/GetStoredProc/Sync?StoredProc=Clients_Sync&Params=(0)&table=SGIClient"}    
-        ],
+
+    ],
+
     tableKeys : [
         {table : 'DisplayFields',       getKey : function(item){return item.SupplierID + item.ID + item.Name;}, index1 : function(item){return item.ID;}, index2 : function(item){return item.SortOrder;}, index3 : function(item){return item.SortOrder;} },
         {table : 'Options',             getKey : function(item){return item.SupplierID + item.Name;},       index1:function(item){return item.Name;}},
@@ -58,15 +60,16 @@ coreApp.constant('Settings', {
         {table : 'SGIClients',          getKey : function(item){return item.ClientID;}, index1 : function(item){return item.ClientID;}, index2 : function(item){return item.Name;}}, 
         {table : 'SGISuppliers',        getKey : function(item){return item.SupplierID + item.Name;}, index1 : function(item){return item.SupplierID;}, index2 : function(item){return item.Name;}}
     ],
+
     workflow : { 
-    Audit : [
-        {route:'selectclient'},
-        {route:'scanlicence'},
-        {route:'vinphoto'},
-        {route:'vinmatch'},
-        {route:'licensephoto'},
-        {route:'licensematch'},
-        {route:'auditform'}
+        audit : [
+            {route:'selectclient'},
+            {route:'scanlicense'},
+            {route:'vinpicture'},
+            {route:'vinmatch'},
+            {route:'licensephoto'},
+            {route:'licensematch'},
+            {route:'auditform'}
         ]
     }
 });
