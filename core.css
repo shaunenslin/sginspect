@@ -141,19 +141,6 @@ h1 {
 
 }
 
-.imageBorder {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    margin-right: 5px;
-    border: thin solid #e7e7e7;
-    background-color: white;
-    vertical-align: middle;
-    margin-right: auto
-}
-
 .center {
     text-align:center;
 }
