@@ -112,6 +112,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.Form.regmatch = (clickVal.length > 0) ? true : false;
 		}
 		$alert({content:"Choice captured. Please press Next to continue", duration:6, placement:'top-right', type:'success', show:true});
+		$scope.$apply();
 	}
 
 
@@ -119,7 +120,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		$scope.$emit('LOAD');
 		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
-        $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon : true});
+        $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 		if ($routeParams.screennum == 0){
 			$scope.view = 'client';
 			newObject();
