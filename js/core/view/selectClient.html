@@ -39,9 +39,11 @@
    		<div style="margin-top: 15px" class="alert alert-info">
             <p><i class="fa fa-info"></i> Do the VIN Numbers match ?</p>
         </div>
-   		<img id="img-border" class="center-img img-responsive"  align="middle" ng-src="{{image}}">
+        <div class="well"><img id="vin-img" class="center-img img-responsive"  align="middle" ng-src="{{image}}"></div>
    		<h4 style="margin-top: 10px; text-align: center; margin-right: 70px;"><b>Licence Disk : {{VinNumber}}</b></h4>
-   		<button ng-click="matchClicked('match')" class="btn btn-success col-xs-6">Match</button><button ng-click="matchClicked('')" class="btn btn-danger col-xs-6">No match</button>
+   		<div class="btn-group btn-block" role="group">
+   			<button ng-click="matchClicked('match')" ng-class="(Form.vinmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.vinmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
+   		</div>
    </div>
 
 	<!-- Screen 5 LicensePhoto -->
@@ -66,8 +68,11 @@
    		<div style="margin-top: 15px" class="alert alert-info">
             <p><i class="fa fa-info"></i> Do the Registration Numbers Match ?</p>
         </div>
-        <img id="img-border" class="center-img img-responsive"  align="middle" ng-src="{{image}}">
+        <div class="well"><img id="reg-img" class="center-img img-responsive"  align="middle" ng-src="{{image}}"></div>
+        
    		<h4 style="margin-top: 10px; text-align: center; margin-right: 70px;"><b>Licence Plate : {{RegNumber}}</b></h4>
-   		<button ng-click="matchClicked('match')" class="btn btn-success col-xs-6">Match</button><button ng-click="matchClicked('')" class="btn btn-danger col-xs-6">No match</button>
+   		<div class=" btn-group btn-block">
+   			<button ng-click="matchClicked('match')" ng-class="(Form.regmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.regmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
+   		</div>
    </div>
 </div>
