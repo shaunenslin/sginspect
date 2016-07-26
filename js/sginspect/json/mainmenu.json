@@ -1,0 +1,17 @@
+[
+	{"name": "Audit Form",
+	 "href": "#/selectclient/audit/0",
+	 "icon": "fa fa-truck"},
+	{"name": "Customer Visit Form",
+	 "href": "#/selectclient/customervisit/0",
+	 "icon": "fa fa-map-marker"},
+	{"name": "Supplier Evaluation",
+	 "href": "#/selectclient/supplierevaluation/0",
+	 "icon": "fa fa-thumbs-o-up"},
+	 {"name": "Technical Report",
+	 "href": "#/selectclient/technicalreport/0",
+	 "icon": "fa fa-book"},
+	 {"name": "After Service Inspection",
+	 "href": "#/selectclient/afterserviceevaluation/0",
+	 "icon": "fa fa-car"}
+]
