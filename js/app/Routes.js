@@ -5,6 +5,7 @@
  */
 
 function AppRoutes($routeProvider, DaoSvc){
+    $routeProvider.when("/menu", {templateUrl : "js/sginspect/view/maiMenu.html"});
     $routeProvider.when("/officialevents", {templateUrl:"views/officialEvents.html"});
     $routeProvider.when("/SgUsers",{templateUrl:"js/sginspect/view/SgUsers.html"});
     $routeProvider.when('/SgUsers/:mode/:id',{templateUrl : "js/sginspect/view/SgUsers.html"});
