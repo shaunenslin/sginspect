@@ -15,7 +15,7 @@ var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap",
     $routeProvider.when("/viewdetail/:formid/:index", {templateUrl:"js/core/view/view.html"});
     $routeProvider.when("/choicetree/:id/:table", {templateUrl:"js/core/view/choiceTree.html"});
     $routeProvider.when("/choicetree/:id/:table/:parentid", {templateUrl:"js/core/view/choiceTree.html"});
-    $routeProvider.when("/welcome", {templateUrl:"js/core/view/welcome.html"});
+    $routeProvider.when("/admin", {templateUrl:"js/core/view/admin/adminmenu.html"});
     $routeProvider.when("/options", {templateUrl:"js/core/view/admin/options.html"});
     $routeProvider.when("/options/:mode/:id", {templateUrl:"js/core/view/admin/options.html"});
     $routeProvider.when('/users/',{templateUrl : "js/core/view/admin/users.html"});
