@@ -1,5 +1,5 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="SelectClientCtrl">
-	<!-- Screen 0 SelectClient -->
+	<!-- Screen 1 SelectClient -->
 	<form ng-if="view === 'client'" style="margin-top: 10px;" class="form-horizontal">
 		<div class="form-group">
 	        <label for="client" class="col-sm-2">Client *</label>
@@ -11,13 +11,13 @@
 	    </div>
 	</form>
 
-	<!-- Screen 1 Scan -->
+	<!-- Screen 2 Scan -->
 	<div style="margin-top: 10px;" ng-if="view === 'licence'">
 		<img  align="middle" class="img-responsive center-img" ng-src="./img/licencedisk.png">
 		<button ng-click="nfcScan()" style="margin-top: 15px;" class="btn btn-primary btn-block"  type="button">Scan <span class="fa fa-search"></span></button>
 	</div>
 
-	<!-- Screen 2 VinPicture -->
+	<!-- Screen 3 VinPicture -->
 	<div style="margin-top: 10px;" ng-if="view ==='vinpicture'">
 		<img align="middle" class="img-responsive center-img" ng-if="image" ng-src="{{image}}">
 		<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
@@ -34,7 +34,7 @@
 		</div>
    </div>
 
-   <!-- Screen 3 VinMatch -->
+   <!-- Screen 4 VinMatch -->
    <div style="margin-top: 10px;" ng-if="view === 'vinmatch'">
    		<div style="margin-top: 15px" class="alert alert-info">
             <p><i class="fa fa-info"></i> Do the VIN Numbers match ?</p>
@@ -46,7 +46,7 @@
    		</div>
    </div>
 
-	<!-- Screen 4 LicensePhoto -->
+	<!-- Screen 5 LicensePhoto -->
    <div style="margin-top: 10px;" ng-if="view === 'licensephoto'">
    		<div style="margin-top: 15px" ng-if="!capture" class="alert alert-info">
             <p><i class="fa fa-info"></i> Please capture a picture of the License Plate</p>
@@ -63,7 +63,7 @@
 		</div>
    </div>
 
-   <!-- Screen 5 LicenceMatch -->
+   <!-- Screen 6 LicenceMatch -->
    <div style="margin-top: 10px;" ng-if="view === 'licensematch'">
    		<div style="margin-top: 15px" class="alert alert-info">
             <p><i class="fa fa-info"></i> Do the Registration Numbers Match ?</p>
@@ -143,7 +143,6 @@
 								<label for="kilometers" class="col-sm-10">Odometer Reading</label>
 								<button ng-click="onPhotoClicked('odometer')" style="float: center;" class="btn btn-success ">Capture <span class="fa fa-camera"></span></button>
 							</div><br>
-
 							<div class="form-inline">
 								<label for="tyres" class="col-sm-10">Tyres</label>
 								<button ng-click="onPhotoClicked('tyres')" style="float: center;" class="btn btn-success ">Capture <span class="fa fa-camera"></span></button>
@@ -159,7 +158,6 @@
 			</div>
 			<!-- JsonForm  -->
 			<jsonform inline="true" formid="session.formid" fields="session.displayfields" asyncRslt="[]" json="Form.JSON" settings="session.settings"></jsonform>
-
 		</div> 
    </div>
 </div>

@@ -1,7 +1,5 @@
-coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc){
+coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
-	$scope.Uploadmessage = "Attach Image files";
-	$scope.image = "";
 
 	function newObject(){
 		$scope.Form = {
@@ -35,8 +33,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				"UserField21" : "",
 				"UserField22" : "",
 				"UserField23" : ""
-			}
-		}
+		}		}
 	}
 
 	$scope.onNextClicked = function(){
@@ -108,19 +105,15 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully. Please Press 'Next' to continue", duration:6, placement:'top-right', type:'success', show:true});
 	}
 
-	$scope.onPhotoClicked = function(field){
+	$scope.onPhotoClicked = function(){
 		var reader = new FileReader();
 		reader.addEventListener("load", function () {
 			$scope.image = reader.result;
-			if ($routeParams.screennum == 6 && $scope.image){
-				var key = $scope.Form.FormID + '_' + field + '.png';
-				CaptureImageSvc.savePhoto(key, $scope.image);
-			} else{
-				$scope.capture = true;
-			}
+			$scope.licenceImage = reader.result;
+			$scope.capture = true;
 			$alert({content:"Image captured successfully", duration:6, placement:'top-right', type:'success', show:true});
 			$scope.$apply();
-			}, false);
+  		}, false);
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
 				reader.readAsDataURL(img);
@@ -133,8 +126,8 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			var image = $('#file-select')[0];
 
 			if (image){
-	    		reader.readAsDataURL(image.files[0]);
-	    	}
+        		reader.readAsDataURL(image.files[0]);
+        	}
 		}
 	}
 
@@ -149,25 +142,9 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		$scope.$apply();
 	}
 
-	function fetchGPs(){
-		GlobalSvc.getGPS(function(position){
-			$scope.Form.Latitude  = position ? position.coords.latitude : "";
-			$scope.Form.Longitude = position ? position.coords.longitude : "";
-			$scope.$emit('UNLOAD');
-		},function(error){
-			console.log('error! ' + error);
-			$scope.formitem.Latitude  = '';
-			$scope.formitem.Longitude = '';
-			$scope.$emit('UNLOAD');
-		});
-	}
-
-	$scope.attachmentClicked = function(){angular.element("#file-select").trigger('click');};
-
 
 	function constructor(){
 		$scope.$emit('LOAD');
-		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
         $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
@@ -208,19 +185,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.image = sessionStorage.getItem('currentLicenceImage');
 			//TODO: Remove Once Cordova plugin for scanning system is done
 			$scope.RegNumber = 'HTT 091 GP';
-		} else if ($routeParams.screennum == 6){
-			$scope.view = 'form';
-			if ($scope.inspectiontype === 'technicalreport' || $scope.inspectiontype === 'customervisits' ) fetchGPs();
-			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
-			$scope.Form.RegNumber = 'HTT 091 GP';
-			$scope.Form.VinNumber = sessionStorage.getItem('currentVinNumber');
-			$scope.Form.LicenceExpiryDate = '25 July 2017';
-			$scope.signatureLabel1 = ($scope.inspectiontype === 'supplierevaluation') ? 'Workshop Manager' : 'Inspector';
-			$scope.id = $scope.Form.FormType;
-			JsonFormSvc.buildForm($scope, $scope.id, $scope.id, false, true, 'form', 'view', '', $scope.Form.JSON);
-			$scope.$emit('UNLOAD');
 		}
-
 	}
 	constructor();
 
