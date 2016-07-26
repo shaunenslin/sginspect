@@ -14,7 +14,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			JSON 		: {
 				"UserField01" : "",
 				"UserField02" : "",
-				"UserField03" : "",
+				"UserField03" : moment().format('YYYY-MM-DD HH:mm:ss'),
 				"UserField04" : "",
 				"UserField05" : "",
 				"UserField06" : "",
@@ -30,7 +30,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				"UserField16" : "",
 				"UserField17" : "",
 				"UserField18" : "",
-				"UserField19" : "",
+				"UserField19" : moment().format('YYYY-MM-DD HH:mm:ss'),
 				"UserField20" : "",
 				"UserField21" : "",
 				"UserField22" : "",
