@@ -40,7 +40,7 @@ coreApp.constant('Settings', {
     db: 'SGInspect',
     menuStyle: 'List',
     isIndexDB : false,
-    isPhoneGap: true,
+    isPhoneGap: false,
     navHeading: true,
 
     syncTables : [
