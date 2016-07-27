@@ -4,23 +4,23 @@
         <div class=" list-group" ng-show="mode === 'list' " >
             <div class="row">
                 <div class="row" style="margin-left:10px; margin-right:5px;">
-                    <div class="col-xs-4  col-sm-2">User Name</div>
-                    <div class="col-xs-3  col-sm-2">First Name</div>
-                    <div class="col-xs-3  col-sm-2">Last Name</div>
-                    <div class="col-xs-1  col-sm-2">Role</div>
-                    <div class="col-xs-1  col-sm-2">Phone Number</div>
-                    <div class="col-xs-3  col-sm-2">Active</div>
+                    <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2">User Name</div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">First Name</div>
+                    <div class="hidden-xs col-sm-3 hidden-md col-lg-2">Last Name</div>
+                    <div class="hidden-xs hidden-sm col-md-1 col-lg-1">Role</div>
+                    <div class="hidden-xs hidden-sm col-md-2 col-lg-2">Phone Number</div>
+                    <div class="hidden-xs hidden-sm col-md-1 col-lg-1">Active</div>
                 </div>
             </div>
             <a href="#/SgUsers/form/{{user.UserID}}" class="list-group-item" ng-repeat="user in users" >
                 <span class="glyphicon glyphicon-chevron-right pull-right"></span>
             	<div class="row">
-                  <div  class="col-xs-2" ng-if="user.UserID !== user.Email">{{user.Email}}</div>
-                  <div  class="col-xs-2">{{user.Name}}</div>
-                  <div  class="col-xs-2">{{user.UserID}}</div>
-                  <div class="col-xs-2"><span ng-if="user.IsAdmin">Admin</span></div>
-                  <div class="col-xs-2">{{user.Tel}}</div>
-            	  <div  class="col-xs-1" ng-if="user.Active == true">Y</div>
+                  <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2" ng-if="user.UserID !== user.Email">{{user.Email}}</div>
+                  <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">{{user.Name}}</div>
+                  <div class="hidden-xs col-sm-3 hidden-md col-lg-2">{{user.UserID}}</div>
+                  <div class="hidden-xs hidden-sm col-md-1 col-lg-1"><span ng-if="user.IsAdmin">Admin</span></div>
+                  <div class="hidden-xs hidden-sm col-md-2 col-lg-2"><span ng-if="user.Tel">{{user.Tel}}</span></div>
+            	  <div class="hidden-xs hidden-sm col-md-1 col-lg-1" ng-if="user.Active == true">Y</div>
               	</div>
             </a>
         </div>
@@ -41,6 +41,11 @@
                 <div class="form-group">
                     <label for="userID">Second Name</label>
                     <input type="text" class="form-control" id="UserID" ng-model="userEdit.UserID" ng-disabled="id !== 'new'">
+                </div>
+
+                 <div class="form-group">
+                    <label for="Password">Password</label>
+                    <input type="text" class="form-control" id="Password" ng-model="userEdit.PasswordHash">
                 </div>
 
                 <div class="form-group">

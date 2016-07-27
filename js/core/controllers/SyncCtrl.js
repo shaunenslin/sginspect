@@ -15,6 +15,7 @@ coreApp.controller('SyncCtrl', function ($scope, GlobalSvc, OptionSvc, DaoSvc, U
     $scope.loginClicked = function(){
         $scope.$emit('LOAD');
         var url = Settings.url + 'Users/VerifyPassword?userID=' + $scope.user.UserID + '&password=' + $scope.user.Password + '&format=json';
+        console.log(url);
         $http({method: 'GET', url: url})
             .success(function(json, status, headers, config) {
                 var status = Boolean(json.Status);
