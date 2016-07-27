@@ -73,7 +73,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$alert({content: "Please capture the Licene Plate Number picture before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
 				return;
 			}
-			var key = $scope.Form.FormID + 'reg.png';
+			var key = $scope.Form.FormID + '_reg.png';
 			$scope.Form.regimage = key;
 			sessionStorage.setItem('currentLicenceImage', $scope.image);
 			CaptureImageSvc.savePhoto(key, $scope.image);
