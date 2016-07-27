@@ -14,7 +14,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			JSON 		: {
 				"UserField01" : "",
 				"UserField02" : "",
-				"UserField03" : "",
+				"UserField03" : moment().format('YYYY-MM-DD HH:mm:ss'),
 				"UserField04" : "",
 				"UserField05" : "",
 				"UserField06" : "",
@@ -30,7 +30,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				"UserField16" : "",
 				"UserField17" : "",
 				"UserField18" : "",
-				"UserField19" : "",
+				"UserField19" : moment().format('YYYY-MM-DD HH:mm:ss'),
 				"UserField20" : "",
 				"UserField21" : "",
 				"UserField22" : "",
@@ -163,7 +163,9 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	$scope.attachmentClicked = function(){angular.element("#file-select").trigger('click');};
+	$scope.OnSaveClicked = function(){
 
+	}
 
 	function constructor(){
 		$scope.$emit('LOAD');
@@ -209,6 +211,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			//TODO: Remove Once Cordova plugin for scanning system is done
 			$scope.RegNumber = 'HTT 091 GP';
 		} else if ($routeParams.screennum == 6){
+			$scope.$emit('right', {label: 'Save', icon: 'fa fa-chevron-right', onclick: $scope.OnSaveClicked});
 			$scope.view = 'form';
 			if ($scope.inspectiontype === 'technicalreport' || $scope.inspectiontype === 'customervisits' ) fetchGPs();
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
