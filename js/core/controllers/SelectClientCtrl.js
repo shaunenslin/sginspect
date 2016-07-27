@@ -211,7 +211,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			//TODO: Remove Once Cordova plugin for scanning system is done
 			$scope.RegNumber = 'HTT 091 GP';
 		} else if ($routeParams.screennum == 6){
-			$scope.$emit('right', {label: 'Save', icon: 'fa fa-chevron-right', onclick: $scope.OnSaveClicked});
+			$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.OnSaveClicked});
 			$scope.view = 'form';
 			if ($scope.inspectiontype === 'technicalreport' || $scope.inspectiontype === 'customervisits' ) fetchGPs();
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
