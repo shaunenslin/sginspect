@@ -1,5 +1,6 @@
 coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert){
     $scope.$emit('heading',{heading: 'Suppliers' , icon : 'glyphicon glyphicon-road'});
+    $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
     $scope.suppliers = [];
     $scope.supplierEdit = {};
     var savebtnClicked = false;
@@ -29,7 +30,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         savebtnClicked = true;
         if($routeParams.id === 'new'){
             //Checking if the user already exists //this Code Could Be Improved
-            $http.get(Settings.url + 'GetStoredProc?StoredProc=Supplier_ReadSingle&params=('+ $scope.supplierEdit.SupplierID +')').success(function(data){
+            $http.get(Settings.url + 'Get?method=Supplier_ReadSingle&supplierid=('+ $scope.supplierEdit.SupplierID +')').success(function(data){
                 //get the First Object because it comes back as array
                 if(data.length){
                     delete $scope.errorMsg;
@@ -81,7 +82,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             $scope.supplierEdit = newSupplierObject();
             $scope.$emit('UNLOAD');
         }else{
-            var url = Settings.url + 'GetStoredProc?StoredProc=Supplier_ReadSingle&params=('+ $routeParams.id +')';
+            var url = Settings.url + 'Get?method=Supplier_ReadSingle&clientid='+ $routeParams.id ;
             console.log(url);
             $http.get(url).success(function(data){
                 //get the First Object because it comes back because it is what stores the user data
@@ -99,7 +100,6 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
 
         $scope.$emit('LOAD');
         if ($routeParams.mode && $routeParams.id) {
-        	$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveSupplier});
             $scope.mode = 'form';
             $scope.id = $routeParams.id;

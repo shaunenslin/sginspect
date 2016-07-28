@@ -1,5 +1,6 @@
 coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$window,$location,$modal,$alert){
     $scope.$emit('heading',{heading: 'Users' , icon : 'fa fa-user'});
+    $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
     $scope.users = [];
     $scope.userEdit = {};
     $scope.checkboxs = {'isAdmin' : true};
@@ -131,7 +132,6 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
 
         $scope.$emit('LOAD');
         if ($routeParams.mode && $routeParams.id) {
-            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveUser});
             $scope.mode = 'form';
             $scope.id = $routeParams.id;
