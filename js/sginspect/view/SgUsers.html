@@ -20,7 +20,7 @@
                   <div class="hidden-xs col-sm-3 hidden-md col-lg-2">{{user.UserID}}</div>
                   <div class="hidden-xs hidden-sm col-md-1 col-lg-1"><span ng-if="user.IsAdmin">Admin</span></div>
                   <div class="hidden-xs hidden-sm col-md-2 col-lg-2"><span ng-if="user.Tel">{{user.Tel}}</span></div>
-            	  <div class="hidden-xs hidden-sm col-md-1 col-lg-1" ng-if="user.Active == true">Y</div>
+            	  <div class="hidden-xs hidden-sm col-md-1 col-lg-1" ng-if="user.Deleted == false">Y</div>
               	</div>
             </a>
         </div>

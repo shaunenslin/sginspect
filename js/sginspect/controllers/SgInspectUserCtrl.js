@@ -14,17 +14,36 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         user.IsLockedOut = "";
         user.LastLoginDate = "";
         user.Email = "";
-        user.Active = 1;
+        user.Deleted = 0;
         user.IsAdmin = false;
         user.Tel = "";
         user.Role = null;
         return user;
     }
 
-    $scope.deleteUser = function(){
+    /*$scope.deleteUser = function(){
         $scope.$emit('LOAD');
         $scope.userEdit.Active = 0;
         save();
+    };*/
+    $scope.deleteUser = function(){
+        $scope.$emit('LOAD');
+        if (!confirm('Are you sure you want to delete this user ?')) return;
+        success = function(){
+            $scope.$emit('UNLOAD');
+            $alert({ content: "User Deleted Ok", duration: 4, placement: 'top-right', type: 'success', show: true});
+            sessionStorage.removeItem("UsersCache");
+            $location.path('/SgUsers');
+        };
+
+        error = function(){
+            $scope.$emit('UNLOAD');
+            $alert({ content: "Error Deleting User", duration: 4, placement: 'top-right', type: 'danger', show: true});
+            $location.path('/SgUsers');
+        };
+
+        var url = Settings.url + 'View/ModifyAll?table=users&type=delete';
+        GlobalSvc.postData(url,$scope.userEdit,success,error,'SgUsers','modify',false,true);
     };
     $scope.saveUser = function(){
         savebtnClicked = true;
@@ -50,7 +69,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
 
     function save(){
         sessionStorage.removeItem( "UsersCache");
-        var url = Settings.url + 'Post?method=User_modify';
+        var url = Settings.url + 'StoredProcModify?StoredProc=usp_user_modify';
         GlobalSvc.postData(url,$scope.userEdit,function(){
             $scope.$emit('UNLOAD');
             $scope.successMsg = 'User saved Ok';
@@ -69,7 +88,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     		$scope.users = JSON.parse(sessionStorage.getItem( "UsersCache"));
     		$scope.$emit('UNLOAD');
     	} else {
-	        var url = Settings.url + 'Get?method=Users_readlist';
+	        var url = Settings.url + 'GetStoredProc?StoredProc=usp_user_readlist&params=('+ user.SupplierID +')'; //SGI 'Get?method=Users_readlist';
 	        console.log(url);
 	        $http.get(url).success(function(data){
 	            $scope.users = data;
@@ -85,7 +104,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             $scope.userEdit = newUserObject();
             $scope.$emit('UNLOAD');
         }else{
-            var url = Settings.url + 'GetStoredProc?StoredProc=User_ReadSingle&params=("'+ $routeParams.id +'")';
+            var url = Settings.url + 'GetStoredProc?StoredProc=usp_user_readsingle&params=("'+ userid +'")'
             console.log(url);
             $http.get(url).success(function(data){
                 //get the First Object because it comes back because it is what stores the user data
