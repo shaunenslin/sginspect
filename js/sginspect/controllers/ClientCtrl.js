@@ -1,5 +1,6 @@
 coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert){
     $scope.$emit('heading',{heading: 'Clients' , icon : 'glyphicon glyphicon-briefcase'});
+    $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
     $scope.clients = [];
     $scope.clientEdit = {};
     var savebtnClicked = false;
@@ -29,8 +30,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         savebtnClicked = true;
         if($routeParams.id === 'new'){
             //Checking if the user already exists //this Code Could Be Improved
-            $http.get(Settings.url + 'GetStoredProc?StoredProc=Client_ReadSingle&params=('+ $scope.clientEdit.ClientID +')').success(function(data){
-                //get the First Object because it comes back as array
+            $http.get(Settings.url + 'Get?method=Client_ReadSingle&clientid=' + $scope.clientEdit.ClientID).success(function(data){                //get the First Object because it comes back as array
                 if(data.length){
                     delete $scope.errorMsg;
                     delete $scope.successMsg;
@@ -81,7 +81,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             $scope.clientEdit = newClientObject();
             $scope.$emit('UNLOAD');
         }else{
-            var url = Settings.url + 'GetStoredProc?StoredProc=Client_ReadSingle&params=('+ $routeParams.id +')';
+            var url = Settings.url + 'Get?method=Client_ReadSingle&clientid=' + $routeParams.id;
             console.log(url);
             $http.get(url).success(function(data){
                 //get the First Object because it comes back because it is what stores the user data
@@ -99,7 +99,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 
         $scope.$emit('LOAD');
         if ($routeParams.mode && $routeParams.id) {
-        	$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
+        	/*$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});*/
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveClient});
             $scope.mode = 'form';
             $scope.id = $routeParams.id;
