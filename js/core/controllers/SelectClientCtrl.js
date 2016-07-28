@@ -1,7 +1,10 @@
-coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc){
+coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
 	$scope.Uploadmessage = "Attach Image files";
 	$scope.image = "";
+	$scope.signature = {"inspector" : "", "techAdvisor" : "", "manager" : ""};
+	/** The variable below is the svg represtion of an empty signature  **/
+	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 
 	function newObject(){
 		$scope.Form = {
@@ -30,11 +33,12 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				"UserField16" : "",
 				"UserField17" : "",
 				"UserField18" : "",
-				"UserField19" : moment().format('YYYY-MM-DD HH:mm:ss'),
+				"UserField19" : "",
 				"UserField20" : "",
 				"UserField21" : "",
 				"UserField22" : "",
-				"UserField23" : ""
+				"UserField23" : "",
+				"ImageData"  : []
 			}
 		}
 	}
@@ -60,11 +64,11 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				return;
 			}
 			var key = $scope.Form.FormID + '_vin.png';
-			$scope.Form.vinimage = key;
+			$scope.Form.JSON.vinimage = key;
 			sessionStorage.setItem('currentImage', $scope.image);
 			CaptureImageSvc.savePhoto(key, $scope.image);
 		}else if ($routeParams.screennum == 3){
-			if ($scope.Form.vinmatch === undefined){
+			if ($scope.Form.JSON.vinmatch === undefined){
 				$alert({content: "Please select an option below before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
 				return;
 			}
@@ -74,7 +78,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				return;
 			}
 			var key = $scope.Form.FormID + '_reg.png';
-			$scope.Form.regimage = key;
+			$scope.Form.JSON.regimage = key;
 			sessionStorage.setItem('currentLicenceImage', $scope.image);
 			CaptureImageSvc.savePhoto(key, $scope.image);
 		}
@@ -140,10 +144,10 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	$scope.matchClicked = function(clickVal){
 		if($routeParams.screennum == 3){
-		$scope.Form.vinmatch = (clickVal.length > 0) ? true : false;
+		$scope.Form.JSON.vinmatch = (clickVal.length > 0) ? true : false;
 
 		} else{
-			$scope.Form.regmatch = (clickVal.length > 0) ? true : false;
+			$scope.Form.JSON.regmatch = (clickVal.length > 0) ? true : false;
 		}
 		$alert({content:"Choice captured. Please press Next to continue", duration:6, placement:'top-right', type:'success', show:true});
 		$scope.$apply();
@@ -151,19 +155,103 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	function fetchGPs(){
 		GlobalSvc.getGPS(function(position){
-			$scope.Form.Latitude  = position ? position.coords.latitude : "";
-			$scope.Form.Longitude = position ? position.coords.longitude : "";
+			$scope.Form.JSON.Latitude  = position ? position.coords.latitude : "";
+			$scope.Form.JSON.Longitude = position ? position.coords.longitude : "";
 			$scope.$emit('UNLOAD');
 		},function(error){
 			console.log('error! ' + error);
-			$scope.formitem.Latitude  = '';
-			$scope.formitem.Longitude = '';
+			$scope.Form.JSON.Latitude = '';
+			$scope.Form.JSON.Longitude = '';
 			$scope.$emit('UNLOAD');
 		});
 	}
 
 	$scope.attachmentClicked = function(){angular.element("#file-select").trigger('click');};
-	$scope.OnSaveClicked = function(){
+
+	/** This method create an svg image of the signature captured **/
+	function createSignatureImage(datapair,type){
+		var image = {};
+		image.Id = $scope.Form.FormID + "_" + type;
+		image.SupplierID = GlobalSvc.getUser().SupplierID;
+		image.FileData = datapair[1];
+		image.Type = datapair[0];
+		if (image.Type.toLowerCase() == 'image/svg+xml;base64'){
+			image.Name = image.Id + '.svgx';
+		}
+		return image;
+	}
+
+	$scope.saveSignature = function(){
+		$scope.$emit('LOAD');
+		if(!$scope.Form.JSON.validForm){
+			$alert({ content: "Please enter in all required (*) fields before continuing", duration: 8, placement: 'top-right', type: 'danger', show: true});
+			return;
+		}
+		if ($scope.inspectiontype !== 'supplierevaluation'){
+			if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
+				$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				return;
+			}
+		}else{
+			if($scope.signature.techAdvisor[1] === emptySignature || !$scope.techAdvisor || $scope.signature.manager[1] === emptySignature || !$scope.signature.manager){
+				$alert({ content: "You cannot continue without adding all required signature(s)", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			}
+			return;
+		}
+		$scope.$emit('UNLOAD');
+		saveForm();
+	}
+
+	function saveForm(){
+		DaoSvc.cursor('Unsent',
+			function(json){
+				if (json.ImageData.indexOf('base64') > -1) $scope.Form.JSON.ImageData.push(json);
+			},
+			function(error){
+				console.log('Error fetching from Unsent ' + error);
+				$scope.$emit('UNLOAD');
+			}, function(){
+				$scope.$emit('UNLOAD');
+				$scope.$apply()
+		});
+		var postFormHeader = function(){
+			var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
+			GlobalSvc.postData(url, $scope.Form, function(){
+					$scope.$emit('UNLOAD');
+					$alert({ content: "Your Items have been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
+				},
+				function(){
+					$scope.$emit('UNLOAD');
+					$alert({ content: "Your Items have been saved locally.", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				}, 'SGIFormHeaders', 'Modify', false, false
+			);
+		}
+
+		if($scope.inspectiontype !== 'supplierevaluation'){
+			var url = Settings.dotnetPostUrl;
+			var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
+			/** After the posting of the inspectorSignature is successful then we Post The FormHeader **/
+			GlobalSvc.postData(url,inspectorSignature,postFormHeader,function(){
+				$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
+				postFormHeader();
+			},"File","UploadImage",false,false);
+		}else{
+			var techAdvisorSignsture = createSignatureImage($scope.signature.techAdvisor, 'Tech_Advisor');
+			var managerSignature = createSignatureImage($scope.signature.manager, 'workflow_manager');
+			
+			var url = Settings.dotnetPostUrl;
+			GlobalSvc.postData(url,techAdvisorSignsture,postWorkShopManagerSignature,function(){
+				$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
+				postWorkShopManagerSignature();
+			},"File","UploadImage",false,false);
+		}
+		/** After the posting of the tech advisor  Signature is successful then we Post The Form Header **/
+		var postWorkShopManagerSignature = function(){
+			GlobalSvc.postData(url,manager, postFormHeader,function(){
+				$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
+				postFormHeader();
+			},'File', 'UploadImage', false,false);
+		};
 
 	}
 
@@ -211,14 +299,16 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			//TODO: Remove Once Cordova plugin for scanning system is done
 			$scope.RegNumber = 'HTT 091 GP';
 		} else if ($routeParams.screennum == 6){
-			$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.OnSaveClicked});
+			$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 			$scope.view = 'form';
 			if ($scope.inspectiontype === 'technicalreport' || $scope.inspectiontype === 'customervisits' ) fetchGPs();
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
-			$scope.Form.RegNumber = 'HTT 091 GP';
-			$scope.Form.VinNumber = sessionStorage.getItem('currentVinNumber');
-			$scope.Form.LicenceExpiryDate = '25 July 2017';
-			$scope.signatureLabel1 = ($scope.inspectiontype === 'supplierevaluation') ? 'Workshop Manager' : 'Inspector';
+			$scope.Form.JSON.RegNumber = 'HTT 091 GP';
+			$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
+			$scope.Form.JSON.LicenceExpiryDate = '25 July 2017';
+			$scope.inspectorSignatureBoxLabel =  OptionSvc.getText('inspectorSignatureBoxLabel', 'Inspector');
+			$scope.techSignatureBoxLabel = OptionSvc.getText('techSignatureBoxLabel', 'Technical Advisor');
+			$scope.managerSignatureBoxLabel = OptionSvc.getText('managerSignatureBoxLabel', 'Workshop Manager');
 			$scope.id = $scope.Form.FormType;
 			JsonFormSvc.buildForm($scope, $scope.id, $scope.id, false, true, 'form', 'view', '', $scope.Form.JSON);
 			$scope.$emit('UNLOAD');

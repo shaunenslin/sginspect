@@ -18,15 +18,15 @@
 	<!-- Screen 2 VinPicture -->
 	<div style="margin-top: 10px;" ng-if="view ==='vinpicture'">
 		<img align="middle" class="img-responsive center-img" ng-if="image" ng-src="{{image}}">
-		<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
 		<div style="margin-top: 15px" ng-if="!capture" class="alert alert-info">
             	<p><i class="fa fa-info"></i> Please capture a picture of the VIN number</p>
         </div>
-		<div ng-if="!isPhoneGap" style="margin-top:10px;" class="well well-sm">
-			<form style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
+		<div style="margin-top:10px;" class="well well-sm">
+			<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked()" class="btn btn-success">Capture <span class="fa fa-camera"></span></button>
+			<form ng-if="!isPhoneGap" style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
 				<div class="form-group">
 				  <input class="col-xs-8" id="file-select" type="file" capture="camera" accept="image/*">
-				  <button ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
+				  <button ng-click="onPhotoClicked()" class="btn btn-success">Upload</button>
 				</div>
 			</form>
 		</div>
@@ -39,7 +39,7 @@
         <div class="well"><img id="vin-img" class="center-img img-responsive"  align="middle" ng-src="{{image}}"></div>
    		<h4 style="margin-top: 10px; text-align: center; margin-right: 70px;"><b>Licence Disk : {{VinNumber}}</b></h4>
    		<div class="btn-group btn-block" role="group">
-   			<button ng-click="matchClicked('match')" ng-class="(Form.vinmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.vinmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
+   			<button ng-click="matchClicked('match')" ng-class="(Form.JSON.vinmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.JSON.vinmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
    		</div>
    </div>
 	<!-- Screen 4 LicensePhoto -->
@@ -48,12 +48,12 @@
             <p><i class="fa fa-info"></i> Please capture a picture of the License Plate</p>
         </div>
    		<img align="middle" class="img-responsive center-img" ng-if="image" ng-src="{{image}}">
-		<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
-        <div ng-if="!isPhoneGap" style="margin-top:10px;" class="well well-sm">
-			<form style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
+        <div style="margin-top:10px;" class="well well-sm">
+        	<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked()" class="btn btn-success">Capture <span class="fa fa-camera"></span></button>
+			<form ng-if="!isPhoneGap" style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
 				<div class="form-group">
 				  <input class="col-xs-8" id="file-select" type="file" capture="camera" accept="image/*">
-				  <button ng-click="onPhotoClicked()" class="btn btn-success">Capture</button>
+				  <button ng-click="onPhotoClicked()" class="btn btn-success">Upload</button>
 				</div>
 			</form>
 		</div>
@@ -67,7 +67,7 @@
         
    		<h4 style="margin-top: 10px; text-align: center; margin-right: 70px;"><b>Licence Plate : {{RegNumber}}</b></h4>
    		<div class=" btn-group btn-block">
-   			<button ng-click="matchClicked('match')" ng-class="(Form.regmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.regmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
+   			<button ng-click="matchClicked('match')" ng-class="(Form.JSON.regmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.JSON.regmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
    		</div>
    </div>
    <!-- Screen 6 Inspection Form -->
@@ -81,9 +81,9 @@
 			<div style="text-align: center;" class="panel panel-default">
 				<div class="panel-body">
 					<p>Client : {{Form.FormID}}</p><br/>
-					<p>VIN : {{Form.VinNumber}}</p><br/>
-					<p>Registration : {{Form.RegNumber}}</p><br/>
-					<p>License Disk Expiration Date : {{Form.LicenceExpiryDate}}</p>
+					<p>VIN : {{Form.JSON.VinNumber}}</p><br/>
+					<p>Registration : {{Form.JSON.RegNumber}}</p><br/>
+					<p>License Disk Expiration Date : {{Form.JSON.LicenceExpiryDate}}</p>
 				</div>
 			</div>
 			<div ng-if="inspectiontype === 'technicalsupport'">
@@ -107,7 +107,7 @@
 			<div style="margin-top: 35px;" ng-if="inspectiontype === 'audit' || inspectiontype === 'afterserviceevaluation'">
 				<form class="form-horizontal">
 					<div ng-if="!isPhoneGap" style="margin-top:10px;">
-						<div class="well well-sm">
+						<div class="well">
 							<!-- Audit Kilometer -->
 							<div class="form-inline">
 								<label for="kilometers">
@@ -128,7 +128,7 @@
 									<span><a herf="#" ng-click="attachmentClicked()" style="color : black; text-decoration: underline; cursor: pointer; font-weight: bold">{{Uploadmessage}} For Other Photos</a></span>
 								</label>
 							<button ng-click="onPhotoClicked('otherphotos')" class="btn btn-success pull-right">Upload</button>
-							</div>
+							</div><br>
 						</div>
 					</div>
 					<div ng-if="isPhoneGap">
@@ -153,6 +153,28 @@
 			</div>
 			<!-- JsonForm  -->
 			<jsonform inline="true" formid="session.formid" fields="session.displayfields" asyncRslt="[]" json="Form.JSON" settings="session.settings"></jsonform>
+			<div style="margin-top:10px;">
+				<div class="alert alert-info"><i class="fa fa-info"></i> Please Sign below before saving your request</div>
+				<!-- Signature box for * 4 forms except  supplierevaluation  -->
+				<div class="panel panel-default" ng-if="inspectiontype !== 'supplierevaluation'">
+					<div class="panel-heading">Signature  Of {{inspectorSignatureBoxLabel}}</div>
+					<div class="panel-body">
+						<signature ng-model="signature.inspector" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
+					</div>
+				</div>
+				<!-- Signature box for  supplierevaluation form -->
+				<div ng-if="inspectiontype === 'supplierevaluation'" class="panel panel-default">
+					<div class="panel-heading">Signature Of {{techSignatureBoxLabel}}}</div>
+					<div class="panel-body">
+						<signature ng-model="signature.techAdvisor" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
+					</div>
+					<div class="panel-heading"> Signature Of {{managerSignatureBoxLabel}}</div>
+					<div class="panel-body">
+						<signature ng-model=signature.manager cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
+					</div>
+				</div>
+
+			</div>
 		</div> 
    </div>
 </div>
