@@ -6,7 +6,6 @@ var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap",
     $routeProvider.when("/sync", {templateUrl:"js/core/view/sync.html"});
     $routeProvider.when("/profile", {templateUrl:"js/core/view/profile.html"});
     //$routeProvider.when("/sync", {templateUrl:"js/core/view/login.html"});
-    $routeProvider.when("/menu", {templateUrl:"js/core/view/welcome.html"});
     $routeProvider.when("/welcome", {templateUrl:"js/core/view/welcome.html"});
     $routeProvider.when("/logout", {templateUrl:"js/core/view/logout.html"});
     $routeProvider.when("/view/:formid", {templateUrl:"js/core/view/view.html"});
@@ -15,7 +14,7 @@ var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap",
     $routeProvider.when("/viewdetail/:formid/:index", {templateUrl:"js/core/view/view.html"});
     $routeProvider.when("/choicetree/:id/:table", {templateUrl:"js/core/view/choiceTree.html"});
     $routeProvider.when("/choicetree/:id/:table/:parentid", {templateUrl:"js/core/view/choiceTree.html"});
-    $routeProvider.when("/welcome", {templateUrl:"js/core/view/welcome.html"});
+    $routeProvider.when("/admin", {templateUrl:"js/core/view/admin/adminmenu.html"});
     $routeProvider.when("/options", {templateUrl:"js/core/view/admin/options.html"});
     $routeProvider.when("/options/:mode/:id", {templateUrl:"js/core/view/admin/options.html"});
     $routeProvider.when('/users/',{templateUrl : "js/core/view/admin/users.html"});
@@ -93,7 +92,7 @@ var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap",
     AppRoutes($routeProvider);
     //:largecode*\
     //$routeProvider.otherwise({templateUrl:"views/welcome.html"});
-    $routeProvider.otherwise({templateUrl:"js/core/view/welcome.html"});
+    $routeProvider.otherwise({templateUrl : "js/sginspect/view/mainMenu.html"});
 
     //Reset headers to avoid OPTIONS request (aka preflight)
     $httpProvider.defaults.headers.common = {};
