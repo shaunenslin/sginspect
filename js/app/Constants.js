@@ -30,7 +30,7 @@ coreApp.constant('Settings', {
     supplierID: 'SGA',
     logo: 'http://www.sgadmin.co.za/logo/SG-Admin-sm.png',
     splash:  'img/groupbg.jpg',
-    phpServer: false,
+    phpServer: true,
     allowRequestRegister: false,
     allowSelfRegister: true,
     allowTour: false,
