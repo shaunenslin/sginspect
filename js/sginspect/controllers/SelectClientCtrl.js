@@ -5,6 +5,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.signature = {"inspector" : "", "techAdvisor" : "", "manager" : ""};
 	/** The variable below is the svg represtion of an empty signature  **/
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
+	$scope.filenames = [];
 
 	function newObject(){
 		$scope.Form = {
@@ -135,7 +136,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		} else{
 			var image = $('#file-select')[0];
 
-			if (image){
+			if (image && image.files.length > 0){
 	    		reader.readAsDataURL(image.files[0]);
 	    	}
 		}
@@ -165,7 +166,12 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		});
 	}
 
-	$scope.attachmentClicked = function(){angular.element("#file-select").trigger('click');};
+	function deleteUnsentImages(idx, images){
+		var keys = images;
+		if (keys[idx] && idx <= keys.length){
+			DaoSvc.deleteItem('Unsent',keys[idx].ID, undefined, undefined, function(){idx++;deleteUnsentImages(idx, keys)});
+		}
+	}
 
 	/** This method create an svg image of the signature captured **/
 	function createSignatureImage(datapair,type){
@@ -202,10 +208,13 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	function saveForm(){
+		$scope.$emit('LOAD');
+		images = [];
 		DaoSvc.cursor('Unsent',
 			function(json){
 				if (json.FileData.indexOf('base64') > -1){
 					$scope.Form.JSON[json.ID] = json.FileData;
+					images.push(json);
 				}
 			},
 			function(error){
@@ -213,8 +222,10 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$scope.$emit('UNLOAD');
 			}, function(){
 				$scope.$emit('UNLOAD');
+				deleteUnsentImages(0, images);
 				$scope.$apply()
 		});
+		//Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
 		if($scope.inspectiontype !== 'supplierevaluation'){
 			var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 			$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
@@ -228,19 +239,31 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		var success = function(){
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Your Items have been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
-			/*sessionStorage.removeItem('currentImage');
+			sessionStorage.removeItem('currentImage');
 			sessionStorage.removeItem('currentLicenceImage');
 			sessionStorage.removeItem('currentForm');
 			sessionStorage.removeItem('currentVinNumber');
-			$location.path('/');*/	
+			$location.path('/');	
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Error Saving Form", duration: 5, placement: 'top-right', type: 'danger', show: true});
 		}
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
+	// document.getElementById('upload-select').onchange = uploadOnChange;
+	angular.element('#file-select').onchange = uploadOnChange;
+    function uploadOnChange() {
+        var files = $('#file-select')[0].files;
+        $scope.filenames = [];
+        for(var i = 0; i < files.length; i++){
+            $scope.filenames.push(files[i].name);
+        }
+        $scope.$apply();
+        console.log($scope.filenames);
+    }
 
 	function constructor(){
 		$scope.$emit('LOAD');
@@ -271,7 +294,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.view = 'vinmatch';
 			$scope.image = sessionStorage.getItem('currentImage');
 			$scope.VinNumber = sessionStorage.getItem('currentVinNumber');
-
 		} else if ($routeParams.screennum == 4){
 			$scope.$emit('UNLOAD');
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
@@ -300,7 +322,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			JsonFormSvc.buildForm($scope, $scope.id, $scope.id, false, true, 'form', 'view', '', $scope.Form.JSON);
 			$scope.$emit('UNLOAD');
 		}
-
 	}
 	constructor();
 
