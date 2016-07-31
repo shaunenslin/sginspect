@@ -273,9 +273,10 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
 	// document.getElementById('upload-select').onchange = uploadOnChange;
+	//The eternary operator is used to escape angularjs errors for undefined file obj
 	angular.element('#upload-select').context.onchange = uploadOnChange;
     function uploadOnChange() {
-        var files = $('#upload-select')[0].files;
+        var files = $('#upload-select')[0] ?  $('#upload-select')[0].files : [];
         $scope.filenames = $scope.filenames.length > 0 ? $scope.filenames : [];
         for(var i = 0; i < files.length; i++){
             $scope.filenames.push(files[i].name);
