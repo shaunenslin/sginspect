@@ -6,6 +6,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	/** The variable below is the svg represtion of an empty signature  **/
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 	$scope.filenames = [];
+	var Imgfiles = [];
 
 	function newObject(){
 		$scope.Form = {
@@ -113,32 +114,50 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	$scope.onPhotoClicked = function(field){
-		var reader = new FileReader();
-		reader.addEventListener("load", function () {
-			$scope.image = reader.result;
-			if ($routeParams.screennum == 6 && $scope.image){
-				var key = $scope.Form.FormID + '_' + field + '.png';
-				CaptureImageSvc.savePhoto(key, $scope.image);
-			} else{
-				$scope.capture = true;
-			}
+		if(field === 'other-photos' && $routeParams.screennum == 6){
+			saveMultiplePhotos();
 			$alert({content:"Image captured successfully", duration:6, placement:'top-right', type:'success', show:true});
-			$scope.$apply();
+		}else{
+			var reader = new FileReader();
+			reader.addEventListener("load", function () {
+				$scope.image = reader.result;
+				if ($routeParams.screennum == 6 && $scope.image){
+					var key = $scope.Form.FormID + '_' + field + '.png';
+					CaptureImageSvc.savePhoto(key, $scope.image);
+				} else{
+					$scope.capture = true;
+				}
+				$alert({content:"Image captured successfully", duration:6, placement:'top-right', type:'success', show:true});
+				$scope.$apply();
 			}, false);
-		if ($scope.isPhoneGap){
-			var onSuccess = function(img){
-				reader.readAsDataURL(img);
-			}
-			var onError = function(err){
-				$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
-			}
-			CaptureImageSvc.takePhoto(onSuccess, onError);
-		} else{
-			var image = $('#file-select')[0];
+			if ($scope.isPhoneGap){
+				var onSuccess = function(img){
+					reader.readAsDataURL(img);
+				}
+				var onError = function(err){
+					$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
+				}
+				CaptureImageSvc.takePhoto(onSuccess, onError);
+			} else{
+				var image = $('#file-select')[0];
 
-			if (image && image.files.length > 0){
-	    		reader.readAsDataURL(image.files[0]);
-	    	}
+				if (image && image.files.length > 0){
+		    		reader.readAsDataURL(image.files[0]);
+		    	}
+			}
+		}
+	}
+	function saveMultiplePhotos(){
+		// This method encodes images to base 64 and saves multiple files to the local table
+		var idx = 0;
+		for (var i = 0; i < Imgfiles.length; i++){
+			var reader = new FileReader();
+		    reader.onload = function (e) {
+		    	var key = $scope.Form.FormID + '_other-photos_'+ idx;
+		    	idx++
+		    	CaptureImageSvc.savePhoto(key, e.target.result);
+		    };
+    		reader.readAsDataURL(Imgfiles[i]);
 		}
 	}
 
@@ -254,15 +273,29 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
 	// document.getElementById('upload-select').onchange = uploadOnChange;
-	angular.element('#file-select').onchange = uploadOnChange;
+	angular.element('#upload-select').context.onchange = uploadOnChange;
     function uploadOnChange() {
-        var files = $('#file-select')[0].files;
-        $scope.filenames = [];
+        var files = $('#upload-select')[0].files;
+        $scope.filenames = $scope.filenames.length > 0 ? $scope.filenames : [];
         for(var i = 0; i < files.length; i++){
             $scope.filenames.push(files[i].name);
+            Imgfiles.push(files[i]);
         }
         $scope.$apply();
         console.log($scope.filenames);
+    }
+
+    /*
+	 * MEthod removes individual images from multiple file select in the view =>[other photo's]
+	 * Remove the name in the chosen field if there are no records
+	 TODO: Ensure that you submit images and pull request asap
+    */
+    $scope.removeImage = function(idx){
+    	$scope.filenames.splice(idx,1);
+    	if ($scope.filenames[idx] === $('#upload-select')[0].files[0].name) $('#upload-select')[0].files[0] ="";
+    	if ($scope.filenames.length === 0) $('#upload-select')[0].value = "";
+    	$scope.$apply();
+
     }
 
 	function constructor(){
