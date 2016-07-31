@@ -272,8 +272,10 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
-	// document.getElementById('upload-select').onchange = uploadOnChange;
-	//The eternary operator is used to escape angularjs errors for undefined file obj
+	/*
+     * The eternary operator is used to escape angularjs errors for undefined file obj
+     * The last check (ImgFiles.length > 0) is done to prevent a digest error when angular detects a change in the DOM input
+	*/
 	angular.element('#upload-select').context.onchange = uploadOnChange;
     function uploadOnChange() {
         var files = $('#upload-select')[0] ?  $('#upload-select')[0].files : [];
@@ -282,12 +284,12 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
             $scope.filenames.push(files[i].name);
             Imgfiles.push(files[i]);
         }
-        $scope.$apply();
         console.log($scope.filenames);
+        if(Imgfiles.length > 0) $scope.$apply();
     }
 
     /*
-	 * MEthod removes individual images from multiple file select in the view =>[other photo's]
+	 * Method removes individual images from multiple file select in the view =>[other photo's]
 	 * Remove the name in the chosen field if there are no records
 	 TODO: Ensure that you submit images and pull request asap
     */
