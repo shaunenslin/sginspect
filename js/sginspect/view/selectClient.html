@@ -123,12 +123,13 @@
 							<!-- AuditForm Odometer Reading -->
 							<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Odometer reading</a></div>
 						  	<div class="col-xs-6 col-md-11">
-						  		<form ng-if="!isPhoneGap" style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
-									<input id="file-select" type="file" capture="camera" accept="image/*">
+						  		<form ng-if="!isPhoneGap"  id="file-form" method="POST" role="form" class="form-inline">
+									<input id="file-select" style="margin-top: 10px;" type="file" capture="camera" accept="image/*">
 								</form>
 						  	</div>
 						  	<div class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('odometer')" class="btn btn-success pull-right">Upload</button></div>
 						  	<!-- AuditForm Tyres -->
+
 						  	<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Tyres</a></div>
 						  	<div class="col-xs-6 col-md-11">
 						  		<form ng-if="!isPhoneGap" style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
@@ -137,6 +138,7 @@
 						  	</div>
 						  	<div class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('tyres')" class="btn btn-success pull-right">Upload</button></div>
 						  	<!-- Audit Form Other Photo's -->
+
 						  	<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Other Photo's</a></div>
 						  	<div class="col-xs-6 col-md-11">
 						  		
