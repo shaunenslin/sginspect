@@ -27,6 +27,10 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         
     };
     $scope.saveSupplier = function(){
+        if(!$scope.supplierEdit.SupplierID){
+            $alert({ content: "Please fill in the Supplier Code", duration: 4, placement: 'top-right', type: 'danger', show: true});
+            return;
+        }
         savebtnClicked = true;
         if($routeParams.id === 'new'){
             //Checking if the user already exists //this Code Could Be Improved

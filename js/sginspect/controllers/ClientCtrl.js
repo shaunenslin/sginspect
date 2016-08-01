@@ -27,6 +27,10 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         
     };
     $scope.saveClient = function(){
+        if(!$scope.clientEdit.ClientID){
+            $alert({ content: "Please fill in the Client Code", duration: 4, placement: 'top-right', type: 'danger', show: true});
+            return;
+        }    
         savebtnClicked = true;
         if($routeParams.id === 'new'){
             //Checking if the user already exists //this Code Could Be Improved
