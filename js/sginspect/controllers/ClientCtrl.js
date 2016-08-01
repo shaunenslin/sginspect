@@ -54,7 +54,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         var url = Settings.url + "Post?method=Client_modify";
         GlobalSvc.postData(url,$scope.clientEdit,function(){
             $scope.$emit('UNLOAD');
-            $scope.successMsg = 'Client saved Ok';
+            $alert({ content: 'Client saved Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
             sessionStorage.removeItem("Clientscache");
             $scope.$apply();
             $location.path('/Clients');

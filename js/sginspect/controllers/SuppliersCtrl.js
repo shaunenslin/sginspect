@@ -55,7 +55,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         var url = Settings.url + "Post?method=Supplier_modify";
         GlobalSvc.postData(url,$scope.supplierEdit,function(){
             $scope.$emit('UNLOAD');
-            $scope.successMsg = 'Supplier saved Ok';
+            $alert({ content: 'Supplier saved Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
             sessionStorage.removeItem("Supplierscache");
             $scope.$apply();
             $location.path('/Suppliers');
