@@ -18,7 +18,9 @@ coreApp.service('CaptureImageSvc', function(GlobalSvc, DaoSvc,$alert){
 		},
 
 		savePhoto : function(key, img){
-			var data = img;
+			var data = {};
+			data.ID = key;
+			data.FileData = img;
 			DaoSvc.put(data, 'Unsent', key, console.log('Image Saved to Unsent!'),undefined);
 		}
 
