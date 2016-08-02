@@ -7,13 +7,15 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 	$scope.filenames = [];
 	var Imgfiles = [];
+	$scope.serviceHistory = false;
 
+	// TODO: Change SupplierID value to match data from other tables
 	function newObject(){
 		$scope.Form = {
 			FormType: $routeParams.inspectiontype,
 			ClientID: "",
 			FormID: GlobalSvc.getGUID(),
-			SupplierID  : GlobalSvc.getUser().SupplierID,
+			SupplierID  : "",
 			UserID 		: GlobalSvc.getUser().UserID,
 			FormDate	: moment().format('YYYY-MM-DD HH:mm:ss'),
 			JSON 		: {
@@ -257,7 +259,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 		var success = function(){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Your Items have been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
+			$alert({ content: "Your Form has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
 			sessionStorage.removeItem('currentImage');
 			sessionStorage.removeItem('currentLicenceImage');
 			sessionStorage.removeItem('currentForm');
