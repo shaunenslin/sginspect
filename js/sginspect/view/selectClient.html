@@ -72,11 +72,7 @@
    </div>
    <!-- Screen 6 Inspection Form -->
    <div ng-if="view === 'form'">
-   		<!-- Have upload available for all forms but triggered by one function -->
-   		<!-- <form id="file-form" method="POST" role="form" class="form-inline">
-			<input class="col-xs-8" id="file-select" ng-model="image" style="display: none" type="file" capture="camera" accept="image/*"  multiple/>
-		</form> -->
-   		<div ng-if="inspectiontype === 'audit' || inspectiontype === 'technicalsupport' || inspectiontype === 'afterserviceevaluation'" class="container">
+   		<div ng-if="inspectiontype === 'audit' || inspectiontype === 'technicalreport' || inspectiontype === 'afterserviceevaluation'" class="container">
 			<h3>Vehicle Basic Details</h3>
 			<div  class="panel panel-default">
 				<div class="panel-body form-horizontal">
@@ -98,10 +94,13 @@
 					</div>
 				</div>
 			</div>
-			<div ng-if="inspectiontype === 'technicalsupport'">
+			<div ng-if="inspectiontype === 'technicalreport'">
 				<h3>Service History(Latest - First)</h3>
-				<div style="text-align: center;" class="panel panel-default">
-					<div class="panel-body">
+				<div ng-if="!serviceHistory" style="margin-top: 15px" class="alert alert-warning">
+            		<p><i class="fa fa-info"></i> There is no service history available for this Client</p>
+        		</div>
+				<div ng-if="serviceHistory" style="text-align: center;" class="panel panel-default">
+					<div  class="panel-body">
 					</div>
 				</div>
 			</div>
@@ -116,43 +115,45 @@
         	<div ng-if="isPhoneGap" style="margin-top: 15px" class="alert alert-info">
             	<p><i class="fa fa-info"></i> Please capture image(s) below</p>
         	</div>
-			<div style="margin-top: 35px;" ng-if="inspectiontype === 'audit' || inspectiontype === 'afterserviceevaluation'">
-				<form class="form-horizontal">
+				<form style="margin-top: 35px;" class="form-horizontal">
 					<div ng-if="!isPhoneGap" style="margin-top:10px;" id="file-form" method="POST" role="form">
-						<div class="row well">
-							<!-- AuditForm Odometer Reading -->
-							<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Odometer reading</a></div>
-						  	<div class="col-xs-6 col-md-11">
-						  		<form ng-if="!isPhoneGap"  id="file-form" method="POST" role="form" class="form-inline">
-									<input id="file-select" style="margin-top: 10px;" type="file" capture="camera" accept="image/*">
-								</form>
-						  	</div>
-						  	<div class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('odometer')" class="btn btn-success pull-right">Upload</button></div>
-						  	<!-- AuditForm Tyres -->
+						<div class="well row">
+							<div ng-if="inspectiontype === 'audit'">
+								<!-- AuditForm Odometer Reading -->
+								<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Odometer reading</a></div>
+							  	<div class="col-xs-6 col-md-11">
+							  		<form ng-if="!isPhoneGap"  id="file-form" method="POST" role="form" class="form-inline">
+										<input id="file-select" style="margin-top: 10px;" type="file" capture="camera" accept="image/*">
+									</form>
+							  	</div>
+						  		<div class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('odometer')" class="btn btn-success pull-right">Upload</button></div>
+						  		<!-- AuditForm Tyres -->
 
-						  	<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Tyres</a></div>
-						  	<div class="col-xs-6 col-md-11">
-						  		<form ng-if="!isPhoneGap" style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
-									<input id="file-select" type="file" capture="camera" accept="image/*">
-								</form>
-						  	</div>
-						  	<div class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('tyres')" class="btn btn-success pull-right">Upload</button></div>
+						  		<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Tyres</a></div>
+							  	<div class="col-xs-6 col-md-11">
+							  		<form ng-if="!isPhoneGap" style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
+										<input id="file-select" type="file" capture="camera" accept="image/*">
+									</form>
+							  	</div>
+						  		<div class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('tyres')" class="btn btn-success pull-right">Upload</button></div>
+							</div>
 						  	<!-- Audit Form Other Photo's -->
+						  	<div ng-if="inspectiontype === 'audit" class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Other Photo's</a></div>
+						  	<!-- Technical Report Reuses multiple upload -->
+						  	<div ng-if="inspectiontype === 'technicalreport'" class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} Description of Findings</a></div>
 
-						  	<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Other Photo's</a></div>
-						  	<div class="col-xs-6 col-md-11">
-						  		
+						  	<div ng-if="inspectiontype === 'technicalreport' || inspectiontype === 'audit'" class="col-xs-6 col-md-11">
 								<form id="upload-form" method="POST" id="file-form" role="form" class="form-inline" enctype="multipart/form-data">
 									<input ng-if="!isPhoneGap" style="margin-top: 10px;" id="upload-select" name="file[]" type="file" multiple="multiple">
 									<div style="margin-top : 5px;">
         								<p class="row" ng-repeat="file in filenames" style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">
            									{{file}}<span ng-click="removeImage($index)" style="margin-left: 15px; color: red; cursor:pointer;">remove</span>
+           									<!-- <button ng-click="removeImage($index)" class="btn btn-danger" style="margin-left: 15px; margin-bottom: 5px;">remove</button> -->
         								</p>
-
     								</div>
 								</form>
 						  	</div>
-						  	<div class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('other-photos')" class="btn btn-success pull-right">Upload</button></div>
+						  	<div ng-if="inspectiontype === 'audit' || inspectiontype === 'technicalreport'" class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('other-photos')" class="btn btn-success pull-right">Upload</button></div>
 						</div>
 					</div>
 					<div ng-if="isPhoneGap">
@@ -174,7 +175,6 @@
 						</div>
 					</div>
 				</form>
-			</div>
 			<!-- JsonForm  -->
 			<jsonform inline="true" formid="session.formid" fields="session.displayfields" asyncRslt="[]" json="Form.JSON" settings="session.settings"></jsonform>
 			<div style="margin-top:10px;">

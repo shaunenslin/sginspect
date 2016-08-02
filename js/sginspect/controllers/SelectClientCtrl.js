@@ -7,13 +7,15 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 	$scope.filenames = [];
 	var Imgfiles = [];
+	$scope.serviceHistory = false;
 
+	// TODO: Change SupplierID value to match data from other tables
 	function newObject(){
 		$scope.Form = {
 			FormType: $routeParams.inspectiontype,
 			ClientID: "",
 			FormID: GlobalSvc.getGUID(),
-			SupplierID  : GlobalSvc.getUser().SupplierID,
+			SupplierID  : "",
 			UserID 		: GlobalSvc.getUser().UserID,
 			FormDate	: moment().format('YYYY-MM-DD HH:mm:ss'),
 			JSON 		: {
@@ -46,7 +48,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	$scope.onNextClicked = function(){
 		 // Path is generic to cater for all navigation scenarios
-		var path = Settings.workflow[$routeParams.inspectiontype][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
+		var path = Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
 		if ($routeParams.screennum == 0){
 			if (!$scope.Form.ClientID){
 				$alert({content: "Please select a Client before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
@@ -103,7 +105,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	$scope.onBackClicked = function(){
-		var path = $routeParams.screennum == 0 ? '/admin' : Settings.workflow[$routeParams.inspectiontype][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
+		var path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
 		$location.path(path);
 	}
 
@@ -115,7 +117,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	$scope.onPhotoClicked = function(field){
 		if(field === 'other-photos' && $routeParams.screennum == 6){
-			saveMultiplePhotos();
+			saveMultiplePhotos(field);
 			$alert({content:"Image captured successfully", duration:6, placement:'top-right', type:'success', show:true});
 		}else{
 			var reader = new FileReader();
@@ -147,13 +149,13 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			}
 		}
 	}
-	function saveMultiplePhotos(){
+	function saveMultiplePhotos(field){
 		// This method encodes images to base 64 and saves multiple files to the local table
 		var idx = 0;
 		for (var i = 0; i < Imgfiles.length; i++){
 			var reader = new FileReader();
 		    reader.onload = function (e) {
-		    	var key = $scope.Form.FormID + '_other-photos_'+ idx;
+		    	var key = $scope.Form.FormID + '_' + field + '_'+ idx;
 		    	idx++
 		    	CaptureImageSvc.savePhoto(key, e.target.result);
 		    };
@@ -257,7 +259,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 		var success = function(){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Your Items have been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
+			$alert({ content: "Your Form has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
 			sessionStorage.removeItem('currentImage');
 			sessionStorage.removeItem('currentLicenceImage');
 			sessionStorage.removeItem('currentForm');
@@ -304,7 +306,22 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	function constructor(){
 		$scope.$emit('LOAD');
 		$scope.inspectiontype = $routeParams.inspectiontype;
-		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
+		switch ($scope.inspectiontype){
+			case 'technicalreport':
+				$scope.$emit('heading',{heading: 'Technical Report', icon : 'fa fa-book'});
+				break;
+			case 'supplierevaluation' :
+				$scope.$emit('heading',{heading: 'Supplier Evaluation', icon : 'fa fa-thumbs-o-up'});
+				break;
+			case 'afterserviceevaluation' : 
+				$scope.$emit('heading',{heading: 'After Service Evaluation', icon : 'fa fa-car'});
+				break;
+			case 'audit' :
+			case 'customervisit' :
+				$scope.$emit('heading',{heading: ($scope.inspectiontype === 'audit' ? 'Audit' : 'Customer Visit') + 'Form', icon : ($scope.inspectiontype === 'audit' ? 'fa fa-check-square-o' : 'fa fa-map-marker')});
+
+
+		}
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
         $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 		if ($routeParams.screennum == 0){
