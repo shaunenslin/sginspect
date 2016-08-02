@@ -118,7 +118,7 @@
 				<form style="margin-top: 35px;" class="form-horizontal">
 					<div ng-if="!isPhoneGap" style="margin-top:10px;" id="file-form" method="POST" role="form">
 						<div class="well row">
-							<div ng-if="inspectiontype === 'audit'">
+							<div ng-if="inspectiontype === 'audit' || inspectiontype === 'afterserviceevaluation'">
 								<!-- AuditForm Odometer Reading -->
 								<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Odometer reading</a></div>
 							  	<div class="col-xs-6 col-md-11">
@@ -127,8 +127,9 @@
 									</form>
 							  	</div>
 						  		<div class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('odometer')" class="btn btn-success pull-right">Upload</button></div>
+						  	</div>
 						  		<!-- AuditForm Tyres -->
-
+						  	<div ng-if="inspectiontype === 'audit'">
 						  		<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Tyres</a></div>
 							  	<div class="col-xs-6 col-md-11">
 							  		<form ng-if="!isPhoneGap" style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
@@ -141,8 +142,10 @@
 						  	<div ng-if="inspectiontype === 'audit" class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Other Photo's</a></div>
 						  	<!-- Technical Report Reuses multiple upload -->
 						  	<div ng-if="inspectiontype === 'technicalreport'" class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} Description of Findings</a></div>
+						  	<!-- Comments -->
+						  	<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} Comments</a></div>
 
-						  	<div ng-if="inspectiontype === 'technicalreport' || inspectiontype === 'audit'" class="col-xs-6 col-md-11">
+						  	<div ng-if="inspectiontype === 'technicalreport' || inspectiontype === 'audit' || inspectiontype === 'afterserviceevaluation'" class="col-xs-6 col-md-11">
 								<form id="upload-form" method="POST" id="file-form" role="form" class="form-inline" enctype="multipart/form-data">
 									<input ng-if="!isPhoneGap" style="margin-top: 10px;" id="upload-select" name="file[]" type="file" multiple="multiple">
 									<div style="margin-top : 5px;">
@@ -153,7 +156,7 @@
     								</div>
 								</form>
 						  	</div>
-						  	<div ng-if="inspectiontype === 'audit' || inspectiontype === 'technicalreport'" class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('other-photos')" class="btn btn-success pull-right">Upload</button></div>
+						  	<div ng-if="inspectiontype === 'audit' || inspectiontype === 'technicalreport' || inspectiontype === 'afterserviceevaluation'" class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('other-photos')" class="btn btn-success pull-right">Upload</button></div>
 						</div>
 					</div>
 					<div ng-if="isPhoneGap">

@@ -42,6 +42,8 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				"UserField21" : "",
 				"UserField22" : "",
 				"UserField23" : "",
+				"UserField24" : "",
+				"UserField25" : ""
 			}
 		}
 	}
