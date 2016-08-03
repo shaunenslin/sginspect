@@ -1,5 +1,5 @@
 coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert){
-    $scope.$emit('heading',{heading: 'Clients' , icon : 'glyphicon glyphicon-briefcase'});
+    $scope.$emit('heading',{heading: 'Customer Management' , icon : 'glyphicon glyphicon-briefcase'});
     $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
     $scope.clients = [];
     $scope.clientEdit = {};
@@ -54,13 +54,21 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         var url = Settings.url + "Post?method=Client_modify";
         GlobalSvc.postData(url,$scope.clientEdit,function(){
             $scope.$emit('UNLOAD');
-            $alert({ content: 'Client saved Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
+            if ($scope.clientEdit.Active === 0) {
+                $alert({ content: 'Customer deleted successfully', duration: 4, placement: 'top-right', type: 'success', show: true});
+            }else{
+                $alert({ content: 'Customer saved Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
+            }
             sessionStorage.removeItem("Clientscache");
             $scope.$apply();
             $location.path('/Clients');
         },function(){
             $scope.$emit('UNLOAD');
-            $scope.errorMsg = 'Error saving client';
+            if ($scope.clientEdit.Active === 0) {
+                $alert({ content: 'Error deleting Customer', duration: 4, placement: 'top-right', type: 'danger', show: true});
+            }else{
+                $alert({ content: 'Error saving Customer', duration: 4, placement: 'top-right', type: 'danger', show: true});
+            }
             $scope.$apply();
         },'SGIClient','modify',false,true);
     }

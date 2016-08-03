@@ -8,7 +8,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
 
 	function newSupplierObject(){
         var newSupplier = {};
-        newSupplier.SupplierID = "";
+        newSupplier.SupplierID;
         newSupplier.Name = "";
         newSupplier.Active = 1;
 
@@ -28,7 +28,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     };
     $scope.saveSupplier = function(){
         if(!$scope.supplierEdit.SupplierID){
-            $alert({ content: "Please fill in the Supplier Code", duration: 4, placement: 'top-right', type: 'danger', show: true});
+            $alert({ content: "Please fill in the Supplier Code correctly", duration: 4, placement: 'top-right', type: 'danger', show: true});
             return;
         }
         savebtnClicked = true;
@@ -55,13 +55,21 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         var url = Settings.url + "Post?method=Supplier_modify";
         GlobalSvc.postData(url,$scope.supplierEdit,function(){
             $scope.$emit('UNLOAD');
-            $alert({ content: 'Supplier saved Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
+            if ($scope.supplierEdit.Active === 0) {
+                $alert({ content: 'Supplier deleted successfully', duration: 4, placement: 'top-right', type: 'success', show: true});
+            }else{
+                $alert({ content: 'Supplier saved Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
+            }
             sessionStorage.removeItem("Supplierscache");
             $scope.$apply();
             $location.path('/Suppliers');
         },function(){
             $scope.$emit('UNLOAD');
-            $scope.errorMsg = 'Error saving supplier';
+            if ($scope.supplierEdit.Active === 0) {
+                $alert({ content: 'Error deleting Supplier', duration: 4, placement: 'top-right', type: 'danger', show: true});
+            }else{
+                $alert({ content: 'Error saving Supplier', duration: 4, placement: 'top-right', type: 'danger', show: true});
+            }
             $scope.$apply();
         },'SGISuppliers','modify',false,true);
     }
@@ -84,6 +92,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     function fetchSupplier(){
         if($routeParams.id === 'new' && !savebtnClicked){
             $scope.supplierEdit = newSupplierObject();
+            $scope.supplierEdit.SupplierID = parseInt($scope.supplierEdit.SupplierID);
             $scope.$emit('UNLOAD');
         }else{
             var url = Settings.url + 'Get?method=Supplier_ReadSingle&clientid='+ $routeParams.id ;
@@ -91,6 +100,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             $http.get(url).success(function(data){
                 //get the First Object because it comes back because it is what stores the user data
                 $scope.supplierEdit = data[0];
+                $scope.supplierEdit.SupplierID = parseInt($scope.supplierEdit.SupplierID);
                 $scope.$emit('UNLOAD');
             });
         }

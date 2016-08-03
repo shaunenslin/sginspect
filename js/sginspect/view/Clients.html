@@ -1,7 +1,10 @@
 
 <div ng-controller="ClientCtrl">
     <div class="inset" style="padding-top: 15px;">
-
+        <div ng-show="mode === 'list'" style="margin-bottom: 10px;">
+            <input ng-model="searchText" type="text" class="form-control" placeholder="Search for Customers">
+            <span class="input-group-btn">
+        </div>
         <div class=" list-group" ng-show="mode === 'list' " >
             <div class="row">
                 <div class="row" style="margin-left:10px; margin-right:5px;">
@@ -9,7 +12,7 @@
                     <div class="col-xs-7  col-sm-2">Client Name</div>
                 </div>
             </div>
-            <a href="#/Clients/form/{{client.ClientID}}" class="list-group-item" ng-repeat="client in clients" ng-if="client.Active">
+            <a href="#/Clients/form/{{client.ClientID}}" class="list-group-item" ng-repeat="client in clients | filter: searchText" ng-if="client.Active">
                 <span class="glyphicon glyphicon-chevron-right pull-right"></span>
             	<div class="row">
                   <div class="col-xs-2">{{client.ClientID}}</div>
