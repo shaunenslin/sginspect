@@ -1,7 +1,11 @@
 coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert){
     $scope.$emit('heading',{heading: 'Suppliers' , icon : 'glyphicon glyphicon-road'});
     $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
+    $scope.newArr = [];
+    $scope.splitArr = [];
     $scope.suppliers = [];
+    $scope.idx = 0;
+    $scope.newPage = false;
     $scope.supplierEdit = {};
     var savebtnClicked = false;
     var user = GlobalSvc.getUser();
@@ -77,17 +81,20 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     function fetchSuppliers(){
     	if (sessionStorage.getItem( "Supplierscache")) {
     		$scope.suppliers = JSON.parse(sessionStorage.getItem( "Supplierscache"));
+            $scope.splitArr = arraySplit($scope.suppliers);
     		$scope.$emit('UNLOAD');
     	} else {
 	        var url = Settings.url + 'Get?method=Suppliers_ReadList';
 	        console.log(url);
 	        $http.get(url).success(function(data){
 	            $scope.suppliers = data;
+                $scope.splitArr =  arraySplit(data);
 	            $scope.$emit('UNLOAD');
 	            sessionStorage.setItem( "Supplierscache",JSON.stringify($scope.suppliers) );
 	        });
     	}
         console.log($scope.suppliers);
+        console.log($scope.splitArr);
     }
     function fetchSupplier(){
         if($routeParams.id === 'new' && !savebtnClicked){
@@ -105,6 +112,23 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             });
         }
     }
+
+    function arraySplit(data){
+        var newArr = [];
+        while(data.length !== 0){
+            var splitArr = data.splice(0, 2);
+            //$scope.suppliers.splice(0, 2);
+            newArr.push(splitArr);
+        }
+        return newArr;
+    };
+
+    $scope.navigate = function(change){
+        changedVal = $scope.idx + change;
+        if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
+        $scope.idx = changedVal;
+    }
+
 
     function constructor(){
         if(!user.IsAdmin){
