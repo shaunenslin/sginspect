@@ -309,7 +309,8 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
     	$http.get (url)
     	.success(function(data){
     		$scope.serviceHistory = [];
-    		$scope.serviceHistory = data.map(function(e){
+    		$scope.serviceHistory =data.map(function(e){
+    			
     			return moment(e).format('YYYY/MM/DD');
     		});
     	})
