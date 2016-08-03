@@ -1,6 +1,6 @@
 <div ng-controller="SgInspectUserCtrl">
     <div class="inset" style="padding-top: 15px;">
-        <div ng-show="mode === 'list'" style="margin-bottom: 10px;">
+        <div ng-show="mode === 'list'" style="padding-bottom: 30px;">
             <input ng-model="searchText" type="text" class="form-control" placeholder="Search for Users">
             <span class="input-group-btn">
         </div>
@@ -46,6 +46,11 @@
                     <input type="text" class="form-control" id="UserID" ng-model="userEdit.Country">
                 </div>
 
+                <div class="form-group">
+                    <label for="userID">UserID</label>
+                    <input type="text" class="form-control" id="UserID" ng-model="userEdit.UserID" ng-disabled="id !== 'new'">
+                </div>
+
                  <div class="form-group">
                     <label for="Password">Password</label>
                     <input type="text" class="form-control" id="Password" ng-model="userEdit.PasswordHash">
@@ -53,7 +58,7 @@
 
                 <div class="form-group">
                     <label for="Tel">Phone number</label>
-                    <input type="text" class="form-control" id="Tel" ng-model="userEdit.Tel">
+                    <input type="text" class="form-control" id="Phone number" ng-model="userEdit.Tel">
                 </div>
 
                 <div class="form-group">
