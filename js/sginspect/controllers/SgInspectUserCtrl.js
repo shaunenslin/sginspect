@@ -3,6 +3,9 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
     $scope.users = [];
     $scope.userEdit = {};
+    $scope.newArr = [];
+    $scope.splitArr = [];
+    $scope.idx = 0;
     $scope.checkboxs = {'isAdmin' : true};
     var savebtnClicked = false;
     var user = GlobalSvc.getUser();
@@ -121,17 +124,34 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     function fetchUsers(){
         if (sessionStorage.getItem( "UsersCache")) {
             $scope.users = JSON.parse(sessionStorage.getItem( "UsersCache"));
+            $scope.splitArr = arraySplit($scope.users);
             $scope.$emit('UNLOAD');
         } else {
             var url = Settings.url + 'Get?method=usp_user_readlist&supplierid=' + user.SupplierID;
             console.log(url);
             $http.get(url).success(function(data){
                 $scope.users = data;
+                $scope.splitArr = arraySplit($scope.users);
                 $scope.$emit('UNLOAD');
                 sessionStorage.setItem( "UsersCache",JSON.stringify($scope.users) );
             });
         }
         console.log($scope.users);
+    }
+    function arraySplit(data){
+        var newArr = [];
+        while(data.length !== 0){
+            var splitArr = data.splice(0, 2);
+            //$scope.suppliers.splice(0, 2);
+            newArr.push(splitArr);
+        }
+        return newArr;
+    };
+
+    $scope.navigate = function(change){
+        changedVal = $scope.idx + change;
+        if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
+        $scope.idx = changedVal;
     }
 
     function fetchUser(){

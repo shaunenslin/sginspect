@@ -5,7 +5,6 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     $scope.splitArr = [];
     $scope.suppliers = [];
     $scope.idx = 0;
-    $scope.newPage = false;
     $scope.supplierEdit = {};
     var savebtnClicked = false;
     var user = GlobalSvc.getUser();
