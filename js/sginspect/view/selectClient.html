@@ -96,11 +96,12 @@
 			</div>
 			<div ng-if="inspectiontype === 'technicalreport'">
 				<h3>Service History(Latest - First)</h3>
-				<div ng-if="!serviceHistory" style="margin-top: 15px" class="alert alert-warning">
+				<div ng-if="serviceHistory.length === 0" style="margin-top: 15px" class="alert alert-warning">
             		<p><i class="fa fa-info"></i> There is no service history available for this Client</p>
         		</div>
-				<div ng-if="serviceHistory" style="text-align: center;" class="panel panel-default">
+				<div ng-if="serviceHistory" style="text-align: left;" class="panel panel-default">
 					<div  class="panel-body">
+						<p ng-repeat="row in serviceHistory">{{row}}</p>
 					</div>
 				</div>
 			</div>
@@ -139,20 +140,22 @@
 						  		<div class="col-xs-6 col-md-1"><button ng-click="onPhotoClicked('tyres')" class="btn btn-success pull-right">Upload</button></div>
 							</div>
 						  	<!-- Audit Form Other Photo's -->
-						  	<div ng-if="inspectiontype === 'audit" class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Other Photo's</a></div>
+						  	<div ng-if="inspectiontype === 'audit'" class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} For Other Photo's</a></div>
 						  	<!-- Technical Report Reuses multiple upload -->
 						  	<div ng-if="inspectiontype === 'technicalreport'" class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} Description of Findings</a></div>
 						  	<!-- Comments -->
-						  	<div class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} Comments</a></div>
+						  	<div ng-if="inspectiontype === 'afterserviceevaluation'" class="col-xs-12 col-md-12"><a  herf="#" style="color : black; text-decoration: none; cursor: pointer; font-weight: bold;">{{Uploadmessage}} Comments</a></div>
 
 						  	<div ng-if="inspectiontype === 'technicalreport' || inspectiontype === 'audit' || inspectiontype === 'afterserviceevaluation'" class="col-xs-6 col-md-11">
 								<form id="upload-form" method="POST" id="file-form" role="form" class="form-inline" enctype="multipart/form-data">
 									<input ng-if="!isPhoneGap" style="margin-top: 10px;" id="upload-select" name="file[]" type="file" multiple="multiple">
 									<div style="margin-top : 5px;">
-        								<p class="row" ng-repeat="file in filenames" style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">
-           									{{file}}<span ng-click="removeImage($index)" style="margin-left: 15px; color: red; cursor:pointer;">remove</span>
-           									<!-- <button ng-click="removeImage($index)" class="btn btn-danger" style="margin-left: 15px; margin-bottom: 5px;">remove</button> -->
-        								</p>
+        								<table>
+        									<tr ng-repeat="file in filenames">
+        										<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{file}}</td>
+        										<td><button ng-click="removeImage($index)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+        									</tr>
+        								</table>
     								</div>
 								</form>
 						  	</div>
@@ -161,17 +164,25 @@
 					</div>
 					<div ng-if="isPhoneGap">
 						<div class="well">
-							<div class="form-inline">
+							<div ng-if="inspectiontype === 'audit' || inspectiontype === 'afterserviceevaluation'" class="form-inline">
 								<label style="color : black; text-decoration: none; cursor: pointer; font-weight: bold" for="kilometers">Capture Odometer Reading</label>
 								<button ng-click="onPhotoClicked('odometer')" class="btn btn-success pull-right">Capture <span class="fa fa-camera"></span></button>
 							</div><br>
 
-							<div class="form-inline">
+							<div ng-if="inspectiontype === 'audit'" class="form-inline">
 								<label style="color : black; text-decoration: none; cursor: pointer; font-weight: bold" for="tyres">Capture Tyres condition</label>
 								<button ng-click="onPhotoClicked('tyres')" class="btn btn-success pull-right">Capture <span class="fa fa-camera"></span></button>
 							</div><br>
-							<div class="form-inline">
+							<div ng-if="inspectiontype === 'audit'" class="form-inline">
 								<label style="color : black; text-decoration: none; cursor: pointer; font-weight: bold" for="other-photo">Capture Other Photo's</label>
+								<button ng-click="onPhotoClicked('otherphotos')" class="btn btn-success pull-right">Capture <span class="fa fa-camera"></span></button>
+							</div>
+							<div ng-if="inspectiontype === 'technicalreport'" class="form-inline">
+								<label style="color : black; text-decoration: none; cursor: pointer; font-weight: bold" for="other-photo">Capture Description of Findings</label>
+								<button ng-click="onPhotoClicked('otherphotos')" class="btn btn-success pull-right">Capture <span class="fa fa-camera"></span></button>
+							</div>
+							<div ng-if="inspectiontype === 'afterserviceevaluation'" class="form-inline">
+								<label style="color : black; text-decoration: none; cursor: pointer; font-weight: bold" for="other-photo">Capture Comments</label>
 								<button ng-click="onPhotoClicked('otherphotos')" class="btn btn-success pull-right">Capture <span class="fa fa-camera"></span></button>
 							</div>
 

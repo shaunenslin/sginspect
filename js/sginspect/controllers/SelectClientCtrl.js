@@ -7,7 +7,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 	$scope.filenames = [];
 	var Imgfiles = [];
-	$scope.serviceHistory = false;
 
 	// TODO: Change SupplierID value to match data from other tables
 	function newObject(){
@@ -53,19 +52,19 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		var path = Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
 		if ($routeParams.screennum == 0){
 			if (!$scope.Form.ClientID){
-				$alert({content: "Please select a Client before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
+				$alert({content: "Please select a Client before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
 				return;
 			}
 
 		}else if ($routeParams.screennum == 1){
 			if (!$scope.VinNumber){
-				$alert({content: "Please scan license disk continuing !", duration:6, placement:'top-right', type:'danger', show:true});
+				$alert({content: "Please scan license disk continuing !", duration:5, placement:'top-right', type:'danger', show:true});
 				return;
 			}
 
 		}else if($routeParams.screennum == 2){
 			if(!$scope.image) {
-				$alert({content: "Please capture the VIN picture before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
+				$alert({content: "Please capture the VIN picture before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
 				return;
 			}
 			var key = $scope.Form.FormID + '_vin.png';
@@ -74,12 +73,12 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			CaptureImageSvc.savePhoto(key, $scope.image);
 		}else if ($routeParams.screennum == 3){
 			if ($scope.Form.JSON.vinmatch === undefined){
-				$alert({content: "Please select an option below before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
+				$alert({content: "Please select an option below before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
 				return;
 			}
 		} else if ($routeParams.screennum == 4){
 			if(!$scope.image) {
-				$alert({content: "Please capture the Licene Plate Number picture before continuing !", duration:6, placement:'top-right', type:'danger', show:true});
+				$alert({content: "Please capture the Licene Plate Number picture before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
 				return;
 			}
 			var key = $scope.Form.FormID + '_reg.png';
@@ -99,7 +98,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$scope.Clients.push(json);
 			}, function(err){
 				$scope.$emit('UNLOAD');
-				$alert({content: "Error fetching Clients " + err, duration:6, placement:'top-right', type:'danger', show:true});
+				$alert({content: "Error fetching Clients " + err, duration:5, placement:'top-right', type:'danger', show:true});
 			},function(){
 				$scope.$emit('UNLOAD');
 				$scope.$apply();
@@ -114,13 +113,13 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.nfcScan = function(){
 		$scope.VinNumber = "IG1YY23671299872";
 		sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
-		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully. Please Press 'Next' to continue", duration:6, placement:'top-right', type:'success', show:true});
+		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully. Please Press 'Next' to continue", duration:5, placement:'top-right', type:'success', show:true});
 	}
 
 	$scope.onPhotoClicked = function(field){
 		if(field === 'other-photos' && $routeParams.screennum == 6){
 			saveMultiplePhotos(field);
-			$alert({content:"Image captured successfully", duration:6, placement:'top-right', type:'success', show:true});
+			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 		}else{
 			var reader = new FileReader();
 			reader.addEventListener("load", function () {
@@ -131,7 +130,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				} else{
 					$scope.capture = true;
 				}
-				$alert({content:"Image captured successfully", duration:6, placement:'top-right', type:'success', show:true});
+				$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 				$scope.$apply();
 			}, false);
 			if ($scope.isPhoneGap){
@@ -172,7 +171,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		} else{
 			$scope.Form.JSON.regmatch = (clickVal.length > 0) ? true : false;
 		}
-		$alert({content:"Choice captured. Please press Next to continue", duration:6, placement:'top-right', type:'success', show:true});
+		$alert({content:"Choice captured. Please press Next to continue", duration:5, placement:'top-right', type:'success', show:true});
 		$scope.$apply();
 	}
 
@@ -212,7 +211,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
 		if(!$scope.Form.JSON.validForm){
-			$alert({ content: "Please enter in all required (*) fields before continuing", duration: 8, placement: 'top-right', type: 'danger', show: true});
+			$alert({ content: "Please enter in all required (*) fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			return;
 		}
 		if ($scope.inspectiontype !== 'supplierevaluation'){
@@ -304,6 +303,22 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
     	$scope.$apply();
 
     }
+    // Method fetches the header * header data so we can get the service history of * vehicle inspections under a client
+    function fetchFormHeaders(){
+    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID;
+    	$http.get (url)
+    	.success(function(data){
+    		$scope.serviceHistory = [];
+    		$scope.serviceHistory = data.map(function(e){
+    			return moment(e).format('YYYY/MM/DD');
+    		});
+    	})
+    	.error(function(err){
+    		$alert({content: "Error fetching Service History", duration:5, placement:'top-right', type:'danger', show:true});
+    		$scope.$emit('UNLOAD');
+
+    	})
+    }
 
 	function constructor(){
 		$scope.$emit('LOAD');
@@ -365,8 +380,9 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		} else if ($routeParams.screennum == 6){
 			$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 			$scope.view = 'form';
-			if ($scope.inspectiontype === 'technicalreport' || $scope.inspectiontype === 'customervisits' ) fetchGPs();
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
+			if ($scope.inspectiontype === 'technicalreport') fetchFormHeaders();
+			if ($scope.inspectiontype === 'technicalreport' || $scope.inspectiontype === 'customervisits' ) fetchGPs();
 			$scope.Form.JSON.RegNumber = 'HTT 091 GP';
 			$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
 			$scope.Form.JSON.LicenceExpiryDate = '25 July 2017';

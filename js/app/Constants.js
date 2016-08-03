@@ -70,7 +70,7 @@ coreApp.constant('Settings', {
             {route:'vinmatch'},
             {route:'licensephoto'},
             {route:'licensematch'},
-            {route:'auditform'}
+            {route:'form'}
         ]
     }
 });
