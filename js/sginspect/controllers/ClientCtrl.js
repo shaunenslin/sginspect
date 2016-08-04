@@ -77,7 +77,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     }
 
     function fetchClients(){
-    	if (sessionStorage.getItem( "Clientscache")) {
+    	if (sessionStorage.getItem("Clientscache")) {
     		$scope.clients = JSON.parse(sessionStorage.getItem( "Clientscache"));
             $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "Clientscache")));
     		$scope.$emit('UNLOAD');
@@ -85,9 +85,9 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 	        var url = Settings.url + 'Get?method=Clients_readlist';
 	        console.log(url);
 	        $http.get(url).success(function(data){
-                sessionStorage.setItem( "Clientscache",JSON.stringify(data) );
+                sessionStorage.setItem("Clientscache",JSON.stringify(data));
 	            $scope.clients = data;
-                $scope.splitArr = arraySplit($scope.clients);
+                $scope.splitArr = arraySplit(data);
 	            $scope.$emit('UNLOAD');
 	        });
     	}
