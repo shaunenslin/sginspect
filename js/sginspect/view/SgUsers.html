@@ -1,6 +1,9 @@
 <div ng-controller="SgInspectUserCtrl">
     <div class="inset" style="padding-top: 15px;">
-
+        <div ng-show="mode === 'list'" style="padding-bottom: 30px;">
+            <input ng-model="searchText" type="text" class="form-control" placeholder="Search for Users">
+            <span class="input-group-btn">
+        </div>
         <div class=" list-group" ng-show="mode === 'list' " >
             <div class="row">
                 <div class="row" style="margin-left:10px; margin-right:5px;">
@@ -12,17 +15,26 @@
                     <div class="hidden-xs hidden-sm col-md-1 col-lg-1">Active</div>
                 </div>
             </div>
-            <a href="#/SgUsers/form/{{user.UserID}}" class="list-group-item" ng-repeat="user in users" >
+            <a href="#/SgUsers/form/{{user.UserID}}" class="list-group-item" ng-repeat="user in splitArr[idx] | filter: searchText" >
                 <span class="glyphicon glyphicon-chevron-right pull-right"></span>
             	<div class="row">
                   <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2" ng-if="user.UserID !== user.Email">{{user.Email}}</div>
                   <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">{{user.Name}}</div>
-                  <div class="hidden-xs col-sm-3 hidden-md col-lg-2">{{user.UserID}}</div>
+                  <div class="hidden-xs col-sm-3 hidden-md col-lg-2">{{user.Country}}</div>
                   <div class="hidden-xs hidden-sm col-md-1 col-lg-1"><span ng-if="user.IsAdmin">Admin</span></div>
                   <div class="hidden-xs hidden-sm col-md-2 col-lg-2"><span ng-if="user.Tel">{{user.Tel}}</span></div>
             	  <div class="hidden-xs hidden-sm col-md-1 col-lg-1" ng-if="user.Deleted == false">Y</div>
               	</div>
             </a>
+            
+        </div>
+        <div class="btn-group" role="group" aria-label="..." style="margin-top: 5%; margin-left: 25%; position:fixed" ng-show="mode === 'list'">
+            <button type="button" ng-click="navigate(-1)" class="btn btn-default btn-lg" ng-disabled="idx === 0"><span class="glyphicon glyphicon-chevron-left"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-lg">Page {{idx + 1}} out of {{splitArr.length}}
+            </button>
+            <button type="button" ng-click="navigate(1)" class="btn btn-default btn-lg" ng-disabled="idx === splitArr.length - 1"><span class="glyphicon glyphicon-chevron-right"></span>
+            </button>
         </div>
         <!-- Deals With Weather The User Edits or Adds A New Record to the This SupplierID's User-->
         <div ng-show="mode ===  'form'" >
@@ -30,7 +42,7 @@
 
                 <div class="form-group">
                     <label for="Email">Username</label>
-                    <input type="text" class="form-control" id="Email" ng-model="userEdit.Email">
+                    <input type="text" class="form-control" id="Email" ng-model="userEdit.Email" ng-disabled="id !== 'new'">
                 </div>
 
                 <div class="form-group">
@@ -40,6 +52,11 @@
 
                 <div class="form-group">
                     <label for="userID">Second Name</label>
+                    <input type="text" class="form-control" id="UserID" ng-model="userEdit.Country">
+                </div>
+
+                <div class="form-group">
+                    <label for="userID">UserID</label>
                     <input type="text" class="form-control" id="UserID" ng-model="userEdit.UserID" ng-disabled="id !== 'new'">
                 </div>
 
@@ -50,7 +67,7 @@
 
                 <div class="form-group">
                     <label for="Tel">Phone number</label>
-                    <input type="text" class="form-control" id="Tel" ng-model="userEdit.Tel">
+                    <input type="text" class="form-control" id="Phone number" ng-model="userEdit.Tel">
                 </div>
 
                 <div class="form-group">
