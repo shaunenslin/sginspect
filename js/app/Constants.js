@@ -19,7 +19,7 @@ coreApp.constant('Settings', {
     imageUrl:           'http://app1.rapidtrade.biz/rest/Files/GetProductImage',
     */
 
-    version: '1.66',
+    version: '1.67',
     showVersion: true,
 
 
@@ -70,7 +70,7 @@ coreApp.constant('Settings', {
             {route:'vinmatch'},
             {route:'licensephoto'},
             {route:'licensematch'},
-            {route:'auditform'}
+            {route:'form'}
         ]
     }
 });

@@ -355,6 +355,7 @@ coreApp.directive("jsonform", function(GlobalSvc, $http, $route, DaoSvc, Setting
         '           <select ng-required="child.Mandatory"   ng-disabled="(child.ReadOnly)" ng-if="child.Type===\'ListboxAsync\'" ng-model="json[child.Name]" class="form-control" id="{{child.Name}}" ng-options="opt.Code as opt.Description for opt in getasyncRslt(\'{{child.Name}}\')" url="{{child.DefaultData}}" ng-change="changeEvent(child.Name,child.Label,json[child.Name], json);">' +
         '               <option value="">-- choose --</option>' +
         '           </select>' +
+        '           <label ng-if="child.Type===\'Label\'">{{child.DefaultData}}</label>'+
         '           <a ng-if="child.Type===\'URL\'" href="">{{child.name}}</a>' +
         '           <input type="text" class="form-control" ng-if="child.Type===\'Typeahead\'" ng-model="json.AccountID" data-animation="am-flip-x" bs-options="row.Code as row.Code for row in getTypeahead($viewValue, \'{{child.Name}}\')" placeholder="Search" url="{{child.DefaultData}}" id="{{child.Name}}" bs-typeahead>'+
         '           <i ng-if="child.Type===\'Typeahead\'" ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>' +
@@ -750,7 +751,7 @@ coreApp.directive("jsonfields", function(DaoSvc, GlobalSvc, $http, Settings, $mo
         '       </tr>' +
         '       <tr ng-repeat="row in fields">' +
         '           <td>{{row.Name}}</td>' +
-        '           <td><Select style="min-width:100px" ng-model="row.Type" class="form-control" id="type{{row.Name}}" ><option>Text</option><option>TextArea</option><option>Date</option><option>Listbox</option><option>ListboxAsync</option><option>Checkbox</option><option>URL</option><option>Typeahead</option><option>Currency</option><option>Default</option><option>Number</option><option>Tree</option></select></td>' +
+        '           <td><Select style="min-width:100px" ng-model="row.Type" class="form-control" id="type{{row.Name}}" ><option>Text</option><option>TextArea</option><option>Date</option><option>Listbox</option><option>ListboxAsync</option><option>Checkbox</option><option>URL</option><option>Typeahead</option><option>Currency</option><option>Default</option><option>Number</option><option>Tree</option><option>Label</option></select></td>' +
         '           <td><input style="min-width:100px" ng-model="row.Label" class="form-control" id="label{{row.Name}}" ></td>' +
         '           <td><input ng-model="row.Visible" class="form-control" id="visible{{row.Name}}" type="checkbox"></td>' +
         '           <td><input ng-model="row.ReadOnly" class="form-control" id="ro{{row.Name}}" type="checkbox"></td>' +
