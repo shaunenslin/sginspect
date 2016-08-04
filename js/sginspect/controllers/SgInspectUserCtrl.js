@@ -124,16 +124,16 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     function fetchUsers(){
         if (sessionStorage.getItem( "UsersCache")) {
             $scope.users = JSON.parse(sessionStorage.getItem( "UsersCache"));
-            $scope.splitArr = arraySplit($scope.users);
+            $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "UsersCache")));
             $scope.$emit('UNLOAD');
         } else {
             var url = Settings.url + 'Get?method=usp_user_readlist&supplierid=' + user.SupplierID;
             console.log(url);
             $http.get(url).success(function(data){
+                sessionStorage.setItem( "UsersCache",JSON.stringify(data));
                 $scope.users = data;
                 $scope.splitArr = arraySplit($scope.users);
                 $scope.$emit('UNLOAD');
-                sessionStorage.setItem( "UsersCache",JSON.stringify($scope.users) );
             });
         }
         console.log($scope.users);
@@ -141,7 +141,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     function arraySplit(data){
         var newArr = [];
         while(data.length !== 0){
-            var splitArr = data.splice(0, 2);
+            var splitArr = data.splice(0, 10);
             //$scope.suppliers.splice(0, 2);
             newArr.push(splitArr);
         }

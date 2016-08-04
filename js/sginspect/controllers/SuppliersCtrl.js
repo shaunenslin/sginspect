@@ -80,16 +80,16 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     function fetchSuppliers(){
     	if (sessionStorage.getItem( "Supplierscache")) {
     		$scope.suppliers = JSON.parse(sessionStorage.getItem( "Supplierscache"));
-            $scope.splitArr = arraySplit($scope.suppliers);
+            $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "Supplierscache")));
     		$scope.$emit('UNLOAD');
     	} else {
 	        var url = Settings.url + 'Get?method=Suppliers_ReadList';
 	        console.log(url);
 	        $http.get(url).success(function(data){
-	            $scope.suppliers = data;
+	            sessionStorage.setItem( "Supplierscache",JSON.stringify(data));
+                $scope.suppliers = data;
                 $scope.splitArr =  arraySplit(data);
 	            $scope.$emit('UNLOAD');
-	            sessionStorage.setItem( "Supplierscache",JSON.stringify($scope.suppliers) );
 	        });
     	}
         console.log($scope.suppliers);
@@ -115,7 +115,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     function arraySplit(data){
         var newArr = [];
         while(data.length !== 0){
-            var splitArr = data.splice(0, 2);
+            var splitArr = data.splice(0, 10);
             //$scope.suppliers.splice(0, 2);
             newArr.push(splitArr);
         }

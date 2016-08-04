@@ -3,6 +3,9 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
     $scope.clients = [];
     $scope.clientEdit = {};
+    $scope.splitArr = [];
+    $scope.newArr = [];
+    $scope.idx = 0;
     var savebtnClicked = false;
     var user = GlobalSvc.getUser();
 
@@ -76,14 +79,16 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     function fetchClients(){
     	if (sessionStorage.getItem( "Clientscache")) {
     		$scope.clients = JSON.parse(sessionStorage.getItem( "Clientscache"));
+            $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "Clientscache")));
     		$scope.$emit('UNLOAD');
     	} else {
 	        var url = Settings.url + 'Get?method=Clients_readlist';
 	        console.log(url);
 	        $http.get(url).success(function(data){
+                sessionStorage.setItem( "Clientscache",JSON.stringify(data) );
 	            $scope.clients = data;
+                $scope.splitArr = arraySplit($scope.clients);
 	            $scope.$emit('UNLOAD');
-	            sessionStorage.setItem( "Clientscache",JSON.stringify($scope.clients) );
 	        });
     	}
         console.log($scope.clients);
@@ -103,6 +108,21 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
                 $scope.$emit('UNLOAD');
             });
         }
+    }
+    function arraySplit(data){
+        var newArr = [];
+        while(data.length !== 0){
+            var splitArr = data.splice(0, 10);
+            //$scope.suppliers.splice(0, 2);
+            newArr.push(splitArr);
+        }
+        return newArr;
+    };
+
+    $scope.navigate = function(change){
+        changedVal = $scope.idx + change;
+        if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
+        $scope.idx = changedVal;
     }
 
     function constructor(){

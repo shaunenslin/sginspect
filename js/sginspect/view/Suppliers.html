@@ -17,15 +17,15 @@
                   <div class="col-xs-2">{{supplier.SupplierID}}</div>
                   <div class="col-xs-2">{{supplier.Name}}</div>
               	</div>
-            </a>
-            <div class="btn-group" role="group" aria-label="..." style="margin-top: 35%; margin-left: 25%; position:fixed">
-                <button type="button" ng-click="navigate(1)" class="btn btn-default btn-lg pull-right" ng-disabled="idx === splitArr.length"><span class="glyphicon glyphicon-chevron-right"></span>
-                </button>
-                <button type="button" class="btn btn-default btn-lg pull-right">Page {{idx}} out of {{splitArr.length}}
-                </button>
+            </a>    
+        </div>
+        <div class="btn-group" role="group" aria-label="..." style="margin-top: 5%; margin-left: 25%; position:fixed" ng-show="mode === 'list'">
                 <button type="button" ng-click="navigate(-1)" class="btn btn-default btn-lg" ng-disabled="idx === 0"><span class="glyphicon glyphicon-chevron-left"></span>
                 </button>
-            </div>    
+                <button type="button" class="btn btn-default btn-lg">Page {{idx + 1}} out of {{splitArr.length}}
+                </button>
+                <button type="button" ng-click="navigate(1)" class="btn btn-default btn-lg" ng-disabled="idx === splitArr.length - 1"><span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
         </div>
         <!-- Deals With Weather The User Edits or Adds A New Record -->
         <div ng-show="mode ===  'form'" >
