@@ -127,7 +127,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.onPhotoClicked = function(field){
 		if(field === 'other-photos' && $routeParams.screennum == 6){
 			saveMultiplePhotos(field);
-			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+			$alert({content:"Image(s) captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 		}else{
 			var reader = new FileReader();
 			reader.addEventListener("load", function () {
@@ -183,13 +183,17 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		$scope.$apply();
 	}
 
-	function fetchGPs(){
+	$scope.fetchGPS = function(){
+		$scope.$emit('LOAD');
 		GlobalSvc.getGPS(function(position){
 			$scope.Form.JSON.Latitude  = position ? position.coords.latitude : "";
 			$scope.Form.JSON.Longitude = position ? position.coords.longitude : "";
+			if($scope.inspectiontype !== 'audit' || $scope.inspectiontype !== 'afterserviceevaluation') $alert({content:"GPS location captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.$emit('UNLOAD');
+			$scope.$apply();
 		},function(error){
-			console.log('error! ' + error);
+			if($scope.inspectiontype !== 'audit' || $scope.inspectiontype !== 'afterserviceevaluation') $alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'success', show:true});
+			console.log( error);
 			$scope.Form.JSON.Latitude = '';
 			$scope.Form.JSON.Longitude = '';
 			$scope.$emit('UNLOAD');
@@ -221,17 +225,16 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		if(!$scope.Form.JSON.validForm){
 			$alert({ content: "Please enter in all required (*) fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			return;
-		}
-		if ($scope.inspectiontype !== 'supplierevaluation'){
+		}else if ($scope.inspectiontype !== 'supplierevaluation'){
 			if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
 				$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
 				return;
 			}
 		}else{
-			if($scope.signature.techAdvisor[1] === emptySignature || !$scope.techAdvisor || $scope.signature.manager[1] === emptySignature || !$scope.signature.manager){
+			if($scope.signature.techAdvisor[1] === emptySignature || !$scope.signature.techAdvisor || $scope.signature.manager[1] === emptySignature || !$scope.signature.manager){
 				$alert({ content: "You cannot continue without adding all required signature(s)", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				return;
 			}
-			return;
 		}
 		$scope.$emit('UNLOAD');
 		saveForm();
@@ -364,7 +367,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$scope.$emit('heading',{heading: 'Supplier Evaluation', icon : 'fa fa-thumbs-o-up'});
 				break;
 			case 'afterserviceevaluation' : 
-				$scope.$emit('heading',{heading: 'After Service Evaluation', icon : 'fa fa-car'});
+				$scope.$emit('heading',{heading: 'After Service Inspection', icon : 'fa fa-car'});
 				break;
 			case 'audit' :
 			case 'customervisit' :
@@ -413,7 +416,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.view = 'form';
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 			if ($scope.inspectiontype === 'technicalreport') fetchFormHeaders();
-			fetchGPs();
+			if($scope.inspectiontype === 'audit' || $scope.inspectiontype === 'afterserviceevaluation') $scope.fetchGPS();
 			if ($scope.inspectiontype === 'supplierevaluation') fetchClient();
 			$scope.Form.JSON.RegNumber = 'HTT 091 GP';
 			$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
