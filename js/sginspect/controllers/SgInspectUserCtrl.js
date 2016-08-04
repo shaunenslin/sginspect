@@ -141,7 +141,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     function arraySplit(data){
         var newArr = [];
         while(data.length !== 0){
-            var splitArr = data.splice(0, 10);
+            var splitArr = data.splice(0, 25);
             //$scope.suppliers.splice(0, 2);
             newArr.push(splitArr);
         }
