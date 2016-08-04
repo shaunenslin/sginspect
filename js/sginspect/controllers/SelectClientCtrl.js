@@ -413,7 +413,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.view = 'form';
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 			if ($scope.inspectiontype === 'technicalreport') fetchFormHeaders();
-			if ($scope.inspectiontype === 'technicalreport' || $scope.inspectiontype === 'customervisit' ) fetchGPs();
+			fetchGPs();
 			if ($scope.inspectiontype === 'supplierevaluation') fetchClient();
 			$scope.Form.JSON.RegNumber = 'HTT 091 GP';
 			$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
