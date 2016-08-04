@@ -3,6 +3,9 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
     $scope.users = [];
     $scope.userEdit = {};
+    $scope.newArr = [];
+    $scope.splitArr = [];
+    $scope.idx = 0;
     $scope.checkboxs = {'isAdmin' : true};
     var savebtnClicked = false;
     var user = GlobalSvc.getUser();
@@ -56,12 +59,39 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
                     return;
                 }else{
                     save();
+                    sendMail()
                 }
             });
         }else{
             save();
         }
     };
+    function sendMail(){
+        var onSuccess = function(){
+            $scope.$emit('UNLOAD');
+            $alert({content: 'Email has been sent', duration:4, placement:'top-right', type:'success', show:true});
+        $scope.$apply();
+        };
+
+        var onError = function(err){
+            $scope.$emit('UNLOAD');
+            $alert({content: 'Error sending email', duration:4, placement:'top-right', type:'error', show:true});
+            $scope.$apply();
+      };
+
+        var body = '<div><p>Hello ' + $scope.userEdit.Name + '. You have successfuly been registered to the ' + Settings.appName + ' website. Below are your login details. Enjoy! </p><p><b>Username: </b>' + $scope.userEdit.UserID + '</p><p><b>Password: </b>' + $scope.userEdit.PasswordHash + '<p>Kind Regards</p></div>';
+        var url = Settings.url + 'Send?userid=' + $scope.userEdit.UserID + '&subject= Login details for - ' + Settings.appName;
+
+        $.ajax({
+            type : 'POST',
+            data : body,
+            datatype : 'json',
+            url : url,
+            crossDomain: true,
+            success : onSuccess,
+            error : onError
+        });
+    }
 
     function save(){
         $scope.$emit('LOAD');
@@ -94,17 +124,34 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     function fetchUsers(){
         if (sessionStorage.getItem( "UsersCache")) {
             $scope.users = JSON.parse(sessionStorage.getItem( "UsersCache"));
+            $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "UsersCache")));
             $scope.$emit('UNLOAD');
         } else {
             var url = Settings.url + 'Get?method=usp_user_readlist&supplierid=' + user.SupplierID;
             console.log(url);
             $http.get(url).success(function(data){
+                sessionStorage.setItem( "UsersCache",JSON.stringify(data));
                 $scope.users = data;
+                $scope.splitArr = arraySplit($scope.users);
                 $scope.$emit('UNLOAD');
-                sessionStorage.setItem( "UsersCache",JSON.stringify($scope.users) );
             });
         }
         console.log($scope.users);
+    }
+    function arraySplit(data){
+        var newArr = [];
+        while(data.length !== 0){
+            var splitArr = data.splice(0, 10);
+            //$scope.suppliers.splice(0, 2);
+            newArr.push(splitArr);
+        }
+        return newArr;
+    };
+
+    $scope.navigate = function(change){
+        changedVal = $scope.idx + change;
+        if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
+        $scope.idx = changedVal;
     }
 
     function fetchUser(){

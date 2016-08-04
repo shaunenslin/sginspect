@@ -2,7 +2,7 @@
 	{"name": "Users",
 	 "href": "#/SgUsers",
 	 "icon": "fa fa-users"},
-	{"name": "Clients",
+	{"name": "Customer Management",
 	 "href": "#/Clients",
 	 "icon": "fa fa-puzzle-piece"},
 	{"name": "Suppliers",
