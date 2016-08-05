@@ -141,7 +141,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     function arraySplit(data){
         var newArr = [];
         while(data.length !== 0){
-            var splitArr = data.splice(0, 10);
+            var splitArr = data.splice(0, 25);
             //$scope.suppliers.splice(0, 2);
             newArr.push(splitArr);
         }
@@ -159,6 +159,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             //newUserObject();
             //$scope.userEdit = JSON.parse(sessionStorage.getItem('currentuseredit'));
             $scope.userEdit = newUserObject();
+            $scope.userEdit.Tel = parseInt($scope.userEdit.Tel);
             $scope.$emit('UNLOAD');
         }else{
             var url = Settings.url + 'Get?method=usp_user_readsingle&userid='+ $scope.id;
@@ -166,6 +167,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             $http.get(url).success(function(data){
                 //get the First Object because it comes back because it is what stores the user data
                 $scope.userEdit = data[0];
+                $scope.userEdit.Tel = parseInt($scope.userEdit.Tel);
                 $scope.$emit('UNLOAD');
             });
         }
