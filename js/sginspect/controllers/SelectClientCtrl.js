@@ -192,7 +192,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.$emit('UNLOAD');
 			$scope.$apply();
 		},function(error){
-			if($scope.inspectiontype !== 'audit' || $scope.inspectiontype !== 'afterserviceevaluation') $alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'success', show:true});
+			if($scope.inspectiontype !== 'audit' || $scope.inspectiontype !== 'afterserviceevaluation') $alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'danger', show:true});
 			console.log( error);
 			$scope.Form.JSON.Latitude = '';
 			$scope.Form.JSON.Longitude = '';
