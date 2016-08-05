@@ -33,6 +33,9 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         if(!$scope.supplierEdit.SupplierID){
             $alert({ content: "Please fill in the Supplier Code correctly", duration: 4, placement: 'top-right', type: 'danger', show: true});
             return;
+        }else if(!$scope.supplierEdit.Name){
+            $alert({ content: "Please fill in the Supplier Name", duration: 4, placement: 'top-right', type: 'danger', show: true});
+            return;
         }
         savebtnClicked = true;
         if($routeParams.id === 'new'){
