@@ -19,11 +19,11 @@
               	</div>
             </a>    
         </div>
-
+        <div ng-if="mode === 'list'">
         <button type="button" ng-click="navigate(-1)" class="btn btn-default btn-sm pull-left" ng-disabled="idx === 0"><span class="glyphicon glyphicon-chevron-left"></span>back</button>
         <p style="text-align : center">Page {{idx + 1}} of {{splitArr.length}}</button>
         <button type="button" ng-click="navigate(1)" class="btn btn-default btn-sm pull-right" ng-disabled="idx === splitArr.length - 1">next<span class="glyphicon glyphicon-chevron-right"></span></button>
-        
+        </div>
         <!-- Deals With Weather The User Edits or Adds A New Record -->
         <div ng-show="mode ===  'form'" >
             <form style="margin-top: 5px">
