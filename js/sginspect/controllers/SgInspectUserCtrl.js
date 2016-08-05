@@ -48,6 +48,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
 
     $scope.saveUser = function(){
         savebtnClicked = true;
+        if(isNaN($scope.userEdit.Tel) === true){$alert({ content: "Please fill a valid Phone Number", duration: 4, placement: 'top-right', type: 'danger', show: true});return;}
         if($scope.userEdit.UserID === undefined || $scope.userEdit.UserID === ''){
             $alert({ content: "Please fill a valid Username", duration: 4, placement: 'top-right', type: 'danger', show: true}); 
             return;
