@@ -58,7 +58,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         }
         if($routeParams.id === 'new'){
             //Checking if the user already exists //this Code Could Be Improved
-            $http.get(Settings.url + 'Get?method=usp_user_readsingle&userid=' + toString($scope.userEdit.UserID)).success(function(data){
+            $http.get(Settings.url + 'Get?method=usp_user_readsingle&userid=' + "'" + $scope.userEdit.UserID + "'").success(function(data){
                 //get the First Object because it comes back as array
                 if(data.length){
                     delete $scope.errorMsg;
@@ -170,7 +170,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             $scope.userEdit.Tel = parseInt($scope.userEdit.Tel);
             $scope.$emit('UNLOAD');
         }else{
-            var url = Settings.url + 'Get?method=usp_user_readsingle&userid='+ $scope.id;
+            var url = Settings.url + 'Get?method=usp_user_readsingle&userid=' + "'" +$scope.id + "'";
             console.log(url);
             $http.get(url).success(function(data){
                 //get the First Object because it comes back because it is what stores the user data
