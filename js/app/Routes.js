@@ -13,6 +13,13 @@ function AppRoutes($routeProvider, DaoSvc){
     $routeProvider.when('/Clients/:mode/:id',{templateUrl : "js/sginspect/view/Clients.html"});
     $routeProvider.when("/Suppliers",{templateUrl:"js/sginspect/view/Suppliers.html"});
     $routeProvider.when('/Suppliers/:mode/:id',{templateUrl : "js/sginspect/view/Suppliers.html"});
+    $routeProvider.when('/audit', {templateUrl : "js/sginspect/view/auditForm.html"});
+    $routeProvider.when('/selectclient/:inspectiontype/:screennum', {templateUrl : "js/sginspect/view/selectClient.html"});
+    $routeProvider.when('/scanlicense/:inspectiontype/:screennum', {templateUrl : "js/sginspect/view/selectClient.html"});
+    $routeProvider.when('/vinpicture/:inspectiontype/:screennum', {templateUrl : "js/sginspect/view/selectClient.html"});
+    $routeProvider.when('/vinmatch/:inspectiontype/:screennum', {templateUrl : "js/sginspect/view/selectClient.html"});
+    $routeProvider.when('/licensephoto/:inspectiontype/:screennum', {templateUrl : "js/sginspect/view/selectClient.html"});
+    $routeProvider.when('/licensematch/:inspectiontype/:screennum', {templateUrl : "js/sginspect/view/selectClient.html"});
 }
 
 function TestCtrl($templateCache) {
