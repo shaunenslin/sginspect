@@ -7,15 +7,21 @@
         <div class=" list-group" ng-show="mode === 'list' " >
             <div class="row">
                 <div class="row" style="margin-left:10px; margin-right:5px;">
-                   <div class="col-xs-4  col-sm-2">Supplier Code</div>
-                    <div class="col-xs-7  col-sm-2">Supplier Name</div>
+                   <div class="col-xs-2  col-sm-2">Supplier Code</div>
+                    <div class="col-xs-2  col-sm-2">Supplier Name</div>
+                    <div class="col-xs-2  col-sm-2">Supplier Address</div>
+                    <div class="col-xs-2  col-sm-2">Supplier Longitute</div>
+                    <div class="col-xs-2  col-sm-2">Supplier Latitude</div>
                 </div>
             </div>
             <a href="#/Suppliers/form/{{supplier.SupplierID}}" class="list-group-item" ng-repeat="supplier in splitArr[idx] | filter: searchText" ng-if="supplier.Active">
                 <span class="glyphicon glyphicon-chevron-right pull-right"></span>
             	<div class="row">
-                  <div class="col-xs-2">{{supplier.SupplierID}}</div>
-                  <div class="col-xs-2">{{supplier.Name}}</div>
+                  <div class="col-sm-2">{{supplier.SupplierID}}</div>
+                  <div class="col-sm-2">{{supplier.Name}}</div>
+                  <div class="col-sm-2">{{supplier.Address}}</div>
+                  <div class="col-sm-2">{{supplier.Longitute}}</div>
+                  <div class="col-sm-2">{{supplier.Latitude}}</div>
               	</div>
             </a>    
         </div>
@@ -36,6 +42,21 @@
                 <div class="form-group">
                     <label for="Name">Name</label>
                     <input type="text" class="form-control" id="Name" ng-model="supplierEdit.Name" maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label for="Address">Address</label>
+                    <input type="text" class="form-control" id="Address" ng-model="supplierEdit.Address">
+                </div>
+
+                <div class="form-group">
+                    <label for="Longitute">Longitute</label>
+                    <input type="text" class="form-control" id="Longitute" ng-model="supplierEdit.Longitute" >
+                </div>
+
+                <div class="form-group">
+                    <label for="Latitude">Latitude</label>
+                    <input type="text" class="form-control" id="Latitude" ng-model="supplierEdit.Latitude" >
                 </div>
             </form>
             <div class="btn btn-danger btn-block" ng-hide=" id === 'new' " ng-click="deleteSupplier()"><span class="glyphicon glyphicon-floppy-remove"></span> Delete</div>

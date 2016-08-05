@@ -14,6 +14,9 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         newSupplier.SupplierID;
         newSupplier.Name = "";
         newSupplier.Active = 1;
+        newSupplier.Address = '';
+        newSupplier.Longitude = '';
+        newSupplier.Latitude = '';
 
         return newSupplier;
 	}
