@@ -21,7 +21,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         user.IsLockedOut = "";
         user.LastLoginDate = "";
         user.FailedPasswordAttemptCount = "";
-        user.Email = "";
+        user.Email = user.UserID;
         user.Country = "";
         user.Deleted = 0;
         user.RepID = "";
@@ -67,7 +67,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
                     return;
                 }else{
                     save();
-                    sendMail()
+                    sendMail();
                 }
             });
         }else{
@@ -106,6 +106,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         sessionStorage.removeItem( "UsersCache");
         var url = Settings.url + '/Post?method=usp_user_modify2';
         // for backward compatibility
+        $scope.userEdit.Email = $scope.userEdit.UserID;
         $scope.userEdit.PasswordSalt = $scope.userEdit.Role;
         GlobalSvc.postData(url,$scope.userEdit,function(){
             $scope.$emit('UNLOAD');
@@ -144,7 +145,6 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
                 $scope.$emit('UNLOAD');
             });
         }
-        console.log($scope.users);
     }
     function arraySplit(data){
         var newArr = [];

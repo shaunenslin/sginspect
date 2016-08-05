@@ -8,8 +8,8 @@
         <div class=" list-group" ng-show="mode === 'list' " >
             <div class="row">
                 <div class="row" style="margin-left:10px; margin-right:5px;">
-                   <div class="col-xs-4  col-sm-2">Client Code</div>
-                    <div class="col-xs-7  col-sm-2">Client Name</div>
+                   <div class="col-xs-4  col-sm-2">Customer Code</div>
+                    <div class="col-xs-7  col-sm-2">Customer Name</div>
                 </div>
             </div>
             <a href="#/Clients/form/{{client.ClientID}}" class="list-group-item" ng-repeat="client in clients | filter: searchText" ng-if="client.Active">
@@ -21,16 +21,17 @@
             </a>
 
         </div>
+        <div ng-if="mode === 'list'">
         <button type="button" ng-click="navigate(-1)" class="btn btn-default btn-sm pull-left" ng-disabled="idx === 0"><span class="glyphicon glyphicon-chevron-left"></span>back</button>
         <p style="text-align : center">Page {{idx + 1}} of {{splitArr.length}}</button>
         <button type="button" ng-click="navigate(1)" class="btn btn-default btn-sm pull-right" ng-disabled="idx === splitArr.length - 1">next<span class="glyphicon glyphicon-chevron-right"></span></button>
-
+        </div>    
         <!-- Deals With Weather The User Edits or Adds A New Record -->
         <div ng-show="mode ===  'form'" >
             <form style="margin-top: 5px">
 
                 <div class="form-group">
-                    <label for="Code">Client Code</label>
+                    <label for="Code">Customer Code</label>
                     <input type="number" min="1" max="999" class="form-control" id="Code" ng-model="clientEdit.ClientID" ng-disabled="id !== 'new'">
                 </div>
 
