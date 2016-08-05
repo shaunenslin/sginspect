@@ -19,31 +19,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			UserID 		: GlobalSvc.getUser().UserID,
 			FormDate	: moment().format('YYYY-MM-DD HH:mm:ss'),
 			JSON 		: {
-				"UserField01" : "",
-				"UserField02" : "",
-				"UserField03" : moment().format('YYYY-MM-DD HH:mm:ss'),
-				"UserField04" : "",
-				"UserField05" : "",
-				"UserField06" : "",
-				"UserField07" : "",
-				"UserField08" : "",
-				"UserField09" : "",
-				"UserField10" : "",
-				"UserField11" : "",
-				"UserField12" : "",
-				"UserField13" : "",
-				"UserField14" : "",
-				"UserField15" : "",
-				"UserField16" : "",
-				"UserField17" : "",
-				"UserField18" : "",
-				"UserField19" : "",
-				"UserField20" : "",
-				"UserField21" : "",
-				"UserField22" : "",
-				"UserField23" : "",
-				"UserField24" : "",
-				"UserField25" : ""
 			}
 		}
 	}
@@ -112,7 +87,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	$scope.onBackClicked = function(){
 		if($routeParams.screennum == 6 && ($scope.inspectiontype === 'customervisit' || $scope.inspectiontype === 'supplierevaluation'))
-			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0; 
+			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0;
 		else
 			var path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
 		$location.path(path);
@@ -277,7 +252,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			sessionStorage.removeItem('currentForm');
 			sessionStorage.removeItem('currentVinNumber');
 			sessionStorage.removeItem('currentClientsCache');
-			$location.path('/');	
+			$location.path('/');
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
@@ -311,7 +286,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	        }
     	}
     	if(Imgfiles.length > 0) $scope.$apply();
-        
+
     }
 
     /*
@@ -366,7 +341,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			case 'supplierevaluation' :
 				$scope.$emit('heading',{heading: 'Supplier Evaluation', icon : 'fa fa-thumbs-o-up'});
 				break;
-			case 'afterserviceevaluation' : 
+			case 'afterserviceevaluation' :
 				$scope.$emit('heading',{heading: 'After Service Inspection', icon : 'fa fa-car'});
 				break;
 			case 'audit' :
@@ -433,8 +408,8 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.$emit('UNLOAD');
 			$scope.$watch(function(scope) { return scope.Form.JSON.UserField05 },
               function(newValue, oldValue) {
-                  if (newValue && newValue === ' Other (Please specify)' && $scope.inspectiontype === 'customervisit'){ 
-                  	$scope.showForm = true; 
+                  if (newValue && newValue === ' Other (Please specify)' && $scope.inspectiontype === 'customervisit'){
+                  	$scope.showForm = true;
                   	return;
                   }
                   $scope.showForm = false;
