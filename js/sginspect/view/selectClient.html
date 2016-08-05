@@ -119,7 +119,7 @@
 					</div>
 					<div class="form-group">
 						<label for="address" class="col-sm-3">Coordinates</label>
-						<div class="col-sm-9"><p> </p></div>
+						<div class="col-sm-9"><p>{{Form.JSON.Longitude}} </p></div>
 					</div>
 					
 				</div>
@@ -255,6 +255,8 @@
 				</div>
 			</div>
 		</form>
+		<!-- GPS Capture  -->
+			<button ng-if="inspectiontype !== 'audit' || inspectiontype !== 'afterserviceevaluation'" ng-click="fetchGPS()" class="GPS">Capture GPS</button><br/>
 		<!-- JsonForm  -->
 		<jsonform inline="true" formid="session.formid" fields="session.displayfields" asyncRslt="[]" json="Form.JSON" settings="session.settings"></jsonform>
 		<div style="margin-top:10px;">
