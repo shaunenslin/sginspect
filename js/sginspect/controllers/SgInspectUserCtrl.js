@@ -48,9 +48,17 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
 
     $scope.saveUser = function(){
         savebtnClicked = true;
+        if($scope.userEdit.UserID === undefined || $scope.userEdit.UserID === ''){
+            $alert({ content: "Please fill a valid Username", duration: 4, placement: 'top-right', type: 'danger', show: true}); 
+            return;
+        }else if($scope.userEdit.Name ==='' && $scope.userEdit.Country === ''){
+             $alert({ content: "Please fill in at least one of the Name fields", duration: 4, placement: 'top-right', type: 'danger', show: true}); 
+            return;
+
+        }
         if($routeParams.id === 'new'){
             //Checking if the user already exists //this Code Could Be Improved
-            $http.get(Settings.url + 'Get?method=usp_user_readsingle&userid=' + $scope.userEdit.UserID).success(function(data){
+            $http.get(Settings.url + 'Get?method=usp_user_readsingle&userid=' + toString($scope.userEdit.UserID)).success(function(data){
                 //get the First Object because it comes back as array
                 if(data.length){
                     delete $scope.errorMsg;
