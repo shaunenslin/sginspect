@@ -1,0 +1,260 @@
+<div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="SupplierEvaluationCtrl">
+   <!-- Screen 6 Inspection Form -->
+	  	<div >
+	  		<form style="margin-top: 10px;" class="form-horizontal" name="supplierevaluationform">
+				<div ng-if="mode==='existing'">
+	                <div class="form-group">
+						<label for="SupplierID" class="col-sm-3">Supplier</label>
+				        <div class="col-sm-9" >
+							<input required id="Supplier" type="text" class="form-control" placeholder="Start typing a supplier, then select it" ng-model="Form.JSON.SupplierID" bs-typeahead bs-options="supplier.SupplierID as supplier.Name for supplier in Suppliers"/>
+						</div>
+					</div>
+					<div class="well well-sm">
+						<div class="row">
+							<div class="col-xs-3">Address</div>
+							<div class="col-xs-9">{{currentsupplier.Address}}</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">GPS</div>
+							<div class="col-xs-9">{{currentsupplier.Longitude}}</div>
+						</div>
+					</div>
+					<div class="form-group" style="margin-left:0px;margin-right:0px;">
+						<button ng-disabled="!Form.JSON.SupplierID" class="btn btn-primary btn-block" ng-click="fetchGPS()">Update GPS</button>
+					</div>
+					<div class="form-group">
+						<label for="EvaluationDate" class="col-sm-3">Evaluation Date</label>
+						<div class="col-sm-9"><input required ng-disabled="!Form.JSON.SupplierID" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="Form.JSON.EvaluationDate"/></div>
+					</div>
+				</div>
+
+				<div ng-if="mode==='new'">
+					<div class="form-group" >
+						<label for="SupplierID" class="col-sm-3">SupplierID</label>
+				        <div class="col-sm-9" >
+							<input  required id="Supplier"  type="text" class="form-control" placeholder="Enter a new Supplier ID" ng-model="Form.JSON.SupplierID"/>
+						</div>
+					</div>
+					<div class="form-group" >
+						<label for="Name" class="col-sm-3">Name</label>
+				        <div class="col-sm-9" >
+							<input  required id="Name" ng-disabled="!Form.JSON.SupplierID"  type="text" class="form-control" placeholder="Enter the suppliers name" ng-model="Form.JSON.Name"/>
+						</div>
+					</div>
+					<div class="form-group" style="margin-left:0px;margin-right:0px;">
+						<button class="btn btn-primary btn-block" ng-disabled="!Form.JSON.Name" ng-click="fetchGPS()">Capture GPS</button>
+					</div>
+					<div class="form-group">
+						<label for="EvaluationDate" class="col-sm-3">Evaluation Date</label>
+						<div class="col-sm-9"><input required ng-disabled="!Form.JSON.Latitude" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="Form.JSON.EvaluationDate"/></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="Address" class="col-sm-3">Address</label>
+					<div class="col-sm-9"><input required ng-disabled="!Form.JSON.EvaluationDate" id="Address"  type="text" class="form-control" ng-model="Form.JSON.Address"/></div>
+				</div>
+				<div class="form-group">
+					<label for="SupplierFunction" class="col-sm-3">Supplier Function</label>
+					<div class="col-sm-9"><input required ng-disabled="!Form.JSON.Address" id="SupplierFunction"  type="text" class="form-control" ng-model="Form.JSON.SupplierFunction"/></div>
+				</div>
+				<div class="well well-sm">
+					<h4>Evaluation</h4>
+					<div class="row">
+						<div ng-if="!isPhoneGap" class="col-xs-8">
+							<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+								<input style="margin-top: 10px;" id="evaluation-select" name="file[]" type="file" >
+							</form>
+						</div>
+						<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('evaluation', evaluationimages)" class="btn btn-success">Upload</button></div>
+						<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('evaluation', evaluationimages)" class="btn btn-success btn-block">Capture Photo</button></div>
+					</div>
+					<div style="margin-top : 5px;">
+						<table>
+							<tr ng-repeat="row in evaluationimages">
+								<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+								<td><button ng-click="removeImage($index, evaluationimages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div ng-class="(Form.JSON.Reception === 'Bad') ? 'well well-sm': ''">
+					<div class="form-group">
+						<label for="Reception" class="col-sm-3">Reception</label>
+						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.SupplierFunction" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Reception"><option value="">-- please choose --</option></select></div>
+					</div>
+					<div class="form-group" ng-if="Form.JSON.Reception === 'Bad'">
+						<label for="ReceptionComment" class="col-sm-3">Comment</label>
+						<div class="col-sm-9"><input required id="ReceptionComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.ReceptionComment"/></div>
+					</div>
+					<div ng-if="Form.JSON.Reception === 'Bad'">
+						<div class="row">
+							<div ng-if="!isPhoneGap" class="col-xs-8">
+								<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+									<input style="margin-top: 10px;" id="reception-select" name="file[]" type="file" >
+								</form>
+							</div>
+							<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('reception', ReceptionImages)" class="btn btn-success">Upload</button></div>
+							<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('reception', ReceptionImages)" class="btn btn-success btn-block">Capture Photo</button></div>
+						</div>
+						<div style="inset">
+							<table>
+								<tr ng-repeat="row in receptionimages">
+									<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+									<td><button ng-click="removeImage($index, ReceptionImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label for="Procedures" class="col-sm-3">Procedures</label>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Reception" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Procedures"><option value="">-- please choose --</option></select></div>
+				</div>
+				<div class="form-group" ng-if="Form.JSON.Procedures === 'Bad'">
+					<label for="ProceduresComment" class="col-sm-3">Comment</label>
+					<div class="col-sm-9"><input required id="ProceduresComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.ProceduresComment"/></div>
+				</div>
+
+				<div class="form-group">
+					<label for="Workmanship" class="col-sm-3">Workmanship</label>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Procedures" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Workmanship"><option value="">-- please choose --</option></select></div>
+				</div>
+				<div class="form-group" ng-if="Form.JSON.Workmanship === 'Bad'">
+					<label for="WorkmanshipComment" class="col-sm-3">Comment</label>
+					<div class="col-sm-9"><input required id="WorkmanshipComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.WorkmanshipComment"/></div>
+				</div>
+
+				<div class="form-group">
+					<label for="Downtime" class="col-sm-3">Downtime</label>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Workmanship" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Downtime"><option value="">-- please choose --</option></select></div>
+				</div>
+				<div class="form-group" ng-if="Form.JSON.Downtime === 'Bad'">
+					<label for="DowntimeComment" class="col-sm-3">Comment</label>
+					<div class="col-sm-9"><input required id="DowntimeComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.DowntimeComment"/></div>
+				</div>
+
+				<div class="form-group">
+					<label for="Cleanliness" class="col-sm-3">Cleanliness</label>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Downtime" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Cleanliness"><option value="">-- please choose --</option></select></div>
+				</div>
+				<div ng-class="(Form.JSON.Cleanliness === 'Bad') ? 'well well-sm': ''">
+					<div class="form-group" ng-if="Form.JSON.Cleanliness === 'Bad'">
+						<label for="CleanlinessComment" class="col-sm-3">Comment</label>
+						<div class="col-sm-9"><input required id="CleanlinessComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.CleanlinessComment"/></div>
+					</div>
+					<div ng-if="Form.JSON.Cleanliness === 'Bad'">
+						<div class="row">
+							<div ng-if="!isPhoneGap" class="col-xs-8">
+								<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+									<input style="margin-top: 10px;" id="cleanliness-select" name="file[]" type="file" >
+								</form>
+							</div>
+							<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('cleanliness', CleanlinessImages)" class="btn btn-success">Upload</button></div>
+							<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('cleanliness', CleanlinessImages)" class="btn btn-success btn-block">Capture Photo</button></div>
+						</div>
+						<div style="margin-top : 5px;">
+							<table>
+								<tr ng-repeat="row in cleanlinessimages">
+									<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+									<td><button ng-click="removeImage($index, CleanlinessImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label for="Conformity" class="col-sm-3">Conformity</label>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Cleanliness" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Conformity"><option value="">-- please choose --</option></select></div>
+				</div>
+				<div class="form-group" ng-if="Form.JSON.Conformity === 'Bad'">
+					<label for="ConformityComment" class="col-sm-3">Comment</label>
+					<div class="col-sm-9"><input required id="ConformityComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.ConformityComment"/></div>
+				</div>
+
+				<div class="form-group">
+					<label for="PartsAvailibility" class="col-sm-3">Parts Availibility</label>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Conformity" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.PartsAvailibility"><option value="">-- please choose --</option></select></div>
+				</div>
+				<div class="form-group" ng-if="Form.JSON.PartsAvailibility === 'Bad'">
+					<label for="PartsAvailibilityComment" class="col-sm-3">Comment</label>
+					<div class="col-sm-9"><input required id="PartsAvailibilityComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.PartsAvailibilityComment"/></div>
+				</div>
+
+				<div class="form-group">
+					<label for="Facility" class="col-sm-3">Facility</label>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.PartsAvailibility" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Facility"><option value="">-- please choose --</option></select></div>
+				</div>
+				<div class="form-group" ng-if="Form.JSON.Facility === 'Bad'">
+					<label for="FacilityComment" class="col-sm-3">Comment</label>
+					<div class="col-sm-9"><input required id="FacilityComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.FacilityComment"/></div>
+				</div>
+
+				<div class="form-group">
+					<label for="Warranties" class="col-sm-3">Warranties</label>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Facility" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Warranties"><option value="">-- please choose --</option></select></div>
+				</div>
+				<div class="form-group" ng-if="Form.JSON.Facility === 'Bad'">
+					<label for="WarrantiesComment" class="col-sm-3">Comment</label>
+					<div class="col-sm-9"><input required id="WarrantiesComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.WarrantiesComment"/></div>
+				</div>
+
+				<div class="form-group">
+					<label for="Warranties" class="col-sm-3">Bulletins</label>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Warranties" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Bulletins"><option value="">-- please choose --</option></select></div>
+				</div>
+				<div class="form-group" ng-if="Form.JSON.Bulletins === 'Bad'">
+					<label for="BulletinsComment" class="col-sm-3">Comment</label>
+					<div class="col-sm-9"><input required id="BulletinsComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.BulletinsComment"/></div>
+				</div>
+
+				<div class="form-group">
+					<label for="SpecialToolsTraining" class="col-sm-3">Special tools & training</label>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Bulletins" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.SpecialToolsTraining"><option value="">-- please choose --</option></select></div>
+				</div>
+				<div ng-class="(Form.JSON.SpecialToolsTraining === 'Bad') ? 'well well-sm': ''">
+					<div class="form-group" ng-if="Form.JSON.SpecialToolsTraining === 'Bad'">
+						<label for="SpecialToolsTrainingComment" class="col-sm-3">Comment</label>
+						<div class="col-sm-9"><input required id="SpecialToolsTrainingComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.SpecialToolsTrainingComment"/></div>
+					</div>
+					<div ng-if="Form.JSON.SpecialToolsTraining === 'Bad'">
+						<div class="row">
+							<div ng-if="!isPhoneGap" class="col-xs-8">
+								<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+									<input style="margin-top: 10px;" id="specialised-select" name="file[]" type="file" >
+								</form>
+							</div>
+							<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('specialised', SpecialToolsTrainingImages)" class="btn btn-success">Upload</button></div>
+							<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('specialised', SpecialToolsTrainingImages)" class="btn btn-success btn-block">Capture Photo</button></div>
+						</div>
+						<div style="margin-top : 5px;">
+							<table>
+								<tr ng-repeat="row in SpecialToolsTrainingimages">
+									<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+									<td><button ng-click="removeImage($index, SpecialToolsTrainingImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+
+	  		</form>
+	  	</div>
+			<!-- Signature box for * 4 forms except  supplierevaluation  -->
+			<div class="panel panel-default">
+				<div class="panel-heading">Signature  Of Technical Advisor</div>
+				<div class="panel-body">
+					<signature ng-model="signature.technicaladvisor" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">Signature  Of Workshop Manager</div>
+				<div class="panel-body">
+					<signature ng-model="signature.workshopmanager" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
+				</div>
+			</div>
+		</div>
+</div>

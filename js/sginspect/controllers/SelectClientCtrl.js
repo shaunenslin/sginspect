@@ -17,6 +17,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	$scope.onNextClicked = function(){
 		// Validation across all screens
+		var path = '';
 		if ($routeParams.screennum == 0){
 				if (!$scope.Form.ClientID) {$alert({content: "Please select a Client before continuing !", duration:5, placement:'top-right', type:'danger', show:true}); return;};
 
@@ -52,7 +53,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		}
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		 // Path is generic to cater for all navigation scenarios
-		var path = ''
 		if ($scope.inspectiontype !== 'supplierevaluation') {
 			path = ($routeParams.screennum == 5) ? $routeParams.inspectiontype : Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
 		}else{
@@ -80,7 +80,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	$scope.onBackClicked = function(){
 		if($routeParams.screennum == 6 && ($scope.inspectiontype === 'customervisit' || $scope.inspectiontype === 'supplierevaluation'))
-			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0; 
+			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0;
 		else
 			var path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
 		$location.path(path);
@@ -96,7 +96,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.onPhotoClicked = function(field){
 		if(field === 'other-photos' && $routeParams.screennum == 6){
 			saveMultiplePhotos(field);
-			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+			$alert({content:"Image(s) captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 		}else{
 			var reader = new FileReader();
 			reader.addEventListener("load", function () {
@@ -149,8 +149,8 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			case 'supplierevaluation' :
 				$scope.$emit('heading',{heading: 'Supplier Evaluation', icon : 'fa fa-thumbs-o-up'});
 				break;
-			case 'afterserviceevaluation' : 
-				$scope.$emit('heading',{heading: 'After Service Evaluation', icon : 'fa fa-car'});
+			case 'afterserviceevaluation' :
+				$scope.$emit('heading',{heading: 'After Service Inspection', icon : 'fa fa-car'});
 				break;
 			case 'audit' :
 			case 'customervisit' :

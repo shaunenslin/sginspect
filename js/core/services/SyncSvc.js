@@ -13,7 +13,8 @@ coreApp.service('SyncSvc', function($http, GlobalSvc, DaoSvc, Settings, OptionSv
     var $this = this;
     $this.syncRetry = $this.syncRetry ? $this.syncRetry : 0;
 
-    this.sync = function(SupplierID, UserID, $scope, initialSync){
+    this.sync = function(SupplierID, UserID, $scope, initialSync, postonly){
+        this.postonly = postonly;
         this.syncCount = 0;
         this.supplierID = SupplierID;
         this.userID = UserID;
@@ -30,7 +31,7 @@ coreApp.service('SyncSvc', function($http, GlobalSvc, DaoSvc, Settings, OptionSv
                     $this.postObjectsArray.push(json);
                 },
                 function(err){
-                    $this.download($this.supplierID, $this.userID, $scope); //no objects to post, so continue
+                    if (!postonly) $this.download($this.supplierID, $this.userID, $scope); //no objects to post, so continue
                 },
                 function(){
                     //$this.download($this.supplierID, $this.userID, $scope);
@@ -80,7 +81,11 @@ coreApp.service('SyncSvc', function($http, GlobalSvc, DaoSvc, Settings, OptionSv
     this.postObjects = function(index, $scope){
         // Done posting, so download
         if (index === $this.postObjectsArray.length){
-            $this.download($this.supplierID, $this.userID, $scope);
+            if ($this.postonly) {
+                if ($scope.syncCompleted) $scope.syncCompleted($scope.mustreload);
+            } else {
+                $this.download($this.supplierID, $this.userID, $scope);
+            }
             return;
         }
 

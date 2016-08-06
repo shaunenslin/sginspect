@@ -20,6 +20,8 @@ function AppRoutes($routeProvider, DaoSvc){
     $routeProvider.when('/vinmatch/:inspectiontype/:screennum', {templateUrl : "js/sginspect/view/selectClient.html"});
     $routeProvider.when('/licensephoto/:inspectiontype/:screennum', {templateUrl : "js/sginspect/view/selectClient.html"});
     $routeProvider.when('/licensematch/:inspectiontype/:screennum', {templateUrl : "js/sginspect/view/selectClient.html"});
+    $routeProvider.when('/customervisit',{templateUrl : "js/sginspect/view/customerVisit.html"});
+    $routeProvider.when('/supplierevaluation/:mode',{templateUrl : "js/sginspect/view/supplierEvaluation.html"});
 }
 
 function TestCtrl($templateCache) {

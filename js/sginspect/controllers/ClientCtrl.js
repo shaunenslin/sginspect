@@ -19,7 +19,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 	}
 
    $scope.deleteClient = function(){
-        var Active = confirm('Are you sure you want to delete this client ?');
+        var Active = confirm('Are you sure you want to delete this Customer ?');
         if (Active === true) {
             $scope.$emit('LOAD');
             $scope.clientEdit.Active = 0;
@@ -31,7 +31,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     };
     $scope.saveClient = function(){
         if(!$scope.clientEdit.ClientID){
-            $alert({ content: "Please fill in the Client Code correctly", duration: 4, placement: 'top-right', type: 'danger', show: true});
+            $alert({ content: "Please fill in the Customer Code correctly", duration: 4, placement: 'top-right', type: 'danger', show: true});
             return;
         }    
         savebtnClicked = true;
@@ -41,7 +41,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
                 if(data.length){
                     delete $scope.errorMsg;
                     delete $scope.successMsg;
-                    $alert({ content: "User already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
+                    $alert({ content: "Customer Code already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
                     return;
                 }else{
                     save();
@@ -139,7 +139,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             $scope.id = $routeParams.id;
             fetchClient();
         } else {
-            $scope.$emit('right',{label: 'Add Client' , icon : 'glyphicon glyphicon-plus', href : "#/Clients/form/new"});
+            $scope.$emit('right',{label: 'Add Customer' , icon : 'glyphicon glyphicon-plus', href : "#/Clients/form/new"});
             $scope.mode = 'list';
             fetchClients();
         }
