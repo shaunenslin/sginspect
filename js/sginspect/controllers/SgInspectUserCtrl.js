@@ -21,7 +21,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         user.IsLockedOut = "";
         user.LastLoginDate = "";
         user.FailedPasswordAttemptCount = "";
-        user.Email = "";
+        user.Email = user.UserID;
         user.Country = "";
         user.Deleted = 0;
         user.RepID = "";
@@ -48,6 +48,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
 
     $scope.saveUser = function(){
         savebtnClicked = true;
+        if(isNaN($scope.userEdit.Tel) === true){$alert({ content: "Please fill a valid Phone Number", duration: 4, placement: 'top-right', type: 'danger', show: true});return;}
         if($scope.userEdit.UserID === undefined || $scope.userEdit.UserID === ''){
             $alert({ content: "Please fill a valid Username", duration: 4, placement: 'top-right', type: 'danger', show: true}); 
             return;
@@ -58,7 +59,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         }
         if($routeParams.id === 'new'){
             //Checking if the user already exists //this Code Could Be Improved
-            $http.get(Settings.url + 'Get?method=usp_user_readsingle&userid=' + toString($scope.userEdit.UserID)).success(function(data){
+            $http.get(Settings.url + 'Get?method=usp_user_readsingle&userid=' + "'" + $scope.userEdit.UserID + "'").success(function(data){
                 //get the First Object because it comes back as array
                 if(data.length){
                     delete $scope.errorMsg;
@@ -67,7 +68,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
                     return;
                 }else{
                     save();
-                    sendMail()
+                    sendMail();
                 }
             });
         }else{
@@ -106,6 +107,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         sessionStorage.removeItem( "UsersCache");
         var url = Settings.url + '/Post?method=usp_user_modify2';
         // for backward compatibility
+        $scope.userEdit.Email = $scope.userEdit.UserID;
         $scope.userEdit.PasswordSalt = $scope.userEdit.Role;
         GlobalSvc.postData(url,$scope.userEdit,function(){
             $scope.$emit('UNLOAD');
@@ -144,7 +146,6 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
                 $scope.$emit('UNLOAD');
             });
         }
-        console.log($scope.users);
     }
     function arraySplit(data){
         var newArr = [];
@@ -170,7 +171,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             $scope.userEdit.Tel = parseInt($scope.userEdit.Tel);
             $scope.$emit('UNLOAD');
         }else{
-            var url = Settings.url + 'Get?method=usp_user_readsingle&userid='+ $scope.id;
+            var url = Settings.url + 'Get?method=usp_user_readsingle&userid=' + "'" +$scope.id + "'";
             console.log(url);
             $http.get(url).success(function(data){
                 //get the First Object because it comes back because it is what stores the user data

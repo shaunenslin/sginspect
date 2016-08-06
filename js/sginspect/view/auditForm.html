@@ -1,0 +1,310 @@
+<div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="AuditFormCtrl">
+	<h3>Vehicle Basic Details</h3>
+	<div class="panel panel-default">
+		<div class="panel-body form-horizontal">
+			<div class="form-group">
+				<label for="client" class="col-sm-3">Client</label>
+				<div class="col-sm-9"><p> {{Client.Name}}</p></div>
+			</div>
+			<div class="form-group">
+				<label for="vin" class="col-sm-3">VIN</label>
+				<div class="col-sm-9"><p>{{Form.JSON.VinNumber}}</p></div>
+			</div>
+			<div class="form-group">
+				<label for="registration" class="col-sm-3">Registration</label>
+				<div class="col-sm-9"><p>{{Form.JSON.RegNumber}}</p></div>
+			</div>
+			<div class="form-group">
+				<label for="licence-exp-date" class="col-sm-3">License Disk Expiration Date</label>
+				<div class="col-sm-9"><p>{{Form.JSON.LicenceExpiryDate}}</p></div>
+			</div>
+		</div>
+	</div>
+	<h3> Inspection Details</h3>
+
+	<div style="margin-top: 15px" class="alert alert-info">
+    	<p><i class="fa fa-info"></i> Please attach image(s) and click upload below</p>
+	</div>
+	<!-- Form -->
+	<form name="auditform" style="margin-top:10px;" class="form-horizontal">
+		<div class="well">
+			<div class="form-group">
+				<label for="kilometer_reading" class="col-sm-3">Kilometers</label>
+				<div class="col-sm-9"><input name="kilometers" required class="form-control" placeholder="Enter Odometer reading" id="kilometer_reading" ng-model="Form.JSON.Kilometers" type="text"></div>
+			</div>
+			<div class="row">
+				<div ng-if="!isPhoneGap" class="col-xs-8">
+					<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+							<input style="margin-top: 10px;" id="kilometers-select" name="file[]" type="file" >
+					</form>
+				</div>
+				<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('kilometers', KilometersImages)" class="btn btn-success">Upload</button></div>
+				<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('kilometers', KilometersImages)" class="btn btn-success btn-block">Capture Photo</button></div>
+			</div>
+			<div style="margin-top : 5px;">
+				<table>
+					<tr ng-repeat="row in KilometersImages">
+						<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+						<td><button ng-click="removeImage($index, KilometersImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+		<div class="form-group">
+			<label for="clientbranch" class="col-sm-3">Client Branch</label>
+			<div class="col-sm-9"><input name="branch" required class="form-control" placeholder="Enter Client Branch" id="client-branch" ng-model="Form.JSON.Branch" type="text" ng-disabled="!Form.JSON.Kilometers"></div>
+		</div>
+		<div class="form-group">
+			<label for="inspectiondate" class="col-sm-3">Date of Inspection</label>
+			<div class="col-sm-9"><input name="inspectionDate" required class="form-control" id="inspection_date" ng-model="Form.JSON.InspectionDate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text" ng-disabled="!Form.JSON.Branch"></div>
+		</div>
+
+			<!-- IF BAD OPTION CHOSEN THE USER MUST SPECIFY IN COMMENTS FIELD  -->
+		<div class="form-group">
+	        <label for="cab_interior" class="col-sm-3">Cab Interior</label>
+	        <div class="col-sm-9">
+	        	<select name="cabInterior" required ng-disabled="!Form.JSON.InspectionDate" class="form-control" id="cab_interior" ng-model="Form.JSON.CabInterior" ng-options="item.name as item.name for item in selectOptions"><option value="">-- Please select an option --</option></select>
+	        </div>
+    	</div>
+	    <div ng-if="Form.JSON.CabInterior === 'Bad'" class="form-group">
+				<label for="cab_interior_comment" class="col-sm-3">Please Specify</label>
+				<div class="col-sm-9"><input name="client_branch_comment" required class="form-control" placeholder="Enter Comment" id="client_branch_comment" ng-model="Form.JSON.CabInteriorComment" type="text"></div>
+		</div>
+		<div class="form-group">
+	        <label for="steering_play" class="col-sm-3">Steering Play</label>
+	        <div class="col-sm-9">
+	        	<select name="steering_play" ng-disabled="!Form.JSON.CabInterior" required class="form-control" id="steering_play" ng-model="Form.JSON.SteeringPlay" ng-options="item.name as item.name for item in selectOptions">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+    	<div ng-if="Form.JSON.SteeringPlay === 'Bad'" class="form-group">
+				<label for="steering_play_comment" class="col-sm-3">Please Specify</label>
+				<div class="col-sm-9"><input name="steering_play_comment" required class="form-control" placeholder="Enter Comment" id="steering_play_comment" ng-model="Form.JSON.SteeringPlayComment" type="text"></div>
+		</div>
+    	<div class="form-group">
+	        <label for="electrical" class="col-sm-3">Electrical</label>
+	        <div class="col-sm-9">
+	        	<select name="electrical" required ng-disabled="!Form.JSON.SteeringPlay" class="form-control" id="electrical" ng-model="Form.JSON.Electrical" ng-options="item.name as item.name for item in selectOptions">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+	    <div ng-if="Form.JSON.Electrical === 'Bad'" class="form-group">
+			<label for="electrical_comment" class="col-sm-3">Please Specify</label>
+			<div class="col-sm-9"><input name="electrical_comment" required class="form-control" placeholder="Enter Comment" id="electrical_comment" ng-model="Form.JSON.ElectricalComment" type="text"></div>
+		</div>
+    	<div class="form-group">
+	        <label for="engine_smoke" class="col-sm-3">Engine & Smoke</label>
+	        <div class="col-sm-9">
+	        	<select name="engine_smoke" required ng-disabled="!Form.JSON.Electrical" class="form-control" id="engine_smoke" ng-model="Form.JSON.Engine_Smoke" ng-options="item.name as item.name for item in selectOptions">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+	    	<!-- Electical field comment -->
+    	<div ng-if="Form.JSON.Engine_Smoke === 'Bad'" class="form-group">
+				<label for="engin_smoke_comment" class="col-sm-3">Please Specify</label>
+				<div class="col-sm-9"><input name="engin_smoke_comment" required class="form-control" placeholder="Enter Comment" id="engin_smoke_comment" ng-model="Form.JSON.Engine_SmokeComment" type="text"></div>
+		</div>
+    	<div class="form-group">
+	        <label for="clutch_operation" class="col-sm-3">Clutch Operation</label>
+	        <div class="col-sm-9">
+	        	<select name="clutch_operation" required ng-disabled="!Form.JSON.Engine_Smoke" class="form-control" id="clutch_operation" ng-model="Form.JSON.ClutchOperation" ng-options="item.name as item.name for item in selectOptions">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+	    <!-- Clutch Operation Field -->
+    	<div ng-if="Form.JSON.ClutchOperation === 'Bad'" class="form-group">
+			<label for="clutch_operation_comment" class="col-sm-3">Please Specify</label>
+			<div class="col-sm-9"><input name="clutch_operation_comment" required class="form-control" placeholder="Enter Comment" id="clutch_operation_comment" ng-model="Form.JSON.ClutchOperationComment" type="text"></div>
+		</div>
+	    <div class="form-group">
+        	<label for="brakes" class="col-sm-3">Brakes (Foot & Hand)</label>
+	        <div class="col-sm-9">
+	        	<select name="brakes"
+	        	 required ng-disabled="!Form.JSON.ClutchOperation" class="form-control" id="brakes" ng-model="Form.JSON.Brakes" ng-options="item.name as item.name for item in selectOptions">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+	    <!-- Brakes Comment  -->
+    	<div ng-if="Form.JSON.Brakes === 'Bad'" class="form-group">
+				<label for="brakes_comment" class="col-sm-3">Please Specify</label>
+				<div class="col-sm-9"><input name="brakes_comment" required class="form-control" placeholder="Enter Comment" id="brakes_comment" ng-model="Form.JSON.BrakesComment" type="text"></div>
+		</div>
+    	<div class="form-group">
+	        <label for="gear_selector" class="col-sm-3">Gear Selector</label>
+	        <div class="col-sm-9">
+	        	<select name="gear_selector" required ng-disabled="!Form.JSON.Brakes" class="form-control" id="gear_selector" ng-model="Form.JSON.GearSelector" ng-options="item.name as item.name for item in selectOptions">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+	    <!-- Gear Selector Comment -->
+    	<div ng-if="Form.JSON.GearSelector === 'Bad'" class="form-group">
+			<label for="gear_comment" class="col-sm-3">Please Specify</label>
+			<div class="col-sm-9"><input name="brakes_comment" required class="form-control" placeholder="Enter Comment" id="gear_comment" ng-model="Form.JSON.GearSelectorComment" type="text"></div>
+		</div>
+    	<div class="form-group">
+	        <label for="propshaft_play" class="col-sm-3">Diff / Propshaft Play</label>
+	        <div class="col-sm-9">
+	        	<select name="propshaft_play" required ng-disabled="!Form.JSON.GearSelector" class="form-control" id="propshaft_play" ng-model="Form.JSON.PropshaftPlay" ng-options="item.name as item.name for item in selectOptions">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+	    <!-- Diff / Porpshaft Comment -->
+    	<div ng-if="Form.JSON.PropshaftPlay === 'Bad'" class="form-group">
+			<label for="propshaft_comment" class="col-sm-3">Please Specify</label>
+			<div class="col-sm-9"><input name="propshaft_comment" required class="form-control" placeholder="Enter Comment" id="propshaft_comment" ng-model="Form.JSON.PropshaftPlayComment" type="text"></div>
+		</div>
+    	<div class="form-group">
+	        <label for="cab_exterior" class="col-sm-3">Cab Exterior (Windows & Dents)</label>
+	        <div class="col-sm-9">
+	        	<select name="cab_exterior" required ng-disabled="!Form.JSON.PropshaftPlay" class="form-control" id="cab_exterior" ng-model="Form.JSON.CabExterior" ng-options="item.name as item.name for item in selectOptions">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+	    <!-- Cab Exterior Comment -->
+    	<div ng-if="Form.JSON.CabExterior === 'Bad'" class="form-group">
+			<label for="cabexterior_comment" class="col-sm-3">Please Specify</label>
+			<div class="col-sm-9"><input name="cabexterior_comment" required class="form-control" placeholder="Enter Comment" id="cabexterior_comment" ng-model="Form.JSON.CabExteriorComment" type="text"></div>
+		</div>
+    	<div class="form-group">
+	        <label for="rust" class="col-sm-3">Rust</label>
+	        <div class="col-sm-9">
+	        	<select name="rust" required ng-disabled="!Form.JSON.CabExterior" class="form-control" id="rust" ng-model="Form.JSON.Rust" ng-options="item.value as item.value for item in booleanValues">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+    	<div class="form-group">
+	        <label for="license_card" class="col-sm-3">License COF/ Operator Card</label>
+	        <div class="col-sm-9">
+	        	<select name="license_card" required ng-disabled="!Form.JSON.Rust" class="form-control" id="license_card" ng-model="Form.JSON.LicenseCard" ng-options="item.status as item.status for item in expiryStatus">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+    	<div class="form-group">
+	        <label for="fluid_leaks" class="col-sm-3">Fluid Leaks</label>
+	        <div class="col-sm-9">
+	        	<select name="fluid_leaks" required ng-disabled="!Form.JSON.LicenseCard" class="form-control" id="fluid_leaks" ng-model="Form.JSON.FluidLeaks" ng-options="item.value as item.value for item in booleanValues">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+    	<div class="form-group">
+	        <label for="fire_extinguisher" class="col-sm-3">FireExtinguisher</label>
+	        <div class="col-sm-9">
+	        	<select name="fire_extinguisher" required ng-disabled="!Form.JSON.FluidLeaks" class="form-control" id="fire_extinguisher" ng-model="Form.JSON.FireExtinguisher" ng-options="item.value as item.value for item in booleanValues">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+
+    	<div class="form-group">
+    	   <label for="fire_extinguisher_valid" class="col-sm-3">Is the Date Valid</label>
+	        <div class="col-sm-9">
+	        	<select name="fire_extinguisher_valid" required ng-disabled="!Form.JSON.FireExtinguisher" class="form-control" id="fire_extinguisher_valid" ng-model="Form.JSON.FireExtIsValid" ng-options="item.status as item.status for item in expiryStatus">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+    	<div class="form-group">
+			<label for="fireExp_date" class="col-sm-3">Expiration Date</label>
+			<div class="col-sm-9"><input name="fireExp_date" required class="form-control" id="fireExp_date" ng-model="Form.JSON.FireExtinguisherExpDate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd" type="text" ng-disabled="!Form.JSON.FireExtIsValid"></div>
+		</div>
+		<div ng-class="Form.JSON.Tyres === 'Bad' ? 'well' : ''">
+			<div class="form-group">
+	        	<label for="tyres" class="col-sm-3">Tyres</label>
+		        <div class="col-sm-9">
+		        	<select name="tyres" required ng-disabled="!Form.JSON.FireExtinguisherExpDate" class="form-control" id="tyres" ng-model="Form.JSON.Tyres" ng-options="item.name as item.name for item in selectOptions">
+	    				<option value="">-- Please select an option --</option>
+					</select>
+		        </div>
+    		</div>
+    		<!-- Tyres Comment -->
+	    	<div ng-if="Form.JSON.Tyres === 'Bad'" class="form-group">
+				<label for="tyres_comment" class="col-sm-3">Please Specify</label>
+				<div class="col-sm-9"><input name="tyres_comment" required class="form-control" placeholder="Enter Comment" id="tyres_comment" ng-model="Form.JSON.TyresComment" type="text"></div>
+			</div>
+			<div class="row" ng-if="Form.JSON.Tyres === 'Bad'">
+				<div ng-if="!isPhoneGap" class="col-xs-8">
+					<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+							<input style="margin-top: 10px;" id="tyres-select" name="file[]" type="file" >
+					</form>
+				</div>
+				<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('tyres', TyresImages)" class="btn btn-success">Upload</button></div>
+				<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('tyres', TyresImages)" class="btn btn-success btn-block">Capture Photo</button></div>
+			</div>
+			<div ng-if="Form.JSON.Tyres === 'Bad'" style="margin-top : 5px;">
+				<table>
+					<tr ng-repeat="row in TyresImages">
+						<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+						<td><button ng-click="removeImage($index, TyresImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+    	<div class="form-group">
+	        <label for="equipment" class="col-sm-3">Condition of Additional Equipment</label>
+	        <div class="col-sm-9">
+	        	<select name="equipment" required ng-disabled="!Form.JSON.Tyres" class="form-control" id="equipment" ng-model="Form.JSON.Equipment" ng-options="item.name as item.name for item in selectOptions">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+    	<!-- Condition of Additional Equipment Comment -->
+    	<div ng-if="Form.JSON.Equipment === 'Bad'" class="form-group">
+			<label for="equipment_comment" class="col-sm-3">Please Specify</label>
+			<div class="col-sm-9"><input name="equipment_comment" required class="form-control" placeholder="Enter Comment" id="equipment_comment" ng-model="Form.JSON.EquipmentComment" type="text"></div>
+		</div>
+    	<div class="form-group">
+	        <label for="abuse_related_costs" class="col-sm-3">Abuse Related Costs</label>
+	        <div class="col-sm-9">
+	        	<select name="abuse_related_costs" required ng-disabled="!Form.JSON.Equipment" class="form-control" id="abuse_related_costs" ng-model="Form.JSON.AbuseRelatedCosts" ng-options="item.value as item.value for item in booleanValues">
+    				<option value="">-- Please select an option --</option>
+				</select>
+	        </div>
+    	</div>
+    	<div ng-if="Form.JSON.AbuseRelatedCosts" class="well">
+			<div class="form-group">
+				<label for="other_photos">Other Photo's</label>
+			</div>
+			<div class="row">
+				<div ng-if="!isPhoneGap" class="col-xs-8">
+					<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+							<input id="other_photos-select" name="file[]" type="file" >
+					</form>
+				</div>
+				<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('other_photos', other_photosimages)" class="btn btn-success">Upload</button></div>
+				<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('other_photos', other_photosimages)" class="btn btn-success btn-block">Capture Photo</button></div>
+			</div>
+			<div style="margin-top : 5px;">
+				<table>
+					<tr ng-repeat="row in other_photosimages">
+						<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+						<td><button ng-click="removeImage($index, other_photosimages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+	</form>
+
+	<div style="margin-top:10px;">
+		<div class="alert alert-info"><i class="fa fa-info"></i> Please Sign below before saving your request</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">Signature  Of Inspector</div>
+			<div class="panel-body">
+				<signature ng-model="signature.inspector" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
+			</div>
+		</div>
+	</div>
+</div>

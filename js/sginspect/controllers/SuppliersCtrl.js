@@ -42,7 +42,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
                 if(data.length){
                     delete $scope.errorMsg;
                     delete $scope.successMsg;
-                    $alert({ content: "User already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
+                    $alert({ content: "Supplier Code already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
                     return;
                 }else{
                     save();
@@ -104,7 +104,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             var url = Settings.url + 'Get?method=Supplier_ReadSingle&clientid='+ $routeParams.id ;
             console.log(url);
             $http.get(url).success(function(data){
-                //get the First Object because it comes back because it is what stores the user data
+                //get the First Object because it comes back because it is what stores the supplier data
                 $scope.supplierEdit = data[0];
                 $scope.supplierEdit.SupplierID = parseInt($scope.supplierEdit.SupplierID);
                 $scope.$emit('UNLOAD');

@@ -20,8 +20,6 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
         {  name : "N/A"},
     ];
 
-
-
 	$scope.onBackClicked = function(){
 		if($routeParams.screennum == 6 && ($scope.inspectiontype === 'customervisit' || $scope.inspectiontype === 'supplierevaluation'))
 			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0; 

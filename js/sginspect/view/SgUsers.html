@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="row" style="margin-left:10px; margin-right:5px;">
                     <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2">User Name</div>
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">First Name</div>
+                    <div class="hidden-xs col-sm-4 col-md-3 col-lg-3">First Name</div>
                     <div class="hidden-xs col-sm-3 hidden-md col-lg-2">Last Name</div>
                     <div class="hidden-xs hidden-sm col-md-1 col-lg-1">Role</div>
                     <div class="hidden-xs hidden-sm col-md-2 col-lg-2">Phone Number</div>
@@ -18,8 +18,8 @@
             <a href="#/SgUsers/form/{{user.UserID}}" class="list-group-item" ng-repeat="user in splitArr[idx] | filter: searchText" >
                 <span class="glyphicon glyphicon-chevron-right pull-right"></span>
             	<div class="row">
-                  <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2"><span ng-if="user.UserID"><{{user.UserID}}</span></div>
-                  <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3"><span ng-if="user.Name">{{user.Name}}</span></div>
+                  <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2"><span ng-if="user.UserID">{{user.UserID}}</span></div>
+                  <div class="hidden-xs col-sm-4 col-md-3 col-lg-3"><span ng-if="user.Name">{{user.Name}}</span></div>
                   <div class="hidden-xs col-sm-3 hidden-md col-lg-2"><span ng-if="user.Country">{{user.Country}}</span></div>
                   <div class="hidden-xs hidden-sm col-md-1 col-lg-1"><span ng-if="user.IsAdmin">Admin</span></div>
                   <div class="hidden-xs hidden-sm col-md-2 col-lg-2"><span ng-if="user.Tel">{{user.Tel}}</span></div>
@@ -40,7 +40,7 @@
                 <div class="form-group">
                     <label for="Email">Username</label>
                     <input type="email" class="form-control" id="Email" ng-model="userEdit.UserID" ng-disabled="id !== 'new'" name="userEmail">
-                     <div class="alert alert-danger" role="alert" ng-if="userForm.userEmail.$error.email">Please enter a valid email</div>
+                    <div class="alert alert-danger" role="alert" ng-if="userForm.userEmail.$error.email">Please enter a valid email</div>
                 </div>
 
                 <div class="form-group">
@@ -60,7 +60,7 @@
 
                 <div class="form-group" name="Tel">
                     <label for="Tel">Phone number</label>
-                    <input type="number" class="form-control" id="Phone number" ng-model="userEdit.Tel">
+                    <input type="text" class="form-control" id="Phone number" ng-model="userEdit.Tel" maxlength="20">
                 </div>
 
                 <div class="form-group">
