@@ -69,7 +69,7 @@
     	</div>
 	    <div ng-if="Form.JSON.CabInterior === 'Bad'" class="form-group">
 				<label for="cab_interior_comment" class="col-sm-3">Please Specify</label>
-				<div class="col-sm-9"><input name="client_branch_comment" required class="form-control" placeholder="Enter Comment" id="client_branch_comment" ng-model="Form.JSON.Comment" type="text"></div>
+				<div class="col-sm-9"><input name="client_branch_comment" required class="form-control" placeholder="Enter Comment" id="client_branch_comment" ng-model="Form.JSON.CabInteriorComment" type="text"></div>
 		</div>
 		<div class="form-group">
 	        <label for="steering_play" class="col-sm-3">Steering Play</label>
@@ -177,7 +177,7 @@
     	<div class="form-group">
 	        <label for="rust" class="col-sm-3">Rust</label>
 	        <div class="col-sm-9">
-	        	<select name="rust" required ng-disabled="!Form.JSON.CabExterior || (!Form.JSON.CabExteriorComment && Form.JSON.CabExterior === 'Bad')" class="form-control" id="rust" ng-model="Form.JSON.Rust" ng-options="item.value for item in booleanValues">
+	        	<select name="rust" required ng-disabled="!Form.JSON.CabExterior || (!Form.JSON.CabExteriorComment && Form.JSON.CabExterior === 'Bad')" class="form-control" id="rust" ng-model="Form.JSON.Rust" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
@@ -193,7 +193,7 @@
     	<div class="form-group">
 	        <label for="fluid_leaks" class="col-sm-3">Fluid Leaks</label>
 	        <div class="col-sm-9">
-	        	<select name="fluid_leaks" required ng-disabled="!Form.JSON.LicenseCard" class="form-control" id="fluid_leaks" ng-model="Form.JSON.FluidLeaks" ng-options="item.value for item in booleanValues">
+	        	<select name="fluid_leaks" required ng-disabled="!Form.JSON.LicenseCard" class="form-control" id="fluid_leaks" ng-model="Form.JSON.FluidLeaks" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
@@ -201,7 +201,7 @@
     	<div class="form-group">
 	        <label for="fire_extinguisher" class="col-sm-3">FireExtinguisher</label>
 	        <div class="col-sm-9">
-	        	<select name="fire_extinguisher" required ng-disabled="!Form.JSON.FluidLeaks" class="form-control" id="fire_extinguisher" ng-model="Form.JSON.FireExtinguisher" ng-options="item.value for item in booleanValues">
+	        	<select name="fire_extinguisher" required ng-disabled="!Form.JSON.FluidLeaks" class="form-control" id="fire_extinguisher" ng-model="Form.JSON.FireExtinguisher" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
@@ -210,7 +210,7 @@
     	<div class="form-group">
     	   <label for="fire_extinguisher_valid" class="col-sm-3">Is the Date Valid</label>
 	        <div class="col-sm-9">
-	        	<select name="fire_extinguisher_valid" required ng-disabled="!Form.JSON.FireExtinguisher" class="form-control" id="fire_extinguisher_valid" ng-model="Form.JSON.FireExtIsValid" ng-options="item.status for item in expiryStatus">
+	        	<select name="fire_extinguisher_valid" required ng-disabled="!Form.JSON.FireExtinguisher" class="form-control" id="fire_extinguisher_valid" ng-model="Form.JSON.FireExtIsValid" ng-options="item.status as item.status for item in expiryStatus">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
@@ -268,7 +268,7 @@
     	<div class="form-group">
 	        <label for="abuse_related_costs" class="col-sm-3">Abuse Related Costs</label>
 	        <div class="col-sm-9">
-	        	<select name="abuse_related_costs" required ng-disabled="!Form.JSON.Equipment || (!Form.JSON.EquipmentComment && Form.JSON.Equipment === 'Bad')" class="form-control" id="abuse_related_costs" ng-model="Form.JSON.AbuseRelatedCosts" ng-options="item.value for item in booleanValues">
+	        	<select name="abuse_related_costs" required ng-disabled="!Form.JSON.Equipment || (!Form.JSON.EquipmentComment && Form.JSON.Equipment === 'Bad')" class="form-control" id="abuse_related_costs" ng-model="Form.JSON.AbuseRelatedCosts" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>

@@ -78,18 +78,22 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		for(var prop in $scope.Form.JSON){
-			if(!$scope.Form.JSON[prop]){
-				$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
-				$scope.$emit('UNLOAD');
-				return;
-			}
-		}
-		/*if(!$scope.auditform.$valid){
-			$alert({ content: "Please enter in all required fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+		if(!$scope.Form.JSON.AbuseRelatedCosts){
+			$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			$scope.$emit('UNLOAD');
 			return;
-		}*/
+		}
+		for (prop in $scope.Form.JSON) {
+			if ($scope.Form.JSON[prop] === "Bad" && !$scope.Form.JSON[prop + "Comment"]){
+				$alert({ content: "Please enter comments when you have selected BAD", duration: 5, placement: 'top-right', type: 'danger', show: true});
+	            $scope.$emit('UNLOAD');
+	            return;
+			}
+		}
+		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
+			$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			return;
+		}
 		saveForm();
 	}
 

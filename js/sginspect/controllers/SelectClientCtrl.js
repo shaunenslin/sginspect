@@ -52,7 +52,13 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		}
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		 // Path is generic to cater for all navigation scenarios
-		var path = ($routeParams.screennum == 5) ? $routeParams.inspectiontype : Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
+		var path = ''
+		if ($scope.inspectiontype !== 'supplierevaluation') {
+			path = ($routeParams.screennum == 5) ? $routeParams.inspectiontype : Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
+		}else{
+			path = $scope.inspectiontype + '/' + $scope.Form.JSON.SupplierStatus.toLowerCase();
+			delete $scope.Form.JSON.SupplierStatus;	
+		}
 		$location.path(path);
 	}
 
@@ -151,7 +157,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$scope.$emit('heading',{heading: ($scope.inspectiontype === 'audit' ? 'Audit' : 'Customer Visit') + 'Form', icon : ($scope.inspectiontype === 'audit' ? 'fa fa-check-square-o' : 'fa fa-map-marker')});
 		}
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
-        $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
+        if($scope.inspectiontype !== 'supplierevaluation') $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 		if ($routeParams.screennum == 0){
 			$scope.view = 'client';
 			newObject();
