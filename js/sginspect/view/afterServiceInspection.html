@@ -1,0 +1,216 @@
+<div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="AfterServiceInspectionCtrl">
+	
+		<h3>Vehicle Basic Details</h3>
+		<div class="panel panel-default">
+			<div class="panel-body form-horizontal">
+				<div class="form-group">
+					<label for="client" class="col-sm-3">Client</label>
+					<div class="col-sm-9"><p> {{Form.FormID}}</p></div>
+				</div>
+				<div class="form-group">
+					<label for="vin" class="col-sm-3">VIN</label>
+					<div class="col-sm-9"><p>{{Form.JSON.VinNumber}}</p></div>
+				</div>
+				<div class="form-group">
+					<label for="registration" class="col-sm-3">Registration</label>
+					<div class="col-sm-9"><p>{{Form.JSON.RegNumber}}</p></div>
+				</div>
+				<div class="form-group">
+					<label for="licence-exp-date" class="col-sm-3">License Disk Expiration Date</label>
+					<div class="col-sm-9"><p>{{Form.JSON.LicenceExpiryDate}}</p></div>
+				</div>
+			</div>
+		</div>
+
+		<h3 > After Service Inspection Details</h3>
+		<form name="afterServiceForm">
+			<div class="well">
+				<div class="form-group" name="afterinspection">
+					<label for="kilometer">Kilometers</label>
+					<input type="number" required class="form-control" id="kilometer" name="kilometer" ng-model="Form.JSON.kilometer" placeholder="Enter odometer reading">
+				</div>	
+				<div class="row">
+					<div ng-if="!isPhoneGap" class="col-xs-8">
+						<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+							<input style="margin-top: 10px;" id="kilometer-select" name="file[]" type="file" >
+						</form>
+					</div>
+					<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="$event.preventDefault();onPhotoClicked('kilometer', kilometerImages);" class="btn btn-success">Upload</button></div>
+					<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="$event.preventDefault();onPhotoClicked('kilometer', kilometerImages);" class="btn btn-success btn-block">Capture Photo</button></div>
+				</div>
+				<div style="margin-top : 5px;">
+					<table>
+						<tr ng-repeat="row in kilometerImages">
+							<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+							<td><button ng-click="removeImage($index, kilometerImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="serviceprovider">Service Provider</label>
+				<input type="text"  required ng-disabled="!Form.JSON.kilometer" class="form-control" id="serviceprovider" name="serviceprovider"  ng-model="Form.JSON.serviceProvider" placeholder="Enter client branch">
+			</div>
+			<div class="form-group">
+				<label for="dateOfServoce">Date of Service</label>
+				<input type="text" required ng-disabled="!Form.JSON.serviceProvider" class="form-control" id="dateOfService" name="dateOfService" ng-model="Form.JSON.dateOfService" autoclose="true" bs-datepicker>
+			</div>
+
+			<div class="form-group">
+				<label for="radiatorConditionChecked">Radiator condition checked</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.dateOfService" class="form-control" name="radiatorConditionChecked" id="radiatorConditionChecked" ng-model="Form.JSON.radiatorConditionChecked" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="engineOilLevelsChecked">Engine oil levels checked</label>
+				<select required ng-options="item.name as item.name for item in inspectInspectionTypes" ng-disabled="!Form.JSON.radiatorConditionChecked" class="form-control" name="engineOilLevelsChecked" id="engineOilLevelsChecked" ng-model="Form.JSON.engineOilLevelsChecked" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="oilFiltersChecked">Oil filters checked</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.engineOilLevelsChecked" class="form-control" id="oilFiltersChecked" name="oilFiltersChecked" ng-model="Form.JSON.oilFiltersChecked" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="oilLeaks">Oil leaks</label>
+				<select required ng-disabled="!Form.JSON.oilFiltersChecked" class="form-control" name="oilLeaks" id="oilLeaks" ng-model="Form.JSON.oilLeaks" >
+					<option value="">-- please choose --</option>
+					<option value="Yes">Yes</option>
+					<option Value="No">No</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="airCleanerServiced">Air cleaner serviced as per WIM pro</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.oilLeaks" class="form-control" id="airCleanerServiced" name="airCleanerServiced"  ng-model="Form.JSON.airCleanerServiced" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="FuelFilterChecked">Fuel filter checked</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.airCleanerServiced" class="form-control" name="FuelFilterChecked" id="FuelFilterChecked" ng-model="Form.JSON.FuelFilterChecked" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="gearBoxBreatherServiced">Gearbox breather serviced</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.FuelFilterChecked" class="form-control" name="gearBoxBreatherServiced" id="gearBoxBreatherServiced" ng-model="Form.JSON.gearBoxBreatherServiced" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="diffBreatherServiced">Diff breather serviced</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.gearBoxBreatherServiced" class="form-control" name="diffBreatherServiced" id="diffBreatherServiced" ng-model="Form.JSON.diffBreatherServiced" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="diffsOilLeLeaks">Diff and rear axles free from oil leaks</label>
+				<select required ng-disabled="!Form.JSON.diffBreatherServiced" class="form-control" name="diffsOilLeLeaks" id="diffsOilLeLeaks" ng-model="Form.JSON.diffsOilLeLeaks" >
+					<option value="">-- please choose --</option>
+					<option value="Yes">Yes</option>
+					<option Value="No">No</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="diffsOilLevelChecked">Diff(s) oil level checked</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.diffsOilLeLeaks" class="form-control" name="diffsOilLevelChecked" name="diffsOilLevelChecked" id="diffsOilLevelChecked" ng-model="Form.JSON.diffsOilLevelChecked" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="diffAndRearAxleWashed">Diff and rear axles washed after service</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.diffsOilLevelChecked" class="form-control" name="diffAndRearAxleWashed" id="diffAndRearAxleWashed" ng-model="Form.JSON.diffAndRearAxleWashed" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="fithWheelCleaned">5th wheel cleaned and lubricated as per  WIM  pro</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypesWithNA" required ng-disabled="!Form.JSON.diffAndRearAxleWashed" class="form-control" name="fithWheelCleaned" id="fithWheelCleaned" ng-model="Form.JSON.fithWheelCleaned" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="hardenedCInsert">Hardened C insert and king pin lockjaw measured for wear</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypesWithNA" required ng-disabled="!Form.JSON.fithWheelCleaned" class="form-control" id="hardenedCInsert" ng-model="Form.JSON.hardenedCInsert" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="batteriesServiced">Batteries serviced as per WIM Pro</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypes" type="text" required ng-disabled="!Form.JSON.hardenedCInsert" class="form-control" name="batteriesServiced" id="batteriesServiced" ng-model="Form.JSON.batteriesServiced" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="springShaklesAndTrunionLubricated">Spring shackles and trunion lubricated as per WIM Pro</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypesWithNA"  required ng-disabled="!Form.JSON.batteriesServiced" class="form-control" name="springShaklesAndTrunionLubricated" id="springShaklesAndTrunionLubricated" ng-model="Form.JSON.springShaklesAndTrunionLubricated" >
+					<option value="">-- please choose --</option>	
+				</select>
+			</div>
+			<div class="form-group">
+				<label  for="kingsAndSteeringJointGreased">Kingpins and steering joints greased as per WIM Pro</label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypesWithNA" required ng-disabled="!Form.JSON.springShaklesAndTrunionLubricated" class="form-control" name="kingsAndSteeringJointGreased" id="kingsAndSteeringJointGreased" ng-model="Form.JSON.kingsAndSteeringJointGreased" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="propsShaftUniversal">Propshaft universals and center bearings greased as per WIM Pro </label>
+				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.kingsAndSteeringJointGreased" class="form-control" name="propsShaftUniversal" id="propsShaftUniversal" ng-model="Form.JSON.propsShaftUniversal" >
+					<option value="">-- please choose --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="dateOfInspection">Date of inspection</label>
+				<input required  ng-disabled="!Form.JSON.propsShaftUniversal" class="form-control" name="dateOfInspection" id="dateOfInspection" name="dateOfInspection" ng-model="Form.JSON.dateOfInspection"  bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true">
+			</div>
+			<div class="form-group">
+				<label for="placeForInspection">Place in inspection</label>
+				<input type="text" required class="form-control" ng-disabled="!Form.JSON.dateOfInspection" id="placeForInspection" name="placeForInspection" ng-model="Form.JSON.placeForInspection" placeholder="Enter client branch">
+			</div>
+			<div class="well well-sm">
+				<div class="form-group" >
+					<label for="commentsOrPhotos">Comments/Photo's</label>
+					<input type="text" required class="form-control" ng-disabled="!Form.JSON.placeForInspection" id="commentsOrPhotos" name="commentsOrPhotos" ng-model="Form.JSON.commentsOrPhotos" placeholder="Enter comments or photos">
+				</div>
+				<div ng-hide="!Form.JSON.placeForInspection">
+					<div class="row">
+						<div ng-if="!isPhoneGap" class="col-xs-8">
+							<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+								<input style="margin-top: 10px;" id="comments_photo-select" name="file[]" type="file" >
+							</form>
+						</div>
+						<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="$event.preventDefault();onPhotoClicked('comments_photo', commentPhotoImages);" class="btn btn-success">Upload</button></div>
+						<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="$event.preventDefault();onPhotoClicked('comments_photo', commentPhotoImages);" class="btn btn-success btn-block">Capture Photo</button></div>
+					</div>
+
+					<div style="margin-top : 5px;">
+						<table>
+							<tr ng-repeat="row in commentPhotoImages">
+								<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+								<td><button ng-click="removeImage($index, commentPhotoImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" name="afterinspection">
+				<label for="actionByService">After by Service Manager/Foreman</label>
+				<input type="text" required class="form-control" id="actionByService" ng-disabled="!Form.JSON.commentsOrPhotos" name="actionByService" ng-model="Form.JSON.actionByService" placeholder="Enter Action">
+			</div>
+		</form>
+		
+		<div style="margin-top:10px;">
+			<!-- Displays when other dropdown option is chosen from the menu -->
+	  		<div class="alert alert-info"><i class="fa fa-info"></i> Please Sign below before saving your request</div>
+			<!-- Signature box for * 4 forms except  supplierevaluation  -->
+			<div class="panel panel-default" ng-if="inspectiontype !== 'supplierevaluation'">
+				<div class="panel-heading">Signature  of Inspector</div>
+				<div class="panel-body">
+					<signature ng-model="signature.inspector" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
+				</div>
+			</div>
+		</div>
+</div>

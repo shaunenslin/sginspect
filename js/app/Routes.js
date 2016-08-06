@@ -13,6 +13,9 @@ function AppRoutes($routeProvider, DaoSvc){
     $routeProvider.when('/Clients/:mode/:id',{templateUrl : "js/sginspect/view/Clients.html"});
     $routeProvider.when("/Suppliers",{templateUrl:"js/sginspect/view/Suppliers.html"});
     $routeProvider.when('/Suppliers/:mode/:id',{templateUrl : "js/sginspect/view/Suppliers.html"});
+
+    $routeProvider.when('/afterserviceevaluation/6', {templateUrl : "js/sginspect/view/afterServiceInspection.html"});
+
 }
 
 function TestCtrl($templateCache) {
