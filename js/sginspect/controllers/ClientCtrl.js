@@ -31,7 +31,10 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     };
     $scope.saveClient = function(){
         if(!$scope.clientEdit.ClientID){
-            $alert({ content: "Please fill in the Customer Code correctly", duration: 4, placement: 'top-right', type: 'danger', show: true});
+            $alert({ content: "Please fill in the Client Code correctly", duration: 4, placement: 'top-right', type: 'danger', show: true});
+            return;
+        }else if(!$scope.clientEdit.Name){
+            $alert({ content: "Please fill in the Client Name", duration: 4, placement: 'top-right', type: 'danger', show: true});
             return;
         }    
         savebtnClicked = true;
@@ -72,7 +75,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             }else{
                 $alert({ content: 'Error saving Customer', duration: 4, placement: 'top-right', type: 'danger', show: true});
             }
-            $scope.$apply();
+            
         },'SGIClient','modify',false,true);
     }
 
@@ -92,6 +95,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 	        });
     	}
         console.log($scope.clients);
+
     }
     function fetchClient(){
         if($routeParams.id === 'new' && !savebtnClicked){

@@ -14,6 +14,9 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         newSupplier.SupplierID;
         newSupplier.Name = "";
         newSupplier.Active = 1;
+        newSupplier.Address = '';
+        newSupplier.Longitude = '';
+        newSupplier.Latitude = '';
 
         return newSupplier;
 	}
@@ -32,6 +35,9 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     $scope.saveSupplier = function(){
         if(!$scope.supplierEdit.SupplierID){
             $alert({ content: "Please fill in the Supplier Code correctly", duration: 4, placement: 'top-right', type: 'danger', show: true});
+            return;
+        }else if(!$scope.supplierEdit.Name){
+            $alert({ content: "Please fill in the Supplier Name", duration: 4, placement: 'top-right', type: 'danger', show: true});
             return;
         }
         savebtnClicked = true;

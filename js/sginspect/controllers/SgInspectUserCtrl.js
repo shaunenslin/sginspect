@@ -52,8 +52,8 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         if($scope.userEdit.UserID === undefined || $scope.userEdit.UserID === ''){
             $alert({ content: "Please fill a valid Username", duration: 4, placement: 'top-right', type: 'danger', show: true}); 
             return;
-        }else if($scope.userEdit.Name ==='' && $scope.userEdit.Country === ''){
-             $alert({ content: "Please fill in at least one of the Name fields", duration: 4, placement: 'top-right', type: 'danger', show: true}); 
+        }else if($scope.userEdit.Name ==='' || $scope.userEdit.Country === ''){
+             $alert({ content: "Please fill in all of the Name fields", duration: 4, placement: 'top-right', type: 'danger', show: true}); 
             return;
 
         }
