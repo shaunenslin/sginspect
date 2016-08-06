@@ -29,23 +29,23 @@
 	<form name="auditform" style="margin-top:10px;" class="form-horizontal">
 		<div class="well">
 			<div class="form-group">
-				<label for="clientbranch" class="col-sm-3">Kilometers</label>
-				<div class="col-sm-9"><input name="kilometers" required class="form-control" placeholder="Enter Odometer reading" id="odometer_reading" ng-model="Form.JSON.Kilometers" type="text"></div>
+				<label for="kilometer_reading" class="col-sm-3">Kilometers</label>
+				<div class="col-sm-9"><input name="kilometers" required class="form-control" placeholder="Enter Odometer reading" id="kilometer_reading" ng-model="Form.JSON.Kilometers" type="text"></div>
 			</div>
 			<div class="row">
 				<div ng-if="!isPhoneGap" class="col-xs-8">
 					<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
-							<input style="margin-top: 10px;" id="odometer-select" name="file[]" type="file" >
+							<input style="margin-top: 10px;" id="kilometers-select" name="file[]" type="file" >
 					</form>
 				</div>
-				<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('odometer', odometerimages)" class="btn btn-success">Upload</button></div>
-				<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('odometer', odometerimages)" class="btn btn-success btn-block">Capture Photo</button></div>
+				<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('kilometers', KilometersImages)" class="btn btn-success">Upload</button></div>
+				<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('kilometers', KilometersImages)" class="btn btn-success btn-block">Capture Photo</button></div>
 			</div>
 			<div style="margin-top : 5px;">
 				<table>
-					<tr ng-repeat="row in odometerimages">
+					<tr ng-repeat="row in KilometersImages">
 						<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
-						<td><button ng-click="removeImage($index, odometerimages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+						<td><button ng-click="removeImage($index, KilometersImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
 					</tr>
 				</table>
 			</div>
@@ -106,7 +106,7 @@
 	    	<!-- Electical field comment -->
     	<div ng-if="Form.JSON.Engine_Smoke === 'Bad'" class="form-group">
 				<label for="engin_smoke_comment" class="col-sm-3">Please Specify</label>
-				<div class="col-sm-9"><input name="engin_smoke_comment" required class="form-control" placeholder="Enter Comment" id="engin_smoke_comment" ng-model="Form.JSON.EngineComment" type="text"></div>
+				<div class="col-sm-9"><input name="engin_smoke_comment" required class="form-control" placeholder="Enter Comment" id="engin_smoke_comment" ng-model="Form.JSON.Engine_SmokeComment" type="text"></div>
 		</div>
     	<div class="form-group">
 	        <label for="clutch_operation" class="col-sm-3">Clutch Operation</label>
@@ -125,7 +125,7 @@
         	<label for="brakes" class="col-sm-3">Brakes (Foot & Hand)</label>
 	        <div class="col-sm-9">
 	        	<select name="brakes"
-	        	 required ng-disabled="!Form.JSON.ClutchOperation || (!Form.JSON.ClutchOperationComment && Form.JSON.ClutchOperation === 'Bad')" class="form-control" id="brakes" ng-model="Form.JSON.Brakes" ng-options="item.name as item.name for item in selectOptions">
+	        	 required ng-disabled="!Form.JSON.ClutchOperation" class="form-control" id="brakes" ng-model="Form.JSON.Brakes" ng-options="item.name as item.name for item in selectOptions">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
@@ -151,7 +151,7 @@
     	<div class="form-group">
 	        <label for="propshaft_play" class="col-sm-3">Diff / Propshaft Play</label>
 	        <div class="col-sm-9">
-	        	<select name="propshaft_play" required ng-disabled="!Form.JSON.GearSelector || (!Form.JSON.BrakesComment && Form.JSON.Brakes === 'Bad')" class="form-control" id="propshaft_play" ng-model="Form.JSON.PropshaftPlay" ng-options="item.name as item.name for item in selectOptions">
+	        	<select name="propshaft_play" required ng-disabled="!Form.JSON.GearSelector" class="form-control" id="propshaft_play" ng-model="Form.JSON.PropshaftPlay" ng-options="item.name as item.name for item in selectOptions">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
@@ -159,12 +159,12 @@
 	    <!-- Diff / Porpshaft Comment -->
     	<div ng-if="Form.JSON.PropshaftPlay === 'Bad'" class="form-group">
 			<label for="propshaft_comment" class="col-sm-3">Please Specify</label>
-			<div class="col-sm-9"><input name="propshaft_comment" required class="form-control" placeholder="Enter Comment" id="propshaft_comment" ng-model="Form.JSON.PropshaftComment" type="text"></div>
+			<div class="col-sm-9"><input name="propshaft_comment" required class="form-control" placeholder="Enter Comment" id="propshaft_comment" ng-model="Form.JSON.PropshaftPlayComment" type="text"></div>
 		</div>
     	<div class="form-group">
 	        <label for="cab_exterior" class="col-sm-3">Cab Exterior (Windows & Dents)</label>
 	        <div class="col-sm-9">
-	        	<select name="cab_exterior" required ng-disabled="!Form.JSON.PropshaftPlay || (!Form.JSON.PropshaftComment && Form.JSON.PropshaftPlay === 'Bad')" class="form-control" id="cab_exterior" ng-model="Form.JSON.CabExterior" ng-options="item.name as item.name for item in selectOptions">
+	        	<select name="cab_exterior" required ng-disabled="!Form.JSON.PropshaftPlay" class="form-control" id="cab_exterior" ng-model="Form.JSON.CabExterior" ng-options="item.name as item.name for item in selectOptions">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
@@ -177,7 +177,7 @@
     	<div class="form-group">
 	        <label for="rust" class="col-sm-3">Rust</label>
 	        <div class="col-sm-9">
-	        	<select name="rust" required ng-disabled="!Form.JSON.CabExterior || (!Form.JSON.CabExteriorComment && Form.JSON.CabExterior === 'Bad')" class="form-control" id="rust" ng-model="Form.JSON.Rust" ng-options="item.value as item.value for item in booleanValues">
+	        	<select name="rust" required ng-disabled="!Form.JSON.CabExterior" class="form-control" id="rust" ng-model="Form.JSON.Rust" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
@@ -239,14 +239,14 @@
 							<input style="margin-top: 10px;" id="tyres-select" name="file[]" type="file" >
 					</form>
 				</div>
-				<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('tyres', tyresimages)" class="btn btn-success">Upload</button></div>
-				<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('tyres', tyresimages)" class="btn btn-success btn-block">Capture Photo</button></div>
+				<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('tyres', TyresImages)" class="btn btn-success">Upload</button></div>
+				<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('tyres', TyresImages)" class="btn btn-success btn-block">Capture Photo</button></div>
 			</div>
 			<div ng-if="Form.JSON.Tyres === 'Bad'" style="margin-top : 5px;">
 				<table>
-					<tr ng-repeat="row in tyresimages">
+					<tr ng-repeat="row in TyresImages">
 						<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
-						<td><button ng-click="removeImage($index, tyresimages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+						<td><button ng-click="removeImage($index, TyresImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
 					</tr>
 				</table>
 			</div>
@@ -255,7 +255,7 @@
     	<div class="form-group">
 	        <label for="equipment" class="col-sm-3">Condition of Additional Equipment</label>
 	        <div class="col-sm-9">
-	        	<select name="equipment" required ng-disabled="!Form.JSON.Tyres || (!Form.JSON.TyresComment && Form.JSON.Tyres === 'Bad')" class="form-control" id="equipment" ng-model="Form.JSON.Equipment" ng-options="item.name as item.name for item in selectOptions">
+	        	<select name="equipment" required ng-disabled="!Form.JSON.Tyres" class="form-control" id="equipment" ng-model="Form.JSON.Equipment" ng-options="item.name as item.name for item in selectOptions">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
@@ -268,7 +268,7 @@
     	<div class="form-group">
 	        <label for="abuse_related_costs" class="col-sm-3">Abuse Related Costs</label>
 	        <div class="col-sm-9">
-	        	<select name="abuse_related_costs" required ng-disabled="!Form.JSON.Equipment || (!Form.JSON.EquipmentComment && Form.JSON.Equipment === 'Bad')" class="form-control" id="abuse_related_costs" ng-model="Form.JSON.AbuseRelatedCosts" ng-options="item.value as item.value for item in booleanValues">
+	        	<select name="abuse_related_costs" required ng-disabled="!Form.JSON.Equipment" class="form-control" id="abuse_related_costs" ng-model="Form.JSON.AbuseRelatedCosts" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
