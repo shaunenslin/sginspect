@@ -1,10 +1,10 @@
-coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter){
+coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter, SyncSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
     $scope.signature = {technicaladvisor : "", workshopmanager: ""};
 	$scope.evaluationimages = [];
-	$scope.cleanlinessimages = [];
-	$scope.specialisedimages = [];
-	$scope.receptionimages = [];
+	$scope.CleanlinessImages = [];
+	$scope.SpecialToolsTrainingImages = [];
+	$scope.ReceptionImages = [];
 	/** The variable below is the svg represtion of an empty signature  **/
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 	var Imgfiles = [];
@@ -139,6 +139,32 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
             $scope.$emit('UNLOAD');
             return;
 		}
+
+		// Check the very last field on format, if it has a value, assume other fields been filled in OK
+		if(!$scope.Form.JSON.SpecialToolsTraining){
+			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+            $scope.$emit('UNLOAD');
+            return;
+		}
+
+		// Now check if any items dont have comments or where pictures are needed
+		for (prop in $scope.Form.JSON) {
+			if ($scope.Form.JSON[prop] === "Bad") {
+				if (!$scope.Form.JSON[prop + "Comment"]){
+					$alert({ content: "Please enter comments when you have selected BAD", duration: 5, placement: 'top-right', type: 'danger', show: true});
+		            $scope.$emit('UNLOAD');
+		            return;
+				}
+				if ($scope[prop + "Images"]) {
+					if ($scope[prop + "Images"].length == 0) {
+						$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
+			            $scope.$emit('UNLOAD');
+			            return;
+					}
+				}
+			}
+		}
+
         if($scope.signature.technicaladvisor[1] === emptySignature || !$scope.signature.technicaladvisor){
             $alert({ content: "Technical advisor to sign before you continue", duration: 5, placement: 'top-right', type: 'danger', show: true});
             $scope.$emit('UNLOAD');
@@ -163,6 +189,14 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		);
 	}
 
+	$scope.syncCompleted = function(reload){
+		$scope.$emit('UNLOAD');
+		$alert({ content: "Your Supplier Evaluation has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
+		sessionStorage.removeItem('currentClientsCache');
+		$location.path('/');
+	}
+
+
 	function saveForm(){
 		$scope.$emit('LOAD');
 		saveSupplier();
@@ -173,14 +207,15 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.Form.JSON[workshopmanagerSignature.ID] = workshopmanagerSignature.FileData;
 
 		var success = function(){
-			$scope.$emit('UNLOAD');
-			$alert({ content: "Your Supplier Evaluation has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
-			sessionStorage.removeItem('currentClientsCache');
-			$location.path('/');
+			// Now send images
+			SyncSvc.sync("SGInspector", GlobalSvc.getUser().UserID, $scope, false, true)
 		}
+
 		var error = function(err){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Error Saving Form", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$alert({ content: "Your inspection is saved offline, please sync when you have 3G", duration: 5, placement: 'top-right', type: 'success', show: true});
+			sessionStorage.removeItem('currentClientsCache');
+			$location.path('/');
 		}
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';

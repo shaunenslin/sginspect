@@ -93,14 +93,14 @@
 									<input style="margin-top: 10px;" id="reception-select" name="file[]" type="file" >
 								</form>
 							</div>
-							<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('reception', receptionimages)" class="btn btn-success">Upload</button></div>
-							<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('reception', receptionimages)" class="btn btn-success btn-block">Capture Photo</button></div>
+							<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('reception', ReceptionImages)" class="btn btn-success">Upload</button></div>
+							<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('reception', ReceptionImages)" class="btn btn-success btn-block">Capture Photo</button></div>
 						</div>
 						<div style="inset">
 							<table>
 								<tr ng-repeat="row in receptionimages">
 									<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
-									<td><button ng-click="removeImage($index, receptionimages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+									<td><button ng-click="removeImage($index, ReceptionImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
 								</tr>
 							</table>
 						</div>
@@ -151,14 +151,14 @@
 									<input style="margin-top: 10px;" id="cleanliness-select" name="file[]" type="file" >
 								</form>
 							</div>
-							<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('cleanliness', cleanlinessimages)" class="btn btn-success">Upload</button></div>
-							<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('cleanliness', cleanlinessimages)" class="btn btn-success btn-block">Capture Photo</button></div>
+							<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('cleanliness', CleanlinessImages)" class="btn btn-success">Upload</button></div>
+							<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('cleanliness', CleanlinessImages)" class="btn btn-success btn-block">Capture Photo</button></div>
 						</div>
 						<div style="margin-top : 5px;">
 							<table>
 								<tr ng-repeat="row in cleanlinessimages">
 									<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
-									<td><button ng-click="removeImage($index, cleanlinessimages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+									<td><button ng-click="removeImage($index, CleanlinessImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
 								</tr>
 							</table>
 						</div>
@@ -227,14 +227,14 @@
 									<input style="margin-top: 10px;" id="specialised-select" name="file[]" type="file" >
 								</form>
 							</div>
-							<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('specialised', specialisedimages)" class="btn btn-success">Upload</button></div>
-							<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('specialised', specialisedimages)" class="btn btn-success btn-block">Capture Photo</button></div>
+							<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('specialised', SpecialToolsTrainingImages)" class="btn btn-success">Upload</button></div>
+							<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('specialised', SpecialToolsTrainingImages)" class="btn btn-success btn-block">Capture Photo</button></div>
 						</div>
 						<div style="margin-top : 5px;">
 							<table>
-								<tr ng-repeat="row in specialisedimages">
+								<tr ng-repeat="row in SpecialToolsTrainingimages">
 									<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
-									<td><button ng-click="removeImage($index, specialisedimages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+									<td><button ng-click="removeImage($index, SpecialToolsTrainingImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
 								</tr>
 							</table>
 						</div>
