@@ -12,7 +12,7 @@
                     <div class="col-xs-7  col-sm-2">Customer Name</div>
                 </div>
             </div>
-            <a href="#/Clients/form/{{client.ClientID}}" class="list-group-item" ng-repeat="client in clients | filter: searchText" ng-if="client.Active">
+            <a href="#/Clients/form/{{client.ClientID}}" class="list-group-item" ng-repeat="client in clients | filter: searchText" ng-class="row.changed ? 'row danger':'row'" ng-if="client.Active">
                 <span class="glyphicon glyphicon-chevron-right pull-right"></span>
             	<div class="row">
                   <div class="col-xs-2">{{client.ClientID}}</div>
@@ -21,6 +21,16 @@
             </a>
 
         </div>
+        <div id="upload" style="margin-top: 10px;" class="well collapse" ng-show="mode === 'list'">
+            <em>Importing your Client item requires that the file extention be in .csv format with the following fields : ClientID, Name, Active.</em>
+            <form id="file-form" method="POST" role="form" class="form-inline">
+                <div class="form-group">
+                  <ng-csv-import  content="csv.content" style="display: inline-block;" header="csv.header" separator="csv.separator" result="csv.result" accept="csv.accept"></ng-csv-import>
+                  <button style="margin-left: 10px;" class="btn btn-success" type="button" ng-click="uploadCsv(csv.header, csv.result)">Upload</button>
+                </div>
+            </form>
+          </div>
+          <a href=""><button data-toggle="collapse" style="background-color: #31373B;bottom: 70px;" data-target="#upload" type="button" class="round-btn" ng-show="mode === 'list'"><span class="fa fa-cloud-upload icon"></span></button></a>
         <div ng-if="mode === 'list'">
         <button type="button" ng-click="navigate(-1)" class="btn btn-default btn-sm pull-left" ng-disabled="idx === 0"><span class="glyphicon glyphicon-chevron-left"></span>back</button>
         <p style="text-align : center">Page {{idx + 1}} of {{splitArr.length}}</button>

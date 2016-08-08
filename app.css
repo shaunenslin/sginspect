@@ -301,3 +301,21 @@ button.GPS{
     border-radius: 4px;
     float: right;
 }
+.round-btn {
+    position: fixed;
+    cursor: pointer;
+    width: 55px;
+    height: 55px;
+    right: 20px;
+    z-index: 999;
+    border-radius: 100%;
+    border: none;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    /*margin-right: 20px;*/
+
+}
+.icon{
+    font-size: 25px;
+    font-weight: 300;
+    color: #fff;
+}

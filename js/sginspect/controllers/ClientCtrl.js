@@ -57,6 +57,9 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     function save(){
         $scope.$emit('LOAD');
         sessionStorage.removeItem( "Clientscache");
+        for (var i = 0; i < $scope.clientEdit.length; i++) {
+            if($scope.clientEdit[i].changed) delete $scope.clientEdit.changed;
+        };
         var url = Settings.url + "Post?method=Client_modify";
         GlobalSvc.postData(url,$scope.clientEdit,function(){
             $scope.$emit('UNLOAD');
@@ -129,6 +132,38 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         $scope.idx = changedVal;
     }
 
+    $scope.getcsvHeader = function(){
+        return $scope.csvHeadings;
+    };
+
+function newCsvObj(){
+        $scope.csv = {
+            content: null,
+            header: true,
+            headerVisible: true,
+            separator: ',',
+            separatorVisible: true,
+            result: null,
+            encoding: 'ISO-8859-1',
+            encodingVisible: true,
+        };
+    };
+
+    $scope.uploadCsv = function(header, json){
+        if (json.length <= 0 ){
+            $alert({ content: "Cannot upload empty file !", duration: 4, placement:"top-right", type: "danger", show:true});
+            return;
+        }
+
+        for (var i = 0; i < json.length; i++){
+            json[i].changed  = true;
+            json[i].ClientID = '';
+            json[i].Name = "";
+            json[i].Active = 1;
+            $scope.clients.push(json[i]);
+        }
+    };
+
     function constructor(){
         if(!user.IsAdmin){
             $scope.errorMsg = 'You are not authorised....';
@@ -141,10 +176,12 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveClient});
             $scope.mode = 'form';
             $scope.id = $routeParams.id;
+            newCsvObj();
             fetchClient();
         } else {
             $scope.$emit('right',{label: 'Add Customer' , icon : 'glyphicon glyphicon-plus', href : "#/Clients/form/new"});
             $scope.mode = 'list';
+
             fetchClients();
         }
     }
