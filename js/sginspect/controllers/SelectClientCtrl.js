@@ -54,7 +54,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		 // Path is generic to cater for all navigation scenarios
 		if ($scope.inspectiontype !== 'supplierevaluation') {
-			path = ($routeParams.screennum == 5) ? $routeParams.inspectiontype : Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
+			path = ($routeParams.screennum == 5 || $routeParams.inspectiontype === 'customervisit') ? $routeParams.inspectiontype : Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
 		}else{
 			path = $scope.inspectiontype + '/' + $scope.Form.JSON.SupplierStatus.toLowerCase();
 			delete $scope.Form.JSON.SupplierStatus;	
@@ -196,5 +196,4 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		}
 	}
 	constructor();
-
 });
