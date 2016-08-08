@@ -1,0 +1,101 @@
+<div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="AuditFormCtrl">
+	<h3>Vehicle Basic Details</h3>
+	<div class="panel panel-default">
+		<div class="panel-body form-horizontal">
+			<div class="form-group">
+				<label for="client" class="col-sm-3">Client</label>
+				<div class="col-sm-9"><p> {{Client.Name}}</p></div>
+			</div>
+			<div class="form-group">
+				<label for="vin" class="col-sm-3">VIN</label>
+				<div class="col-sm-9"><p>{{Form.JSON.VinNumber}}</p></div>
+			</div>
+			<div class="form-group">
+				<label for="registration" class="col-sm-3">Registration</label>
+				<div class="col-sm-9"><p>{{Form.JSON.RegNumber}}</p></div>
+			</div>
+			<div class="form-group">
+				<label for="licence-exp-date" class="col-sm-3">License Disk Expiration Date</label>
+				<div class="col-sm-9"><p>{{Form.JSON.LicenceExpiryDate}}</p></div>
+			</div>
+		</div>
+	</div>
+	<h3>Service History(Latest - First)</h3>
+	<div ng-if="serviceHistory.length === 0" style="margin-top: 15px" class="alert alert-warning">
+		<p><i class="fa fa-info"></i> There is no service history available for this Client</p>
+	</div>
+	<div ng-if="serviceHistory.length > 0" style="text-align: left;" class="panel panel-default">
+		<div  class="panel-body">
+			<p ng-repeat="row in serviceHistory">{{row}}</p>
+		</div>
+	</div>
+
+	<div style="margin-top: 15px" class="alert alert-info">
+    	<p><i class="fa fa-info"></i> Please attach image(s) and click upload below</p>
+	</div>
+	<h3> Inspection Details</h3>
+	<!-- Form -->
+	<form name="auditform" style="margin-top:10px;" class="form-horizontal">
+		<div class="form-group">
+			<label for="investigation_date" class="col-sm-3">Date of Investigation</label>
+			<div class="col-sm-9"><input name="investigation_date" required class="form-control" id="investigation_date" ng-model="Form.JSON.InvestigationDate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
+		</div>
+		<div class="form-group">
+			<label for="investigation_reason" class="col-sm-3">Reason for Investigation</label>
+	        <div class="col-sm-9"><input required id="investigation_reason" ng-disabled="!Form.JSON.InvestigationDate" placeholder="Enter Investigation Reason"  type="text" class="form-control" name="investigation_reason"  ng-model="Form.JSON.InvestigationReason"/></div>
+		</div>
+		<div class="form-group">
+			<label for="client_user_group" class="col-sm-3">Client User of Group</label>
+	        <div class="col-sm-9"><input required id="client_user_group" ng-disabled="!Form.JSON.InvestigationReason" placeholder="Enter Client of User Group" name="client_user_group"  type="text" class="form-control"  ng-model="Form.JSON.ClientUserGroup"/></div>
+		</div>
+		<div class="form-group" style="margin-left:0px;margin-right:0px;">
+			<button name="gps_btn" id="gps_btn" class="btn btn-primary btn-block" ng-disabled="!Form.JSON.ClientUserGroup" ng-click="fetchGPS()">Capture GPS</button>
+		</div>
+		<div class="form-group">
+			<label for="ref_no" class="col-sm-3">Ref No : SF (Optional)</label>
+	        <div class="col-sm-9"><input required id="ref_no" ng-disabled="!Form.JSON.Latitude || !Form.JSON.Longitude" placeholder="Enter SF Reference" name="ref_no"  type="text" class="form-control"  ng-model="Form.JSON.Reference"/></div>
+		</div>
+		<div ng-class="Form.JSON.Description ? 'well' : ''">
+			<div class="form-group">
+				<label for="description" class="col-sm-3">Description of Findings</label>
+				<div class="col-sm-9"><input ng-disabled="!Form.JSON.Reference" name="description" required class="form-control" placeholder="Enter Findings description" id="description" ng-model="Form.JSON.Description" type="text"></div>
+			</div>
+			<div ng-if="Form.JSON.Description" class="row">
+				<div ng-if="!isPhoneGap" class="col-xs-8">
+					<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+							<input style="margin-top: 10px;" id="description-select" name="file[]" type="file" >
+					</form>
+				</div>
+				<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('description', DescriptionImages)" class="btn btn-success">Upload</button></div>
+				<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('description', DescriptionImages)" class="btn btn-success btn-block">Capture Photo</button></div>
+			</div>
+			<div style="margin-top : 5px;">
+				<table>
+					<tr ng-repeat="row in DescriptionImages">
+						<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+						<td><button ng-click="removeImage($index, DescriptionImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="recommendations" class="col-sm-3">Reccomendations</label>
+	        <div class="col-sm-9"><input required id="recommendations" ng-disabled="!Form.JSON.Description" placeholder="Enter Reccomendations" name="recommendations"  type="text" class="form-control"  ng-model="Form.JSON.Reccomendations"/></div>
+		</div>
+		<div class="form-group">
+			<label for="conclusions" class="col-sm-3">Conclusions</label>
+	        <div class="col-sm-9"><input required id="conclusions" ng-disabled="!Form.JSON.Reccomendations" placeholder="Enter Conclusions" name="conclusions"  type="text" class="form-control"  ng-model="Form.JSON.Conclusions"/></div>
+		</div>
+		
+		
+	</form>
+	<div style="margin-top:10px;">
+		<div  class="alert alert-info"><i class="fa fa-info"></i> Please Sign below before saving your request</div>
+		<div style="position: relative;" class="panel panel-default">
+			<div class="panel-heading">Signature  Of Inspector</div>
+			<div class="panel-body">
+				<signature ng-model="signature.inspector" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
+			</div>
+		</div>
+	</div>
+</div>
