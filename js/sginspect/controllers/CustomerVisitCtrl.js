@@ -30,7 +30,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	}
 
 	$scope.onBackClicked = function(){
-		$location.path('selectclient/customervisit/0');
+		$location.path("selectclient/customervisit/0");
 	}
 
 	$scope.fetchGPS = function(){

@@ -89,7 +89,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
     }
 
 	$scope.onBackClicked = function(){
-		$location.path('selectclient/supplierevaluation/0');
+		$location.path("selectclient/supplierevaluation/0");
 	}
 
 	$scope.fetchGPS = function(){
