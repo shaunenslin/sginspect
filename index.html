@@ -110,8 +110,13 @@ and open the template in the editor. this is a change
 
     <body>
         <nav id="navbar" class="navbar navbar navbar-default navbar-fixed-top bs-docs-nav" style="background-color: {{Settings.navColor}}; text-align:center;"  role="navigation">
-            <a class="pull-right btn btn-nav navbuttonright" ng-if="right.href" href="{{right.href}}">        <span id="righticon" class="{{right.icon}}" ></span><span id="righttext" ng-cloak>{{right.label}}</span></a>
-            <a class="pull-right btn btn-nav navbuttonright" ng-if="right.onclick" ng-click="right.onclick()"><span id="righticon" class="{{right.icon}}" ></span><span id="righttext" ng-cloak>{{right.label}}</span></a>
+            <!-- These are right navigation button with the icon on the left -->
+            <a class="pull-right btn btn-nav navbuttonright" ng-if="right.href && !right.rightIcon" href="{{right.href}}" style="margin-right: 10px; margin-top:10px;"><span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span><span id="righttext" ng-cloak>{{right.label}}</span></a>
+            <a class="pull-right btn btn-nav navbuttonright" ng-if="right.onclick && !right.rightIcon" ng-click="right.onclick()" style="margin-right: 10px; margin-top:10px;"><span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span><span id="righttext" ng-cloak>{{right.label}}</span></a>
+            <!-- These are right navigation button with the icon on the right -->
+            <a class="pull-right btn btn-nav navbuttonright" ng-if="right.href && right.rightIcon" href="{{right.href}}" style="margin-right: 10px; margin-top:10px;"><span id="righttext" ng-cloak>{{right.label}}</span> <span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span></a>
+            <a class="pull-right btn btn-nav navbuttonright" ng-if="right.onclick && right.rightIcon" ng-click="right.onclick()" style="margin-right: 10px; margin-top:10px;"><span id="righttext" ng-cloak>{{right.label}}</span> <span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span></a>
+
             <button ng-if="!left.label" class="navbar-toggle ng-scope navbar-left" id="menubutton" type="button" data-template="js/core/view/aside.html" data-animation="am-slide-left" data-placement="left" title="Menu" data-container="body" bs-aside="aside" style="background-color:white">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
