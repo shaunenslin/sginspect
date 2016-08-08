@@ -108,7 +108,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	}
 
 	function constructor(){
-        $scope.$emit('heading',{heading: ($scope.inspectiontype === 'audit' ? 'Audit' : 'Customer Visit') + 'Form', icon : ($scope.inspectiontype === 'audit' ? 'fa fa-check-square-o' : 'fa fa-map-marker')});
+        $scope.$emit('heading',{heading: 'Customer Visit', icon : 'fa fa-check-square-o'});
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));

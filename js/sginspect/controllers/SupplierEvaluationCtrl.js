@@ -232,7 +232,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	function constructor(){
 		$scope.mode = $routeParams.mode;
 		DaoSvc.openDB();
-        $scope.$emit('heading',{heading: 'Supplier Evaluation', icon : ($scope.inspectiontype === 'audit' ? 'fa fa-check-square-o' : 'fa fa-map-marker')});
+        $scope.$emit('heading',{heading: 'Supplier Evaluation', icon : 'fa fa-check-square-o' });
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
