@@ -60,16 +60,13 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	}
 
     $scope.removeImage = function(idx, filenames){
-		filenames.splice(idx,1);
-    	$scope.$apply();
+		DaoSvc.deleteItem('Unsent',filenames[idx],undefined,function(){
+			$alert({content:'Error removing image', duration: 5, placement: 'top-right', type: 'danger', show: true});
+		},function(){
+			filenames.splice(idx,1);
+    		$scope.$apply();
+		});
     }
-
-	function deleteUnsentImages(idx, images){
-		var keys = images;
-		if (keys[idx] && idx <= keys.length){
-			DaoSvc.deleteItem('Unsent',keys[idx].ID, undefined, undefined, function(){idx++;deleteUnsentImages(idx, keys)});
-		}
-	}
 
 	/** This method create an svg image of the signature captured **/
 	function createSignatureImage(datapair,type){
@@ -118,55 +115,66 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
             $scope.$emit('UNLOAD');
 			return;
         }
-		saveForm();
+		appendImagesToJSON();
 	}
 
-	function saveForm(){
-        DaoSvc.cursor('Unsent',
+	function appendImagesToJSON(){
+		var imageKeys = [];
+		DaoSvc.cursor('Unsent',
 			function(json){
-				if (json.FileData.indexOf('base64') > -1){
-					$scope.Form.JSON[json.ID] = json.FileData;
-					images.push(json);
+				//Checking if this is an image incase the are inspection that were saved offline 
+				if(json.ImageID){
+					//Ensure that we are only getting images belonging to this current Form
+					if(json.ImageID.indexOf($scope.Form.FormID) > -1){
+						$scope.Form.JSON[json.ImageID] = json.ImageData;
+						imageKeys.push(json.ImageID)
+					}
 				}
 			},
 			function(error){
 				console.log('Error fetching from Unsent ' + error);
 				$scope.$emit('UNLOAD');
 			}, function(){
-				$scope.$emit('UNLOAD');
-				deleteUnsentImages(0, images);
-				$scope.$apply()
-		}
-        
+				//Recursively Deleting the Images out of unsent and executing the save form when done
+				deleteUnsentImages(0,imageKeys,saveForm);
+			}
         );
-		//Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
-		if($scope.inspectiontype !== 'supplierevaluation'){
+	}
+
+	function deleteUnsentImages(idx,keys,onComplete){
+		if(idx >= keys.length){
+			onComplete();
+			return;
+		}
+		DaoSvc.deleteItem('Unsent',keys[idx],undefined,function(){
+			idx = idx + 1;
+			deleteUnsentImages(idx,keys,onComplete)
+		}, function(){
+			idx = idx + 1;
+			deleteUnsentImages(idx, keys,onComplete)
+		});
+	}
+
+	function saveForm(){
 			var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 			$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
-		}else{
-			var techAdvisorSignsture = createSignatureImage($scope.signature.techAdvisor, 'Tech_Advisor');
-			var managerSignature = createSignatureImage($scope.signature.manager, 'workflow_manager');
-			$scope.Form.JSON[techAdvisorSignsture.ID] = techAdvisorSignsture.FileData;
-			$scope.Form.JSON[managerSignature.ID] = managerSignature.FileData;
-		}
-
-		var success = function(){
-			$scope.$emit('UNLOAD');
-			$alert({ content: "Your Form has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
-			sessionStorage.removeItem('currentImage');
-			sessionStorage.removeItem('currentLicenceImage');
-			sessionStorage.removeItem('currentForm');
-			sessionStorage.removeItem('currentVinNumber');
-			sessionStorage.removeItem('currentClientsCache');
-			$location.path('/');	
-		}
-		var error = function(err){
-			$scope.$emit('UNLOAD');
-			$alert({ content: "Error Saving Form", duration: 5, placement: 'top-right', type: 'danger', show: true});
-		}
-		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
-		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
-		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
+			var success = function(){
+				$scope.$emit('UNLOAD');
+				$alert({ content: "Your Form has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
+				sessionStorage.removeItem('currentImage');
+				sessionStorage.removeItem('currentLicenceImage');
+				sessionStorage.removeItem('currentForm');
+				sessionStorage.removeItem('currentVinNumber');
+				sessionStorage.removeItem('currentClientsCache');
+				$location.path('/');	
+			}
+			var error = function(err){
+				$scope.$emit('UNLOAD');
+				$alert({ content: "Error Saving Form", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			}
+			$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
+			var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
+			GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true); 
 	}
 
     function fetchClient(){
