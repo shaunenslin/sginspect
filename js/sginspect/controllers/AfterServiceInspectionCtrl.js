@@ -21,11 +21,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
     ];
 
 	$scope.onBackClicked = function(){
-		if($routeParams.screennum == 6 && ($scope.inspectiontype === 'customervisit' || $scope.inspectiontype === 'supplierevaluation'))
-			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0; 
-		else
-			var path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
-		$location.path(path);
+		$location.path('licensematch/afterserviceevaluation/5');
 	}
 
 	$scope.onPhotoClicked = function(field, filenames){
@@ -185,6 +181,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
         $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
         $scope.Form.JSON.LicenceExpiryDate = '25 July 2017';
 		fetchGPS();
+		fetchClient();
         $scope.$emit('UNLOAD');
 	}
 	constructor();

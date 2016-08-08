@@ -30,11 +30,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	}
 
 	$scope.onBackClicked = function(){
-		if($routeParams.screennum == 6 && ($scope.inspectiontype === 'customervisit' || $scope.inspectiontype === 'supplierevaluation'))
-			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0;
-		else
-			var path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
-		$location.path(path);
+		$location.path('selectclient/customervisit/0');
 	}
 
 	$scope.fetchGPS = function(){
@@ -112,7 +108,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	}
 
 	function constructor(){
-        $scope.$emit('heading',{heading: ($scope.inspectiontype === 'audit' ? 'Audit' : 'Customer Visit') + 'Form', icon : ($scope.inspectiontype === 'audit' ? 'fa fa-check-square-o' : 'fa fa-map-marker')});
+        $scope.$emit('heading',{heading:'Customer Visit', icon : 'fa fa-check-square-o'});
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));

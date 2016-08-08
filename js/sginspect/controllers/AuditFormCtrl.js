@@ -106,11 +106,15 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		}
 		saveForm();
 	}
+	/*$scope.syncCompleted = function(reload){
+		$scope.$emit('UNLOAD');
+		$alert({ content: "Your Audit has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
+		sessionStorage.removeItem('currentClientsCache');
+		$location.path('/');
+	}*/
 
 	function saveForm(){
-		// TODO: Cursor in table &  make index1 the formid
 		$scope.$emit('LOAD');
-		images = [];
 		DaoSvc.cursor('Unsent',
 			function(json){
 				if (json.FileData.indexOf('base64') > -1){
@@ -125,11 +129,14 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 				$scope.$emit('UNLOAD');
 				deleteUnsentImages(0, images);
 				$scope.$apply()
-		});
-
+		}
+        
+        );
 		var success = function(){
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Audit Form Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
+			// Now send images
+			// SyncSvc.sync("SGInspector", GlobalSvc.getUser().UserID, $scope, false, true)
 			sessionStorage.removeItem('currentImage');
 			sessionStorage.removeItem('currentLicenceImage');
 			sessionStorage.removeItem('currentForm');
@@ -139,7 +146,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Error Saving Form", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$alert({ content: "Your audit is saved offline, please sync when you have 3G", duration: 5, placement: 'top-right', type: 'success', show: true});
 		}
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
