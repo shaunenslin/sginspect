@@ -30,11 +30,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	}
 
 	$scope.onBackClicked = function(){
-		if($routeParams.screennum == 6 && ($scope.inspectiontype === 'customervisit' || $scope.inspectiontype === 'supplierevaluation'))
-			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0;
-		else
-			var path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
-		$location.path(path);
+		$location.path("selectclient/customervisit/0");
 	}
 
 	$scope.fetchGPS = function(){
