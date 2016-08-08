@@ -2,3 +2,12 @@
 .tags_swap
 
 provisionodbc.sh
+
+## Igonre bower files not needed
+
+js/libs/bower_components/angular-csv-import/dist
+js/libs/bower_components/angular-csv-import/examples
+js/libs/bower_components/angular-csv-import/.travis.yml
+js/libs/bower_components/angular-csv-import/Gruntfile.js
+js/libs/bower_components/angular-csv-import/LICENCE
+js/libs/bower_components/angular-csv-import/README.md
