@@ -23,6 +23,7 @@ function AppRoutes($routeProvider, DaoSvc){
     $routeProvider.when('/licensematch/:inspectiontype/:screennum', {templateUrl : "js/sginspect/view/selectClient.html"});
     $routeProvider.when('/customervisit',{templateUrl : "js/sginspect/view/customerVisit.html"});
     $routeProvider.when('/supplierevaluation/:mode',{templateUrl : "js/sginspect/view/supplierEvaluation.html"});
+    $routeProvider.when('/technicalreport/',{templateUrl : "js/sginspect/view/technicalReport.html"});
 }
 
 function TestCtrl($templateCache) {
