@@ -5,8 +5,8 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	/** The variable below is the svg represtion of an empty signature  **/
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 	$scope.supplierStatus = "";
-	$scope.odometerimages = [];
-	$scope.tyresimages = [];
+	$scope.KilometersImages = [];
+	$scope.TyresImages = [];
 	$scope.other_photosimages = [];
 
 	$scope.selectOptions =[{name : "Good"}, {name : "Average"}, {name : "Bad"}];
@@ -83,11 +83,21 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			$scope.$emit('UNLOAD');
 			return;
 		}
+			// Now check if any items dont have comments or where pictures are needed
 		for (prop in $scope.Form.JSON) {
-			if ($scope.Form.JSON[prop] === "Bad" && !$scope.Form.JSON[prop + "Comment"]){
-				$alert({ content: "Please enter comments when you have selected BAD", duration: 5, placement: 'top-right', type: 'danger', show: true});
-	            $scope.$emit('UNLOAD');
-	            return;
+			if ($scope.Form.JSON[prop] === "Bad") {
+				if (!$scope.Form.JSON[prop + "Comment"]){
+					$alert({ content: "Please enter comments when you have selected BAD", duration: 5, placement: 'top-right', type: 'danger', show: true});
+		        	$scope.$emit('UNLOAD');
+		           	return;
+				}
+				if ($scope[prop + "Images"]) {
+					if ($scope[prop + "Images"].length == 0) {
+						$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
+		           		$scope.$emit('UNLOAD');
+		           		return;
+					}
+				}
 			}
 		}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
