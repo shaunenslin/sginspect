@@ -1,4 +1,4 @@
-coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, $filter){
+coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, $filter){
 	$scope.isPhoneGap = Settings.isPhoneGap;
 	$scope.image = "";
 	$scope.signature = {"inspector" : ""};
