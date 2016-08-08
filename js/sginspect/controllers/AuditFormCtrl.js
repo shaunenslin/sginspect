@@ -43,6 +43,14 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	    	}
 		}
 	}
+	$scope.removeImage = function(idx, filenames){
+		DaoSvc.deleteItem('Unsent',filenames[idx],undefined,function(){
+     	$alert({content:'Error removing image', duration: 5, placement: 'top-right', type: 'danger', show: true});
+		},function(){
+     		filenames.splice(idx,1);
+         	$scope.$apply();
+		});
+	}
 
 	function fetchGPs(){
 		GlobalSvc.getGPS(function(position){
@@ -56,14 +64,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			$scope.$emit('UNLOAD');
 		});
 	}
-
-	function deleteUnsentImages(idx, images){
-		var keys = images;
-		if (keys[idx] && idx <= keys.length){
-			DaoSvc.deleteItem('Unsent',keys[idx].ID, undefined, undefined, function(){idx++;deleteUnsentImages(idx, keys)});
-		}
-	}
-
 	/** This method create an svg image of the signature captured **/
 	function createSignatureImage(datapair,type){
 		var image = {};
@@ -83,7 +83,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			$scope.$emit('UNLOAD');
 			return;
 		}
-			// Now check if any items dont have comments or where pictures are needed
+		// Now check if any items dont have comments or where pictures are needed
 		for (prop in $scope.Form.JSON) {
 			if ($scope.Form.JSON[prop] === "Bad") {
 				if (!$scope.Form.JSON[prop + "Comment"]){
@@ -104,28 +104,48 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			return;
 		}
-		saveForm();
+		appendImagesToJSON();
 	}
 
-	function saveForm(){
-		// TODO: Cursor in table &  make index1 the formid
-		$scope.$emit('LOAD');
-		images = [];
+	function appendImagesToJSON(){
+	var imageKeys = [];
 		DaoSvc.cursor('Unsent',
 			function(json){
-				if (json.FileData.indexOf('base64') > -1){
-					$scope.Form.JSON[json.ID] = json.FileData;
-					images.push(json);
+				//Checking if this is an image incase the are inspection that were saved offline 
+				if(json.ImageID){
+					//Ensure that we are only getting images belonging to this current Form
+					if(json.ImageID.indexOf($scope.Form.FormID) > -1){
+					$scope.Form.JSON[json.ImageID] = json.ImageData;
+					imageKeys.push(json.ImageID)
+					}
 				}
 			},
 			function(error){
 				console.log('Error fetching from Unsent ' + error);
 				$scope.$emit('UNLOAD');
 			}, function(){
-				$scope.$emit('UNLOAD');
-				deleteUnsentImages(0, images);
-				$scope.$apply()
+				//Recursively Deleting the Images out of unsent and executing the save form when done
+				deleteUnsentImages(0,imageKeys,saveForm);
+			}
+		);
+	}
+	function deleteUnsentImages(idx,keys,onComplete){
+		if(idx >= keys.length){
+		onComplete();
+		return;
+		}
+		DaoSvc.deleteItem('Unsent',keys[idx],undefined,function(){
+			idx = idx + 1;
+			deleteUnsentImages(idx,keys,onComplete)
+		}, function(){
+			idx = idx + 1;
+		deleteUnsentImages(idx, keys,onComplete)
 		});
+	}
+
+	function saveForm(){
+		// TODO: Cursor in table &  make index1 the formid
+		$scope.$emit('LOAD');
 
 		var success = function(){
 			$scope.$emit('UNLOAD');
@@ -147,12 +167,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
-
-    // REMOVES INDIVIDUAL IMAGES FROM OTHER PHOTO'S FIELD
-    $scope.removeImage = function(idx, filenames){
-		filenames.splice(idx,1);
-    	$scope.$apply();
-    }
 
     function fetchClient(){
     	var Client = JSON.parse(sessionStorage.getItem('currentClientsCache'));
