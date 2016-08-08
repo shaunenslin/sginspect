@@ -11,7 +11,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 
 	function newClientObject(){
         var newClient = {};
-        newClient.ClientID;
+        newClient.ClientID = "";
         newClient.Name = "";
         newClient.Active = 1;
 
@@ -57,9 +57,6 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     function save(){
         $scope.$emit('LOAD');
         sessionStorage.removeItem( "Clientscache");
-        for (var i = 0; i < $scope.clientEdit.length; i++) {
-            if($scope.clientEdit[i].changed) delete $scope.clientEdit.changed;
-        };
         var url = Settings.url + "Post?method=Client_modify";
         GlobalSvc.postData(url,$scope.clientEdit,function(){
             $scope.$emit('UNLOAD');
@@ -98,7 +95,6 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 	        });
     	}
         console.log($scope.clients);
-
     }
     function fetchClient(){
         if($routeParams.id === 'new' && !savebtnClicked){
@@ -136,7 +132,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         return $scope.csvHeadings;
     };
 
-function newCsvObj(){
+    function newCsvObj(){
         $scope.csv = {
             content: null,
             header: true,
@@ -150,17 +146,31 @@ function newCsvObj(){
     };
 
     $scope.uploadCsv = function(header, json){
-        if (json.length <= 0 ){
+        if (!json){
             $alert({ content: "Cannot upload empty file !", duration: 4, placement:"top-right", type: "danger", show:true});
             return;
         }
-
         for (var i = 0; i < json.length; i++){
-            json[i].changed  = true;
-            json[i].ClientID = '';
-            json[i].Name = "";
-            json[i].Active = 1;
-            $scope.clients.push(json[i]);
+            json[i].ClientID = json[i].ClientID;
+            json[i].Name = json[i].Name;
+            json[i].Active = true;
+            $http.get(Settings.url + 'Get?method=Client_ReadSingle&clientid=' + json[i].ClientID).success(function(data){                //get the First Object because it comes back as array
+                if(data.length){
+                    $alert({ content: "Customer Code already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
+                    return;
+                }
+            });
+            var url = Settings.url + "Post?method=Client_modify";
+            GlobalSvc.postData(url,json[i],function(){
+                sessionStorage.removeItem( "Clientscache");
+                $scope.$emit('UNLOAD');
+                $alert({ content: 'Customer uploaded Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
+                $scope.$apply();
+                $route.reload();
+            },function(){
+                $scope.$emit('UNLOAD');
+                $alert({ content: 'Error uploading customer', duration: 4, placement: 'top-right', type: 'danger', show: true});
+            },'SGIClient','modify',false,true);
         }
     };
 
@@ -176,12 +186,11 @@ function newCsvObj(){
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveClient});
             $scope.mode = 'form';
             $scope.id = $routeParams.id;
-            newCsvObj();
             fetchClient();
         } else {
             $scope.$emit('right',{label: 'Add Customer' , icon : 'glyphicon glyphicon-plus', href : "#/Clients/form/new"});
             $scope.mode = 'list';
-
+            newCsvObj();
             fetchClients();
         }
     }
