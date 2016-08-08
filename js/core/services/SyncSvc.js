@@ -91,7 +91,11 @@ coreApp.service('SyncSvc', function($http, GlobalSvc, DaoSvc, Settings, OptionSv
 
         var obj = $this.postObjectsArray[index];
         $scope.syncProgress.push('Sending ' + obj.Table + '(' + (index + 1) + ')');
-
+        // if not url, just continue
+        if (!obj.url) {
+            index += 1;
+            $this.postObjects(index, $scope);
+        }
         GlobalSvc.postData(obj.url,
             obj.json,
             function(data){
