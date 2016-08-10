@@ -9,23 +9,34 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     var user = GlobalSvc.getUser();
 
 	function newClientObject(){
-        var newClient = {};
-        newClient.ClientID = "";
-        newClient.Name = "";
-        newClient.Active = 1;
-
-        return newClient;
+        return {
+            ClientID : "",
+            Name : "",
+            Active : 1
+        };
 	}
 
+    function userExistsCheck(CustomerID){
+        var url = Settings.url + 'Get?method=Client_ReadSingle&clientid=' + CustomerID;
+        $http.get(url)
+            .success(function(data){                //get the First Object because it comes back as array
+                if(data.length){
+                    $alert({ content: "Customer Code already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
+                }
+            })
+            .error(function(){
+                $alert({ content: 'An error occured while fetching your Customers', duration: 4, placement: 'top-right', type: 'danger', show: true});
+                $scope.$emit('LOAD');
+            });
+        return true;    
+    }
+
    $scope.deleteClient = function(){
-        if (!confirm('Are you sure you want to delete this Customer ?')){
-            return;
-        } else{
+        if (confirm('Are you sure you want to delete this Customer ?')){
             $scope.$emit('LOAD');
             $scope.clientEdit.Active = 0;
             save();
-        }
-        
+        }        
     };
 
     $scope.saveClient = function(){
@@ -37,18 +48,13 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             $alert({ content: "Please fill in the Client Name", duration: 4, placement: 'top-right', type: 'danger', show: true});
             return;
         }    
-        if($routeParams.id === 'new'){
-            //Checking if the user already exists //this Code Could Be Improved
-            $http.get(Settings.url + 'Get?method=Client_ReadSingle&clientid=' + $scope.clientEdit.ClientID).success(function(data){                //get the First Object because it comes back as array
-                if(data.length){
-                    delete $scope.errorMsg;
-                    delete $scope.successMsg;
-                    $alert({ content: "Customer Code already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
-                    return;
-                }else{
-                    save();
-                }
-            });
+        if($scope.id === 'new'){
+            var user_exists = userExistsCheck($scope.clientEdit.ClientID);
+            if (user_exists == false){
+                save();
+            } else{
+                return;
+            }
         }else{
             save();
         }
@@ -57,7 +63,6 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     function save(){
         $scope.$emit('LOAD');
         sessionStorage.removeItem( "Clientscache");
-        var url = Settings.url + "Post?method=Client_modify";
         var success = function(){
             $scope.$emit('UNLOAD');
             $alert({ content: (($scope.clientEdit.Active === 0) ? 'Customer deleted successfully' : 'Customer saved Ok'), duration: 4, placement: 'top-right', type: 'success', show: true});
@@ -69,6 +74,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             $scope.$emit('UNLOAD');
             $alert({ content: (($scope.clientEdit.Active === 0) ? 'Error deleting Customer' : 'Error saving Customer'), duration: 4, placement: 'top-right', type: 'danger', show: true}); 
         };
+        var url = Settings.url + "Post?method=Client_modify";
         GlobalSvc.postData(url,$scope.clientEdit,success,error,'SGIClient','modify',false,true)
     }
 
@@ -96,24 +102,18 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     }
 
     function fetchClient(){
-        if($routeParams.id === 'new'){
-            $scope.clientEdit = newClientObject();
+        var url = Settings.url + 'Get?method=Client_ReadSingle&clientid=' + $scope.id;
+        console.log(url);
+        $http.get(url)
+            .success(function(data){
+            //get the First Object because it comes back because it is what stores the user data
+            $scope.clientEdit = data[0];
             $scope.clientEdit.ClientID = parseInt($scope.clientEdit.ClientID);
             $scope.$emit('UNLOAD');
-        }else{
-            var url = Settings.url + 'Get?method=Client_ReadSingle&clientid=' + $routeParams.id;
-            console.log(url);
-            $http.get(url)
-                .success(function(data){
-                //get the First Object because it comes back because it is what stores the user data
-                $scope.clientEdit = data[0];
-                $scope.clientEdit.ClientID = parseInt($scope.clientEdit.ClientID);
-                $scope.$emit('UNLOAD');
-                })
-                .error(function(){
-                    $alert({ content: 'An error occured in displaying your Customer', duration: 4, placement: 'top-right', type: 'danger', show: true});
-                });
-        }
+            })
+            .error(function(){
+                $alert({ content: 'An error occured in displaying your Customer', duration: 4, placement: 'top-right', type: 'danger', show: true});
+            });
     }
 
     function arraySplit(data){
@@ -131,11 +131,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
         $scope.idx = changedVal;
     }
-
-    $scope.getcsvHeader = function(){
-        return $scope.csvHeadings;
-    };
-
+    
     function newCsvObj(){
         $scope.csv = {
             content: null,
@@ -150,27 +146,22 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     };
     
     function uploadClient(json){
-        $http.get(Settings.url + 'Get?method=Client_ReadSingle&clientid=' + json.ClientID)
-            .success(function(data){                //get the First Object because it comes back as array
-                if(data.length){
-                    $alert({ content: "Customer Code already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
-                    return;
-                } else{
-                    var url = Settings.url + "Post?method=Client_modify";
-                    var success = function(){
-                        sessionStorage.removeItem( "Clientscache");
-                        $scope.$emit('UNLOAD');
-                        $alert({ content: 'Customer uploaded Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
-                        $scope.$apply();
-                        $route.reload();
-                    };
-                    var error = function(){
-                        $scope.$emit('UNLOAD');
-                        $alert({ content: 'Error uploading customer', duration: 4, placement: 'top-right', type: 'danger', show: true});
-                    };
-                    GlobalSvc.postData(url,json,success,error,'SGIClient','modify',false,true);
-                }
-            });
+        var user_exists = userExistsCheck($scope.clientEdit.ClientID);
+        if (user_exists == false){
+        var success = function(){
+            sessionStorage.removeItem( "Clientscache");
+            $scope.$emit('UNLOAD');
+            $alert({ content: 'Customer uploaded Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
+            $scope.$apply();
+            $route.reload();
+        };
+        var error = function(){
+            $scope.$emit('UNLOAD');
+            $alert({ content: 'Error uploading customer', duration: 4, placement: 'top-right', type: 'danger', show: true});
+        };
+        var url = Settings.url + "Post?method=Client_modify";
+        GlobalSvc.postData(url,json,success,error,'SGIClient','modify',false,true);
+        }
     }
 
     $scope.uploadCsv = function(header, json){
@@ -183,7 +174,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             json[i].Name = json[i].Name;
             json[i].Active = (json[i].Active = true);
             uploadClient(json[i]);
-            }            
+        }            
     };
 
     function constructor(){
@@ -191,15 +182,19 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             $scope.errorMsg = 'You are not authorised....';
             return;
         }
-
         $scope.$emit('LOAD');
-        if ($routeParams.mode && $routeParams.id) {
+        $scope.id = $routeParams.id;
+        if ($routeParams.mode && $scope.id !== 'new') {
         	/*$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});*/
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveClient});
             $scope.mode = 'form';
-            $scope.id = $routeParams.id;
             fetchClient();
-        } else {
+        } else if($scope.id === 'new'){
+            $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveClient});
+            $scope.clientEdit = newClientObject();
+            $scope.clientEdit.ClientID = parseInt($scope.clientEdit.ClientID);
+            $scope.$emit('UNLOAD');
+        } else{
             $scope.$emit('right',{label: 'Add Customer' , icon : 'glyphicon glyphicon-plus', href : "#/Clients/form/new"});
             $scope.mode = 'list';
             newCsvObj();

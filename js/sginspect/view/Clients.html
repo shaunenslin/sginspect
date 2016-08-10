@@ -38,7 +38,7 @@
         <button type="button" ng-click="navigate(1)" class="btn btn-default btn-sm pull-right" ng-disabled="idx === splitArr.length - 1">next<span class="glyphicon glyphicon-chevron-right"></span></button>
         </div>    
         <!-- Deals With Weather The User Edits or Adds A New Record -->
-        <div ng-show="mode ===  'form'" >
+        <div ng-show="mode ===  'form' || id === 'new'">
             <form style="margin-top: 5px">
 
                 <div class="form-group">
