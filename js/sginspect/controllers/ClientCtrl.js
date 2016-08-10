@@ -6,6 +6,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     $scope.splitArr = [];
     $scope.newArr = [];
     $scope.idx = 0;
+    var user_exists = false;
     var user = GlobalSvc.getUser();
 
 	function newClientObject(){
@@ -22,13 +23,16 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             .success(function(data){                //get the First Object because it comes back as array
                 if(data.length){
                     $alert({ content: "Customer Code already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
+                    user_exists = true;
+                    return user_exists;
+                } else{
+                    if ($scope.id === 'new') save();
                 }
             })
             .error(function(){
                 $alert({ content: 'An error occured while fetching your Customers', duration: 4, placement: 'top-right', type: 'danger', show: true});
                 $scope.$emit('LOAD');
             });
-        return true;    
     }
 
    $scope.deleteClient = function(){
@@ -49,12 +53,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             return;
         }    
         if($scope.id === 'new'){
-            var user_exists = userExistsCheck($scope.clientEdit.ClientID);
-            if (user_exists == false){
-                save();
-            } else{
-                return;
-            }
+           userExistsCheck($scope.clientEdit.ClientID);
         }else{
             save();
         }
@@ -146,8 +145,8 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     };
     
     function uploadClient(json){
-        var user_exists = userExistsCheck($scope.clientEdit.ClientID);
-        if (user_exists == false){
+        userExistsCheck(json.ClientID);
+        if (user_exists === false){
         var success = function(){
             sessionStorage.removeItem( "Clientscache");
             $scope.$emit('UNLOAD');
