@@ -158,19 +158,21 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
                 if(data.length){
                     $alert({ content: "Customer Code already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
                     return;
+                } else{
+                    var url = Settings.url + "Post?method=Client_modify";
+                    GlobalSvc.postData(url,json[i],function(){
+                        sessionStorage.removeItem( "Clientscache");
+                        $scope.$emit('UNLOAD');
+                        $alert({ content: 'Customer uploaded Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
+                        $scope.$apply();
+                        $route.reload();
+                    },function(){
+                        $scope.$emit('UNLOAD');
+                        $alert({ content: 'Error uploading customer', duration: 4, placement: 'top-right', type: 'danger', show: true});
+                    },'SGIClient','modify',false,true); 
                 }
             });
-            var url = Settings.url + "Post?method=Client_modify";
-            GlobalSvc.postData(url,json[i],function(){
-                sessionStorage.removeItem( "Clientscache");
-                $scope.$emit('UNLOAD');
-                $alert({ content: 'Customer uploaded Ok', duration: 4, placement: 'top-right', type: 'success', show: true});
-                $scope.$apply();
-                $route.reload();
-            },function(){
-                $scope.$emit('UNLOAD');
-                $alert({ content: 'Error uploading customer', duration: 4, placement: 'top-right', type: 'danger', show: true});
-            },'SGIClient','modify',false,true);
+            
         }
     };
 
