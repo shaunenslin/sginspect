@@ -53,7 +53,7 @@
 		</div>
 		<div class="form-group">
 			<label for="ref_no" class="col-sm-3">Ref No : SF (Optional)</label>
-	        <div class="col-sm-9"><input required id="ref_no" ng-disabled="!Form.JSON.Latitude || !Form.JSON.Longitude" placeholder="Enter SF Reference" name="ref_no"  type="text" class="form-control"  ng-model="Form.JSON.Reference"/></div>
+	        <div class="col-sm-9"><input required id="ref_no" ng-disabled="Form.JSON.Longitude === undefined" placeholder="Enter SF Reference" name="ref_no"  type="text" class="form-control"  ng-model="Form.JSON.Reference"/></div>
 		</div>
 		<div ng-class="Form.JSON.Description ? 'well' : ''">
 			<div class="form-group">
@@ -78,15 +78,17 @@
 				</table>
 			</div>
 		</div>
-		<div class="form-group">
-			<label for="recommendations" class="col-sm-3">Reccomendations</label>
-	        <div class="col-sm-9"><input required id="recommendations" ng-disabled="!Form.JSON.Description" placeholder="Enter Reccomendations" name="recommendations"  type="text" class="form-control"  ng-model="Form.JSON.Reccomendations"/></div>
+
+		<div class="form-group" name="recommendations">
+			<label for="recommendations">Reccomendations</label>
+			<input type="text" required class="form-control" id="recommendations" ng-disabled="!Form.JSON.Description" name="recommendations" ng-model="Form.JSON.Reccomendations" placeholder="Enter Reccomendations">
 		</div>
-		<div class="form-group">
-			<label for="conclusions" class="col-sm-3">Conclusions</label>
-	        <div class="col-sm-9"><input required id="conclusions" ng-disabled="!Form.JSON.Reccomendations" placeholder="Enter Conclusions" name="conclusions"  type="text" class="form-control"  ng-model="Form.JSON.Conclusions"/></div>
+		<div class="form-group" name="conclusions">
+			<label for="conclusions">Conclusions</label>
+	        <div><input required id="conclusions" ng-disabled="!Form.JSON.Reccomendations" placeholder="Enter Conclusions" name="conclusions"  type="text" class="form-control"  ng-model="Form.JSON.Conclusions"/></div>
 		</div>
 		
+
 		
 	</form>
 	<div style="margin-top:10px;">

@@ -84,8 +84,12 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	 * Remove the name in the chosen field if there are no records
     */
     $scope.removeImage = function(idx, filenames){
-		filenames.splice(idx,1);
-    	$scope.$apply();
+		DaoSvc.deleteItem('Unsent',filenames[idx],undefined,function(){
+     			$alert({content:'Error removing image', duration: 5, placement: 'top-right', type: 'danger', show: true});
+			},function(){
+     			filenames.splice(idx,1);
+         		$scope.$apply();
+		});
     }
 
 	$scope.onBackClicked = function(){
@@ -97,10 +101,12 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		GlobalSvc.getGPS(function(position){
 			$scope.Form.JSON.Latitude  = position ? position.coords.latitude : "";
 			$scope.Form.JSON.Longitude = position ? position.coords.longitude : "";
+			$alert({content:"GPS location captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+			$scope.$emit('UNLOAD');
 			$scope.$emit('UNLOAD');
 			$scope.$apply();
 		},function(error){
-			if($scope.inspectiontype !== 'audit' || $scope.inspectiontype !== 'afterserviceevaluation') $alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'danger', show:true});
+			$alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'danger', show:true});
 			$scope.$emit('UNLOAD');
 		});
 	}
@@ -117,6 +123,41 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			image.Name = image.Id + '.svgx';
 		}
 		return image;
+	}
+	function appendImagesToJSON(){
+		var imageKeys = [];
+		DaoSvc.cursor('Unsent',
+			function(json){
+				//Checking if this is an image incase the are inspection that were saved offline 
+				if(json.ImageID){
+					//Ensure that we are only getting images belonging to this current Form
+					if(json.ImageID.indexOf($scope.Form.FormID) > -1){
+						$scope.Form.JSON[json.ImageID] = json.ImageData;
+						imageKeys.push(json.ImageID)
+					}
+				}
+			},
+			function(error){
+				console.log('Error fetching from Unsent ' + error);
+				$scope.$emit('UNLOAD');
+			}, function(){
+				//Recursively Deleting the Images out of unsent and executing the save form when done
+				deleteUnsentImages(0,imageKeys,saveForm);
+			}
+		);
+	}
+	function deleteUnsentImages(idx,keys,onComplete){
+		if(idx >= keys.length){
+			onComplete();
+			return;
+		}
+		DaoSvc.deleteItem('Unsent',keys[idx],undefined,function(){
+			idx = idx + 1;
+			deleteUnsentImages(idx,keys,onComplete)
+		}, function(){
+			idx = idx + 1;
+			deleteUnsentImages(idx, keys,onComplete)
+		});
 	}
 
 	$scope.saveSignature = function(){
@@ -167,11 +208,11 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
             return;
         }
 		if($scope.signature.workshopmanager[1] === emptySignature || !$scope.signature.workshopmanager){
-            $alert({ content: "Worjshop manager to sign before you continue", duration: 5, placement: 'top-right', type: 'danger', show: true});
+            $alert({ content: "Workshop manager to sign before you continue", duration: 5, placement: 'top-right', type: 'danger', show: true});
             $scope.$emit('UNLOAD');
             return;
         }
-		saveForm();
+		appendImagesToJSON();
 	}
 
 	function fetchSuppliers(){
@@ -185,14 +226,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		);
 	}
 
-	$scope.syncCompleted = function(reload){
-		$scope.$emit('UNLOAD');
-		$alert({ content: "Your Supplier Evaluation has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
-		sessionStorage.removeItem('currentClientsCache');
-		$location.path('/');
-	}
-
-
 	function saveForm(){
 		$scope.$emit('LOAD');
 		saveSupplier();
@@ -203,13 +236,14 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.Form.JSON[workshopmanagerSignature.ID] = workshopmanagerSignature.FileData;
 
 		var success = function(){
-			// Now send images
-			SyncSvc.sync("SGInspector", GlobalSvc.getUser().UserID, $scope, false, true)
+			sessionStorage.removeItem('currentClientsCache');
+			$alert({ content: "Supplier Evaluation Complete", duration: 5, placement: 'top-right', type: 'success', show: true});
+			$location.path('/');
 		}
 
 		var error = function(err){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Your inspection is saved offline, please sync when you have 3G", duration: 5, placement: 'top-right', type: 'success', show: true});
+			$alert({ content: "Error saving Supplier Evaluation", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			sessionStorage.removeItem('currentClientsCache');
 			$location.path('/');
 		}
