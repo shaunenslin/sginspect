@@ -178,12 +178,11 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             $alert({ content: "Cannot upload empty file !", duration: 4, placement:"top-right", type: "danger", show:true});
             return;
         }
-        var uploadedCustomer = {};
         for (var i = 0; i < json.length; i++){
-            uploadedCustomer.ClientID = json[i].ClientID;
-            uploadedCustomer.Name = json[i].Name;
-            uploadedCustomer.Active = (json[i].Active = true);
-            uploadClient(uploadedCustomer);
+            json[i].ClientID = json[i].ClientID;
+            json[i].Name = json[i].Name;
+            json[i].Active = (json[i].Active = true);
+            uploadClient(json[i]);
             }            
     };
 
