@@ -38,11 +38,11 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		GlobalSvc.getGPS(function(position){
 			$scope.Form.JSON.Latitude  = position ? position.coords.latitude : "";
 			$scope.Form.JSON.Longitude = position ? position.coords.longitude : "";
-			if($scope.inspectiontype !== 'audit' || $scope.inspectiontype !== 'afterserviceevaluation') $alert({content:"GPS location captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+			$alert({content:"GPS location captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.$emit('UNLOAD');
 			$scope.$apply();
 		},function(error){
-			if($scope.inspectiontype !== 'audit' || $scope.inspectiontype !== 'afterserviceevaluation') $alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'danger', show:true});
+			$alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'danger', show:true});
 			console.log( error);
 			$scope.Form.JSON.Latitude = '';
 			$scope.Form.JSON.Longitude = '';
@@ -100,7 +100,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Error Saving Form", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$alert({ content: "Error saving Customer Visit", duration: 5, placement: 'top-right', type: 'danger', show: true});
 		}
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';

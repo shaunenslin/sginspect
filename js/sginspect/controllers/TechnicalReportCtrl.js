@@ -45,7 +45,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			$alert({content:'GPS coordinates captured successfully: ', duration: 5, placement: 'top-right', type: 'success', show: true});
 			$scope.$emit('UNLOAD');
 		},function(error){
-			console.log('Error Saving GPS coordiinates. Please enable GPS location on your device');
+			$alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'danger', show:true});
 			$scope.Form.JSON.Latitude = '';
 			$scope.Form.JSON.Longitude = '';
 			$scope.$emit('UNLOAD');
@@ -105,7 +105,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 				deleteUnsentImages(0,imageKeys,saveForm);
 			}
         );
-}
+	}
 	function deleteUnsentImages(idx,keys,onComplete){
 		if(idx >= keys.length){
 		onComplete();
@@ -159,7 +159,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Your audit is saved offline, please sync when you have 3G signal", duration: 5, placement: 'top-right', type: 'success', show: true});
+			$alert({ content: "Error saving Technical Report", duration: 5, placement: 'top-right', type: 'danger', show: true});
 		}
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;

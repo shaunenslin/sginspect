@@ -159,7 +159,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Error Saving Form", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$alert({ content: "Error saving Audit", duration: 5, placement: 'top-right', type: 'danger', show: true});
 		}
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
