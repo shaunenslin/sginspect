@@ -197,7 +197,7 @@
 					<label for="Warranties" class="col-sm-3">Warranties</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Facility" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Warranties"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div class="form-group" ng-if="Form.JSON.Facility === 'Bad'">
+				<div class="form-group" ng-if="Form.JSON.Warranties === 'Bad'">
 					<label for="WarrantiesComment" class="col-sm-3">Comment</label>
 					<div class="col-sm-9"><input required id="WarrantiesComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.WarrantiesComment"/></div>
 				</div>

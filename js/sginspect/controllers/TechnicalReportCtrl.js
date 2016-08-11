@@ -147,6 +147,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	function saveForm(){
 		$scope.$emit('LOAD');
+		deleteCurrentPartialForm($scope.Form.FormID);
 		var success = function(){
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Technical Report Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
@@ -182,6 +183,15 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
     	var Client = JSON.parse(sessionStorage.getItem('currentClientsCache'));
     	$scope.Client = $filter('filter')(Client, {ClientID : $scope.Form.ClientID})[0];
     }
+    function savePartialForm(){
+		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
+		$scope.Form.JSON.Path = $location.path();
+		$scope.Form.JobType = 'Open Jobs';
+		DaoSvc.put($scope.Form, 'InProgress', $scope.Form.FormID, function(){console.log('Partial Save of ' + $location.path() + ' successful')},function(){console.log('Partial Save of' + $location.path() + ' failed')},function(){$scope.$apply();});
+	}
+	function deleteCurrentPartialForm(FormID){
+		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
+	}
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Technical Report', icon : 'fa fa-check-square-o'});
@@ -191,6 +201,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchClient();
 		fetchServiceHistory();
+		savePartialForm();
 		$scope.Form.JSON.RegNumber =  sessionStorage.getItem('currentRegNumber');
 		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
 		$scope.Form.JSON.LicenceExpiryDate = '25 July 2017';

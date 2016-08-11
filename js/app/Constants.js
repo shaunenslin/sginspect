@@ -60,7 +60,7 @@ coreApp.constant('Settings', {
         {table : 'Unsent',              getKey : function(item){return item.keyf;}, index1 : function(item){return 'undefined';} /* PLEASE DO NOT REMOVE index1 function: when loading logout screen we're checking unsent items by counting them on index1 column. For some reason on iOS local SQL, when we are inserting undefined as value it is not recorded that way  */ },
         {table : 'SGIClients',          getKey : function(item){return item.ClientID;}, index1 : function(item){return item.ClientID;}, index2 : function(item){return item.Name;}}, 
         {table : 'SGISuppliers',        getKey : function(item){return item.SupplierID + item.Name;}, index1 : function(item){return item.SupplierID;}, index2 : function(item){return item.Name;}},
-        // {table : 'InProgress',       getKey : function(item){return item.FormID},       index1:function(item){return item.FormType;}},
+        {table : 'InProgress',          getKey : function(item){return item.FormID},index1:function(item){return item.FormType;}, index2 : function(item){return item.JSON.Path;}, index3:function(item){return item.JobType;}},
     ],
 
     workflow : { 

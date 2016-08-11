@@ -225,10 +225,20 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			}
 		);
 	}
+	function savePartialForm(){
+		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
+		$scope.Form.JSON.Path = $location.path();
+		$scope.Form.JobType = 'Open Jobs';
+		DaoSvc.put($scope.Form, 'InProgress', $scope.Form.FormID, function(){console.log('Partial Save of ' + $location.path() + ' successful')},function(){console.log('Partial Save of' + $location.path() + ' failed')},function(){$scope.$apply();});
+	}
+	function deleteCurrentPartialForm(FormID){
+		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
+	}
 
 	function saveForm(){
 		$scope.$emit('LOAD');
 		saveSupplier();
+		deleteCurrentPartialForm($scope.Form.FormID);
 		//Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
 		var technicaladvisorSignature =  createSignatureImage($scope.signature.technicaladvisor, 'technicaladvisor');
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
@@ -237,6 +247,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 		var success = function(){
 			sessionStorage.removeItem('currentClientsCache');
+			sessionStorage.removeItem('currentForm');
 			$alert({ content: "Supplier Evaluation Complete", duration: 5, placement: 'top-right', type: 'success', show: true});
 			$location.path('/');
 		}
@@ -245,6 +256,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Error saving Supplier Evaluation", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			sessionStorage.removeItem('currentClientsCache');
+			sessionStorage.removeItem('currentForm');
 			$location.path('/');
 		}
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
@@ -272,6 +284,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchSuppliers();
 		watchSupplierChanged();
+		savePartialForm();
 	}
 	constructor();
 });

@@ -22,7 +22,7 @@
                 <a href="{{menu.url}}" ng-if="menu.checkRole" ng-show="checkUserRole(menu.checkRole)" ng-click="$hide()"><i class="{{menu.icon}}" style="margin-right:5px;"></i>{{menu.label}}</a>
             </li>
 
-            <li ng-if="!noUser"><a href="#/mainMenu" ng-click="$hide()"><i class="fa fa-home fa-fw" style="margin-right:5px;"></i>Home</a></li>
+            <li ng-if="!noUser"><a href="#/" ng-click="$hide()"><i class="fa fa-home fa-fw" style="margin-right:5px;"></i>Home</a></li>
             <li ng-if="!noUser"><a href="#/profile" ng-click="$hide()"><i class="fa fa-user fa-fw" style="margin-right:5px;"></i>My Profile</a></li>
             <li ng-if="!noUser"><a href="#/sync" ng-click="$hide()"><i class="fa fa-exchange" style="margin-right:5px;"></i>Synchronize</a></li>
             <li ng-if="!noUser"><a href="#/admin" ng-click="$hide()"><i class="fa fa-wrench fa-fw" style="margin-right:5px;"></i>Admin</a></li>
