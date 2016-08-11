@@ -25,19 +25,20 @@
             <em>Importing your Client item requires that the file extention be in .csv format with the following fields : ClientID, Name, Active.</em>
             <form id="file-form" method="POST" role="form" class="form-inline">
                 <div class="form-group" style="display: inline-block;">
-                  <ng-csv-import  content="csv.content" header="csv.header" separator="csv.separator" result="csv.result" accept="csv.accept"></ng-csv-import>
+                  <ng-csv-import  content="csv.content" header="csv.header" separator="csv.separator" result="csv.result" accept="csv.accept" style="display: inline-block;"></ng-csv-import>
                   <button style="margin-left: 10px;" class="btn btn-success" type="button" ng-click="uploadCsv(csv.header, csv.result)">Upload</button>
                 </div>
             </form>
-          </div>
-          <a href=""><button data-toggle="collapse" style="background-color: #31373B;bottom: 70px;" data-target="#upload" type="button" class="round-btn" ng-show="mode === 'list'"><span class="fa fa-cloud-upload icon"></span></button></a>
+        </div>
+        <a href=""><button data-toggle="collapse" style="background-color: #31373B;bottom: 70px;" data-target="#upload" type="button" class="round-btn" ng-show="mode === 'list'"><span class="fa fa-cloud-upload icon"></span></button>
+        </a>
         <div ng-if="mode === 'list'">
         <button type="button" ng-click="navigate(-1)" class="btn btn-default btn-sm pull-left" ng-disabled="idx === 0"><span class="glyphicon glyphicon-chevron-left"></span>back</button>
         <p style="text-align : center">Page {{idx + 1}} of {{splitArr.length}}</button>
         <button type="button" ng-click="navigate(1)" class="btn btn-default btn-sm pull-right" ng-disabled="idx === splitArr.length - 1">next<span class="glyphicon glyphicon-chevron-right"></span></button>
         </div>    
         <!-- Deals With Weather The User Edits or Adds A New Record -->
-        <div ng-show="mode ===  'form'" >
+        <div ng-show="mode ===  'form' || id === 'new'">
             <form style="margin-top: 5px">
 
                 <div class="form-group">
