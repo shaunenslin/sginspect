@@ -65,14 +65,14 @@
 								<input style="margin-top: 10px;" id="evaluation-select" name="file[]" type="file" >
 							</form>
 						</div>
-						<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('evaluation', evaluationimages)" class="btn btn-success">Upload</button></div>
-						<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('evaluation', evaluationimages)" class="btn btn-success btn-block">Capture Photo</button></div>
+						<div ng-if="!isPhoneGap" class="col-xs-4"><button ng-click="onPhotoClicked('evaluation', evaluationImages)" class="btn btn-success">Upload</button></div>
+						<div ng-if="isPhoneGap" class="col-xs-12"><button ng-click="onPhotoClicked('evaluation', evaluationImages)" class="btn btn-success btn-block">Capture Photo</button></div>
 					</div>
 					<div style="margin-top : 5px;">
 						<table>
-							<tr ng-repeat="row in evaluationimages">
+							<tr ng-repeat="row in evaluationImages">
 								<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
-								<td><button ng-click="removeImage($index, evaluationimages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+								<td><button ng-click="removeImage($index, evaluationImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
 							</tr>
 						</table>
 					</div>
@@ -98,7 +98,7 @@
 						</div>
 						<div style="inset">
 							<table>
-								<tr ng-repeat="row in receptionimages">
+								<tr ng-repeat="row in ReceptionImages">
 									<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
 									<td><button ng-click="removeImage($index, ReceptionImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
 								</tr>
@@ -156,7 +156,7 @@
 						</div>
 						<div style="margin-top : 5px;">
 							<table>
-								<tr ng-repeat="row in cleanlinessimages">
+								<tr ng-repeat="row in CleanlinessImages">
 									<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
 									<td><button ng-click="removeImage($index, CleanlinessImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
 								</tr>
@@ -232,7 +232,7 @@
 						</div>
 						<div style="margin-top : 5px;">
 							<table>
-								<tr ng-repeat="row in SpecialToolsTrainingimages">
+								<tr ng-repeat="row in SpecialToolsTrainingImages">
 									<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
 									<td><button ng-click="removeImage($index, SpecialToolsTrainingImages)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
 								</tr>

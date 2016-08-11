@@ -166,7 +166,6 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 				sessionStorage.removeItem('currentLicenceImage');
 				sessionStorage.removeItem('currentForm');
 				sessionStorage.removeItem('currentVinNumber');
-				sessionStorage.removeItem('currentClientsCache');
 				$location.path('/');	
 			}
 			var error = function(err){
