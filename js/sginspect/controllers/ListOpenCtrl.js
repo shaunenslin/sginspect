@@ -1,7 +1,7 @@
 coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $location, $alert) {
 	DaoSvc.openDB();
 	$scope.InspectionForms = [];
-	// $scope.openJobsCount = 0
+	$scope.openJobsCount = 0
 	$scope.CompletedJobsCount = 0;
 	$scope.CloseJobsCount = 0;
 

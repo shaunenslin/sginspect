@@ -146,10 +146,8 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			}
 		);
 	}
-	// The deleteCurrentPartialForm () is run here because the count on the home screen does not refresh quickly enough after the saveForm()
 	function deleteUnsentImages(idx,keys,onComplete){
 		if(idx >= keys.length){
-			deleteCurrentPartialForm($scope.Form.FormID);
 			onComplete();
 			return;
 		}
@@ -219,6 +217,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
             $scope.$emit('UNLOAD');
             return;
         }
+ 		deleteCurrentPartialForm($scope.Form.FormID);
 		appendImagesToJSON();
 	}
 
