@@ -155,7 +155,6 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			sessionStorage.removeItem('currentLicenceImage');
 			sessionStorage.removeItem('currentForm');
 			sessionStorage.removeItem('currentVinNumber');
-			sessionStorage.removeItem('currentClientsCache');
 			$location.path('/');	
 		}
 		var error = function(err){

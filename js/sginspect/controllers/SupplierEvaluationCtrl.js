@@ -1,7 +1,7 @@
 coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter, SyncSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
     $scope.signature = {technicaladvisor : "", workshopmanager: ""};
-	$scope.evaluationimages = [];
+	$scope.evaluationImages = [];
 	$scope.CleanlinessImages = [];
 	$scope.SpecialToolsTrainingImages = [];
 	$scope.ReceptionImages = [];
@@ -146,8 +146,10 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			}
 		);
 	}
+	// The deleteCurrentPartialForm () is run here because the count on the home screen does not refresh quickly enough after the saveForm()
 	function deleteUnsentImages(idx,keys,onComplete){
 		if(idx >= keys.length){
+			deleteCurrentPartialForm($scope.Form.FormID);
 			onComplete();
 			return;
 		}
@@ -201,6 +203,11 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 				}
 			}
 		}
+		if ($scope.evaluationImages.length === 0) {
+			$alert({ content: "Please take pictures for Evaluation", duration: 5, placement: 'top-right', type: 'danger', show: true});
+            $scope.$emit('UNLOAD');
+            return;
+		}
 
         if($scope.signature.technicaladvisor[1] === emptySignature || !$scope.signature.technicaladvisor){
             $alert({ content: "Technical advisor to sign before you continue", duration: 5, placement: 'top-right', type: 'danger', show: true});
@@ -238,7 +245,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	function saveForm(){
 		$scope.$emit('LOAD');
 		saveSupplier();
-		deleteCurrentPartialForm($scope.Form.FormID);
 		//Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
 		var technicaladvisorSignature =  createSignatureImage($scope.signature.technicaladvisor, 'technicaladvisor');
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
@@ -246,7 +252,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.Form.JSON[workshopmanagerSignature.ID] = workshopmanagerSignature.FileData;
 
 		var success = function(){
-			sessionStorage.removeItem('currentClientsCache');
 			sessionStorage.removeItem('currentForm');
 			$alert({ content: "Supplier Evaluation Complete", duration: 5, placement: 'top-right', type: 'success', show: true});
 			$location.path('/');
@@ -255,7 +260,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		var error = function(err){
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Error saving Supplier Evaluation", duration: 5, placement: 'top-right', type: 'danger', show: true});
-			sessionStorage.removeItem('currentClientsCache');
 			sessionStorage.removeItem('currentForm');
 			$location.path('/');
 		}

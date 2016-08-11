@@ -166,6 +166,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
         if($scope.inspectiontype !== 'supplierevaluation' && ($location.path().indexOf('vinmatch') <= -1 && $location.path().indexOf('licensematch') <= -1)) $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 		if ($routeParams.screennum == 0){
+			sessionStorage.removeItem('currentClientsCache');
 			$scope.view = 'client';
 			newObject();
 			fetchClients();

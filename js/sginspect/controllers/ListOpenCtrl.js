@@ -1,22 +1,23 @@
 coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $location, $alert) {
 	DaoSvc.openDB();
 	$scope.InspectionForms = [];
-	$scope.openJobsCount = 0
+	// $scope.openJobsCount = 0
 	$scope.CompletedJobsCount = 0;
 	$scope.CloseJobsCount = 0;
 
 	function fetchOpenCount(){
-		// this.count = function (table, key, index,  poncomplete, ponerror) {
+		$scope.openJobsCount = 0;
 		DaoSvc.count('InProgress', 'Open Jobs', 'index3',
-			function(count){
-				$scope.openJobsCount = count;
-				$scope.$emit('UNLOAD');
-				$scope.$apply();
-			},
-			function(err){
-				$scope.$emit('UNLOAD');
-				console.log('COunt of 0 in InProgress table');
+		function(count){
+			$scope.openJobsCount = count;
+			$scope.$emit('UNLOAD');
+			$scope.$apply();
+		},
+		function(err){
+			$scope.$emit('UNLOAD');
+			console.log('COunt of 0 in InProgress table');
 		});
+
 	}
 	$scope.onJobClicked = function(jobType){
 		if (jobType === 'open'){

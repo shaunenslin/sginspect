@@ -154,7 +154,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			sessionStorage.removeItem('currentLicenceImage');
 			sessionStorage.removeItem('currentForm');
 			sessionStorage.removeItem('currentVinNumber');
-			sessionStorage.removeItem('currentClientsCache');
 			$location.path('/');	
 		}
 		var error = function(err){
