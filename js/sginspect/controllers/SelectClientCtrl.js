@@ -1,6 +1,7 @@
 coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter){
 	$scope.isPhoneGap = Settings.isPhoneGap;
 	$scope.image = "";
+	DaoSvc.openDB();
 
 	$scope.supplierStatus = "";
 	function newObject(){
@@ -138,6 +139,12 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		$scope.onNextClicked();
 		$scope.$apply();
 	}
+	function savePartialForm(){
+		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
+		$scope.Form.JSON.Path = $location.path();
+		$scope.Form.JobType = 'Open Jobs';
+		DaoSvc.put($scope.Form, 'InProgress', $scope.Form.FormID, function(){console.log('Partial Save of ' + $location.path() + ' successful')},function(){console.log('Partial Save of' + $location.path() + ' failed')},function(){$scope.$apply();});
+	}
 
 	function constructor(){
 		$scope.$emit('LOAD');
@@ -194,6 +201,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.image = sessionStorage.getItem('currentLicenceImage');
 			$scope.RegNumber = sessionStorage.getItem('currentRegNumber');
 		}
+		if (parseInt($routeParams.screennum) !== 0) savePartialForm();
 	}
 	constructor();
 });

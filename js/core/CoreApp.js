@@ -85,7 +85,7 @@ var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap",
     AppRoutes($routeProvider);
     //:largecode*\
     //$routeProvider.otherwise({templateUrl:"views/welcome.html"});
-    $routeProvider.otherwise({templateUrl : "js/sginspect/view/mainMenu.html"});
+    $routeProvider.otherwise({templateUrl : "js/sginspect/view/listOpen.html"});
 
     //Reset headers to avoid OPTIONS request (aka preflight)
     $httpProvider.defaults.headers.common = {};

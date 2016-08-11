@@ -85,17 +85,28 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 		saveForm();
 	}
+	function savePartialForm(){
+		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
+		$scope.Form.JSON.Path = $location.path();
+		$scope.Form.JobType = 'Open Jobs';
+		DaoSvc.put($scope.Form, 'InProgress', $scope.Form.FormID, function(){console.log('Partial Save of ' + $location.path() + ' successful')},function(){console.log('Partial Save of' + $location.path() + ' failed')},function(){$scope.$apply();});
+	}
+	function deleteCurrentPartialForm(FormID){
+		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
+	}
 
 	function saveForm(){
 		$scope.$emit('LOAD');
 		//Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		deleteCurrentPartialForm($scope.Form.FormID);
 
 		var success = function(){
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Your Customer Visit has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
 			sessionStorage.removeItem('currentClientsCache');
+			sessionStorage.removeItem('currentForm');
 			$location.path('/');
 		}
 		var error = function(err){
@@ -112,6 +123,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
+		savePartialForm();
 	}
 	constructor();
 });

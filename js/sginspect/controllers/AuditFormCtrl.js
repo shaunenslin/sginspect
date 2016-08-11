@@ -146,7 +146,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	function saveForm(){
 		// TODO: Cursor in table &  make index1 the formid
 		$scope.$emit('LOAD');
-
+		deleteCurrentPartialForm($scope.Form.FormID);
 		var success = function(){
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Audit Form Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
@@ -172,6 +172,15 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
     	var Client = JSON.parse(sessionStorage.getItem('currentClientsCache'));
     	$scope.Client = $filter('filter')(Client, {ClientID : $scope.Form.ClientID})[0];
     }
+    function savePartialForm(){
+		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
+		$scope.Form.JSON.Path = $location.path();
+		$scope.Form.JobType = 'Open Jobs';
+		DaoSvc.put($scope.Form, 'InProgress', $scope.Form.FormID, function(){console.log('Partial Save of ' + $location.path() + ' successful')},function(){console.log('Partial Save of' + $location.path() + ' failed')},function(){$scope.$apply();});
+	}
+	function deleteCurrentPartialForm(FormID){
+		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
+	}
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
@@ -181,6 +190,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchClient();
 		fetchGPs();
+		savePartialForm();
 		//TODO: Set in session & use here
 		$scope.Form.JSON.RegNumber = 'HTT 091 GP';
 		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
