@@ -6,6 +6,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     $scope.suppliers = [];
     $scope.idx = 0;
     $scope.supplierEdit = {};
+    $scope.checkboxs = {'Active' : true};
     var user_exists = false;
     var user = GlobalSvc.getUser();
 
@@ -21,7 +22,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
 	}
 
     function userExistsCheck(SupplierID){
-        var url = Settings.url + 'Get?method=Supplier_ReadSingle&supplierid=' + SupplierID;
+        var url = Settings.url + 'Get?method=Supplier_ReadSingle2&supplierid=' + SupplierID;
         $http.get(url)
             .success(function(data){                //get the First Object because it comes back as array
                 if(data.length){
@@ -38,13 +39,13 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             });
     }
 
-    $scope.deleteSupplier = function(){
+    /*$scope.deleteSupplier = function(){
         if (confirm('Are you sure you want to delete this Supplier?')){
             $scope.$emit('LOAD');
             $scope.supplierEdit.Active = 0;
             save();
         }        
-    };
+    };*/
 
     $scope.saveSupplier = function(){
         if(!$scope.supplierEdit.SupplierID){
@@ -67,14 +68,14 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         sessionStorage.removeItem( "Supplierscache");
         var success = function(){
             $scope.$emit('UNLOAD');
-            $alert({ content: (($scope.supplierEdit.Active === 0) ? 'Supplier deleted successfully' : 'Supplier saved Ok'), duration: 4, placement: 'top-right', type: 'success', show: true});
+            $alert({ content: ((!$scope.supplierEdit.Active) ? 'Supplier deactivated successfully' : 'Supplier saved Ok'), duration: 4, placement: 'top-right', type: 'success', show: true});
             sessionStorage.removeItem("Supplierscache");
             $scope.$apply();
             $location.path('/Suppliers');
         };
         var error = function(){
             $scope.$emit('UNLOAD');
-            $alert({ content: (($scope.supplierEdit.Active === 0) ? 'Error deleting Supplier' : 'Error saving Supplier'), duration: 4, placement: 'top-right', type: 'danger', show: true}); 
+            $alert({ content: ((!$scope.supplierEdit.Active) ? 'Error deactivating Supplier' : 'Error saving Supplier'), duration: 4, placement: 'top-right', type: 'danger', show: true}); 
         };
         var url = Settings.url + "Post?method=Supplier_modify";
         GlobalSvc.postData(url,$scope.supplierEdit,success,error,'SGISuppliers','modify',false,true)
@@ -103,7 +104,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         console.log($scope.splitArr);
     }
     function fetchSupplier(){
-        var url = Settings.url + 'Get?method=Supplier_ReadSingle&supplierid='+ $scope.id ;
+        var url = Settings.url + 'Get?method=Supplier_ReadSingle2&supplierid='+ $scope.id ;
         console.log(url);
         $http.get(url)
         .success(function(data){

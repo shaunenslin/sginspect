@@ -23,7 +23,7 @@
                   <div class="hidden-xs col-sm-3 hidden-md col-lg-2"><span ng-if="user.Country">{{user.Country}}</span></div>
                   <div class="hidden-xs hidden-sm col-md-1 col-lg-1"><span ng-if="user.IsAdmin">Admin</span></div>
                   <div class="hidden-xs hidden-sm col-md-2 col-lg-2"><span ng-if="user.Tel">{{user.Tel}}</span></div>
-            	  <div class="hidden-xs hidden-sm col-md-1 col-lg-1" ng-if="user.Deleted == false">Y</div>
+            	  <div class="hidden-xs hidden-sm col-md-1 col-lg-1">{{user.Deleted ? 'N' : 'Y'}}</div>
               	</div>
             </a>
             
@@ -72,8 +72,18 @@
                         <input type="checkbox" ng-checked="userEdit.IsAdmin" ng-model="userEdit.IsAdmin"> Admin/SuperUser
                     </label>
                 </div>
+
+                <div class="form-group">
+                    <label for="Latitude">Deactivate</label>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-checked="userEdit.Deleted" ng-hide=" id === 'new'" ng-model="userEdit.Deleted">
+                    </label>
+                </div>
             </form>
-            <div class="btn btn-danger btn-block" ng-hide=" id === 'new' " ng-click="deleteUser()"><span class="glyphicon glyphicon-floppy-remove"></span> Delete</div>
+            <!-- <div class="btn btn-danger btn-block" ng-hide=" id === 'new' " ng-click="deleteUser()"><span class="glyphicon glyphicon-floppy-remove"></span> Delete</div> -->
 
         </div>
 

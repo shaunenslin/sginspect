@@ -6,6 +6,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     $scope.splitArr = [];
     $scope.newArr = [];
     $scope.idx = 0;
+    $scope.checkboxs = {'Active' : true};
     var user_exists = false;
     var user = GlobalSvc.getUser();
 
@@ -18,7 +19,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 	}
 
     function userExistsCheck(CustomerID){
-        var url = Settings.url + 'Get?method=Client_ReadSingle&clientid=' + CustomerID;
+        var url = Settings.url + 'Get?method=Client_ReadSingle2&clientid=' + CustomerID;
         $http.get(url)
             .success(function(data){                //get the First Object because it comes back as array
                 if(data.length){
@@ -35,13 +36,13 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             });
     }
 
-   $scope.deleteClient = function(){
-        if (confirm('Are you sure you want to delete this Customer ?')){
+   /*$scope.deleteClient = function(){
+        if (confirm('Are you sure you want to deactivate this Customer ?')){
             $scope.$emit('LOAD');
             $scope.clientEdit.Active = 0;
             save();
         }        
-    };
+    };*/
 
     $scope.saveClient = function(){
         if(!$scope.clientEdit.ClientID){
@@ -64,14 +65,14 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         sessionStorage.removeItem( "Clientscache");
         var success = function(){
             $scope.$emit('UNLOAD');
-            $alert({ content: (($scope.clientEdit.Active === 0) ? 'Customer deleted successfully' : 'Customer saved Ok'), duration: 4, placement: 'top-right', type: 'success', show: true});
+            $alert({ content: ((!$scope.clientEdit.Active) ? 'Customer deactivated successfully' : 'Customer saved Ok'), duration: 4, placement: 'top-right', type: 'success', show: true});
             sessionStorage.removeItem("Clientscache");
             $scope.$apply();
             $location.path('/Clients');
         };
         var error = function(){
             $scope.$emit('UNLOAD');
-            $alert({ content: (($scope.clientEdit.Active === 0) ? 'Error deleting Customer' : 'Error saving Customer'), duration: 4, placement: 'top-right', type: 'danger', show: true}); 
+            $alert({ content: ((!$scope.clientEdit.Active) ? 'Error deactivating Customer' : 'Error saving Customer'), duration: 4, placement: 'top-right', type: 'danger', show: true}); 
         };
         var url = Settings.url + "Post?method=Client_modify";
         GlobalSvc.postData(url,$scope.clientEdit,success,error,'SGIClient','modify',false,true)
@@ -101,7 +102,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     }
 
     function fetchClient(){
-        var url = Settings.url + 'Get?method=Client_ReadSingle&clientid=' + $scope.id;
+        var url = Settings.url + 'Get?method=Client_ReadSingle2&clientid=' + $scope.id;
         console.log(url);
         $http.get(url)
             .success(function(data){
