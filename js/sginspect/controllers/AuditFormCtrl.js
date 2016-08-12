@@ -153,12 +153,12 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			sessionStorage.removeItem('currentImage');
 			sessionStorage.removeItem('currentLicenceImage');
 			sessionStorage.removeItem('currentForm');
-			sessionStorage.removeItem('currentVinNumber');
 			$location.path('/');	
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Error saving Audit", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
+			$location.path('/')
 		}
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;

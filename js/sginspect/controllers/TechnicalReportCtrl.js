@@ -71,7 +71,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		return image;
 	}
 	function fetchServiceHistory(){
-    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID;
+    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=techn' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID;
     	$http.get (url)
     	.success(function(data){
     		$scope.serviceHistory = [];
@@ -80,7 +80,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
     		});
     	})
     	.error(function(err){
-    		$alert({content: "Error fetching Service History", duration:5, placement:'top-right', type:'danger', show:true});
+    		$alert({content: "Error fetching service history. Please check your connection", duration:5, placement:'top-right', type:'danger', show:true});
     		$scope.$emit('UNLOAD');
     	})
     }
@@ -154,12 +154,12 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			sessionStorage.removeItem('currentImage');
 			sessionStorage.removeItem('currentLicenceImage');
 			sessionStorage.removeItem('currentForm');
-			sessionStorage.removeItem('currentVinNumber');
 			$location.path('/');	
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Error saving Technical Report", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
+			$location.path('/');
 		}
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
