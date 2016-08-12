@@ -7,6 +7,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     $scope.splitArr = [];
     $scope.idx = 0;
     $scope.checkboxs = {'isAdmin' : true};
+    $scope.checkboxs = {'Deleted' : true};
     var savebtnClicked = false;
     var user = GlobalSvc.getUser();
 
@@ -41,9 +42,8 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
 
     $scope.deleteUser = function(){
         $scope.$emit('LOAD');
-        if (!confirm('Are you sure you want to delete this user ?')) return;
+        if (!confirm('Are you sure you want to deavtivate this user ?')) return;
         $scope.userEdit.Deleted = 1;
-        save();
     };
 
     $scope.saveUser = function(){
@@ -59,7 +59,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         }
         if($routeParams.id === 'new'){
             //Checking if the user already exists //this Code Could Be Improved
-            $http.get(Settings.url + 'Get?method=usp_user_readsingle&userid=' + "'" + $scope.userEdit.UserID + "'").success(function(data){
+            $http.get(Settings.url + 'Get?method=usp_user_readsingle2&userid=' + "'" + $scope.userEdit.UserID + "'").success(function(data){
                 //get the First Object because it comes back as array
                 if(data.length){
                     delete $scope.errorMsg;
@@ -105,14 +105,14 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     function save(){
         $scope.$emit('LOAD');
         sessionStorage.removeItem( "UsersCache");
-        var url = Settings.url + '/Post?method=usp_user_modify2';
+        var url = Settings.url + '/Post?method=usp_user_modify3';
         // for backward compatibility
         $scope.userEdit.Email = $scope.userEdit.UserID;
         $scope.userEdit.PasswordSalt = $scope.userEdit.Role;
         GlobalSvc.postData(url,$scope.userEdit,function(){
             $scope.$emit('UNLOAD');
             if($scope.userEdit.Deleted){
-                $alert({ content: "User deleted successfully", duration: 4, placement: 'top-right', type: 'success', show: true});
+                $alert({ content: "User deavtivated successfully", duration: 4, placement: 'top-right', type: 'success', show: true});
             }else{
                 $alert({ content: "User saved ok", duration: 4, placement: 'top-right', type: 'success', show: true});
             }
@@ -137,7 +137,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "UsersCache")));
             $scope.$emit('UNLOAD');
         } else {
-            var url = Settings.url + 'Get?method=usp_user_readlist&supplierid=' + user.SupplierID;
+            var url = Settings.url + 'Get?method=usp_user_readlist2&supplierid=' + user.SupplierID;
             console.log(url);
             $http.get(url).success(function(data){
                 sessionStorage.setItem( "UsersCache",JSON.stringify(data));
@@ -171,7 +171,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             $scope.userEdit.Tel = parseInt($scope.userEdit.Tel);
             $scope.$emit('UNLOAD');
         }else{
-            var url = Settings.url + 'Get?method=usp_user_readsingle&userid=' + "'" +$scope.id + "'";
+            var url = Settings.url + 'Get?method=usp_user_readsingle2&userid=' + "'" +$scope.id + "'";
             console.log(url);
             $http.get(url).success(function(data){
                 //get the First Object because it comes back because it is what stores the user data
