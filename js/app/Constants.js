@@ -19,7 +19,7 @@ coreApp.constant('Settings', {
     imageUrl:           'http://app1.rapidtrade.biz/rest/Files/GetProductImage',
     */
 
-    version: '1.69',
+    version: '1.70',
     showVersion: true,
 
 

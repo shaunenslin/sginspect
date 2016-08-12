@@ -258,7 +258,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 		var error = function(err){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Error saving Supplier Evaluation", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
 			sessionStorage.removeItem('currentForm');
 			$location.path('/');
 		}

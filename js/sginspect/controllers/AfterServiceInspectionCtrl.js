@@ -1,6 +1,7 @@
 coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter){
 	$scope.isPhoneGap = Settings.isPhoneGap;
 	$scope.signature = {"inspector" : "", "techAdvisor" : "", "manager" : ""};
+	DaoSvc.openDB();
 	/** The variable below is the svg represtion of an empty signature  **/
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 
@@ -165,12 +166,12 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 				sessionStorage.removeItem('currentImage');
 				sessionStorage.removeItem('currentLicenceImage');
 				sessionStorage.removeItem('currentForm');
-				sessionStorage.removeItem('currentVinNumber');
 				$location.path('/');	
 			}
 			var error = function(err){
 				$scope.$emit('UNLOAD');
-				$alert({ content: "Error Saving Form", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
+				$location.path('/');
 			}
 			$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 			var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
@@ -202,6 +203,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
         $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
         $scope.Form.JSON.LicenceExpiryDate = '25 July 2017';
 		fetchGPS();
+		fetchClient();
 		savePartialForm();
         $scope.$emit('UNLOAD');
 	}

@@ -105,13 +105,13 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		var success = function(){
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Your Customer Visit has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
-			sessionStorage.removeItem('currentClientsCache');
 			sessionStorage.removeItem('currentForm');
 			$location.path('/');
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
-			$alert({ content: "Error saving Customer Visit", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
+			$location.path('/');
 		}
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
