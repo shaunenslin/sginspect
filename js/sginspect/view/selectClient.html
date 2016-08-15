@@ -2,10 +2,10 @@
 	<!-- Screen 0 SelectClient -->
 	<form ng-if="view === 'client'" style="margin-top: 10px;" class="form-horizontal">
 		<div class="form-group">
-	        <label for="client" class="col-sm-2">Client *</label>
+	        <label for="client" class="col-sm-2">Customer *</label>
 	        <div class="col-sm-10">
 	        	<select ng-change="onNextClicked()" class="form-control" ng-model="Form.ClientID" ng-options="client.ClientID as client.Name for client in Clients">
-    				<option value="">-- Please select a Client --</option>
+    				<option value="">-- Please select a Customer --</option>
 				</select>
 	        </div>
 	    </div>
