@@ -18,22 +18,23 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         };
 	}
 
-    function userExistsCheck(CustomerID){
-        var url = Settings.url + 'Get?method=Client_ReadSingle2&clientid=' + CustomerID;
-        $http.get(url)
-            .success(function(data){                //get the First Object because it comes back as array
-                if(data.length){
-                    $alert({ content: "Customer Code already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
-                    user_exists = true;
-                    return user_exists;
-                } else{
-                    if ($scope.id === 'new') save();
-                }
-            })
-            .error(function(){
-                $alert({ content: 'An error occured while fetching your Customers', duration: 4, placement: 'top-right', type: 'danger', show: true});
-                $scope.$emit('LOAD');
-            });
+    function userExistsCheck(CsvCustomer){
+    var url = Settings.url + 'Get?method=Client_ReadSingle2&clientid=' + CsvCustomer.ClientID;
+    $http.get(url)
+        .success(function(data){                //get the First Object because it comes back as array
+            if(data.length){
+                $alert({ content: "Customer Code already exists!", duration: 4, placement: 'top-right', type: 'danger', show: true});
+                user_exists = true;
+                return user_exists;
+            } else{
+                if($scope.id === 'new') save();
+                if($scope.mode === 'list') uploadClient(CsvCustomer);
+            }
+        })
+        .error(function(){
+            $alert({ content: 'An error occured while fetching your Customers', duration: 4, placement: 'top-right', type: 'danger', show: true});
+            $scope.$emit('LOAD');
+        });
     }
 
    /*$scope.deleteClient = function(){
@@ -146,7 +147,6 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     };
     
     function uploadClient(json){
-        userExistsCheck(json.ClientID);
         if (user_exists === false){
         var success = function(){
             sessionStorage.removeItem( "Clientscache");
@@ -173,7 +173,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             json[i].ClientID = json[i].ClientID;
             json[i].Name = json[i].Name;
             json[i].Active = (json[i].Active = true);
-            uploadClient(json[i]);
+            userExistsCheck(json[i]);
         }            
     };
 
