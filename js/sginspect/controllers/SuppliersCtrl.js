@@ -66,6 +66,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
 
     function save(){
         $scope.$emit('LOAD');
+        sessionStorage.removeItem('navigateAfterSave');
         sessionStorage.removeItem( "Supplierscache");
         var success = function(){
             $scope.$emit('UNLOAD');
@@ -73,6 +74,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             sessionStorage.removeItem("Supplierscache");
             $scope.$apply();
             $location.path('/Suppliers');
+            sessionStorage.setItem('navigateAfterSave', true);
         };
         var error = function(){
             $scope.$emit('UNLOAD');
@@ -103,6 +105,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     	}
         console.log($scope.suppliers);
         console.log($scope.splitArr);
+        if (sessionStorage.getItem('navigateAfterSave')) $scope.navigate(sessionStorage.getItem('currIdx'));
     }
     function fetchSupplier(){
         var url = Settings.url + 'Get?method=Supplier_ReadSingle2&supplierid='+ $scope.id ;
@@ -130,9 +133,23 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     };
 
     $scope.navigate = function(change){
-        changedVal = $scope.idx + change;
-        if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
-        $scope.idx = changedVal;
+        if(sessionStorage.getItem('navigateAfterSave')){
+            changedVal = $scope.idx + parseInt(change);
+            arrayLength = parseInt(sessionStorage.getItem('arrayLength'));
+            if(changedVal < 0 || changedVal > arrayLength) return;
+            $scope.idx = changedVal;
+            sessionStorage.removeItem('currIdx');
+            sessionStorage.removeItem('arrayLength');
+            sessionStorage.removeItem('navigateAfterSave');
+        }else{
+            sessionStorage.removeItem('currIdx');
+            sessionStorage.removeItem('arrayLength');
+            changedVal = $scope.idx + change;
+            sessionStorage.setItem('arrayLength', $scope.splitArr.length);
+            if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
+            $scope.idx = changedVal;
+            sessionStorage.setItem('currIdx', $scope.idx);
+        }
     }
 
     function newCsvObj(){
