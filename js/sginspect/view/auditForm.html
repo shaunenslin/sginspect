@@ -3,7 +3,7 @@
 	<div class="panel panel-default">
 		<div class="panel-body form-horizontal">
 			<div class="form-group">
-				<label for="client" class="col-sm-3">Client</label>
+				<label for="client" class="col-sm-3">Customer</label>
 				<div class="col-sm-9"><p> {{Client.Name}}</p></div>
 			</div>
 			<div class="form-group">
@@ -52,8 +52,8 @@
 
 		</div>
 		<div class="form-group">
-			<label for="clientbranch" class="col-sm-3">Client Branch</label>
-			<div class="col-sm-9"><input name="branch" required class="form-control" placeholder="Enter Client Branch" id="client-branch" ng-model="Form.JSON.Branch" type="text" ng-disabled="!Form.JSON.Kilometers"></div>
+			<label for="clientbranch" class="col-sm-3">Customer Branch</label>
+			<div class="col-sm-9"><input name="branch" required class="form-control" placeholder="Enter Customer Branch" id="client-branch" ng-model="Form.JSON.Branch" type="text" ng-disabled="!Form.JSON.Kilometers"></div>
 		</div>
 		<div class="form-group">
 			<label for="inspectiondate" class="col-sm-3">Date of Inspection</label>
@@ -182,6 +182,11 @@
 				</select>
 	        </div>
     	</div>
+    	<!-- Rust Comment -->
+    	<div ng-if="Form.JSON.Rust === 'Yes'" class="form-group">
+			<label for="rust_comment" class="col-sm-3">Please Specify</label>
+			<div class="col-sm-9"><input name="rust_comment" required class="form-control" placeholder="Enter Comment" id="rust_comment" ng-model="Form.JSON.RustComment" type="text"></div>
+		</div>
     	<div class="form-group">
 	        <label for="license_card" class="col-sm-3">License COF/ Operator Card</label>
 	        <div class="col-sm-9">
@@ -198,8 +203,13 @@
 				</select>
 	        </div>
     	</div>
+    	<!-- Fluid Leaks Comment -->
+    	<div ng-if="Form.JSON.FluidLeaks === 'Yes'" class="form-group">
+			<label for="fluid_leaks_comment" class="col-sm-3">Please Specify</label>
+			<div class="col-sm-9"><input name="fluid_leaks_comment" required class="form-control" placeholder="Enter Comment" id="fluid_leaks_comment" ng-model="Form.JSON.FluidLeaksComment" type="text"></div>
+		</div>
     	<div class="form-group">
-	        <label for="fire_extinguisher" class="col-sm-3">FireExtinguisher</label>
+	        <label for="fire_extinguisher" class="col-sm-3">Does the Vehicle Have a Fire Extinguisher?</label>
 	        <div class="col-sm-9">
 	        	<select name="fire_extinguisher" required ng-disabled="!Form.JSON.FluidLeaks" class="form-control" id="fire_extinguisher" ng-model="Form.JSON.FireExtinguisher" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>
@@ -207,23 +217,23 @@
 	        </div>
     	</div>
 
-    	<div class="form-group">
-    	   <label for="fire_extinguisher_valid" class="col-sm-3">Is the Date Valid</label>
+    	<div ng-if="Form.JSON.FireExtinguisher === 'Yes'" class="form-group">
+    	   <label for="fire_extinguisher_valid" class="col-sm-3">Is the Date Valid / Expired ?</label>
 	        <div class="col-sm-9">
 	        	<select name="fire_extinguisher_valid" required ng-disabled="!Form.JSON.FireExtinguisher" class="form-control" id="fire_extinguisher_valid" ng-model="Form.JSON.FireExtIsValid" ng-options="item.status as item.status for item in expiryStatus">
     				<option value="">-- Please select an option --</option>
 				</select>
 	        </div>
     	</div>
-    	<div class="form-group">
-			<label for="fireExp_date" class="col-sm-3">Expiration Date</label>
+    	<div ng-if="Form.JSON.FireExtIsValid === 'Valid'" class="form-group">
+			<label for="fireExp_date" class="col-sm-3">What is the Expiration Date ?</label>
 			<div class="col-sm-9"><input name="fireExp_date" required class="form-control" id="fireExp_date" ng-model="Form.JSON.FireExtinguisherExpDate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd" type="text" ng-disabled="!Form.JSON.FireExtIsValid"></div>
 		</div>
 		<div ng-class="Form.JSON.Tyres === 'Bad' ? 'well' : ''">
 			<div class="form-group">
 	        	<label for="tyres" class="col-sm-3">Tyres</label>
 		        <div class="col-sm-9">
-		        	<select name="tyres" required ng-disabled="!Form.JSON.FireExtinguisherExpDate" class="form-control" id="tyres" ng-model="Form.JSON.Tyres" ng-options="item.name as item.name for item in selectOptions">
+		        	<select name="tyres" required ng-disabled="!Form.JSON.FireExtinguisher" class="form-control" id="tyres" ng-model="Form.JSON.Tyres" ng-options="item.name as item.name for item in selectOptions">
 	    				<option value="">-- Please select an option --</option>
 					</select>
 		        </div>
@@ -273,6 +283,10 @@
 				</select>
 	        </div>
     	</div>
+    	<div ng-if="Form.JSON.AbuseRelatedCosts === 'Yes'" class="form-group">
+			<label for="costs" class="col-sm-3">Costs</label>
+			<div class="col-sm-9"><input name="costs" required class="form-control" placeholder="Enter Costs" id="costs" ng-model="Form.JSON.Costs" type="number"></div>
+		</div>
     	<div ng-if="Form.JSON.AbuseRelatedCosts" class="well">
 			<div class="form-group">
 				<label for="other_photos">Other Photo's</label>
