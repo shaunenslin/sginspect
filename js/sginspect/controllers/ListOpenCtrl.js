@@ -1,4 +1,4 @@
-coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $location, $alert) {
+coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $location, $alert, $http, GlobalSvc, Settings) {
 	DaoSvc.openDB();
 	$scope.InspectionForms = [];
 	$scope.openJobsCount = 0
@@ -19,6 +19,19 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		});
 
 	}
+	function fechClosedCount(){
+		var url = Settings.url + "Get?method=SGI_CompletedJobsCount&UserID='" + GlobalSvc.getUser().UserID + "'";
+		$http.get (url)
+		.success(function(count){
+			$scope.CloseJobsCount = count[0];
+			$scope.$emit('UNLOAD');
+			$scope.$apply();
+		})
+		.error(function(err){
+			console.log('Error fetching closed jobs count');
+		})
+
+	} 
 	$scope.onJobClicked = function(jobType){
 		if (jobType === 'open'){
 			$location.path('/jobs/' + jobType);
@@ -55,6 +68,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			$scope.$emit('heading',{heading: 'Jobs' , icon : 'fa fa-sticky-note'});
 			$scope.mode = 'jobs';
 			fetchOpenCount();
+			fechClosedCount();
 		} else if ($routeParams.mode === 'open'){
 			$scope.$emit('heading',{heading: 'Open Jobs' , icon : 'fa fa-sticky-note'});
 			$scope.mode = $routeParams.mode;
