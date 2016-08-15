@@ -21,8 +21,8 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         };
 	}
 
-    function userExistsCheck(SupplierID){
-        var url = Settings.url + 'Get?method=Supplier_ReadSingle2&supplierid=' + SupplierID;
+    function userExistsCheck(CsvCustomer){
+        var url = Settings.url + 'Get?method=Supplier_ReadSingle2&supplierid=' + CsvCustomer.SupplierID;
         $http.get(url)
             .success(function(data){                //get the First Object because it comes back as array
                 if(data.length){
@@ -31,6 +31,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
                     return user_exists;
                 } else{
                     if ($scope.id === 'new') save();
+                    if($scope.mode === 'list') uploadSupplier(CsvCustomer);
                 }
             })
             .error(function(){
@@ -148,7 +149,6 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     };
     
     function uploadSupplier(json){
-        userExistsCheck(json.SupplierID);
         if (user_exists === false){
         var success = function(){
             sessionStorage.removeItem( "Supplierscache");
@@ -178,7 +178,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             json[i].Address = json[i].Address;
             json[i].Longitude = json[i].Longitude;
             json[i].Latitude = json[i].Latitude;
-            uploadSupplier(json[i]);
+            userExistsCheck(json[i]);
         }            
     };
 
