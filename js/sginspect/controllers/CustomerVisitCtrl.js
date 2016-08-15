@@ -40,6 +40,21 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			$scope.Form.JSON.Longitude = position ? position.coords.longitude : "";
 			$alert({content:"GPS location captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.$emit('UNLOAD');
+			$scope.$emit('UNLOAD');
+			$scope.$apply();
+		},function(error){
+			$alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'danger', show:true});
+			$scope.$emit('UNLOAD');
+		});
+	}
+
+	$scope.fetchGPS = function(){
+		$scope.$emit('LOAD');
+		GlobalSvc.getGPS(function(position){
+			$scope.Form.JSON.Latitude  = position ? position.coords.latitude : "";
+			$scope.Form.JSON.Longitude = position ? position.coords.longitude : "";
+			$alert({content:"GPS location captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+			$scope.$emit('UNLOAD');
 			$scope.$apply();
 		},function(error){
 			$alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'danger', show:true});
@@ -102,6 +117,14 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
+		//Get client
+		$scope.CurrentClient = JSON.parse(sessionStorage.getItem('currentClientsCache'));
+		if ($scope.CurrentClient) {
+			if (!$scope.Form.JSON.ClientID ) {
+				$scope.Form.JSON.ClientID = $scope.CurrentClient.ClientID;
+				$scope.Form.JSON.Name = $scope.CurrentClient.Name;
+			}
+		}
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
