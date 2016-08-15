@@ -71,7 +71,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		return image;
 	}
 	function fetchServiceHistory(){
-    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=techn' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID;
+    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID;
     	$http.get (url)
     	.success(function(data){
     		$scope.serviceHistory = [];
@@ -148,6 +148,11 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	function saveForm(){
 		$scope.$emit('LOAD');
 		deleteCurrentPartialForm($scope.Form.FormID);
+		delete $scope.Form.JSON.Path;
+		delete $scope.Form.JobType;
+		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
+		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Technical Report Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
@@ -161,9 +166,6 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
 			$location.path('/');
 		}
-		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
-		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
-		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
