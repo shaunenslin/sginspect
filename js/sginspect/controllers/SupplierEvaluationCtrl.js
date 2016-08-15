@@ -244,12 +244,14 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	function saveForm(){
 		$scope.$emit('LOAD');
 		saveSupplier();
-		//Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
+		//Create Unique Key For Signature(s) and/or image(s)
+		delete $scope.Form.JSON.Path;
+		delete $scope.Form.JobType;
 		var technicaladvisorSignature =  createSignatureImage($scope.signature.technicaladvisor, 'technicaladvisor');
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
 		$scope.Form.JSON[technicaladvisorSignature.ID] = technicaladvisorSignature.FileData;
 		$scope.Form.JSON[workshopmanagerSignature.ID] = workshopmanagerSignature.FileData;
-
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			sessionStorage.removeItem('currentForm');
 			$alert({ content: "Supplier Evaluation Complete", duration: 5, placement: 'top-right', type: 'success', show: true});
@@ -262,7 +264,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			sessionStorage.removeItem('currentForm');
 			$location.path('/');
 		}
-		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}

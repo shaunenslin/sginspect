@@ -144,9 +144,13 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	}
 
 	function saveForm(){
-		// TODO: Cursor in table &  make index1 the formid
 		$scope.$emit('LOAD');
 		deleteCurrentPartialForm($scope.Form.FormID);
+		delete $scope.Form.JSON.Path;
+		delete $scope.Form.JobType;
+		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
+		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			$scope.$emit('UNLOAD');
 			$alert({ content: "Audit Form Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
@@ -160,9 +164,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
 			$location.path('/')
 		}
-		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
-		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
-		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
