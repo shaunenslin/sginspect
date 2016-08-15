@@ -86,7 +86,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			var path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
 		$location.path(path);
 		if($routeParams.screennum == 1) sessionStorage.setItem('currentFormID', $scope.Form.FormID);
-		if ($routeParams.inspectiontype === 'customervisit' || $scope.inspectiontype === 'supplierevaluation') sessionStorage.setItem('currentFormID', $scope.Form.FormID);
 	}
 
 	$scope.nfcScan = function(){
