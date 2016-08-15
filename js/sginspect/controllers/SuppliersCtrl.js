@@ -136,7 +136,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         if(sessionStorage.getItem('navigateAfterSave')){
             changedVal = $scope.idx + parseInt(change);
             arrayLength = parseInt(sessionStorage.getItem('arrayLength'));
-            if(changedVal < 0 || changedVal > arrayLength) return;
+            if(changedVal < 0 || changedVal >= arrayLength) return;
             $scope.idx = changedVal;
             sessionStorage.removeItem('currIdx');
             sessionStorage.removeItem('arrayLength');
@@ -146,7 +146,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             sessionStorage.removeItem('arrayLength');
             changedVal = $scope.idx + change;
             sessionStorage.setItem('arrayLength', $scope.splitArr.length);
-            if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
+            if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
             $scope.idx = changedVal;
             sessionStorage.setItem('currIdx', $scope.idx);
         }

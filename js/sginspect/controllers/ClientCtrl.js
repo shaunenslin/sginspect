@@ -70,6 +70,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             sessionStorage.removeItem("Clientscache");
             $scope.$apply();
             $location.path('/Clients');
+            sessionStorage.setItem('navigateAfterSave', true);
         };
         var error = function(){
             $scope.$emit('UNLOAD');
@@ -99,6 +100,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
                 $alert({ content: 'An error occured while fetching your Customers', duration: 4, placement: 'top-right', type: 'danger', show: true});
                 $scope.$emit('UNLOAD');
             });
+            if (sessionStorage.getItem('navigateAfterSave')) $scope.navigate(sessionStorage.getItem('currIdx'));
     	}
     }
 
@@ -128,9 +130,23 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     };
 
     $scope.navigate = function(change){
-        changedVal = $scope.idx + change;
-        if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
-        $scope.idx = changedVal;
+        if(sessionStorage.getItem('navigateAfterSave')){
+            changedVal = $scope.idx + parseInt(change);
+            arrayLength = parseInt(sessionStorage.getItem('ClientarrayLength'));
+            if(changedVal < 0 || changedVal > arrayLength) return;
+            $scope.idx = changedVal;
+            sessionStorage.removeItem('currIdx');
+            sessionStorage.removeItem('ClientarrayLength');
+            sessionStorage.removeItem('navigateAfterSave');
+        }else{
+            sessionStorage.removeItem('currIdx');
+            sessionStorage.removeItem('ClientarrayLength');
+            changedVal = $scope.idx + change;
+            sessionStorage.setItem('ClientarrayLength', $scope.splitArr.length);
+            if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
+            $scope.idx = changedVal;
+            sessionStorage.setItem('currIdx', $scope.idx);
+        }
     }
     
     function newCsvObj(){
