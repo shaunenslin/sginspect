@@ -4,7 +4,7 @@
 		<div class="panel panel-default">
 			<div class="panel-body form-horizontal">
 				<div class="form-group">
-					<label for="client" class="col-sm-3">Client</label>
+					<label for="client" class="col-sm-3">Customers</label>
 					<div class="col-sm-9"><p> {{Client.Name}}</p></div>
 				</div>
 				<div class="form-group">
@@ -49,7 +49,7 @@
 			</div>
 			<div class="form-group">
 				<label for="serviceprovider">Service Provider</label>
-				<input type="text"  required ng-disabled="!Form.JSON.kilometer" class="form-control" id="serviceprovider" name="serviceprovider"  ng-model="Form.JSON.serviceProvider" placeholder="Enter client branch">
+				<input type="text"  required ng-disabled="!Form.JSON.kilometer" class="form-control" id="serviceprovider" name="serviceprovider"  ng-model="Form.JSON.serviceProvider" placeholder="Enter Customer branch">
 			</div>
 			<div class="form-group">
 				<label for="dateOfServoce">Date of Service</label>
@@ -168,7 +168,7 @@
 			</div>
 			<div class="form-group">
 				<label for="placeForInspection">Place in inspection</label>
-				<input type="text" required class="form-control" ng-disabled="!Form.JSON.dateOfInspection" id="placeForInspection" name="placeForInspection" ng-model="Form.JSON.placeForInspection" placeholder="Enter client branch">
+				<input type="text" required class="form-control" ng-disabled="!Form.JSON.dateOfInspection" id="placeForInspection" name="placeForInspection" ng-model="Form.JSON.placeForInspection" placeholder="Enter Customer branch">
 			</div>
 			<div class="well well-sm">
 				<div class="form-group" >
@@ -197,7 +197,7 @@
 				</div>
 			</div>
 			<div class="form-group" name="afterinspection">
-				<label for="actionByService">After by Service Manager/Foreman</label>
+				<label for="actionByService">Action by Service Manager/Foreman</label>
 				<input type="text" required class="form-control" id="actionByService" ng-disabled="!Form.JSON.commentsOrPhotos" name="actionByService" ng-model="Form.JSON.actionByService" placeholder="Enter Action">
 			</div>
 		</form>
