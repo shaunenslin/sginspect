@@ -14,20 +14,33 @@
 			        <div class="col-sm-9"><input required ng-disabled="!Form.JSON.Customer" id="PartiesPresent"  type="text" class="form-control"  ng-model="Form.JSON.PartiesPresent"/></div>
 				</div>
 				<div class="form-group">
-					<label for="SpecialRequest" class="col-sm-3">Speical Request</label>
-			        <div class="col-sm-9"><textarea required ng-disabled="!Form.JSON.PartiesPresent" class="form-control" rows="3" ng-model="Form.JSON.SpecialRequest"></textarea></div>
-				</div>
-				<div class="form-group">
-					<label for="SpecialRequestDate" class="col-sm-3">Special Request Date</label>
-			        <div class="col-sm-9"><input required ng-disabled="!Form.JSON.SpecialRequest" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="Form.JSON.SpecialRequestDate"/></div>
-				</div>
-				<div class="form-group">
 					<label for="IssuesDiscussed" class="col-sm-3">Issues Discussed</label>
-			        <div class="col-sm-9"><select required ng-disabled="!Form.JSON.SpecialRequestDate" class="form-control" ng-options="item.name as item.name for item in issuesDiscussed" ng-model="Form.JSON.IssuesDiscussed"><option value="">-- please choose --</option></select></div>
+					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.PartiesPresent" class="form-control" ng-options="item.name as item.name for item in issuesDiscussed" ng-model="Form.JSON.IssuesDiscussed"><option value="">-- please choose --</option></select></div>
 				</div>
-	  			<div class="form-group" ng-if="Form.JSON.IssuesDiscussed === 'Other (Please Specify)'">
+				<div class="form-group" ng-if="Form.JSON.IssuesDiscussed === 'Other (Please Specify)'">
 					<label for="client" class="col-sm-3">Issues Comment</label>
-			        <div class="col-sm-9"><input id="issues-descript"  type="text" class="form-control"  ng-model="Form.JSON.IssueDescription" placeholder="You must enter comments here"/></div>
+					<div class="col-sm-9"><input id="issues-descript"  type="text" class="form-control"  ng-model="Form.JSON.IssueDescription" placeholder="You must enter comments here"/></div>
+				</div>
+				<label>Special Requests</label>
+				<div class="well">
+					<div class="form-group">
+						<label for="SpecialRequest" class="col-sm-3">Request</label>
+				        <div class="col-sm-9"><textarea required ng-disabled="!Form.JSON.PartiesPresent" class="form-control" rows="3" ng-model="SpecialRequest"></textarea></div>
+					</div>
+					<div class="form-group">
+						<label for="SpecialRequestDate" class="col-sm-3">Date</label>
+				        <div class="col-sm-9"><input required ng-disabled="!SpecialRequest" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="SpecialRequestDate"/></div>
+					</div>
+					<div class="form-group" style="margin-left:0px;margin-right:0px;">
+						<button ng-disabled="!SpecialRequestDate" class="btn btn-primary btn-block" ng-click="addSpecialRequest(SpecialRequest,SpecialRequestDate)">Add</button>
+					</div>
+					<table class="table">
+						<tr ng-repeat="row in Form.JSON.SpecialRequests">
+							<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row.RequestDate | date}}</td>
+							<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row.Request}}</td>
+							<td><button ng-click="removeRequest($index)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">Remove</button></td>
+						</tr>
+					</table>
 				</div>
 	  		</form>
 	  	</div>

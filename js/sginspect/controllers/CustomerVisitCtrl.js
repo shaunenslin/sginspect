@@ -30,16 +30,8 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	}
 
 	$scope.onBackClicked = function(){
-		savePartialForm();
+		$location.path("selectclient/customervisit/0");
 		sessionStorage.setItem('currentFormID', $scope.Form.FormID);
-		var path = '';
-		if (sessionStorage.getItem('fromJobsScreenCache')){
-			path = '/jobs/open';
-			sessionStorage.removeItem('fromJobsScreenCache');
-		}else{ 
-			path = 'selectclient/customervisit/0';
-		}
-		$location.path(path);
 	}
 
 	$scope.fetchGPS = function(){
@@ -88,17 +80,32 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		return image;
 	}
 
+	$scope.addSpecialRequest = function(SpecialRequest,SpecialRequestDate){
+		if (!$scope.Form.JSON.SpecialRequests) $scope.Form.JSON.SpecialRequests = [];
+		$scope.Form.JSON.SpecialRequests.push({Request:SpecialRequest, RequestDate:SpecialRequestDate });
+		delete $scope.SpecialRequest;
+		delete $scope.SpecialRequestDate;
+	}
+
+	$scope.removeRequest = function(idx){
+		$scope.Form.JSON.SpecialRequests.splice(idx,1);
+    }
+
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
+		/*
 		if(!$scope.customervisitform.$valid){
 			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
             $scope.$emit('UNLOAD');
             return;
 		}
-		if(!$scope.Form.JSON[prop]){
-			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
-			$scope.$emit('UNLOAD');
-			return;
+		*/
+		for (prop in $scope.Form.JSON) {
+			if(!$scope.Form.JSON[prop]){
+				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				$scope.$emit('UNLOAD');
+				return;
+			}
 		}
         if ($scope.Form.JSON.IssuesDiscussed === 'Other (Please Specify)' && !$scope.Form.JSON.IssueDescription ) {
             $alert({ content: "Please enter an Issue Comment.", duration: 5, placement: 'top-right', type: 'danger', show: true});
@@ -110,8 +117,6 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
             $scope.$emit('UNLOAD');
             return;
         }
-
-
 		saveForm();
 	}
 	function savePartialForm(){
