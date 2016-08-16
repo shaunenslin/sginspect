@@ -3,7 +3,7 @@
 	<div class="panel panel-default">
 		<div class="panel-body form-horizontal">
 			<div class="form-group">
-				<label for="client" class="col-sm-3">Client</label>
+				<label for="client" class="col-sm-3">Customer</label>
 				<div class="col-sm-9"><p> {{Client.Name}}</p></div>
 			</div>
 			<div class="form-group">
@@ -22,7 +22,7 @@
 	</div>
 	<h3>Service History(Latest - First)</h3>
 	<div ng-if="serviceHistory.length === 0" style="margin-top: 15px" class="alert alert-warning">
-		<p><i class="fa fa-info"></i> There is no service history available for this Client</p>
+		<p><i class="fa fa-info"></i> There is no service history available for this Customer</p>
 	</div>
 	<div ng-if="serviceHistory.length > 0" style="text-align: left;" class="panel panel-default">
 		<div  class="panel-body">
@@ -45,8 +45,8 @@
 	        <div class="col-sm-9"><input required id="investigation_reason" ng-disabled="!Form.JSON.InvestigationDate" placeholder="Enter Investigation Reason"  type="text" class="form-control" name="investigation_reason"  ng-model="Form.JSON.InvestigationReason"/></div>
 		</div>
 		<div class="form-group">
-			<label for="client_user_group" class="col-sm-3">Client User of Group</label>
-	        <div class="col-sm-9"><input required id="client_user_group" ng-disabled="!Form.JSON.InvestigationReason" placeholder="Enter Client of User Group" name="client_user_group"  type="text" class="form-control"  ng-model="Form.JSON.ClientUserGroup"/></div>
+			<label for="client_user_group" class="col-sm-3">Customer User of Group</label>
+	        <div class="col-sm-9"><input required id="client_user_group" ng-disabled="!Form.JSON.InvestigationReason" placeholder="Enter Customer of User Group" name="client_user_group"  type="text" class="form-control"  ng-model="Form.JSON.ClientUserGroup"/></div>
 		</div>
 		<div class="form-group" style="margin-left:0px;margin-right:0px;">
 			<button name="gps_btn" id="gps_btn" class="btn btn-primary btn-block" ng-disabled="!Form.JSON.ClientUserGroup" ng-click="fetchGPS()">Capture GPS</button>
