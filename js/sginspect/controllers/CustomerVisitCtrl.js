@@ -87,6 +87,11 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
             $scope.$emit('UNLOAD');
             return;
 		}
+		if(!$scope.Form.JSON[prop]){
+			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$scope.$emit('UNLOAD');
+			return;
+		}
         if ($scope.Form.JSON.IssuesDiscussed === 'Other (Please Specify)' && !$scope.Form.JSON.IssueDescription ) {
             $alert({ content: "Please enter an Issue Comment.", duration: 5, placement: 'top-right', type: 'danger', show: true});
             $scope.$emit('UNLOAD');
