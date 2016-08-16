@@ -30,6 +30,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	}
 
 	$scope.onBackClicked = function(){
+		savePartialForm();
 		$location.path("selectclient/customervisit/0");
 		sessionStorage.setItem('currentFormID', $scope.Form.FormID);
 	}
