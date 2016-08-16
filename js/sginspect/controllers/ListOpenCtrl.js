@@ -146,6 +146,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			CompletedJobsCount();
 			fechClosedCount();
 		} else if ($routeParams.mode === 'open'){
+			$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: function(){$location.path('/')}});
 			$scope.$emit('heading',{heading: 'Open Jobs' , icon : 'fa fa-sticky-note'});
 			$scope.mode = $routeParams.mode;
 			fetchInspections();

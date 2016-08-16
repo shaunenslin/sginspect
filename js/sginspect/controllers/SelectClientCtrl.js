@@ -81,13 +81,16 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	$scope.onBackClicked = function(){
+		var path  = '';
 		if (parseInt($routeParams.screennum) !== 0) savePartialForm();
-		if($routeParams.screennum == 6 && ($scope.inspectiontype === 'customervisit' || $scope.inspectiontype === 'supplierevaluation'))
-			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0;
-		else
-			var path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
-		$location.path(path);
 		if($routeParams.screennum == 1) sessionStorage.setItem('currentFormID', $scope.Form.FormID);
+		if (sessionStorage.getItem('fromJobsScreenCache')){
+			path = '/jobs/open';
+			sessionStorage.removeItem('fromJobsScreenCache');
+		}else{ 
+			path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
+		}
+		$location.path(path);
 	}
 
 	$scope.nfcScan = function(){

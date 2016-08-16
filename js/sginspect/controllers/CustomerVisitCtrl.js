@@ -31,8 +31,15 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	$scope.onBackClicked = function(){
 		savePartialForm();
-		$location.path("selectclient/customervisit/0");
 		sessionStorage.setItem('currentFormID', $scope.Form.FormID);
+		var path = '';
+		if (sessionStorage.getItem('fromJobsScreenCache')){
+			path = '/jobs/open';
+			sessionStorage.removeItem('fromJobsScreenCache');
+		}else{ 
+			path = 'selectclient/customervisit/0';
+		}
+		$location.path(path);
 	}
 
 	$scope.fetchGPS = function(){
