@@ -28,7 +28,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 			path = '/jobs/open';
 			sessionStorage.removeItem('fromJobsScreenCache');
 		}else{ 
-			path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
+			window.history.back();
 		}
 		$location.path(path);
 	}
