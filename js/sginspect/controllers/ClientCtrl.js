@@ -1,6 +1,5 @@
 coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert){
     $scope.$emit('heading',{heading: 'Customer Management' , icon : 'glyphicon glyphicon-briefcase'});
-    $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
     $scope.clients = [];
     $scope.clientEdit = {};
     $scope.splitArr = [];
@@ -70,7 +69,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             sessionStorage.removeItem("Clientscache");
             $scope.$apply();
             $location.path('/Clients');
-            sessionStorage.setItem('navigateAfterSave', true);
+            if(sessionStorage.getItem('currIdx')) sessionStorage.setItem('navigateAfterClientSave', true);
         };
         var error = function(){
             $scope.$emit('UNLOAD');
@@ -84,6 +83,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     	if (sessionStorage.getItem("Clientscache")) {
     		$scope.clients = JSON.parse(sessionStorage.getItem( "Clientscache"));
             $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "Clientscache")));
+            if (sessionStorage.getItem('navigateAfterClientSave')) $scope.navigate(sessionStorage.getItem('currIdx'));
     		$scope.$emit('UNLOAD');
     	} else {
 	        var url = Settings.url + 'Get?method=Clients_readlist';
@@ -100,7 +100,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
                 $alert({ content: 'An error occured while fetching your Customers', duration: 4, placement: 'top-right', type: 'danger', show: true});
                 $scope.$emit('UNLOAD');
             });
-            if (sessionStorage.getItem('navigateAfterSave')) $scope.navigate(sessionStorage.getItem('currIdx'));
+            if (sessionStorage.getItem('navigateAfterClientSave')) $scope.navigate(parseInt(sessionStorage.getItem('currIdx')));
     	}
     }
 
@@ -130,14 +130,16 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     };
 
     $scope.navigate = function(change){
-        if(sessionStorage.getItem('navigateAfterSave')){
-            changedVal = $scope.idx + parseInt(change);
+        if(sessionStorage.getItem('navigateAfterClientSave')){
+            changedVal = $scope.idx + change;
             arrayLength = parseInt(sessionStorage.getItem('ClientarrayLength'));
             if(changedVal < 0 || changedVal >= arrayLength) return;
             $scope.idx = changedVal;
-            sessionStorage.removeItem('currIdx');
-            sessionStorage.removeItem('ClientarrayLength');
-            sessionStorage.removeItem('navigateAfterSave');
+            if(change < $scope.idx){
+                sessionStorage.removeItem('currIdx');
+                sessionStorage.removeItem('ClientarrayLength');
+                sessionStorage.removeItem('navigateAfterClientSave');
+            }    
         }else{
             sessionStorage.removeItem('currIdx');
             sessionStorage.removeItem('ClientarrayLength');
@@ -193,6 +195,15 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         }            
     };
 
+    function onBackClicked(){
+        if(sessionStorage.getItem('currIdx')){
+            $location.path('/Clients');
+            sessionStorage.setItem('navigateAfterClientSave', true);
+        }else{
+            $location.path('/Clients');
+        }
+    }
+
     function constructor(){
         if(!user.IsAdmin){
             $scope.errorMsg = 'You are not authorised....';
@@ -201,16 +212,19 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         $scope.$emit('LOAD');
         $scope.id = $routeParams.id;
         if ($routeParams.mode && $scope.id !== 'new') {
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){onBackClicked();}});
         	/*$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});*/
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveClient});
             $scope.mode = 'form';
             fetchClient();
         } else if($scope.id === 'new'){
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveClient});
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){onBackClicked();}});
             $scope.clientEdit = newClientObject();
             $scope.clientEdit.ClientID = parseInt($scope.clientEdit.ClientID);
             $scope.$emit('UNLOAD');
         } else{
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){$location.path('/admin');sessionStorage.removeItem('navigateAfterClientSave');}});
             $scope.$emit('right',{label: 'Add Customer' , icon : 'glyphicon glyphicon-plus', href : "#/Clients/form/new"});
             $scope.mode = 'list';
             newCsvObj();

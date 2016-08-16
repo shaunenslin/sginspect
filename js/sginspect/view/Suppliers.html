@@ -12,16 +12,19 @@
                     <div class="col-xs-2  col-sm-2">Supplier Address</div>
                     <div class="col-xs-2  col-sm-2">Supplier Longitude</div>
                     <div class="col-xs-2  col-sm-2">Supplier Latitude</div>
+                    <div class="col-xs-2  col-sm-2">Active</div>
+
                 </div>
             </div>
             <a href="#/Suppliers/form/{{supplier.SupplierID}}" class="list-group-item" ng-repeat="supplier in splitArr[idx] | filter: searchText">
                 <span class="glyphicon glyphicon-chevron-right pull-right"></span>
             	<div class="row">
-                  <div class="col-sm-2">{{supplier.SupplierID}}</div>
-                  <div class="col-sm-2">{{supplier.Name}}</div>
-                  <div class="col-sm-2">{{supplier.Address}}</div>
-                  <div class="col-sm-2">{{supplier.Longitude}}</div>
-                  <div class="col-sm-2">{{supplier.Latitude}}</div>
+                  <div class="col-sm-2"><span>{{supplier.SupplierID}}</span></div>
+                  <div class="col-sm-2"><span>{{supplier.Name}}</span></div>
+                  <div class="col-sm-2"><span>{{supplier.Address}}</span></div>
+                  <div class="col-sm-2"><span>{{supplier.Longitude}}</span></div>
+                  <div class="col-sm-2"><span>{{supplier.Latitude}}</span></div>
+                  <div class="col-sm-1"><span>{{supplier.Active ? 'Y' : 'N'}}</span></div>
               	</div>
             </a>    
         </div>
@@ -74,13 +77,13 @@
                     <input type="text" class="form-control" id="Latitude" ng-model="supplierEdit.Latitude" >
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-hide=" id === 'new'" >
                     <label for="Latitude">Active</label>
                 </div>
 
-                <div class="checkbox">
+                <div class="checkbox"  ng-hide=" id === 'new'">
                     <label>
-                        <input type="checkbox" ng-checked="supplierEdit.Active" ng-hide=" id === 'new'" ng-model="supplierEdit.Active">
+                        <input type="checkbox" ng-checked="supplierEdit.Active" ng-model="supplierEdit.Active">
                     </label>
                 </div>
             </form>

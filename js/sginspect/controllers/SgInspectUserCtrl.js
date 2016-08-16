@@ -1,6 +1,6 @@
 coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$window,$location,$modal,$alert){
     $scope.$emit('heading',{heading: 'Users' , icon : 'fa fa-user'});
-    $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
+    
     $scope.users = [];
     $scope.userEdit = {};
     $scope.newArr = [];
@@ -41,8 +41,6 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
     }
 
     $scope.deleteUser = function(){
-        $scope.$emit('LOAD');
-        if (!confirm('Are you sure you want to deavtivate this user ?')) return;
         $scope.userEdit.Deleted = 1;
     };
 
@@ -119,10 +117,11 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             sessionStorage.removeItem("UsersCache");
             $scope.$apply();
             $location.path('/SgUsers');
+            if(sessionStorage.getItem('userCurrIdx')) sessionStorage.setItem('navigateAfterUserSave', true);
         },function(){
             $scope.$emit('UNLOAD');
             if($scope.userEdit.Deleted){
-                $alert({ content: "Error deleting user", duration: 4, placement: 'top-right', type: 'success', show: true});
+                $alert({ content: "Error deactivating user", duration: 4, placement: 'top-right', type: 'success', show: true});
             }else{
                 $alert({ content: "Error saving user", duration: 4, placement: 'top-right', type: 'success', show: true});
             }
@@ -146,6 +145,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
                 $scope.$emit('UNLOAD');
             });
         }
+        if (sessionStorage.getItem('navigateAfterUserSave')) $scope.navigate(parseInt(sessionStorage.getItem('userCurrIdx')));
     }
     function arraySplit(data){
         var newArr = [];
@@ -156,12 +156,6 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         }
         return newArr;
     };
-
-    $scope.navigate = function(change){
-        changedVal = $scope.idx + change;
-        if(changedVal < 0 || changedVal > $scope.splitArr.length) return;
-        $scope.idx = changedVal;
-    }
 
     function fetchUser(){
         if($routeParams.id === 'new' && !savebtnClicked){
@@ -182,6 +176,37 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         }
     }
 
+    $scope.navigate = function(change){
+        if(sessionStorage.getItem('navigateAfterUserSave')){
+            changedVal = $scope.idx + change;
+            arrayLength = parseInt(sessionStorage.getItem('UserArrayLength'));
+            if(changedVal < 0 || changedVal >= arrayLength) return;
+            $scope.idx = changedVal;
+            if(change < $scope.idx){
+                sessionStorage.removeItem('userCurrIdx');
+                sessionStorage.removeItem('UserArrayLength');
+                sessionStorage.removeItem('navigateAfterUserSave');
+            }
+        }else{
+            sessionStorage.removeItem('userCurrIdx');
+            sessionStorage.removeItem('UserArrayLength');
+            changedVal = $scope.idx + change;
+            sessionStorage.setItem('UserArrayLength', $scope.splitArr.length);
+            if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
+            $scope.idx = changedVal;
+            sessionStorage.setItem('userCurrIdx', $scope.idx);
+        }
+    }
+
+    function onBackClicked(){
+        if(sessionStorage.getItem('userCurrIdx')){
+            $location.path('/SgUsers');
+            sessionStorage.setItem('navigateAfterUserSave', true);
+        }else{
+            $location.path('/SgUsers');
+        }
+    }
+
     function constructor(){
         if(!user.IsAdmin){
             $scope.errorMsg = 'You are not authorised....';
@@ -191,10 +216,12 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
         $scope.$emit('LOAD');
         if ($routeParams.mode && $routeParams.id) {
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveUser});
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){onBackClicked();}});
             $scope.mode = 'form';
             $scope.id = $routeParams.id;
             fetchUser();
         } else {
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){$location.path('/admin');sessionStorage.removeItem('navigateAfterUserSave');}});
             $scope.$emit('right',{label: 'Add User' , icon : 'glyphicon glyphicon-plus', href : "#/SgUsers/form/new"});
             $scope.mode = 'list';
             fetchUsers();
