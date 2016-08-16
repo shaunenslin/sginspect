@@ -1,4 +1,4 @@
-coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $location, $alert, $http, GlobalSvc, Settings) {
+coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $location, $alert, $http, GlobalSvc, Settings, $route) {
 	DaoSvc.openDB();
 	$scope.InspectionForms = [];
 	$scope.openJobsCount = 0
@@ -28,10 +28,52 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			$scope.$apply();
 		})
 		.error(function(err){
-			console.log('Error fetching closed jobs count');
+			console.log('Error fetching closed jobs count ' + err);
 		})
 
-	} 
+	}
+	// table, ponsuccessread, ponerror, poncomplete
+	function CompletedJobsCount(){
+		var completeCount = 0;
+		DaoSvc.cursor('Unsent',
+			function(item){
+				if (item["Table"] && item["Table"].indexOf('SGIFormHeaders') > - 1){
+					completeCount++;
+				}
+			},function(err){
+				$scope.$emit('UNLOAD');
+				$scope.$apply();
+				console.log('error fetching completed Jobs count! ' + err);
+			},
+			function(){
+				$scope.CompletedJobsCount = completeCount;
+				$scope.$emit('UNLOAD');
+				$scope.$apply();
+			}
+
+		);
+	}
+
+	$scope.deleteOpenJob = function(idx){
+		if(!confirm('Are you sure you want to delete this Job ?')) return;
+		DaoSvc.deleteItem('InProgress', $scope.InspectionForms[idx].FormID, undefined,
+			function(err){
+				$scope.$emit('UNLOAD');
+				$alert({content:"Error Deleting form", duration:5, placement:'top-right', type:'danger', show:true});
+			},function(){
+				$alert({content:"Form Deleted successfully", duration:5, placement:'top-right', type:'success', show:true});
+				$scope.$emit('UNLOAD');
+				$scope.$apply();
+				$route.reload();
+			}
+		)
+	}
+	/*function deleteOpenJobImages(){
+		DaoSvc.deleteItem('Unsent',
+
+		)
+	}
+*/
 	$scope.onJobClicked = function(jobType){
 		if (jobType === 'open'){
 			$location.path('/jobs/' + jobType);
@@ -68,6 +110,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			$scope.$emit('heading',{heading: 'Jobs' , icon : 'fa fa-sticky-note'});
 			$scope.mode = 'jobs';
 			fetchOpenCount();
+			CompletedJobsCount();
 			fechClosedCount();
 		} else if ($routeParams.mode === 'open'){
 			$scope.$emit('heading',{heading: 'Open Jobs' , icon : 'fa fa-sticky-note'});

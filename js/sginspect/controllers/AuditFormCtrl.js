@@ -184,14 +184,13 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
-		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: function(){window.history.back()}});
+		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: function(){savePartialForm(); window.history.back()}});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchClient();
 		fetchGPs();
 		savePartialForm();
-		//TODO: Set in session & use here
 		$scope.Form.JSON.RegNumber = 'HTT 091 GP';
 		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
 		$scope.Form.JSON.LicenceExpiryDate = '25 July 2017';
