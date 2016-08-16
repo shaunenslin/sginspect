@@ -194,7 +194,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     };
 
     function onBackClicked(){
-        if (sessionStorage.getItem('currIdx')){
+        if(sessionStorage.getItem('currIdx')){
             $location.path('/Clients');
             sessionStorage.setItem('navigateAfterSave', true);
         }else{

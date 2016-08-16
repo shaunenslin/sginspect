@@ -77,13 +77,13 @@
                     </label>
                 </div>
 
-                <div class="form-group">
-                    <label for="Latitude">Deactivate</label>
+                <div class="form-group"  ng-hide=" id === 'new'">
+                    <label for="Deactivate">Deactivate</label>
                 </div>
 
-                <div class="checkbox">
+                <div class="checkbox" ng-hide=" id === 'new'" >
                     <label>
-                        <input type="checkbox" ng-checked="userEdit.Deleted" ng-hide=" id === 'new'" ng-model="userEdit.Deleted">
+                        <input type="checkbox" ng-checked="userEdit.Deleted" ng-model="userEdit.Deleted">
                     </label>
                 </div>
             </form>
