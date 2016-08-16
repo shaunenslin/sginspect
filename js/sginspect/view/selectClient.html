@@ -4,15 +4,17 @@
 		<div class="form-group">
 	        <label for="client" class="col-sm-2">Customer *</label>
 	        <div class="col-sm-10">
-	        	<select ng-disabled="disabled" ng-change="onNextClicked()" class="form-control" ng-model="Form.ClientID" ng-options="client.ClientID as client.Name for client in Clients"></select>
+	        	<select ng-disabled="disabled" ng-change="onNextClicked()" class="form-control" ng-model="Form.ClientID" ng-options="client.ClientID as client.Name for client in Clients">
+	        		<option ng-if="!disabled" value="">-- Please select an option --</option>
+	        	</select>
 	        </div>
 	    </div>
 	    <div ng-if="inspectiontype === 'supplierevaluation'">
 	    	<div class="form-group">
 	        <label for="client" class="col-sm-2">New / Existing Supplier*</label>
 	        <div class="col-sm-10">
-	        	<select ng-change="onNextClicked()" ng-model="Form.JSON.SupplierStatus" class="form-control">
-    				<option value="">-- Please select an option --</option>
+	        	<select ng-change="onNextClicked()" ng-model="Form.JSON.SupplierStatus" class="form-control" ng-disabled="disabled">
+    				<option ng-if="!disabled" value="">-- Please select an option --</option>
     				<option>New</option>
     				<option>Existing</option>
 				</select>
