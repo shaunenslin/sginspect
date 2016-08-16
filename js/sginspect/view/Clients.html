@@ -8,8 +8,9 @@
         <div class=" list-group" ng-show="mode === 'list' " >
             <div class="row">
                 <div class="row" style="margin-left:10px; margin-right:5px;">
-                   <div class="col-xs-4  col-sm-2">Customer Code</div>
-                    <div class="col-xs-7  col-sm-2">Customer Name</div>
+                   <div class="col-xs-2  col-sm-2">Customer Code</div>
+                    <div class="col-xs-4  col-sm-2">Customer Name</div>
+                    <div class="col-xs-1 col-sm-2">Active</div>
                 </div>
             </div>
             <a href="#/Clients/form/{{client.ClientID}}" class="list-group-item" ng-repeat="client in splitArr[idx] | filter: searchText">
@@ -17,6 +18,7 @@
             	<div class="row">
                     <div class="col-xs-2">{{client.ClientID}}</div>
                     <div class="col-xs-2">{{client.Name}}</div>
+                    <div class="col-xs-2">{{client.Active ? 'Y' : 'N'}}</div>
               	</div>
             </a>
 
@@ -55,13 +57,13 @@
                     <input type="text" class="form-control" id="Name" ng-model="clientEdit.Name" maxlength="50">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-hide=" id === 'new'" >
                     <label for="Latitude">Active</label>
                 </div>
 
-                <div class="checkbox">
+                <div class="checkbox" ng-hide=" id === 'new'" >
                     <label>
-                        <input type="checkbox" ng-checked="clientEdit.Active" ng-hide=" id === 'new'" ng-model="clientEdit.Active">
+                        <input type="checkbox" ng-checked="clientEdit.Active" ng-model="clientEdit.Active">
                     </label>
                 </div>
 

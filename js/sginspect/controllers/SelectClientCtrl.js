@@ -20,7 +20,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		// Validation across all screens
 		var path = '';
 		if ($routeParams.screennum == 0){
-				if (!$scope.Form.ClientID) {$alert({content: "Please select a Client before continuing !", duration:5, placement:'top-right', type:'danger', show:true}); return;};
+				if (!$scope.Form.ClientID) {$alert({content: "Please select a Customer before continuing !", duration:5, placement:'top-right', type:'danger', show:true}); return;};
 
 		}else if ($routeParams.screennum == 1){
 			if (!$scope.VinNumber){
@@ -72,7 +72,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$scope.Clients.push(json);
 			}, function(err){
 				$scope.$emit('UNLOAD');
-				$alert({content: "Error fetching Clients " + err, duration:5, placement:'top-right', type:'danger', show:true});
+				$alert({content: "Error fetching Customers " + err, duration:5, placement:'top-right', type:'danger', show:true});
 			},function(){
 				sessionStorage.setItem('currentClientsCache', JSON.stringify($scope.Clients));
 				$scope.$emit('UNLOAD');
@@ -87,6 +87,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		else
 			var path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
 		$location.path(path);
+		if($routeParams.screennum == 1) sessionStorage.setItem('currentFormID', $scope.Form.FormID);
 	}
 
 	$scope.nfcScan = function(){
@@ -170,6 +171,8 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			sessionStorage.removeItem('fromJobsScreenCache');
 			sessionStorage.removeItem('currentClientsCache');
 			$scope.view = 'client';
+			$scope.disabled = (sessionStorage.getItem('currentFormID')) ? true : false;
+			sessionStorage.removeItem('currentFormID');
 			newObject();
 			fetchClients();
 		} else if ($routeParams.screennum == 1){

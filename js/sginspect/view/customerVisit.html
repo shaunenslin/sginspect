@@ -3,8 +3,11 @@
 	  	<div >
 	  		<form style="margin-top: 10px;" class="form-horizontal" name="customervisitform">
                 <div class="form-group">
-					<label for="Customer" class="col-sm-3">Customer</label>
-			        <div class="col-sm-9"><input required id="Customer"  type="text" class="form-control"  ng-model="Form.JSON.Customer"/></div>
+					<label for="Customer" class="col-sm-3">Customer Branch</label>
+			        <div class="col-sm-9"><input required id="Customer"  type="text" class="form-control" placeholder="Enter customer branch"  ng-model="Form.JSON.Customer"/></div>
+				</div>
+				<div class="form-group" style="margin-left:0px;margin-right:0px;">
+					<button ng-disabled="!Form.JSON.Customer" class="btn btn-primary btn-block" ng-click="fetchGPS()">Capture GPS</button>
 				</div>
                 <div class="form-group" >
 					<label for="PartiesPresent" class="col-sm-3">Parties Present</label>

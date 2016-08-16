@@ -32,6 +32,22 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	$scope.onBackClicked = function(){
 		savePartialForm();
 		$location.path("selectclient/customervisit/0");
+		sessionStorage.setItem('currentFormID', $scope.Form.FormID);
+	}
+
+	$scope.fetchGPS = function(){
+		$scope.$emit('LOAD');
+		GlobalSvc.getGPS(function(position){
+			$scope.Form.JSON.Latitude  = position ? position.coords.latitude : "";
+			$scope.Form.JSON.Longitude = position ? position.coords.longitude : "";
+			$alert({content:"GPS location captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+			$scope.$emit('UNLOAD');
+			$scope.$emit('UNLOAD');
+			$scope.$apply();
+		},function(error){
+			$alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'danger', show:true});
+			$scope.$emit('UNLOAD');
+		});
 	}
 
 	$scope.fetchGPS = function(){
@@ -72,6 +88,11 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
             $scope.$emit('UNLOAD');
             return;
 		}
+		if(!$scope.Form.JSON[prop]){
+			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$scope.$emit('UNLOAD');
+			return;
+		}
         if ($scope.Form.JSON.IssuesDiscussed === 'Other (Please Specify)' && !$scope.Form.JSON.IssueDescription ) {
             $alert({ content: "Please enter an Issue Comment.", duration: 5, placement: 'top-right', type: 'danger', show: true});
             $scope.$emit('UNLOAD');
@@ -103,6 +124,14 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
+		//Get client
+		$scope.CurrentClient = JSON.parse(sessionStorage.getItem('currentClientsCache'));
+		if ($scope.CurrentClient) {
+			if (!$scope.Form.JSON.ClientID ) {
+				$scope.Form.JSON.ClientID = $scope.CurrentClient.ClientID;
+				$scope.Form.JSON.Name = $scope.CurrentClient.Name;
+			}
+		}
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
@@ -125,6 +154,8 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
+		$scope.disabled = (sessionStorage.getItem('currentFormID')) ? true : false;
+		sessionStorage.removeItem('currentFormID');
 		savePartialForm();
 	}
 	constructor();

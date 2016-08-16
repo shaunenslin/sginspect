@@ -1,6 +1,5 @@
 coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert){
     $scope.$emit('heading',{heading: 'Suppliers' , icon : 'glyphicon glyphicon-road'});
-    $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});
     $scope.newArr = [];
     $scope.splitArr = [];
     $scope.suppliers = [];
@@ -66,7 +65,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
 
     function save(){
         $scope.$emit('LOAD');
-        sessionStorage.removeItem('navigateAfterSave');
+        sessionStorage.removeItem('navigateAfterSupplierSave');
         sessionStorage.removeItem( "Supplierscache");
         var success = function(){
             $scope.$emit('UNLOAD');
@@ -74,7 +73,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             sessionStorage.removeItem("Supplierscache");
             $scope.$apply();
             $location.path('/Suppliers');
-            sessionStorage.setItem('navigateAfterSave', true);
+            if(sessionStorage.getItem('suplierCurrIdx')) sessionStorage.setItem('navigateAfterSupplierSave', true);
         };
         var error = function(){
             $scope.$emit('UNLOAD');
@@ -105,7 +104,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     	}
         console.log($scope.suppliers);
         console.log($scope.splitArr);
-        if (sessionStorage.getItem('navigateAfterSave')) $scope.navigate(sessionStorage.getItem('currIdx'));
+        if (sessionStorage.getItem('navigateAfterSupplierSave')) $scope.navigate(parseInt(sessionStorage.getItem('suplierCurrIdx')));
     }
     function fetchSupplier(){
         var url = Settings.url + 'Get?method=Supplier_ReadSingle2&supplierid='+ $scope.id ;
@@ -133,22 +132,24 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     };
 
     $scope.navigate = function(change){
-        if(sessionStorage.getItem('navigateAfterSave')){
-            changedVal = $scope.idx + parseInt(change);
-            arrayLength = parseInt(sessionStorage.getItem('arrayLength'));
+        if(sessionStorage.getItem('navigateAfterSupplierSave')){
+            changedVal = $scope.idx + change;
+            arrayLength = parseInt(sessionStorage.getItem('SupplierArrayLength'));
             if(changedVal < 0 || changedVal >= arrayLength) return;
             $scope.idx = changedVal;
-            sessionStorage.removeItem('currIdx');
-            sessionStorage.removeItem('arrayLength');
-            sessionStorage.removeItem('navigateAfterSave');
+            if(change < $scope.idx){
+                sessionStorage.removeItem('suplierCurrIdx');
+                sessionStorage.removeItem('SupplierArrayLength');
+                sessionStorage.removeItem('navigateAfterSupplierSave');
+            }
         }else{
-            sessionStorage.removeItem('currIdx');
-            sessionStorage.removeItem('arrayLength');
+            sessionStorage.removeItem('suplierCurrIdx');
+            sessionStorage.removeItem('SupplierArrayLength');
             changedVal = $scope.idx + change;
-            sessionStorage.setItem('arrayLength', $scope.splitArr.length);
+            sessionStorage.setItem('SupplierArrayLength', $scope.splitArr.length);
             if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
             $scope.idx = changedVal;
-            sessionStorage.setItem('currIdx', $scope.idx);
+            sessionStorage.setItem('suplierCurrIdx', $scope.idx);
         }
     }
 
@@ -199,6 +200,15 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         }            
     };
 
+    function onBackClicked(){
+        if(sessionStorage.getItem('suplierCurrIdx')){
+            $location.path('/Suppliers');
+            sessionStorage.setItem('navigateAfterSupplierSave', true);
+        }else{
+            $location.path('/Suppliers');
+        }
+    }
+
     function constructor(){
         if(!user.IsAdmin){
             $scope.errorMsg = 'You are not authorised....';
@@ -208,15 +218,18 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         $scope.id = $routeParams.id;
         if ($routeParams.mode && $scope.id !== 'new') {
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveSupplier});
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){onBackClicked();}});
             $scope.mode = 'form';
             fetchSupplier();
         } else if($scope.id === 'new'){
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveSupplier});
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){onBackClicked()}});
             $scope.supplierEdit = newSupplierObject();
             $scope.supplierEdit.SupplierID = parseInt($scope.supplierEdit.SupplierID);
             $scope.$emit('UNLOAD');
         }else {
             $scope.$emit('right',{label: 'Add Supplier' , icon : 'glyphicon glyphicon-plus', href : "#/Suppliers/form/new"});
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){$location.path('/admin');sessionStorage.removeItem('navigateAfterSupplierSave');}});
             $scope.mode = 'list';
             newCsvObj();
             fetchSuppliers();

@@ -294,6 +294,8 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
+		$scope.disabled = (sessionStorage.getItem('currentFormID')) ? true : false;
+		sessionStorage.removeItem('currentFormID');
 		fetchSuppliers();
 		watchSupplierChanged();
 		savePartialForm();

@@ -4,17 +4,17 @@
 		<div class="form-group">
 	        <label for="client" class="col-sm-2">Customer *</label>
 	        <div class="col-sm-10">
-	        	<select ng-change="onNextClicked()" class="form-control" ng-model="Form.ClientID" ng-options="client.ClientID as client.Name for client in Clients">
-    				<option value="">-- Please select a Customer --</option>
-				</select>
+	        	<select ng-disabled="disabled" ng-change="onNextClicked()" class="form-control" ng-model="Form.ClientID" ng-options="client.ClientID as client.Name for client in Clients">
+	        		<option ng-if="!disabled" value="">-- Please select an option --</option>
+	        	</select>
 	        </div>
 	    </div>
 	    <div ng-if="inspectiontype === 'supplierevaluation'">
 	    	<div class="form-group">
 	        <label for="client" class="col-sm-2">New / Existing Supplier*</label>
 	        <div class="col-sm-10">
-	        	<select ng-change="onNextClicked()" ng-model="Form.JSON.SupplierStatus" class="form-control">
-    				<option value="">-- Please select an option --</option>
+	        	<select ng-change="onNextClicked()" ng-model="Form.JSON.SupplierStatus" class="form-control" ng-disabled="disabled">
+    				<option ng-if="!disabled" value="">-- Please select an option --</option>
     				<option>New</option>
     				<option>Existing</option>
 				</select>
@@ -76,7 +76,7 @@
             <p><i class="fa fa-info"></i> Do the Registration Numbers Match ?</p>
         </div>
         <div class="well"><img id="reg-img" class="center-img img-responsive"  align="middle" ng-src="{{image}}"></div>
-        
+
    		<h4 style="margin-top: 10px; text-align: center; margin-right: 70px;"><b>Licence Plate : {{RegNumber}}</b></h4>
    		<div class=" btn-group btn-block">
    			<button ng-click="matchClicked('match')" ng-class="(Form.JSON.regmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.JSON.regmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
