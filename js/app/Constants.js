@@ -46,7 +46,7 @@ coreApp.constant('Settings', {
 
     syncTables : [
         {table: 'Options', method: 'Sync2'},
-        {table: 'Tree', method: 'Sync'},
+        // {table: 'Tree', method: 'Sync'},
         {table: 'DisplayFields', method: 'Sync2'},
         {table: 'SGISuppliers', alternateLink : "http://www.super-trade.co.za:8084/rest/index.php/GetStoredProc/Sync?StoredProc=supplieris_sync&Params=(0)&table=SGISuppliers"},
         {table: 'SGIClients', alternateLink : "http://www.super-trade.co.za:8084/rest/index.php/GetStoredProc/Sync?StoredProc=Clients_Sync&Params=(0)&table=SGIClient"}    
@@ -56,7 +56,7 @@ coreApp.constant('Settings', {
     tableKeys : [
         {table : 'DisplayFields',       getKey : function(item){return item.SupplierID + item.ID + item.Name;}, index1 : function(item){return item.ID;}, index2 : function(item){return item.SortOrder;}, index3 : function(item){return item.SortOrder;} },
         {table : 'Options',             getKey : function(item){return item.SupplierID + item.Name;},       index1:function(item){return item.Name;}},
-        {table : 'Tree',                getKey : function(item){return item.SupplierID + item.TreeID;},     index1:function(item){return item.Group;}, index2:function(item){return item.ParentTreeID;}, index3:function(item){return item.SortOrder;}},
+        // {table : 'Tree',                getKey : function(item){return item.SupplierID + item.TreeID;},     index1:function(item){return item.Group;}, index2:function(item){return item.ParentTreeID;}, index3:function(item){return item.SortOrder;}},
         {table : 'Unsent',              getKey : function(item){return item.keyf;}, index1 : function(item){return 'undefined';} /* PLEASE DO NOT REMOVE index1 function: when loading logout screen we're checking unsent items by counting them on index1 column. For some reason on iOS local SQL, when we are inserting undefined as value it is not recorded that way  */ },
         {table : 'SGIClients',          getKey : function(item){return item.ClientID;}, index1 : function(item){return item.ClientID;}, index2 : function(item){return item.Name;}}, 
         {table : 'SGISuppliers',        getKey : function(item){return item.SupplierID + item.Name;}, index1 : function(item){return item.SupplierID;}, index2 : function(item){return item.Name;}},

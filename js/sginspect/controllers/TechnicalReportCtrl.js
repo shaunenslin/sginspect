@@ -37,6 +37,17 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	    	}
 		}
 	}
+	$scope.onBackClicked = function(){
+		savePartialForm();
+		var path = '';
+		if (sessionStorage.getItem('fromJobsScreenCache')){
+			path = '/jobs/open';
+			sessionStorage.removeItem('fromJobsScreenCache');
+			$location.path(path);
+		}else{ 
+			window.history.back();	
+		}
+	}
 
 	$scope.fetchGPS = function(){
 		GlobalSvc.getGPS(function(position){
@@ -196,7 +207,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Technical Report', icon : 'fa fa-check-square-o'});
-		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: function(){window.history.back()}});
+		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));

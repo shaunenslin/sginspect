@@ -60,6 +60,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			path = $scope.inspectiontype + '/' + $scope.Form.JSON.SupplierStatus.toLowerCase();
 			delete $scope.Form.JSON.SupplierStatus;	
 		}
+		savePartialForm();
 		$location.path(path);
 	}
 
@@ -80,12 +81,16 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	$scope.onBackClicked = function(){
-		if($routeParams.screennum == 6 && ($scope.inspectiontype === 'customervisit' || $scope.inspectiontype === 'supplierevaluation'))
-			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0;
-		else
-			var path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
-		$location.path(path);
+		var path  = '';
+		if (parseInt($routeParams.screennum) !== 0) savePartialForm();
 		if($routeParams.screennum == 1) sessionStorage.setItem('currentFormID', $scope.Form.FormID);
+		if (sessionStorage.getItem('fromJobsScreenCache')){
+			path = '/jobs/open';
+			sessionStorage.removeItem('fromJobsScreenCache');
+		}else{ 
+			path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
+		}
+		$location.path(path);
 	}
 
 	$scope.nfcScan = function(){
@@ -141,7 +146,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		$scope.$apply();
 	}
 	function savePartialForm(){
-		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
 		$scope.Form.JSON.Path = $location.path();
 		$scope.Form.JobType = 'Open Jobs';
 		DaoSvc.put($scope.Form, 'InProgress', $scope.Form.FormID, function(){console.log('Partial Save of ' + $location.path() + ' successful')},function(){console.log('Partial Save of' + $location.path() + ' failed')},function(){$scope.$apply();});
@@ -165,8 +169,9 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$scope.$emit('heading',{heading: ($scope.inspectiontype === 'audit' ? 'Audit Form' : 'Customer Visit'), icon : 'fa fa-check-square-o'});
 		}
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
-        if($scope.inspectiontype !== 'supplierevaluation' && ($location.path().indexOf('vinmatch') <= -1 && $location.path().indexOf('licensematch') <= -1)) $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
+        if($scope.inspectiontype !== 'supplierevaluation' && ($location.path().indexOf('vinmatch') <= -1 && $location.path().indexOf('licensematch') <= -1) && parseInt($routeParams.screennum) !== 0) $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 		if ($routeParams.screennum == 0){
+			sessionStorage.removeItem('fromJobsScreenCache');
 			sessionStorage.removeItem('currentClientsCache');
 			$scope.view = 'client';
 			$scope.disabled = (sessionStorage.getItem('currentFormID')) ? true : false;

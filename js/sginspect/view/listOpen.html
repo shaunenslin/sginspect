@@ -17,27 +17,30 @@
             </div>
              <div class="btn-group btn-group-justified" role="group">
                 <div  class="btn-group" role="group">
-                    <button ng-click="onJobClicked('closed')" class="btn btn-default">
+                    <button class="btn btn-default">
                         <h4>Closed Jobs for this month</h4>
-                        <h1>{{CloseJobsCount}}</h1>
+                        <h1>{{CloseJobsCount.result}}</h1>
+                        <h3 ng-if="!CloseJobsCount">(Unavailable as you are offline)</h3>
                     </button>
                 </div>
              </div>
 
         </div>
         <a  ng-if="mode === 'jobs'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
-        <div class="list-group inset" ng-if=" mode === 'open'">
-            <a href="" ng-click="onInspectionClicked($index)" ng-repeat="row in InspectionForms" class="row list-group-item">
-                <span class="glyphicon glyphicon-chevron-right pull-right"></span>
-                <div class="row">
-                    <div ng-if="row.FormType === 'afterserviceevaluation'" class="col-sm-3 hidden-xs">After Service Inspection Form</div>
-                    <div ng-if="row.FormType === 'audit'" class="col-sm-3 hidden-xs">Audit Form</div>
-                    <div ng-if="row.FormType === 'customervisit'" class="col-sm-3 hidden-xs">Customer Visit Form</div>
-                    <div ng-if="row.FormType === 'supplierevaluation'" class="col-sm-3 hidden-xs">Supplier Evaluation Form</div>
-                    <div ng-if="row.FormType === 'technicalreport'" class="col-sm-3 hidden-xs">Technical Report Form</div>
-                    <div class="col-sm-4 col-xs-6 ">{{row.timeString}}</div>
 
+        <div class="list-group inset" ng-if=" mode === 'open'">
+            <a ng-repeat="row in InspectionForms" class="row list-group-item">
+                 <span class="col-xs-1 glyphicon glyphicon-chevron-right pull-right"></span>
+                <div class="col-xs-5">
+                    <div ng-click="onInspectionClicked($index)" ng-if="row.FormType === 'afterserviceevaluation'">After Service Inspection Form</div>
+                    <div ng-click="onInspectionClicked($index)" ng-if="row.FormType === 'audit'">Audit Form</div>
+                    <div ng-click="onInspectionClicked($index)" ng-if="row.FormType === 'customervisit'">Customer Visit Form</div>
+                    <div ng-click="onInspectionClicked($index)" ng-if="row.FormType === 'supplierevaluation'">Supplier Evaluation Form</div>
+                    <div ng-click="onInspectionClicked($index)" ng-if="row.FormType === 'technicalreport'">Technical Report Form</div>
                 </div>
+                <div class="col-xs-5">{{row.timeString}}</div>
+
+                 <div ng-click="fetchOpenJobImages($index)" class="col-xs-1"><span class=" btn btn-danger btn-xs fa fa-trash-o pull-right"></span></div>
             </a>
         </div>
         <div style="margin-top: 10px;" class="alert alert-info" ng-if="hide  && mode === 'open'">

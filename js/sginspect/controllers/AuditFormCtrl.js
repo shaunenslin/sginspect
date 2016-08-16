@@ -78,7 +78,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if(!$scope.Form.JSON.AbuseRelatedCosts){
+		if(!$scope.Form.JSON.AbuseRelatedCosts || ($scope.Form.JSON.AbuseRelatedCosts === "Yes" && !$scope.Form.JSON.Costs)){
 			$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			$scope.$emit('UNLOAD');
 			return;
@@ -98,6 +98,12 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		           		return;
 					}
 				}
+			}
+			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
+			if($scope.Form.JSON[prop] === undefined){
+				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				$scope.$emit('UNLOAD');
+				return;
 			}
 		}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
@@ -143,6 +149,18 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		});
 	}
 
+	$scope.onBackClicked = function(){
+		savePartialForm();
+		var path = '';
+		if (sessionStorage.getItem('fromJobsScreenCache')){
+			path = '/jobs/open';
+			sessionStorage.removeItem('fromJobsScreenCache');
+			$location.path(path);
+		}else{ 
+			window.history.back();	
+		}
+	}
+
 	function saveForm(){
 		$scope.$emit('LOAD');
 		deleteCurrentPartialForm($scope.Form.FormID);
@@ -184,14 +202,13 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
-		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: function(){window.history.back()}});
+		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchClient();
 		fetchGPs();
 		savePartialForm();
-		//TODO: Set in session & use here
 		$scope.Form.JSON.RegNumber = 'HTT 091 GP';
 		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
 		$scope.Form.JSON.LicenceExpiryDate = '25 July 2017';
