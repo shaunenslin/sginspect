@@ -29,18 +29,18 @@
         <a  ng-if="mode === 'jobs'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
 
         <div class="list-group inset" ng-if=" mode === 'open'">
-            <a ng-repeat="row in InspectionForms" class="row list-group-item">
+            <a ng-click="onInspectionClicked($index)" ng-repeat="row in InspectionForms" class="row list-group-item">
                  <span class="col-xs-1 glyphicon glyphicon-chevron-right pull-right"></span>
                 <div class="col-xs-5">
-                    <div ng-click="onInspectionClicked($index)" ng-if="row.FormType === 'afterserviceevaluation'">After Service Inspection Form</div>
-                    <div ng-click="onInspectionClicked($index)" ng-if="row.FormType === 'audit'">Audit Form</div>
-                    <div ng-click="onInspectionClicked($index)" ng-if="row.FormType === 'customervisit'">Customer Visit Form</div>
-                    <div ng-click="onInspectionClicked($index)" ng-if="row.FormType === 'supplierevaluation'">Supplier Evaluation Form</div>
-                    <div ng-click="onInspectionClicked($index)" ng-if="row.FormType === 'technicalreport'">Technical Report Form</div>
+                    <div  ng-if="row.FormType === 'afterserviceevaluation'">After Service Inspection Form</div>
+                    <div  ng-if="row.FormType === 'audit'">Audit Form</div>
+                    <div  ng-if="row.FormType === 'customervisit'">Customer Visit Form</div>
+                    <div  ng-if="row.FormType === 'supplierevaluation'">Supplier Evaluation Form</div>
+                    <div  ng-if="row.FormType === 'technicalreport'">Technical Report Form</div>
                 </div>
                 <div class="col-xs-5">{{row.timeString}}</div>
 
-                 <div ng-click="fetchOpenJobImages($index)" class="col-xs-1"><span class=" btn btn-danger btn-xs fa fa-trash-o pull-right"></span></div>
+                 <div ng-click="fetchOpenJobImages($index);$event.stopPropagation();" class="col-xs-1"><span class=" btn btn-danger btn-xs fa fa-trash-o pull-right"></span></div>
             </a>
         </div>
         <div style="margin-top: 10px;" class="alert alert-info" ng-if="hide  && mode === 'open'">

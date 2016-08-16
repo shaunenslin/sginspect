@@ -83,6 +83,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			},
 			function(error){
 				console.log('Error fetching from Unsent ' + error);
+				deleteOpenJob(index);
 				$scope.$emit('UNLOAD');
 			}, function(){
 				//Recursively Deleting the Images out of unsent and executing the save form when done
