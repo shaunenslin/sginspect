@@ -258,7 +258,7 @@
 
 					<div class="form-group">
 						<label for="CommSkills" class="col-sm-3">Communication Skills</label>
-						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.TechCompComment" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.CommSkills"><option value="">-- please choose --</option></select></div>
+						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.TechComp" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.CommSkills"><option value="">-- please choose --</option></select></div>
 					</div>
 					<div class="form-group" ng-if="Form.JSON.CommSkills === 'Bad'">
 						<label for="CommSkillsComment" class="col-sm-3">Comment</label>
