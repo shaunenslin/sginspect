@@ -78,7 +78,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if(!$scope.Form.JSON.AbuseRelatedCosts){
+		if(!$scope.Form.JSON.AbuseRelatedCosts || ($scope.Form.JSON.AbuseRelatedCosts === "Yes" && !$scope.Form.JSON.Costs)){
 			$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			$scope.$emit('UNLOAD');
 			return;
@@ -98,6 +98,12 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		           		return;
 					}
 				}
+			}
+			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
+			if($scope.Form.JSON[prop] === undefined){
+				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				$scope.$emit('UNLOAD');
+				return;
 			}
 		}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){

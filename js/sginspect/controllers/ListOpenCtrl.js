@@ -54,8 +54,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		);
 	}
 
-	$scope.deleteOpenJob = function(idx){
-		if(!confirm('Are you sure you want to delete this Job ?')) return;
+	function deleteOpenJob(idx){
 		DaoSvc.deleteItem('InProgress', $scope.InspectionForms[idx].FormID, undefined,
 			function(err){
 				$scope.$emit('UNLOAD');
@@ -66,14 +65,47 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 				$scope.$apply();
 				$route.reload();
 			}
-		)
+		);
 	}
-	/*function deleteOpenJobImages(){
-		DaoSvc.deleteItem('Unsent',
+	$scope.fetchOpenJobImages = function(index){
+		if(!confirm('Are you sure you want to delete this Job ?')) return;
+		var imageKeys = [];
+		var index = index;
+		DaoSvc.cursor('Unsent',
+			function(json){
+				//Checking if this is an image incase the are inspection that were saved offline 
+				if(json.ImageID){
+					//Ensure that we are only getting images belonging to this current Form
+					if(json.ImageID.indexOf($scope.InspectionForms[index].FormID) > -1){
+					imageKeys.push(json.ImageID)
+					}
+				}
+			},
+			function(error){
+				console.log('Error fetching from Unsent ' + error);
+				$scope.$emit('UNLOAD');
+			}, function(){
+				//Recursively Deleting the Images out of unsent and executing the save form when done
+				deleteUnsentImages(0,imageKeys, deleteOpenJob, index);
+			}
+		);
+	}
+	//  table, key, idx, ponerror, poncomplete
+	function deleteUnsentImages(idx,keys, onComplete, index){
+		if(idx >= keys.length){
+			onComplete(index);
+			return;
+		}
+		DaoSvc.deleteItem('Unsent',keys[idx],undefined,function(){
+			idx = idx + 1;
+			deleteUnsentImages(idx,keys,onComplete, index)
+		}, function(){
+			idx = idx + 1;
+		deleteUnsentImages(idx, keys,onComplete, index)
+		});
+	}
 
-		)
-	}
-*/
+
 	$scope.onJobClicked = function(jobType){
 		if (jobType === 'open'){
 			$location.path('/jobs/' + jobType);
@@ -100,6 +132,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.onInspectionClicked = function(idx){
 		delete $scope.InspectionForms[idx].timeString;
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.InspectionForms[idx]));
+		sessionStorage.setItem('fromJobsScreenCache', true);
 		//this.deleteItem = function (table, key, idx, ponerror, poncomplete) {
 		DaoSvc.deleteItem('InProgress', $scope.InspectionForms[idx].FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 		$location.path($scope.InspectionForms[idx].JSON.Path);

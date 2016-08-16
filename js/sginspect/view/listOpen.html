@@ -17,9 +17,10 @@
             </div>
              <div class="btn-group btn-group-justified" role="group">
                 <div  class="btn-group" role="group">
-                    <button ng-click="onJobClicked('closed')" class="btn btn-default">
+                    <button class="btn btn-default">
                         <h4>Closed Jobs for this month</h4>
                         <h1>{{CloseJobsCount.result}}</h1>
+                        <h3 ng-if="!CloseJobsCount">(Unavailable as you are offline)</h3>
                     </button>
                 </div>
              </div>
@@ -39,7 +40,7 @@
                 </div>
                 <div class="col-xs-5">{{row.timeString}}</div>
 
-                 <div ng-click="deleteOpenJob($index)" class="col-xs-1"><span class=" btn btn-danger btn-xs fa fa-trash-o pull-right"></span></div>
+                 <div ng-click="fetchOpenJobImages($index)" class="col-xs-1"><span class=" btn btn-danger btn-xs fa fa-trash-o pull-right"></span></div>
             </a>
         </div>
         <div style="margin-top: 10px;" class="alert alert-info" ng-if="hide  && mode === 'open'">

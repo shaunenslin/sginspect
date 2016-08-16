@@ -9,9 +9,10 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 	var Imgfiles = [];
     $scope.options = [
-                {name:"Good"},
-                {name:"Average"},
-                {name:"Bad"}]
+        {name:"Good"},
+        {name:"Average"},
+        {name:"Bad"}
+    ];
 
     function newObject(){
 		$scope.Form = {
@@ -93,7 +94,14 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
     }
 
 	$scope.onBackClicked = function(){
-		$location.path("selectclient/supplierevaluation/0");
+		savePartialForm();
+		if (sessionStorage.getItem('fromJobsScreenCache')){
+			path = '/';
+			sessionStorage.removeItem('fromJobsScreenCache');
+		}else{ 
+			path = 'selectclient/supplierevaluation/0';
+		}
+		$location.path(path);
 	}
 
 	$scope.fetchGPS = function(){

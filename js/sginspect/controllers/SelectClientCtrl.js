@@ -81,7 +81,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	$scope.onBackClicked = function(){
-		if ($routeParams.screennum !== 0) savePartialForm();
+		if (parseInt($routeParams.screennum) !== 0) savePartialForm();
 		if($routeParams.screennum == 6 && ($scope.inspectiontype === 'customervisit' || $scope.inspectiontype === 'supplierevaluation'))
 			var path = Settings.workflow['audit'][0].route + '/' + $routeParams.inspectiontype + '/' + 0;
 		else
@@ -165,8 +165,9 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$scope.$emit('heading',{heading: ($scope.inspectiontype === 'audit' ? 'Audit Form' : 'Customer Visit'), icon : 'fa fa-check-square-o'});
 		}
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
-        if($scope.inspectiontype !== 'supplierevaluation' && ($location.path().indexOf('vinmatch') <= -1 && $location.path().indexOf('licensematch') <= -1)) $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
+        if($scope.inspectiontype !== 'supplierevaluation' && ($location.path().indexOf('vinmatch') <= -1 && $location.path().indexOf('licensematch') <= -1) && parseInt($routeParams.screennum) !== 0) $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 		if ($routeParams.screennum == 0){
+			sessionStorage.removeItem('fromJobsScreenCache');
 			sessionStorage.removeItem('currentClientsCache');
 			$scope.view = 'client';
 			newObject();

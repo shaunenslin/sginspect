@@ -196,7 +196,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Technical Report', icon : 'fa fa-check-square-o'});
-		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: function(){window.history.back()}});
+		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: function(){savePartialForm();window.history.back()}});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
