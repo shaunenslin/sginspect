@@ -24,6 +24,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	$scope.onBackClicked = function(){
 		var path = '';
 		savePartialForm();
+		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		if (sessionStorage.getItem('fromJobsScreenCache')){
 			path = '/jobs/open';
 			sessionStorage.removeItem('fromJobsScreenCache');

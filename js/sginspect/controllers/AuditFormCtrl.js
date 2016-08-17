@@ -150,6 +150,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	}
 
 	$scope.onBackClicked = function(){
+		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		savePartialForm();
 		var path = '';
 		if (sessionStorage.getItem('fromJobsScreenCache')){

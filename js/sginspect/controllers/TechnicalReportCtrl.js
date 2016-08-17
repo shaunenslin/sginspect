@@ -38,6 +38,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		}
 	}
 	$scope.onBackClicked = function(){
+		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		savePartialForm();
 		var path = '';
 		if (sessionStorage.getItem('fromJobsScreenCache')){
