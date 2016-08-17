@@ -97,42 +97,41 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		$scope.VinNumber = "IG1YY23671299872";
 		sessionStorage.setItem('currentRegNumber', 'HTT 091 GP');
 		sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
-		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully. Please Press 'Next' to continue", duration:5, placement:'top-right', type:'success', show:true});
+		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully", duration:5, placement:'top-right', type:'success', show:true});
+		$scope.onNextClicked();
+
 	}
 
 	$scope.onPhotoClicked = function(field){
-		if(field === 'other-photos' && $routeParams.screennum == 6){
-			saveMultiplePhotos(field);
-			$alert({content:"Image(s) captured successfully", duration:5, placement:'top-right', type:'success', show:true});
-		}else{
-			var reader = new FileReader();
-			reader.addEventListener("load", function () {
-				$scope.image = reader.result;
-				if ($routeParams.screennum == 6 && $scope.image){
-					var key = $scope.Form.FormID + '_' + field + '.png';
-					CaptureImageSvc.savePhoto(key, $scope.image);
-				} else{
-					$scope.capture = true;
-				}
-				$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
-				$scope.$apply();
-			}, false);
-			if ($scope.isPhoneGap){
-				var onSuccess = function(img){
-					reader.readAsDataURL(img);
-				}
-				var onError = function(err){
-					$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
-				}
-				CaptureImageSvc.takePhoto(onSuccess, onError);
+		var reader = new FileReader();
+		reader.addEventListener("load", function () {
+			$scope.image = reader.result;
+			if ($scope.image){
+				var key = $scope.Form.FormID + '_' + field + '.png';
+				CaptureImageSvc.savePhoto(key, $scope.image);
 			} else{
-				var image = $('#file-select')[0];
-
-				if (image && image.files.length > 0){
-		    		reader.readAsDataURL(image.files[0]);
-		    	}
+				$scope.capture = true;
 			}
+			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+			$scope.onNextClicked();
+			$scope.$apply();
+		}, false);
+		if ($scope.isPhoneGap){
+			var onSuccess = function(img){
+				reader.readAsDataURL(img);
+			}
+			var onError = function(err){
+				$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
+			}
+			CaptureImageSvc.takePhoto(onSuccess, onError);
+		} else{
+			var image = $('#file-select')[0];
+
+			if (image && image.files.length > 0){
+	    		reader.readAsDataURL(image.files[0]);
+	    	}
 		}
+		
 	}
 
 	$scope.matchClicked = function(clickVal){
@@ -169,7 +168,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$scope.$emit('heading',{heading: ($scope.inspectiontype === 'audit' ? 'Audit Form' : 'Customer Visit'), icon : 'fa fa-check-square-o'});
 		}
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
-        if($scope.inspectiontype !== 'supplierevaluation' && ($location.path().indexOf('vinmatch') <= -1 && $location.path().indexOf('licensematch') <= -1) && parseInt($routeParams.screennum) !== 0) $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 		if ($routeParams.screennum == 0){
 			sessionStorage.removeItem('fromJobsScreenCache');
 			sessionStorage.removeItem('currentClientsCache');
