@@ -1,6 +1,9 @@
 <div ng-controller="ListOpenCtrl">  
     <div class="inset" style="padding-top: 10px;">
-        <div ng-if="mode === 'jobs'" class="list-group inset">   
+        <div ng-if="mode === 'jobs'" class="list-group inset">  
+            <div style="margin-top: 10px;" class="alert alert-warning" ng-if="CompletedJobsCount > 0">
+                <p><i class="fa fa-info"></i> You have {{CompletedJobsCount}} unsent invoice(s). <a href="#/sync">Click here to Sync</a></p>
+            </div> 
             <div class="btn-group btn-group-justified" role="group"  style="margin-top:10px;">
                 <div  class="btn-group" role="group">
                     <button ng-click="onJobClicked('open')" class="btn btn-default">
