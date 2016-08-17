@@ -262,6 +262,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		//Create Unique Key For Signature(s) and/or image(s)
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		delete $scope.Form.JSON.existingSupplier;
 		var technicaladvisorSignature =  createSignatureImage($scope.signature.technicaladvisor, 'technicaladvisor');
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
 		$scope.Form.JSON[technicaladvisorSignature.ID] = technicaladvisorSignature.FileData;
@@ -288,7 +289,10 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			function(newValue, oldValue) {
 			  	if ($scope.mode === 'existing'){
 				  	var found = $filter('filter')($scope.Suppliers,{SupplierID:$scope.Form.JSON.SupplierID});
-					if (found.length > 0) $scope.currentsupplier = found[0];
+					if (found.length > 0){
+						$scope.currentsupplier = found[0];
+						$scope.Form.JSON.Name = {"existingSupplier" : found[0].Name}
+					} 
 			  	}
 		  	}
 		 );

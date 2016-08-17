@@ -49,7 +49,7 @@ coreApp.constant('Settings', {
         // {table: 'Tree', method: 'Sync'},
         {table: 'DisplayFields', method: 'Sync2'},
         {table: 'SGISuppliers', alternateLink : "http://www.super-trade.co.za:8084/rest/index.php/GetStoredProc/Sync?StoredProc=supplieris_sync&Params=(0)&table=SGISuppliers"},
-        {table: 'SGIClients', alternateLink : "http://www.super-trade.co.za:8084/rest/index.php/GetStoredProc/Sync?StoredProc=Clients_Sync&Params=(0)&table=SGIClient"}    
+        // {table: 'SGIClients', alternateLink : "http://www.super-trade.co.za:8084/rest/index.php/GetStoredProc/Sync?StoredProc=Clients_Sync&Params=(0)&table=SGIClient"}    
 
     ],
 

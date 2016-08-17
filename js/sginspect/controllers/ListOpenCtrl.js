@@ -1,9 +1,13 @@
-coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $location, $alert, $http, GlobalSvc, Settings, $route) {
+coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $location, $alert, $http, GlobalSvc, Settings, $route, $filter) {
 	DaoSvc.openDB();
 	$scope.InspectionForms = [];
+	$scope.data = [];
 	$scope.openJobsCount = 0
 	$scope.CompletedJobsCount = 0;
 	$scope.CloseJobsCount = 0;
+	$scope.selectOptions =[{name : 'audit'}, {name : 'customervisit'}, {name : 'afterserviceevaluation'}, {name : 'technicalreport'}, {name : 'supplierevaluation'}];
+	$scope.searchText = {"JobType" : "", "Date" : "", "Text": ""};
+	$scope.showWarning = false;
 
 	function fetchOpenCount(){
 		$scope.openJobsCount = 0;
@@ -116,15 +120,18 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		var inspection_forms = [];
 		DaoSvc.cursor('InProgress',
             function(json){
-            	json.timeString = moment(json.FormDate).format("DD MMM YY");
+            	json.timeString = moment(json.FormDate).format("DD MMM YYYY");
+            	json.JSON = JSON.stringify(json.JSON);
             	inspection_forms.push(json);
             },
             function(err){
             	$scope.hide = true;
+            	$scope.InspectionForms = [];
                 $scope.$emit('UNLOAD');
             },
             function(){
-            	$scope.InspectionForms = inspection_forms;
+            	$scope.data = inspection_forms;
+            	$scope.InspectionForms = $scope.data;
                 $scope.$emit('UNLOAD');
                 $scope.$apply();
             }
@@ -132,11 +139,32 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	}
 	$scope.onInspectionClicked = function(idx){
 		delete $scope.InspectionForms[idx].timeString;
+		$scope.InspectionForms[idx].JSON = JSON.parse($scope.InspectionForms[idx].JSON);
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.InspectionForms[idx]));
 		sessionStorage.setItem('fromJobsScreenCache', true);
-		//this.deleteItem = function (table, key, idx, ponerror, poncomplete) {
 		DaoSvc.deleteItem('InProgress', $scope.InspectionForms[idx].FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 		$location.path($scope.InspectionForms[idx].JSON.Path);
+	}
+	$scope.onClearClicked = function(){
+		$scope.searchText = {"JobType" : "", "Date" : "", "Text": ""};
+		$scope.InspectionForms = $scope.data;
+	}
+	$scope.onSearchClicked = function(){
+		if ($scope.searchText.JobType.length > 0){
+			$scope.InspectionForms = $filter('filter')($scope.data, {FormType: $scope.searchText.JobType});
+		} else if ($scope.searchText.Date !== ""){
+			$scope.InspectionForms = $filter('filter')($scope.data, {timeString: moment($scope.searchText.Date).format('DD MMM YYYY')})
+		}else{
+			var search_results = [];
+			$filter('filter')($scope.InspectionForms, function(item) {
+		        if(item.JSON.includes($scope.searchText.Text)){             
+		            search_results.push(item);
+		        }
+	        	$scope.InspectionForms = search_results;
+    		}); 
+    		if ($scope.InspectionForms.length === 0) $scope.showWarning = true;    
+		}
+
 	}
 
 	function constructor(){
