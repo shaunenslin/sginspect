@@ -106,7 +106,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		var reader = new FileReader();
 		reader.addEventListener("load", function () {
 			$scope.image = reader.result;
-			if ($routeParams.screennum == 6 && $scope.image){
+			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + '.png';
 				CaptureImageSvc.savePhoto(key, $scope.image);
 			} else{
