@@ -5,7 +5,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	$scope.supplierStatus = "";
 	function newObject(){
-		$scope.Form = {
+		return {
 			FormType: $routeParams.inspectiontype,
 			ClientID: "",
 			FormID: GlobalSvc.getGUID(),
@@ -83,7 +83,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.onBackClicked = function(){
 		var path  = '';
 		if (parseInt($routeParams.screennum) !== 0) savePartialForm();
-		if($routeParams.screennum == 1) sessionStorage.setItem('currentFormID', $scope.Form.FormID);
 		if (sessionStorage.getItem('fromJobsScreenCache')){
 			path = '/jobs/open';
 			sessionStorage.removeItem('fromJobsScreenCache');
@@ -174,9 +173,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			sessionStorage.removeItem('fromJobsScreenCache');
 			sessionStorage.removeItem('currentClientsCache');
 			$scope.view = 'client';
-			$scope.disabled = (sessionStorage.getItem('currentFormID')) ? true : false;
-			sessionStorage.removeItem('currentFormID');
-			newObject();
+			$scope.Form = sessionStorage.getItem('currentForm') ? JSON.parse(sessionStorage.getItem('currentForm')) : newObject();
 			fetchClients();
 		} else if ($routeParams.screennum == 1){
 			$scope.$emit('UNLOAD');

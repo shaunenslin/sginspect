@@ -66,13 +66,13 @@
 
                 <div ng-click="fetchOpenJobImages($index);$event.stopPropagation();" class="col-xs-1"><span class=" btn btn-danger  fa fa-trash-o pull-right"></span></div>
             </a>
-             <div class="alert alert-warning" ng-if="InspectionForms.length === 0">
+        </div>
+        <div class="alert alert-warning" ng-if="mode === 'open' && InspectionForms.length === 0">
                 <p><i class="fa fa-info"></i> No results found</p>
             </div>
-        </div>
         <a style="margin-top: 10px;"  ng-if="mode === 'open' && InspectionForms.length > 0" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
             </div>
-        <a  ng-if="mode === 'jobs'  && InspectionForms.length > 0" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
+        <a  ng-if="mode === 'jobs'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
         <div style="margin-top: 10px;" class="alert alert-info" ng-if="mode === 'open' && showWarning">
             <p><i class="fa fa-info"></i> There are currently no Open Jobs</p>
         </div>
