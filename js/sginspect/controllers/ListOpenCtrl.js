@@ -203,10 +203,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 				if (additional_equipment_ratings[prop.toLowerCase()] !== undefined){
 					add_rating+= (prop.toLowerCase() === 'fireextinguisher') ? Math.ceil(additional_equipment_ratings[prop.toLowerCase()]) : (Math.ceil(additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
 				}
-
-
 			}
-		
 		}
 		if (!savedForm.JSON.vinmatch || !savedForm.JSON.regmatch || savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
 		$scope.overallRating = rating;
