@@ -94,7 +94,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
     }
 
 	$scope.onBackClicked = function(){
-		sessionStorage.setItem('currentFormID', $scope.Form.FormID);
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		savePartialForm();
 		if (sessionStorage.getItem('fromJobsScreenCache')){
@@ -263,6 +262,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		//Create Unique Key For Signature(s) and/or image(s)
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		delete $scope.Form.JSON.existingSupplier;
 		var technicaladvisorSignature =  createSignatureImage($scope.signature.technicaladvisor, 'technicaladvisor');
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
 		$scope.Form.JSON[technicaladvisorSignature.ID] = technicaladvisorSignature.FileData;
@@ -289,7 +289,10 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			function(newValue, oldValue) {
 			  	if ($scope.mode === 'existing'){
 				  	var found = $filter('filter')($scope.Suppliers,{SupplierID:$scope.Form.JSON.SupplierID});
-					if (found.length > 0) $scope.currentsupplier = found[0];
+					if (found.length > 0){
+						$scope.currentsupplier = found[0];
+						$scope.Form.JSON.Name = {"existingSupplier" : found[0].Name}
+					} 
 			  	}
 		  	}
 		 );
@@ -302,8 +305,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
-		$scope.disabled = (sessionStorage.getItem('currentFormID')) ? true : false;
-		sessionStorage.removeItem('currentFormID');
 		fetchSuppliers();
 		watchSupplierChanged();
 		savePartialForm();

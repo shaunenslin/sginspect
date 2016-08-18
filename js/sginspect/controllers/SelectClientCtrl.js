@@ -5,7 +5,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	$scope.supplierStatus = "";
 	function newObject(){
-		$scope.Form = {
+		return {
 			FormType: $routeParams.inspectiontype,
 			ClientID: "",
 			FormID: GlobalSvc.getGUID(),
@@ -67,7 +67,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	function fetchClients(){
 		$scope.Clients = [];
 		DaoSvc.openDB();
-		DaoSvc.cursor('SGIClients',
+		DaoSvc.cursor('SGIClient',
 			function(json){
 				$scope.Clients.push(json);
 			}, function(err){
@@ -83,7 +83,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.onBackClicked = function(){
 		var path  = '';
 		if (parseInt($routeParams.screennum) !== 0) savePartialForm();
-		if($routeParams.screennum == 1) sessionStorage.setItem('currentFormID', $scope.Form.FormID);
 		if (sessionStorage.getItem('fromJobsScreenCache')){
 			path = '/jobs/open';
 			sessionStorage.removeItem('fromJobsScreenCache');
@@ -99,7 +98,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
 		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully", duration:5, placement:'top-right', type:'success', show:true});
 		$scope.onNextClicked();
-
 	}
 
 	$scope.onPhotoClicked = function(field){
@@ -172,9 +170,8 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			sessionStorage.removeItem('fromJobsScreenCache');
 			sessionStorage.removeItem('currentClientsCache');
 			$scope.view = 'client';
-			$scope.disabled = (sessionStorage.getItem('currentFormID')) ? true : false;
-			sessionStorage.removeItem('currentFormID');
-			newObject();
+			$scope.Form = sessionStorage.getItem('currentForm') ? JSON.parse(sessionStorage.getItem('currentForm')) : newObject();
+			if ($scope.Form.ClientID.length > 0) $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 			fetchClients();
 		} else if ($routeParams.screennum == 1){
 			$scope.$emit('UNLOAD');

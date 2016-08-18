@@ -50,7 +50,6 @@ coreApp.constant('Settings', {
         {table: 'DisplayFields', method: 'Sync2'},
         {table: 'SGISuppliers', method : 'supplieris_sync', generic: true},
         {table: 'SGIClient', method : 'Clients_Sync', generic: true}
-
     ],
 
     tableKeys : [
