@@ -171,7 +171,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			sessionStorage.removeItem('currentClientsCache');
 			$scope.view = 'client';
 			$scope.Form = sessionStorage.getItem('currentForm') ? JSON.parse(sessionStorage.getItem('currentForm')) : newObject();
-        	if($scope.Form.ClientID.length > 0) $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 			fetchClients();
 		} else if ($routeParams.screennum == 1){
 			$scope.$emit('UNLOAD');
@@ -205,6 +204,8 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.image = sessionStorage.getItem('currentLicenceImage');
 			$scope.RegNumber = sessionStorage.getItem('currentRegNumber');
 		}
+		// Button @bottom to cater for user navigating back to selectclient , & then moving forward without having to reselect. Form obj available here globally
+		if($scope.Form.ClientID.length > 0) $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 		if (parseInt($routeParams.screennum) !== 0) savePartialForm();
 	}
 	constructor();
