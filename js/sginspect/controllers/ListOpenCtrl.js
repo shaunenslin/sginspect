@@ -8,6 +8,33 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.selectOptions =[{name : 'audit'}, {name : 'customervisit'}, {name : 'afterserviceevaluation'}, {name : 'technicalreport'}, {name : 'supplierevaluation'}];
 	$scope.searchText = {"JobType" : "", "Date" : "", "Text": ""};
 	$scope.showWarning = false;
+	$scope.vehicleFitnessRating = 'Pass';
+	$scope.overallRating = 0;
+	$scope.additionalEquipmentRating = 0;
+	var rating = 0;
+	var add_rating = 0;
+	var overall_ratings = {
+		cabinterior: 7,
+		steeringplay: 6,
+		electrical: 6,
+		engine_smoke: 13,
+		clutchoperation: 7,
+		brakes: 14,
+		gearselector: 6,
+		propshaftplay: 5,
+		cabexterior: 7,
+		rust: 5,
+		licensecard: 8,
+		fluidleaks: 7,
+		tyres : 9,
+		fireextinguisher: 0,
+		fireextisvalid: 0,
+		fireextinguisherdate: 0,
+		equipment: 0,
+		abuserelatedcosts: 0
+	};
+	var additional_equipment_ratings = {fireextinguisher: 50, equipment: 50};
+	var o = {good: 1, bad: 0, average: 0.5, yes: 0, no :1, valid: 1, expired: 0,};
 
 	function fetchOpenCount(){
 		$scope.openJobsCount = 0;
@@ -167,6 +194,25 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 
 	}
 
+	// scope.json
+	function calculateRatings(){
+		var savedForm = JSON.parse(sessionStorage.getItem('formTobeRatedCache'));
+		for (var prop in savedForm.JSON){
+			if (o[typeof(savedForm.JSON[prop]) === 'string' && savedForm.JSON[prop].toLowerCase()] !== undefined){
+				rating += Math.ceil(overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
+				if (additional_equipment_ratings[prop.toLowerCase()] !== undefined){
+					add_rating+= (prop.toLowerCase() === 'fireextinguisher') ? Math.ceil(additional_equipment_ratings[prop.toLowerCase()]) : (Math.ceil(additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
+				}
+
+
+			}
+		
+		}
+		if (!savedForm.JSON.vinmatch || !savedForm.JSON.regmatch || savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
+		$scope.overallRating = rating;
+		$scope.additionalEquipmentRating = add_rating;
+	}
+
 	function constructor(){
 		if(!$routeParams.mode){
 			$scope.$emit('heading',{heading: 'Jobs' , icon : 'fa fa-sticky-note'});
@@ -179,8 +225,11 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			$scope.$emit('heading',{heading: 'Open Jobs' , icon : 'fa fa-sticky-note'});
 			$scope.mode = $routeParams.mode;
 			fetchInspections();
-		} else if ($routeParams.mode === 'closed'){
-			$scope.$emit('heading',{heading: 'Closed Jobs' , icon : 'fa fa-sticky-note'});
+		} else if ($routeParams.mode === 'ratings'){
+			$scope.mode = $routeParams.mode;
+			$scope.$emit('heading',{heading: 'Remarks' , icon : 'fa fa-sticky-note'});
+			$scope.$emit('left',{label: 'Home' , icon : 'fa fa-home', onclick: function(){sessionStorage.removeItem('formTobeRatedCache'); $location.path('/');}});
+			calculateRatings();
 
 		}
 	}
