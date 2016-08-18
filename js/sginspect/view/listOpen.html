@@ -36,7 +36,7 @@
             <div style="margin-top: 10px;" class="alert alert-info" ng-if="mode === 'open' && InspectionForms.length >  0">
                 <p><i class="fa fa-info"></i> Please enter in any of the below fields  and Click Search.</p>
             </div>
-            <div ng-if="mode === 'open'""  class="well">
+            <div ng-if="mode === 'open'"  class="well">
                 <form style="margin-top:10px;" class="form-horizontal">
                     <div class="form-group">
                         <label for="job_type" class="col-sm-3">Job Type</label>
@@ -57,8 +57,8 @@
             </div>
             <div style="padding: 19px;">
                 <a ng-click="onInspectionClicked($index)" ng-repeat="row in InspectionForms" class="row list-group-item">
-                    <span class="col-xs-1 glyphicon glyphicon-chevron-right pull-right"></span>
-                    <div class="col-xs-5">
+                    <span class=" glyphicon glyphicon-chevron-right pull-right"></span>
+                    <div class="col-xs-4">
                         <div  ng-if="row.FormType === 'afterserviceevaluation'">After Service Inspection Form</div>
                         <div  ng-if="row.FormType === 'audit'">Audit Form</div>
                         <div  ng-if="row.FormType === 'customervisit'">Customer Visit Form</div>
@@ -66,7 +66,7 @@
                         <div  ng-if="row.FormType === 'technicalreport'">Technical Report Form</div>
                     </div>
                     <div class="col-xs-5">{{row.timeString}}</div>
-                    <div ng-click="fetchOpenJobImages($index);$event.stopPropagation();" class="col-xs-1"><span class=" btn btn-danger  fa fa-trash-o pull-right"></span></div>
+                    <div ng-click="fetchOpenJobImages($index);$event.stopPropagation();" style="margin-left:10px;" class="col-xs-1"><span class=" btn btn-danger  fa fa-trash-o pull-right"></span></div>
                 </a>
             </div>
             <div class="alert alert-warning" ng-if="mode === 'open' && InspectionForms.length === 0">
