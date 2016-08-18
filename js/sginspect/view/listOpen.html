@@ -74,6 +74,18 @@
             </div>
             <a style="margin-top: 10px;"  ng-if="mode === 'open' && InspectionForms.length > 0" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
         </div>
+        <div ng-if="mode === 'ratings'">
+            <div style="margin-top: 10px;" class="alert alert-info">
+                    <p><i class="fa fa-info"></i> Overall Rating : {{overallRating + '%'}}</p>
+            </div>
+            <div style="margin-top: 10px;" class="alert alert-info">
+                    <p><i class="fa fa-info"></i> Additional Equipment Rating :  {{additionalEquipmentRating + '%'}}</p>
+            </div>
+             <div style="margin-top: 10px;" class="alert alert-info">
+                    <p><i class="fa fa-info"></i> Vehicle Fitness Rating :  {{vehicleFitnessRating}}</p>
+            </div>
+
+        </div>
         <a  ng-if="mode === 'jobs'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
         <div style="margin-top: 10px;" class="alert alert-info" ng-if="mode === 'open' && showWarning">
             <p><i class="fa fa-info"></i> There are currently no Open Jobs</p>
