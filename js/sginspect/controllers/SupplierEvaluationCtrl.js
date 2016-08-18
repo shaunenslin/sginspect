@@ -94,6 +94,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
     }
 
 	$scope.onBackClicked = function(){
+		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		savePartialForm();
 		if (sessionStorage.getItem('fromJobsScreenCache')){
 			path = '/jobs/open';

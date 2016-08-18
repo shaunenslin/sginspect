@@ -96,7 +96,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		$scope.VinNumber = "IG1YY23671299872";
 		sessionStorage.setItem('currentRegNumber', 'HTT 091 GP');
 		sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
-		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully.", duration:5, placement:'top-right', type:'success', show:true});
+		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully", duration:5, placement:'top-right', type:'success', show:true});
 		$scope.onNextClicked();
 	}
 
@@ -104,7 +104,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		var reader = new FileReader();
 		reader.addEventListener("load", function () {
 			$scope.image = reader.result;
-			if ($routeParams.screennum == 6 && $scope.image){
+			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + '.png';
 				CaptureImageSvc.savePhoto(key, $scope.image);
 			} else{
@@ -129,6 +129,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	    		reader.readAsDataURL(image.files[0]);
 	    	}
 		}
+		
 	}
 
 	$scope.matchClicked = function(clickVal){
