@@ -182,11 +182,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             arrayLength = parseInt(sessionStorage.getItem('UserArrayLength'));
             if(changedVal < 0 || changedVal >= arrayLength) return;
             $scope.idx = changedVal;
-            if(change < $scope.idx){
-                sessionStorage.removeItem('userCurrIdx');
-                sessionStorage.removeItem('UserArrayLength');
-                sessionStorage.removeItem('navigateAfterUserSave');
-            }
+            sessionStorage.setItem('userCurrIdx', $scope.idx);
         }else{
             sessionStorage.removeItem('userCurrIdx');
             sessionStorage.removeItem('UserArrayLength');
@@ -221,7 +217,7 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             $scope.id = $routeParams.id;
             fetchUser();
         } else {
-            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){$location.path('/admin');sessionStorage.removeItem('navigateAfterUserSave');}});
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){$location.path('/admin');sessionStorage.removeItem('navigateAfterUserSave');sessionStorage.removeItem('UserArrayLength'); sessionStorage.removeItem('userCurrIdx');}});
             $scope.$emit('right',{label: 'Add User' , icon : 'glyphicon glyphicon-plus', href : "#/SgUsers/form/new"});
             $scope.mode = 'list';
             fetchUsers();

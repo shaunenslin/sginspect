@@ -137,11 +137,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             arrayLength = parseInt(sessionStorage.getItem('SupplierArrayLength'));
             if(changedVal < 0 || changedVal >= arrayLength) return;
             $scope.idx = changedVal;
-            if(change < $scope.idx){
-                sessionStorage.removeItem('suplierCurrIdx');
-                sessionStorage.removeItem('SupplierArrayLength');
-                sessionStorage.removeItem('navigateAfterSupplierSave');
-            }
+            sessionStorage.setItem('suplierCurrIdx', $scope.idx);
         }else{
             sessionStorage.removeItem('suplierCurrIdx');
             sessionStorage.removeItem('SupplierArrayLength');
@@ -229,7 +225,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             $scope.$emit('UNLOAD');
         }else {
             $scope.$emit('right',{label: 'Add Supplier' , icon : 'glyphicon glyphicon-plus', href : "#/Suppliers/form/new"});
-            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){$location.path('/admin');sessionStorage.removeItem('navigateAfterSupplierSave');}});
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){$location.path('/admin');sessionStorage.removeItem('navigateAfterSupplierSave');sessionStorage.removeItem('SupplierArrayLength');sessionStorage.removeItem('suplierCurrIdx');}});
             $scope.mode = 'list';
             newCsvObj();
             fetchSuppliers();

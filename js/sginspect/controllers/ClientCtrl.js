@@ -83,7 +83,6 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     	if (sessionStorage.getItem("Clientscache")) {
     		$scope.clients = JSON.parse(sessionStorage.getItem( "Clientscache"));
             $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "Clientscache")));
-            if (sessionStorage.getItem('navigateAfterClientSave')) $scope.navigate(sessionStorage.getItem('currIdx'));
     		$scope.$emit('UNLOAD');
     	} else {
 	        var url = Settings.url + 'Get?method=Clients_readlist';
@@ -100,8 +99,8 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
                 $alert({ content: 'An error occured while fetching your Customers', duration: 4, placement: 'top-right', type: 'danger', show: true});
                 $scope.$emit('UNLOAD');
             });
-            if (sessionStorage.getItem('navigateAfterClientSave')) $scope.navigate(parseInt(sessionStorage.getItem('currIdx')));
     	}
+        if (sessionStorage.getItem('navigateAfterClientSave')) $scope.navigate(parseInt(sessionStorage.getItem('currIdx')));
     }
 
     function fetchClient(){
@@ -135,11 +134,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             arrayLength = parseInt(sessionStorage.getItem('ClientarrayLength'));
             if(changedVal < 0 || changedVal >= arrayLength) return;
             $scope.idx = changedVal;
-            if(change < $scope.idx){
-                sessionStorage.removeItem('currIdx');
-                sessionStorage.removeItem('ClientarrayLength');
-                sessionStorage.removeItem('navigateAfterClientSave');
-            }    
+            sessionStorage.setItem('currIdx', $scope.idx);    
         }else{
             sessionStorage.removeItem('currIdx');
             sessionStorage.removeItem('ClientarrayLength');
@@ -224,7 +219,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             $scope.clientEdit.ClientID = parseInt($scope.clientEdit.ClientID);
             $scope.$emit('UNLOAD');
         } else{
-            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){$location.path('/admin');sessionStorage.removeItem('navigateAfterClientSave');}});
+            $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){$location.path('/admin');sessionStorage.removeItem('navigateAfterClientSave');sessionStorage.removeItem('currIdx');sessionStorage.removeItem('ClientarrayLength');}});
             $scope.$emit('right',{label: 'Add Customer' , icon : 'glyphicon glyphicon-plus', href : "#/Clients/form/new"});
             $scope.mode = 'list';
             newCsvObj();
