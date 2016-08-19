@@ -192,6 +192,12 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
             $scope.$emit('UNLOAD');
             return;
 		}
+		// Cater for  when filling existing form.
+		if(!$scope.Form.JSON.RFCNotifications && $scope.mode === 'existing'){
+			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+            $scope.$emit('UNLOAD');
+            return;
+		}
 
 		// Now check if any items dont have comments or where pictures are needed
 		for (prop in $scope.Form.JSON) {
@@ -267,18 +273,20 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
 		$scope.Form.JSON[technicaladvisorSignature.ID] = technicaladvisorSignature.FileData;
 		$scope.Form.JSON[workshopmanagerSignature.ID] = workshopmanagerSignature.FileData;
+		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			sessionStorage.removeItem('currentForm');
 			$alert({ content: "Supplier Evaluation Complete", duration: 5, placement: 'top-right', type: 'success', show: true});
-			$location.path('/');
+			$scope.$emit('UNLOAD');
+			$location.path('/jobs/ratings');
 		}
 
 		var error = function(err){
 			$scope.$emit('UNLOAD');
 			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
 			sessionStorage.removeItem('currentForm');
-			$location.path('/');
+			$location.path('/jobs/ratings');
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);

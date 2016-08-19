@@ -1,5 +1,5 @@
 <div ng-controller="ListOpenCtrl">  
-    <div class="inset" style="padding-top: 10px;">
+    <div class="inset" style="padding-top: 10px; padding-bottom: 50px;">
         <div ng-if="mode === 'jobs'" class="list-group inset">  
             <div style="margin-top: 10px;" class="alert alert-warning" ng-if="CompletedJobsCount > 0">
                 <p><i class="fa fa-info"></i> You have {{CompletedJobsCount}} unsent invoice(s). <a href="#/sync">Click here to Sync</a></p>
@@ -75,14 +75,36 @@
             <a style="margin-top: 10px;"  ng-if="mode === 'open' && InspectionForms.length > 0" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
         </div>
         <div ng-if="mode === 'ratings'">
+            <div ng-if="jobType == 'afterserviceevaluation'" style="margin-top: 10px;" class="alert alert-warning">
+                <p><i class="fa fa-info"></i> Remarks For  After Service Inspection</p>
+            </div>
+            <div ng-if="jobType == 'audit'" style="margin-top: 10px;" class="alert alert-warning">
+                <p><i class="fa fa-info"></i> Remarks For Audit</p>
+            </div> 
+            <div ng-if="jobType == 'technicalreport'" style="margin-top: 10px;" class="alert alert-warning">
+                <p><i class="fa fa-info"></i> Remarks For Technical Report</p>
+            </div> 
+             <div ng-if="jobType == 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-warning">
+                <p><i class="fa fa-info"></i> Remarks For {{supplierStatus == 'New' ? 'New ' : 'Existing ' }} Supplier</p>
+            </div> 
+
             <div ng-if="overallRating > 0" style="margin-top: 10px;" class="alert alert-info">
-                    <p><i class="fa fa-info"></i> Overall Rating : {{overallRating + '%'}}</p>
+                <p><i class="fa fa-info"></i> Overall Rating : {{overallRating + '%'}}</p>
             </div>
             <div ng-if="additionalEquipmentRating > 0" style="margin-top: 10px;" class="alert alert-info">
-                    <p><i class="fa fa-info"></i> Additional Equipment Rating :  {{additionalEquipmentRating + '%'}}</p>
+                <p><i class="fa fa-info"></i> Additional Equipment Rating :  {{additionalEquipmentRating + '%'}}</p>
             </div>
-             <div style="margin-top: 10px;" class="alert alert-info">
-                    <p><i class="fa fa-info"></i> Vehicle Fitness Rating :  {{vehicleFitnessRating}}</p>
+             <div ng-if="jobType !== 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
+                <p><i class="fa fa-info"></i> Vehicle Fitness Rating :  {{vehicleFitnessRating}}</p>
+            </div>
+            <div ng-if="jobType === 'supplierevaluation' && supplierCompetencyRating > 0" style="margin-top: 10px;" class="alert alert-info">
+                <p><i class="fa fa-info"></i> FleetAfrica Competency & Communication Rating :  {{supplierCompetencyRating + '%'}}</p>
+            </div>
+            <div ng-if="jobType === 'supplierevaluation' && supplierEtiquetteRating > 0" style="margin-top: 10px;" class="alert alert-info">
+                <p><i class="fa fa-info"></i> FleetAfrica Etiquette, Lead Time & Professionalism Rating :  {{supplierEtiquetteRating + '%'}}</p>
+            </div>
+            <div ng-if="jobType === 'supplierevaluation' && supplierPaymentRating > 0" style="margin-top: 10px;" class="alert alert-info">
+                <p><i class="fa fa-info"></i> FleetAfrica Payment & RFC Rating :  {{supplierPaymentRating + '%'}}</p>
             </div>
 
         </div>

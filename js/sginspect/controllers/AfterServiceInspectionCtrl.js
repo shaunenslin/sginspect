@@ -173,6 +173,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 			delete $scope.Form.JobType;
 			var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 			$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+			sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 			$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 			var success = function(){
 				$scope.$emit('UNLOAD');
@@ -180,12 +181,12 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 				sessionStorage.removeItem('currentImage');
 				sessionStorage.removeItem('currentLicenceImage');
 				sessionStorage.removeItem('currentForm');
-				$location.path('/');	
+				$location.path('/jobs/ratings');	
 			}
 			var error = function(err){
 				$scope.$emit('UNLOAD');
 				$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
-				$location.path('/');
+				$location.path('/jobs/ratings');
 			}
 			var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 			GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true); 
