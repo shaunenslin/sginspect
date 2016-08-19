@@ -193,7 +193,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
             return;
 		}
 		// Cater for  when filling existing form.
-		if(!$scope.Form.JSON.RFCNotifications){
+		if(!$scope.Form.JSON.RFCNotifications && $scope.mode === 'existing'){
 			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
             $scope.$emit('UNLOAD');
             return;
@@ -278,6 +278,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		var success = function(){
 			sessionStorage.removeItem('currentForm');
 			$alert({ content: "Supplier Evaluation Complete", duration: 5, placement: 'top-right', type: 'success', show: true});
+			$scope.$emit('UNLOAD');
 			$location.path('/jobs/ratings');
 		}
 

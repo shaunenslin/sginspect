@@ -204,6 +204,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		$scope.overallRating = rating;
 	}
 	function calculateSupplierRating(savedForm, prop){
+		$scope.supplierStatus =  savedForm.JSON.SupplierStatus;
 		if (o[typeof(savedForm.JSON[prop]) === 'string' && savedForm.JSON[prop].toLowerCase()] !== undefined){
 			rating += isNaN(supplier_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 			competency_rating += isNaN(supplier_competency_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_competency_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
