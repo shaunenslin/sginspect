@@ -58,7 +58,7 @@
 		<div ng-class="Form.JSON.Description ? 'well' : ''">
 			<div class="form-group">
 				<label for="description" class="col-sm-3">Description of Findings</label>
-				<div class="col-sm-9"><input ng-disabled="!Form.JSON.Reference" name="description" required class="form-control" placeholder="Enter Findings description" id="description" ng-model="Form.JSON.Description" type="text"></div>
+				<div class="col-sm-9"><input ng-disabled="Form.JSON.Longitude === undefined" name="description" required class="form-control" placeholder="Enter Findings description" id="description" ng-model="Form.JSON.Description" type="text"></div>
 			</div>
 			<div ng-if="Form.JSON.Description" class="row">
 				<div ng-if="!isPhoneGap" class="col-xs-8">
