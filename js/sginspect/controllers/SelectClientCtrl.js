@@ -140,7 +140,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.Form.JSON.regmatch = (clickVal.length > 0) ? true : false;
 		}
 		$scope.onNextClicked();
-		$scope.$apply();
+		// $scope.$apply();
 	}
 	function savePartialForm(){
 		$scope.Form.JSON.Path = $location.path();

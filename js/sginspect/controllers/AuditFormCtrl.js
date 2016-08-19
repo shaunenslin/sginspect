@@ -105,6 +105,11 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 				$scope.$emit('UNLOAD');
 				return;
 			}
+			if ($scope.KilometersImages.length === 0) {
+			$alert({ content: "Please take picture(s) for Odometer reading", duration: 5, placement: 'top-right', type: 'danger', show: true});
+            $scope.$emit('UNLOAD');
+            return;
+		}
 		}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
 			$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
