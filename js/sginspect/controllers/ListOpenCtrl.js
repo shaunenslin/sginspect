@@ -194,7 +194,9 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 
 	}
 
-	// scope.json
+	/*
+     - rating maps to overallRating & add_rating maps out to additional Equipment rating
+	*/
 	function calculateRatings(){
 		var savedForm = JSON.parse(sessionStorage.getItem('formTobeRatedCache'));
 		for (var prop in savedForm.JSON){
@@ -205,7 +207,8 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 				}
 			}
 		}
-		if (!savedForm.JSON.vinmatch || !savedForm.JSON.regmatch || savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
+		if ((!savedForm.JSON.vinmatch || !savedForm.JSON.regmatch || savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') && savedForm.FormType === 'audit') $scope.vehicleFitnessRating = 'Fail';
+		if ((!savedForm.JSON.vinmatch || !savedForm.JSON.regmatch ) && savedForm.FormType === 'technicalreport') $scope.vehicleFitnessRating = 'Fail';
 		$scope.overallRating = rating;
 		$scope.additionalEquipmentRating = add_rating;
 	}
