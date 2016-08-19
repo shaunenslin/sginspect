@@ -55,7 +55,6 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		})
 
 	}
-	// table, ponsuccessread, ponerror, poncomplete
 	function CompletedJobsCount(){
 		var completeCount = 0;
 		DaoSvc.cursor('Unsent',
@@ -114,7 +113,6 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			}
 		);
 	}
-	//  table, key, idx, ponerror, poncomplete
 	function deleteUnsentImages(idx,keys, onComplete, index){
 		if(idx >= keys.length){
 			onComplete(index);
@@ -185,13 +183,19 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		}
 
 	}
+	/*
+	 - Reference variables declared at controller beginning to understand calculation
+	 - o contains the units by which we divide/multiply each value from the ratings obj's based off of properties of the JSON  from each form
+	 - We do a safe check to avoid NaN values from the calculation in ln 194, 196,206, and 214-223.
+	 - The fire extinguisher ONLY has a value for additional equipment rating hence check on ln 198
+	*/
 	function calculateAuditRating(savedForm, prop){
 		if (o[typeof(savedForm.JSON[prop]) === 'string' && savedForm.JSON[prop].toLowerCase()] !== undefined){
-				rating += Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-				if (audit_additional_equipment_ratings[prop.toLowerCase()] !== undefined){
-					add_rating+= (prop.toLowerCase() === 'fireextinguisher') ? Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()]) : (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
-				}
+			rating += Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
+			if (audit_additional_equipment_ratings[prop.toLowerCase()] !== undefined){
+				add_rating+= (prop.toLowerCase() === 'fireextinguisher') ? Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()]) : (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
 			}
+		}
 		if (!savedForm.JSON.vinmatch || !savedForm.JSON.regmatch || savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
 		$scope.overallRating = rating;
 		$scope.additionalEquipmentRating = add_rating;
@@ -216,10 +220,8 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		$scope.supplierEtiquetteRating = etiquette_rating;
 		$scope.supplierPaymentRating = payment_rating;
 	}
-
 	/*
-     - rating maps to overallRating & add_rating maps out to additional Equipment rating
-     - Method calculates the overall rating, additional equipment rating & vehicle fitness for audit & technical form based on the JSON values of the form submitted
+     - method runs a set of calculations for the inspection forms.
 	*/
 	function calculateRatings(){
 		var savedForm = JSON.parse(sessionStorage.getItem('formTobeRatedCache'));
