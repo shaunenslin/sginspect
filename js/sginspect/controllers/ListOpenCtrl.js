@@ -196,6 +196,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 
 	/*
      - rating maps to overallRating & add_rating maps out to additional Equipment rating
+     - Method calculates the overall rating, additional equipment rating & vehicle fitness for audit & technical form based on the JSON values of the form submitted
 	*/
 	function calculateRatings(){
 		var savedForm = JSON.parse(sessionStorage.getItem('formTobeRatedCache'));
