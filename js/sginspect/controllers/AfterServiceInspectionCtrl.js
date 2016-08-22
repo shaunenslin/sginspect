@@ -1,4 +1,4 @@
-coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter){
+coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter, SyncSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
 	$scope.signature = {"inspector" : "", "techAdvisor" : "", "manager" : ""};
 	DaoSvc.openDB();
@@ -40,8 +40,8 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
-				CaptureImageSvc.savePhoto(key, $scope.image);
-				filenames.push(key)
+				CaptureImageSvc.savePhoto(key, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+				filenames.push(key);
 			} else{
 				$scope.capture = true;
 			}
@@ -132,69 +132,35 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
             $scope.$emit('UNLOAD');
 			return;
         }
-		appendImagesToJSON();
+		saveForm();
 	}
-
-	function appendImagesToJSON(){
-		var imageKeys = [];
-		DaoSvc.cursor('Unsent',
-			function(json){
-				//Checking if this is an image incase the are inspection that were saved offline 
-				if(json.ImageID){
-					//Ensure that we are only getting images belonging to this current Form
-					if(json.ImageID.indexOf($scope.Form.FormID) > -1){
-						$scope.Form.JSON[json.ImageID] = json.ImageData;
-						imageKeys.push(json.ImageID)
-					}
-				}
-			},
-			function(error){
-				console.log('Error fetching from Unsent ' + error);
-				$scope.$emit('UNLOAD');
-			}, function(){
-				//Recursively Deleting the Images out of unsent and executing the save form when done
-				deleteUnsentImages(0,imageKeys,saveForm);
-			}
-        );
+	$scope.syncCompleted = function(reload){
+		$scope.$emit('UNLOAD');
+		$alert({ content: "Your Form has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
+		sessionStorage.removeItem('currentImage');
+		sessionStorage.removeItem('currentLicenceImage');
+		sessionStorage.removeItem('currentForm');
+		$location.path('/jobs/ratings');	
 	}
-
-	function deleteUnsentImages(idx,keys,onComplete){
-		if(idx >= keys.length){
-			onComplete();
-			return;
-		}
-		DaoSvc.deleteItem('Unsent',keys[idx],undefined,function(){
-			idx = idx + 1;
-			deleteUnsentImages(idx,keys,onComplete)
-		}, function(){
-			idx = idx + 1;
-			deleteUnsentImages(idx, keys,onComplete)
-		});
-	}
-
 	function saveForm(){
-			deleteCurrentPartialForm($scope.Form.FormID);
-			delete $scope.Form.JSON.Path;
-			delete $scope.Form.JobType;
-			var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
-			$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
-			sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
-			$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
-			var success = function(){
-				$scope.$emit('UNLOAD');
-				$alert({ content: "Your Form has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
-				sessionStorage.removeItem('currentImage');
-				sessionStorage.removeItem('currentLicenceImage');
-				sessionStorage.removeItem('currentForm');
-				$location.path('/jobs/ratings');	
-			}
-			var error = function(err){
-				$scope.$emit('UNLOAD');
-				$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
-				$location.path('/jobs/ratings');
-			}
-			var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
-			GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true); 
+		deleteCurrentPartialForm($scope.Form.FormID);
+		delete $scope.Form.JSON.Path;
+		delete $scope.Form.JobType;
+		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
+		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
+		var success = function(){
+			// Now send images
+			SyncSvc.sync("SGInspector", GlobalSvc.getUser().UserID, $scope, false, true);
+		}
+		var error = function(err){
+			$scope.$emit('UNLOAD');
+			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
+			$location.path('/jobs/ratings');
+		}
+		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
+		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true); 
 	}
 
     function fetchClient(){
