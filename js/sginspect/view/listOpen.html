@@ -88,7 +88,7 @@
                 <p><i class="fa fa-info"></i> Remarks For {{supplierStatus == 'New' ? 'New ' : 'Existing ' }} Supplier</p>
             </div> 
 
-            <div ng-if="overallRating > 0" style="margin-top: 10px;" class="alert alert-info">
+            <div ng-if="jobType !== 'technicalreport'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> Overall Rating : {{overallRating + '%'}}</p>
             </div>
             <div ng-if="additionalEquipmentRating > 0" style="margin-top: 10px;" class="alert alert-info">
@@ -97,13 +97,13 @@
              <div ng-if="jobType !== 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> Vehicle Fitness Rating :  {{vehicleFitnessRating}}</p>
             </div>
-            <div ng-if="jobType === 'supplierevaluation' && supplierCompetencyRating > 0" style="margin-top: 10px;" class="alert alert-info">
+            <div ng-if="jobType === 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> FleetAfrica Competency & Communication Rating :  {{supplierCompetencyRating + '%'}}</p>
             </div>
-            <div ng-if="jobType === 'supplierevaluation' && supplierEtiquetteRating > 0" style="margin-top: 10px;" class="alert alert-info">
+            <div ng-if="jobType === 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> FleetAfrica Etiquette, Lead Time & Professionalism Rating :  {{supplierEtiquetteRating + '%'}}</p>
             </div>
-            <div ng-if="jobType === 'supplierevaluation' && supplierPaymentRating > 0" style="margin-top: 10px;" class="alert alert-info">
+            <div ng-if="jobType === 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> FleetAfrica Payment & RFC Rating :  {{supplierPaymentRating + '%'}}</p>
             </div>
 
