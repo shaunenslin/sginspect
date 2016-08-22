@@ -179,13 +179,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	            return;
 			}
 		}
-
-		if(!$scope.supplierevaluationform.$valid){
-			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
-            $scope.$emit('UNLOAD');
-            return;
-		}
-
 		// Check the very last field on format, if it has a value, assume other fields been filled in OK
 		if(!$scope.Form.JSON.SpecialToolsTraining){
 			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
@@ -201,9 +194,9 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 		// Now check if any items dont have comments or where pictures are needed
 		for (prop in $scope.Form.JSON) {
-			if ($scope.Form.JSON[prop] === "Bad") {
+			if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Average") {
 				if (!$scope.Form.JSON[prop + "Comment"]){
-					$alert({ content: "Please enter comments when you have selected BAD", duration: 5, placement: 'top-right', type: 'danger', show: true});
+					$alert({ content: "Please enter comments when you have selected " + $scope.Form.JSON[prop], duration: 5, placement: 'top-right', type: 'danger', show: true});
 		            $scope.$emit('UNLOAD');
 		            return;
 				}

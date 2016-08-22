@@ -85,9 +85,9 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		}
 		// Now check if any items dont have comments or where pictures are needed
 		for (prop in $scope.Form.JSON) {
-			if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Yes") {
+			if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Average" || $scope.Form.JSON[prop] === "Yes") {
 				if (!$scope.Form.JSON[prop + "Comment"] && (prop !== "FireExtinguisher" && prop !== "AbuseRelatedCosts")){
-					$alert({ content: "Please enter comments when you have selected BAD", duration: 5, placement: 'top-right', type: 'danger', show: true});
+					$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop], duration: 5, placement: 'top-right', type: 'danger', show: true});
 		        	$scope.$emit('UNLOAD');
 		           	return;
 				}
