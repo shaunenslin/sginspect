@@ -19,7 +19,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
-				CaptureImageSvc.savePhoto(key, $scope.image);
+				CaptureImageSvc.savePhoto(key, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 				filenames.push(key);
 			} else{
 				$scope.capture = true;
@@ -115,45 +115,9 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			return;
 		}
-		sendImages();
+		saveForm();
 	}
-
-	function sendImages(){
-	var imageKeys = [];
-		DaoSvc.cursor('Unsent',
-			function(json){
-				//Checking if this is an image incase the are inspection that were saved offline 
-				if(json.ImageID){
-					//Ensure that we are only getting images belonging to this current Form
-					if(json.ImageID.indexOf($scope.Form.FormID) > -1){
-					var $scope.Form.JSON[json.ImageID] = json.ImageData;
-					imageKeys.push(json.ImageID)
-					}
-				}
-			},
-			function(error){
-				console.log('Error fetching from Unsent ' + error);
-				$scope.$emit('UNLOAD');
-			}, function(){
-				//Recursively Deleting the Images out of unsent and executing the save form when done
-				deleteUnsentImages(0,imageKeys,saveForm);
-			}
-		);
-	}
-	function deleteUnsentImages(idx,keys,onComplete){
-		if(idx >= keys.length){
-		onComplete();
-		return;
-		}
-		DaoSvc.deleteItem('Unsent',keys[idx],undefined,function(){
-			idx = idx + 1;
-			deleteUnsentImages(idx,keys,onComplete)
-		}, function(){
-			idx = idx + 1;
-		deleteUnsentImages(idx, keys,onComplete)
-		});
-	}
-
+	
 	$scope.onBackClicked = function(){
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		savePartialForm();

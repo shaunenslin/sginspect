@@ -20,7 +20,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		// Validation across all screens
 		var path = '';
 		if ($routeParams.screennum == 0){
-				if (!$scope.Form.ClientID) {$alert({content: "Please select a Customer before continuing !", duration:5, placement:'top-right', type:'danger', show:true}); return;};
+			if (!$scope.Form.ClientID) {$alert({content: "Please select a Customer before continuing !", duration:5, placement:'top-right', type:'danger', show:true}); return;};
 
 		}else if ($routeParams.screennum == 1){
 			if (!$scope.VinNumber){
@@ -36,7 +36,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			var key = $scope.Form.FormID + '_vin.png';
 			$scope.Form.JSON.vinimage = key;
 			sessionStorage.setItem('currentImage', $scope.image);
-			CaptureImageSvc.savePhoto(key, $scope.image);
+			CaptureImageSvc.savePhoto(key, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 		}else if ($routeParams.screennum == 3){
 			if ($scope.Form.JSON.vinmatch === undefined){
 				$alert({content: "Please select an option below before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
@@ -50,7 +50,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			var key = $scope.Form.FormID + '_reg.png';
 			$scope.Form.JSON.regimage = key;
 			sessionStorage.setItem('currentLicenceImage', $scope.image);
-			CaptureImageSvc.savePhoto(key, $scope.image);
+			CaptureImageSvc.savePhoto(key, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 		}
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		 // Path is generic to cater for all navigation scenarios
@@ -104,10 +104,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		var reader = new FileReader();
 		reader.addEventListener("load", function () {
 			$scope.image = reader.result;
-			if ($scope.image){
-				var key = $scope.Form.FormID + '_' + field + '.png';
-				CaptureImageSvc.savePhoto(key, $scope.image);
-			} else{
+			if(!$scope.image){
 				$scope.capture = true;
 			}
 			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
