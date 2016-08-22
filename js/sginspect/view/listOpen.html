@@ -97,13 +97,13 @@
              <div ng-if="jobType !== 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> Vehicle Fitness Rating :  {{vehicleFitnessRating}}</p>
             </div>
-            <div ng-if="jobType === 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
+            <div ng-if="jobType === 'supplierevaluation' && supplierStatus !== 'New'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> FleetAfrica Competency & Communication Rating :  {{supplierCompetencyRating + '%'}}</p>
             </div>
-            <div ng-if="jobType === 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
+            <div ng-if="jobType === 'supplierevaluation' && supplierStatus !== 'New'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> FleetAfrica Etiquette, Lead Time & Professionalism Rating :  {{supplierEtiquetteRating + '%'}}</p>
             </div>
-            <div ng-if="jobType === 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
+            <div ng-if="jobType === 'supplierevaluation' && supplierStatus !== 'New'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> FleetAfrica Payment & RFC Rating :  {{supplierPaymentRating + '%'}}</p>
             </div>
 

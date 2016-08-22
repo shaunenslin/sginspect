@@ -114,11 +114,6 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 					return;
 				}
 			}
-			if (($scope.Form.JSON[prop] === "Not Done" || $scope.Form.JSON[prop] === "Yes") && !$scope.Form.JSON[prop + "Comment"]){
-				$alert({ content: "Please enter comments when you have selected BAD", duration: 5, placement: 'top-right', type: 'danger', show: true});
-	            $scope.$emit('UNLOAD');
-	            return;
-			}
 			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
 			if($scope.Form.JSON[prop] === undefined){
 				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
