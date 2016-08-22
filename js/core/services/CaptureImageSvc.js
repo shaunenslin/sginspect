@@ -22,8 +22,10 @@ coreApp.service('CaptureImageSvc', function(GlobalSvc, DaoSvc,$alert, Settings){
 			//data.ID = key;
 			//data.FileData = img;
 			data.FormID = key;
+			data.ClientID = '';
 			data.ImageID = data.FormID;
 			data.ImageData = img;
+			data.CreatedOn = '';
 			data.url = Settings.url + 'Post?method=SGIImages_modify';
 			DaoSvc.put(data, 'Unsent', key, console.log('Image Saved to Unsent!'),undefined);
 		}
