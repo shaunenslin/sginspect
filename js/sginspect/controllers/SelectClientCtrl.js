@@ -94,6 +94,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	$scope.nfcScan = function(){
 		$scope.VinNumber = "IG1YY23671299872";
+		$scope.Form.VinNumber = $scope.VinNumber;
 		sessionStorage.setItem('currentRegNumber', 'HTT 091 GP');
 		sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
 		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully", duration:5, placement:'top-right', type:'success', show:true});
