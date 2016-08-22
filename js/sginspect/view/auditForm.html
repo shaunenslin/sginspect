@@ -30,7 +30,7 @@
 		<div class="well">
 			<div class="form-group">
 				<label for="kilometer_reading" class="col-sm-3">Kilometers</label>
-				<div class="col-sm-9"><input name="kilometers" required class="form-control" placeholder="Enter Odometer reading" id="kilometer_reading" ng-model="Form.JSON.Kilometers" type="text"></div>
+				<div class="col-sm-9"><input name="kilometers" required class="form-control" placeholder="Enter Odometer reading" id="kilometer_reading" ng-model="Form.JSON.Kilometers" type="number"></div>
 			</div>
 			<div class="row">
 				<div ng-if="!isPhoneGap" class="col-xs-8">
@@ -68,8 +68,8 @@
 	        </div>
     	</div>
 	    <div ng-if="Form.JSON.CabInterior === 'Bad'" class="form-group">
-				<label for="cab_interior_comment" class="col-sm-3">Please Specify</label>
-				<div class="col-sm-9"><input name="client_branch_comment" required class="form-control" placeholder="Enter Comment" id="client_branch_comment" ng-model="Form.JSON.CabInteriorComment" type="text"></div>
+			<label for="cab_interior_comment" class="col-sm-3">Please Specify</label>
+			<div class="col-sm-9"><input name="client_branch_comment" required class="form-control" placeholder="Enter Comment" id="client_branch_comment" ng-model="Form.JSON.CabInteriorComment" type="text"></div>
 		</div>
 		<div class="form-group">
 	        <label for="steering_play" class="col-sm-3">Steering Play</label>
