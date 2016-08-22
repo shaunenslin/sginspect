@@ -107,6 +107,11 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		}
 
 		for (prop in $scope.Form.JSON) {
+			if (($scope.Form.JSON[prop] === "Not Done"|| $scope.Form.JSON[prop] === "Attempted" ||  $scope.Form.JSON[prop] === "Yes") && !$scope.Form.JSON[prop + "Comment"]){
+				$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
+	        	$scope.$emit('UNLOAD');
+	           	return;
+				}
 			if ($scope[prop + "Images"]) {
 				if ($scope[prop + "Images"].length == 0) {
 					$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
