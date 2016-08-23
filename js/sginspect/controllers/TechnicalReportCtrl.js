@@ -76,12 +76,12 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		return image;
 	}
 	function fetchServiceHistory(){
-    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID;
+    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID + '&VinNumber=' + $scope.Form.VinNumber;
     	$http.get (url)
     	.success(function(data){
     		$scope.serviceHistory = [];
     		$scope.serviceHistory =data.map(function(e){
-    			return moment(e).format('YYYY/MM/DD');
+    			return moment(e.servicehistory).format('YYYY/MM/DD');
     		});
     	})
     	.error(function(err){
