@@ -105,6 +105,12 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	           		return;
 				}
 			}
+			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
+			if($scope.Form.JSON[prop] === undefined){
+				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				$scope.$emit('UNLOAD');
+				return;
+			}
 		}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
 			$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
