@@ -40,7 +40,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
-				CaptureImageSvc.savePhoto(key, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+				CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 				filenames.push(key);
 			} else{
 				$scope.capture = true;
@@ -107,7 +107,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		}
 
 		for (prop in $scope.Form.JSON) {
-			if (($scope.Form.JSON[prop] === "Not Done"|| $scope.Form.JSON[prop] === "Attempted" ||  $scope.Form.JSON[prop] === "Yes") && !$scope.Form.JSON[prop + "Comment"]){
+			if (($scope.Form.JSON[prop] === "Not Done"|| $scope.Form.JSON[prop] === "Attempted") && !$scope.Form.JSON[prop + "Comment"]){
 				$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
 	        	$scope.$emit('UNLOAD');
 	           	return;
@@ -118,6 +118,16 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 					$scope.$emit('UNLOAD');
 					return;
 				}
+			}
+			if (($scope.Form.JSON[prop] === "No" && prop === 'diffsOilLeLeaks') && !$scope.Form.JSON[prop + "Comment"]){
+				$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
+	        	$scope.$emit('UNLOAD');
+	           	return;
+			}
+			if (($scope.Form.JSON[prop] === "Yes" && prop === 'oilLeaks') && !$scope.Form.JSON[prop + "Comment"]){
+				$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
+	        	$scope.$emit('UNLOAD');
+	           	return;
 			}
 			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
 			if($scope.Form.JSON[prop] === undefined){
