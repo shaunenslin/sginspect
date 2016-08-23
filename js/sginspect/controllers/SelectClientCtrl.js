@@ -36,7 +36,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			var key = $scope.Form.FormID + '_vin.png';
 			$scope.Form.JSON.vinimage = key;
 			sessionStorage.setItem('currentImage', $scope.image);
-			CaptureImageSvc.savePhoto(key, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+			CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 		}else if ($routeParams.screennum == 3){
 			if ($scope.Form.JSON.vinmatch === undefined){
 				$alert({content: "Please select an option below before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
@@ -50,7 +50,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			var key = $scope.Form.FormID + '_reg.png';
 			$scope.Form.JSON.regimage = key;
 			sessionStorage.setItem('currentLicenceImage', $scope.image);
-			CaptureImageSvc.savePhoto(key, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+			CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 		}
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		 // Path is generic to cater for all navigation scenarios

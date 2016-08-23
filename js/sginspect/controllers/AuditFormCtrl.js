@@ -19,7 +19,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
-				CaptureImageSvc.savePhoto(key, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+				CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 				filenames.push(key);
 			} else{
 				$scope.capture = true;
