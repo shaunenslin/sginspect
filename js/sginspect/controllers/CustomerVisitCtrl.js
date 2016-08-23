@@ -103,15 +103,14 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		/*
-		if(!$scope.customervisitform.$valid){
-			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
-            $scope.$emit('UNLOAD');
-            return;
-		}
-		*/
 		for (prop in $scope.Form.JSON) {
-			if(!$scope.Form.JSON[prop]){
+			if (!$scope.Form.JSON.IssuesDiscussed){
+				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				$scope.$emit('UNLOAD');
+				return;
+			}
+			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
+			if($scope.Form.JSON[prop] === undefined){
 				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 				$scope.$emit('UNLOAD');
 				return;
