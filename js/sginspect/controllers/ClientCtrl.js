@@ -127,7 +127,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         return newArr;
     };
     $scope.filterList = function(){
-        var result  = $filter('filter')($scope.clients, {$ : $scope.searchText});
+        var result  = $filter('filter')( JSON.parse(sessionStorage.getItem( "Clientscache")), {$ : $scope.searchText});
         result = arraySplit(result);
         if (result.length > 0) $scope.splitArr  =  result; 
     }
