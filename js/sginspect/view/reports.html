@@ -1,0 +1,73 @@
+<div class="inset"  style="padding-top: 15px; padding-bottom: 50px;" ng-controller='ReportsCtrl'>
+	<div   class="well">
+	    <form style="margin-top:10px;" class="form-horizontal">
+	       	 <div class="form-group">
+	            <label for="job_type" class="col-sm-2">Report Type</label>
+	            <div class="col-sm-4">
+	                <select name="job_type" class="form-control" id="job_type" ng-model="searchText.JobType" ng-options="item.value as item.name for item in jobType"><option value="">-- Please select an option --</option></select>
+	            </div>
+	            <label for="tech_assessor" class="col-sm-2">Technical Assessor</label>
+	            <div class="col-sm-4">
+	                <select name="tech_assessor" class="form-control" id="tech_assessor" ng-model="searchText.UserID" ng-options="item.UserID as item.UserID for item in Jobs"><option value="">-- Please select an option --</option></select>
+	            </div>
+	        </div>
+	        <div class="form-group">
+	            <label for="from_complete" class="col-sm-2">Date From</label>
+	            <div class="col-sm-4"><input name="from_complete" placeholder="Search by Date"  class="form-control" id="from_complete" ng-model="searchText.startdate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
+	            <label for="to_complete" class="col-sm-2">Date To</label>
+	            <div class="col-sm-4"><input name="to_complete" placeholder="Search by Date"  class="form-control" id="date_complete" ng-model="searchText.enddate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
+	        </div>
+	        <div class="form-group">
+	            <label for="iso" class="col-sm-2">Exported to ISO</label>
+	            <div class="col-sm-10">
+	            	<select name="iso" class="form-control" id="iso" ng-model="searchText.ISO">
+	            	<option value="">-- Please select an option --</option>
+	            	<option>Yes</option>
+	            	<option>No</option>
+	            </select>
+	            </div>
+	        </div>
+	        <button ng-click="onSearchClicked()" class="btn btn-success">Search <span class="fa fa-search"></span></button> <button ng-click="onClearClicked()" class="btn btn-danger">Clear</button>
+	    </form>  
+	</div>
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="row">Report Type</th>
+						<th scope="row">Technical Assessor</th>
+						<th scope="row">Date Submitted</th>
+						<th scope="row">Customer</th>
+						<th scope="row">Branch</th>
+						<th scope="row">Supplier</th>
+						<th scope="row">Performed Location</th>
+						<th scope="row">Exported to ISO</th>
+						<th scope="row">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in Jobs">
+						<td ng-if="item.FormType === 'audit'">Audit Form</td>
+						<td ng-if="item.FormType === 'customervisit'">Customer Visit</td>
+						<td ng-if="item.FormType === 'supplierevaluation'">Supplier Evaluation</td>
+						<td ng-if="item.FormType === 'technicalreport'">Technical Report</td>
+						<td ng-if="item.FormType === 'afterserviceevaluation'">After Service Inspection</td>
+						<td>{{item.JSON.User_Name}}</td>
+						<td>{{item.timeString}}</td>
+						<td>{{item.JSON.Customer}}</td>
+						<td>{{item.JSON.Branch}}</td>
+						<td>{{item.JSON.Branch}}</td>
+						<td>{{item.JSON.Latitude + ' ' + item.JSON.Longitude}}</td>
+						<td>{{(item.ExportedtoISO === 0 || !item.ExportedtoISO) ? 'No' : 'Yes'}}</td>
+						<td><button ng-click="editClicked()" class="btn btn-primary">Edit <span class="fa fa-pencil"></span></button></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	  <div class="alert alert-warning" ng-if="Jobs.length === 0">
+        	<p><i class="fa fa-info"></i> No results found</p>
+        </div>
+</div>
