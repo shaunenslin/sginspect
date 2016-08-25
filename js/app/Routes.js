@@ -26,6 +26,7 @@ function AppRoutes($routeProvider, DaoSvc){
     $routeProvider.when('/technicalreport/',{templateUrl : "js/sginspect/view/technicalReport.html"});
     $routeProvider.when('/job/:mode', {templateUrl : "js/sginspect/view/mainMenu.html"});
     $routeProvider.when('/jobs/:mode', {templateUrl : "js/sginspect/view/listOpen.html"});
+    $routeProvider.when('/reports', {templateUrl : "js/sginspect/view/reports.html"});
 
 }
 
