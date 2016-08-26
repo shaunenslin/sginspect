@@ -141,11 +141,12 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		deleteCurrentPartialForm($scope.Form.FormID);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
-		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		var key = $scope.Form.FormID + '_inspectorSig.png';
+		CaptureImageSvc.savePhoto(key, $scope.Form.FormID,inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
+		deleteCurrentPartialForm($scope.Form.FormID);
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
@@ -161,10 +162,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
 
-    function fetchClient(){
-    	var Client = JSON.parse(sessionStorage.getItem('currentClientsCache'));
-    	$scope.Client = $filter('filter')(Client, {ClientID : $scope.Form.ClientID})[0];
-    }
     function savePartialForm(){
 		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
 		$scope.Form.JSON.Path = $location.path();
@@ -181,7 +178,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
-		fetchClient();
 		fetchGPs();
 		savePartialForm();
 		$scope.Form.JSON.RegNumber = 'HTT 091 GP';

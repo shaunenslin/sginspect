@@ -1,4 +1,4 @@
-coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter){
+coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter, SyncSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
     $scope.signature = {inspector : ""};
 	/** The variable below is the svg represtion of an empty signature  **/
@@ -140,11 +140,13 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		deleteCurrentPartialForm($scope.Form.FormID);
-		//Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		 //Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
+		var key = $scope.Form.FormID + '_inspectorSig.png';
+		CaptureImageSvc.savePhoto(key, $scope.Form.FormID, inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
+		deleteCurrentPartialForm($scope.Form.FormID);
 		//Get client
 		$scope.CurrentClient = JSON.parse(sessionStorage.getItem('currentClientsCache'));
 		if ($scope.CurrentClient) {
@@ -153,13 +155,10 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 				$scope.Form.JSON.Name = $scope.CurrentClient.Name;
 			}
 		}
-		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
-			$scope.$emit('UNLOAD');
-			$alert({ content: "Your Customer Visit has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
-			sessionStorage.removeItem('currentForm');
-			$location.path('/');
+			// Now send images
+			SyncSvc.sync("SGInspector", GlobalSvc.getUser().UserID, $scope, false, true);
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
@@ -168,6 +167,12 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
+	}
+	$scope.syncCompleted = function(reload){
+		$scope.$emit('UNLOAD');
+			$alert({ content: "Your Customer Visit has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
+			sessionStorage.removeItem('currentForm');
+			$location.path('/');
 	}
 
 	function constructor(){

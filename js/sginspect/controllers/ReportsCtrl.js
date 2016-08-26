@@ -10,7 +10,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 	];
 	
 	function fetchJobs(){
-		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'";
+		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=''&startdate=''&enddate=''" + "&ExportedtoISO=''";
 		$http.get(url)
 		.success(function(json){
 			$scope.Jobs =json.map(function(e){
@@ -33,13 +33,15 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 		$scope.Jobs = $scope.data;
 	}
 	$scope.onSearchClicked = function(){
-		var search_results = [];
-			$filter('filter')($scope.Jobs, function(e) {
-		        if(e.UserID.includes($scope.searchText.UserID) || e.FormType.includes($scope.searchText.JobType) /*|| e.ExportedtoISO.includes($scope.searchText.ISO) */|| ($scope.searchText.startdate < e.FormDate && e.FormDate > $scope.searchText.enddate)){             
-		            search_results.push(e);
-		        }
-	        	$scope.Jobs = search_results;
-    		}); 
+		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=" + $scope.searchText.FormType + "&startdate=" + $scope.searchText.startdate + "&enddate=" +$scope.searchText.enddate + "&ExportedtoISO=" + $scope.searchText.ISO;
+		$http.get(url)
+		.success(function(json){
+			$scope.Jobs = json;
+			$scope.$emit('UNLOAD');
+		})
+		.error(function(err){
+			$alert({content:"Error  Searching Jobs " + err, duration:5, placement:'top-right', type:'danger', show:true});
+		})
 	}
 	$scope.editClicked = function(){
 
