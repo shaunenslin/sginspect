@@ -46,6 +46,40 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 	$scope.editClicked = function(){
 
 	}
+	function getCSVData(scope){
+        var headings = getCSVHeadings(scope);
+        if (!headings) return;
+        var data = [];
+        // Add data
+        for (var i = 0 ; i < scope.Jobs.length; i++){
+            var newRow = {};
+            for (var y = 0; y < headings.length; y++){
+                newRow[headings[y]] = (typeof scope.Jobs[i] ===  'object')  ? scope.Jobs[i].JSON[headings[y]] :  scope.Jobs[i][headings[y]];
+            }
+            data.push(newRow);
+        }
+        scope.csvHeadings = headings;
+        return data;
+    }
+	 $scope.getCsvData = function(){
+        return getCSVData($scope);
+    };
+
+    function getCSVHeadings(scope){
+        var headingFields = [];
+        for (var prop in $scope.Jobs[0]){
+            if ($scope.Jobs[0].hasOwnProperty(prop) && (prop.toLowerCase() === 'formtype' || prop.toLowerCase() === 'userid' || prop.toLowerCase() === 'formdate'|| prop.toLowerCase() === 'exportedtoiso')) headingFields.push(prop);
+        }
+        for (var prop in $scope.Jobs[0].JSON){
+            if (prop.toLowerCase() === 'Customer' || prop.toLowerCase() === 'branch' || prop.toLowerCase() === 'latitude' || prop.toLowerCase() === 'longitude') headingFields.push(prop); 
+
+        }
+        return headingFields;
+    }
+    $scope.getcsvHeader = function(){
+        return $scope.csvHeadings;
+    };
+
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Search For Jobs' , icon : 'fa fa-search'});
