@@ -9,7 +9,8 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 		{name: 'After Service Inspection', value: 'afterserviceevaluation'}
 	];
 	 var newRow = {};
-	
+	var newHeadings = ['Report Type', 'Technical Assessor', 'Date Submitted', 'Customer', 'Branch', 'Supplier', 'Performed Location', 'ExportedtoISO'];
+
 	function fetchJobs(){
 		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=''&startdate=''&enddate=''" + "&ExportedtoISO=''";
 		$http.get(url)
@@ -51,63 +52,46 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
         headings = getCSVHeadings(scope);
         if (!headings) return;
         var data = [];
-        var rows = {};
-        var new_headings = [];
         // Add data
         for (var i = 0 ; i < scope.Jobs.length; i++){
-            for (var y = 0; y < headings.length; y++){
-                if (headings[y].toLowerCase() === 'customer' || headings[y].toLowerCase() === 'branch'){
-                	newRow[headings[y]] = (!newRow[headings[y]]) ? scope.Jobs[i].JSON[headings[y]] : '';
-                }
-				rows = matchJsonToHeadings([headings[y]],scope.Jobs[i]).newRow;
-				new_headings = matchJsonToHeadings([headings[y]],scope.Jobs[i], y).headings;     
-            }
+        	var rows = {};
+				rows = matchJsonToHeadings(scope.Jobs[i]) ? matchJsonToHeadings(scope.Jobs[i]) : [];
             data.push(rows);
         }
-        scope.csvHeadings = new_headings;
+        scope.csvHeadings = newHeadings;
         return data;
     }
 	 $scope.getCsvData = function(){
         return getCSVData($scope);
     };
 
-    function matchJsonToHeadings(prop, json){
-    	var newHeadings = [];
-    	if (prop === 'FormType'){ 
+    function matchJsonToHeadings(json){
     		var field = 'Report Type';
-    		switch (json[prop]){
+    		switch (json.FormType){
     			case 'audit' :
-    				newRow[field] = 'Audit Form';
-    				newHeadings.push(field);
+    				newRow[newHeadings[0]] = 'Audit Form';
     				break;
     			case 'supplierevaluation':
-    				newRow[field] = 'Supplier Evaluation'
-    				newHeadings.push(field);
+    				newRow[newHeadings[0]] = 'Supplier Evaluation'
     				break;
     			case 'technicalreport' :
-    				newHeadings.push(field);
-    				newRow[field] = 'Technical Report'
+    				newRow[newHeadings[0]] = 'Technical Report'
     				break;
     			case 'afterserviceevaluation' :
-    				newRow[field] = 'After Service Inspection';
-    				newHeadings.push(field);
+    				newRow[newHeadings[0]] = 'After Service Inspection';
     				break;
     			case 'customervisit' : 
-    				newRow[field] = 'Customer Visit';
-    				newHeadings.push(field);
-    				break;
-    		}
+    				newRow[newHeadings[0]] = 'Customer Visit';
+		    		break;
     	}
-    		newRow['Date Submitted'] =  moment(json.FormDate).format('DD-MMM-YY');
-    		newRow['Technical Assessor'] = json.JSON.User_Name;
-    		newRow['ExportedtoISO'] = (!json['ExportedtoISO']) ? 'No' : 'Yes';
-    		newRow['Performed Location'] = json.JSON.Latitude + ' ' + json.JSON.Longitude;
-
-    		newHeadings.push('Date Submitted');
-    		newHeadings.push('Technical Assessor');
-    		newHeadings.push('ExportedtoISO');
-    		newHeadings.push('Performed Location');
-    	return {"headings" : newHeadings, "newRow": newRow}; 
+    	newRow[newHeadings[1]] = json.JSON.User_Name;
+		newRow[newHeadings[2]] =  moment(json.FormDate).format('DD-MMM-YY');
+		newRow[newHeadings[3]] = json.JSON.Customer;
+		newRow[newHeadings[4]] = json.JSON.branch ? json.JSON.Branch : '';
+		newRow[newHeadings[5]] = json.JSON.branch ? json.JSON.Branch : '';
+		newRow[newHeadings[6]] = json.JSON.Latitude + ' ' + json.JSON.Longitude;
+		newRow[newHeadings[7]] = (!json['ExportedtoISO']) ? 'No' : 'Yes';
+		return  newRow; 
     }
 
     function getCSVHeadings(scope){
