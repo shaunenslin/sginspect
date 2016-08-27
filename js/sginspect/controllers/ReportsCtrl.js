@@ -8,7 +8,6 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 		{name: 'Supplier Evaluation', value: 'supplierevaluation'},
 		{name: 'After Service Inspection', value: 'afterserviceevaluation'}
 	];
-	 var newRow = {};
 	var newHeadings = ['Report Type', 'Technical Assessor', 'Date Submitted', 'Customer', 'Branch', 'Supplier', 'Performed Location', 'ExportedtoISO'];
 
 	function fetchJobs(){
@@ -54,9 +53,9 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
         var data = [];
         // Add data
         for (var i = 0 ; i < scope.Jobs.length; i++){
-        	var rows = {};
-				rows = matchJsonToHeadings(scope.Jobs[i]) ? matchJsonToHeadings(scope.Jobs[i]) : [];
-            data.push(rows);
+        	var row = {};
+			row = matchJsonToHeadings(scope.Jobs[i]);
+            data.push(row);
         }
         scope.csvHeadings = newHeadings;
         return data;
@@ -66,30 +65,31 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
     };
 
     function matchJsonToHeadings(json){
-    		var field = 'Report Type';
-    		switch (json.FormType){
-    			case 'audit' :
-    				newRow[newHeadings[0]] = 'Audit Form';
-    				break;
-    			case 'supplierevaluation':
-    				newRow[newHeadings[0]] = 'Supplier Evaluation'
-    				break;
-    			case 'technicalreport' :
-    				newRow[newHeadings[0]] = 'Technical Report'
-    				break;
-    			case 'afterserviceevaluation' :
-    				newRow[newHeadings[0]] = 'After Service Inspection';
-    				break;
-    			case 'customervisit' : 
-    				newRow[newHeadings[0]] = 'Customer Visit';
-		    		break;
+    	var newRow = {};
+		var field = 'Report Type';
+		switch (json.FormType){
+			case 'audit' :
+				newRow[newHeadings[0]] = 'Audit Form';
+				break;
+			case 'supplierevaluation':
+				newRow[newHeadings[0]] = 'Supplier Evaluation'
+				break;
+			case 'technicalreport' :
+				newRow[newHeadings[0]] = 'Technical Report'
+				break;
+			case 'afterserviceevaluation' :
+				newRow[newHeadings[0]] = 'After Service Inspection';
+				break;
+			case 'customervisit' : 
+				newRow[newHeadings[0]] = 'Customer Visit';
+	    		break;
     	}
     	newRow[newHeadings[1]] = json.JSON.User_Name;
 		newRow[newHeadings[2]] =  moment(json.FormDate).format('DD-MMM-YY');
 		newRow[newHeadings[3]] = json.JSON.Customer;
-		newRow[newHeadings[4]] = json.JSON.branch ? json.JSON.Branch : '';
-		newRow[newHeadings[5]] = json.JSON.branch ? json.JSON.Branch : '';
-		newRow[newHeadings[6]] = json.JSON.Latitude + ' ' + json.JSON.Longitude;
+		newRow[newHeadings[4]] = json.JSON.Branch ? json.JSON.Branch : '';
+		newRow[newHeadings[5]] = json.JSON.Branch ? json.JSON.Branch : '';
+		newRow[newHeadings[6]] = json.JSON.Latitude ? (json.JSON.Latitude + ' ' + json.JSON.Longitude) : '';
 		newRow[newHeadings[7]] = (!json['ExportedtoISO']) ? 'No' : 'Yes';
 		return  newRow; 
     }
