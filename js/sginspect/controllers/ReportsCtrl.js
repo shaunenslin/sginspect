@@ -42,10 +42,20 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
         return newArr;
     };
 
-    $scope.navigate = function(change){
+    $scope.paginate = function(change){
         changedVal = $scope.idx + change;
         if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
         $scope.idx = changedVal;
+    }
+    $scope.navigatetoReportMap = function(idx){
+    	if (!$scope.splitArr[$scope.idx][idx].JSON.Latitude) return;
+    		sessionStorage.setItem('currentReportCache', JSON.stringify($scope.splitArr[$scope.idx][idx]));
+    		$location.path('reports/map/' + $scope.splitArr[$scope.idx][idx].FormID);
+    }
+    function fetchMapPosition(){
+    	$scope.Report = JSON.parse(sessionStorage.getItem('currentReportCache'));
+    	$scope.CentreLong = $scope.Report.JSON.Longitude;
+    	$scope.CentreLat =  $scope.Report.JSON.Latitude;
     }
     
 	$scope.onClearClicked = function(){
@@ -129,11 +139,22 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
     $scope.getcsvHeader = function(){
         return $scope.csvHeadings;
     };
-
+    function onBackClicked(){
+    	sessionStorage.removeItem('currentReportCache');
+    	$location.path('/reports')
+    }
 
 	function constructor(){
-		$scope.$emit('heading',{heading: 'Search For Jobs' , icon : 'fa fa-search'});
-		fetchJobs();
+		if (!$routeParams.mode && !$routeParams.id){
+			$scope.$emit('heading',{heading: 'Search For Jobs' , icon : 'fa fa-search'});
+			$scope.mode = 'list';
+			fetchJobs();
+		} else{
+			$scope.$emit('heading',{heading: 'Report Map' , icon : 'fa fa-map-marker'});
+			$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){onBackClicked();}});
+			$scope.mode = 'map';
+			fetchMapPosition ();
+		}
 	}
 	constructor();
 });

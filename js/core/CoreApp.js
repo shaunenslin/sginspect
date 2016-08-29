@@ -1,6 +1,6 @@
 
 //var coreApp = angular.module("coreApp",["ngRoute","ngResource","ngTouch","mgcrea.ngStrap","ngSanitize","ngAnimate","ngMap","daypilot","chart.js","ui.bootstrap","mwl.calendar","textAngular"]) //,,
-var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap","ngSanitize","ngAnimate","daypilot","chart.js","ui.bootstrap","mwl.calendar","textAngular","ngCsv","ngCsvImport"])
+var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap","ngSanitize","ngAnimate","daypilot","chart.js","ui.bootstrap","mwl.calendar","textAngular","ngCsv","ngCsvImport", "ngMap"])
 
 .config(function ($routeProvider,$httpProvider) {
     $routeProvider.when("/sync", {templateUrl:"js/core/view/sync.html"});
