@@ -81,16 +81,16 @@
 						</table>
 					</div>
 				</div>
-				<div ng-class="(Form.JSON.Reception === 'Bad') ? 'well well-sm': ''">
+				<div ng-class="(Form.JSON.Reception !== 'Good' Form.JSON.Reception !== undefined) ? 'well well-sm': ''">
 					<div class="form-group">
 						<label for="Reception" class="col-sm-3">Reception</label>
 						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.SupplierFunction" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Reception"><option value="">-- please choose --</option></select></div>
 					</div>
-					<div class="form-group" ng-if="Form.JSON.Reception === 'Bad'">
+					<div class="form-group" ng-if="Form.JSON.Reception !== 'Good' && Form.JSON.Reception !== undefined">
 						<label for="ReceptionComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="ReceptionComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.ReceptionComment"/></div>
 					</div>
-					<div ng-if="Form.JSON.Reception === 'Bad'">
+					<div ng-if="Form.JSON.Reception !== 'Good' && Form.JSON.Reception !== undefined">
 						<div class="row">
 							<div ng-if="!isPhoneGap" class="col-xs-8">
 								<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
@@ -116,7 +116,7 @@
 					<label for="Procedures" class="col-sm-3">Procedures</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Reception" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Procedures"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div class="form-group" ng-if="Form.JSON.Procedures === 'Bad'">
+				<div class="form-group" ng-if="Form.JSON.Procedures !== 'Good' && Form.JSON.Procedures !== undefined">
 					<label for="ProceduresComment" class="col-sm-3">Comment</label>
 					<div class="col-sm-9"><input required id="ProceduresComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.ProceduresComment"/></div>
 				</div>
@@ -125,7 +125,7 @@
 					<label for="Workmanship" class="col-sm-3">Workmanship</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Procedures" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Workmanship"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div class="form-group" ng-if="Form.JSON.Workmanship === 'Bad'">
+				<div class="form-group" ng-if="Form.JSON.Workmanship !== 'Good' && Form.JSON.Workmanship !== undefined">
 					<label for="WorkmanshipComment" class="col-sm-3">Comment</label>
 					<div class="col-sm-9"><input required id="WorkmanshipComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.WorkmanshipComment"/></div>
 				</div>
@@ -134,7 +134,7 @@
 					<label for="Downtime" class="col-sm-3">Downtime</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Workmanship" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Downtime"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div class="form-group" ng-if="Form.JSON.Downtime === 'Bad'">
+				<div class="form-group" ng-if="Form.JSON.Downtime !== 'Good' && Form.JSON.Downtime !== undefined">
 					<label for="DowntimeComment" class="col-sm-3">Comment</label>
 					<div class="col-sm-9"><input required id="DowntimeComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.DowntimeComment"/></div>
 				</div>
@@ -143,12 +143,12 @@
 					<label for="Cleanliness" class="col-sm-3">Cleanliness</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Downtime" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Cleanliness"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div ng-class="(Form.JSON.Cleanliness === 'Bad') ? 'well well-sm': ''">
-					<div class="form-group" ng-if="Form.JSON.Cleanliness === 'Bad'">
+				<div ng-class="(Form.JSON.Cleanliness !== 'Good' && Form.JSON.Cleanliness !== undefined) ? 'well well-sm': ''">
+					<div class="form-group" ng-if="Form.JSON.Cleanliness !== 'Good' && Form.JSON.Cleanliness !== undefined">
 						<label for="CleanlinessComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="CleanlinessComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.CleanlinessComment"/></div>
 					</div>
-					<div ng-if="Form.JSON.Cleanliness === 'Bad'">
+					<div ng-if="Form.JSON.Cleanliness !== 'Good' && Form.JSON.Cleanliness !== undefined">
 						<div class="row">
 							<div ng-if="!isPhoneGap" class="col-xs-8">
 								<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
@@ -174,7 +174,7 @@
 					<label for="Conformity" class="col-sm-3">Conformity</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Cleanliness" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Conformity"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div class="form-group" ng-if="Form.JSON.Conformity === 'Bad'">
+				<div class="form-group" ng-if="Form.JSON.Conformity !== 'Good' && Form.JSON.Conformity !== undefined">
 					<label for="ConformityComment" class="col-sm-3">Comment</label>
 					<div class="col-sm-9"><input required id="ConformityComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.ConformityComment"/></div>
 				</div>
@@ -183,7 +183,7 @@
 					<label for="PartsAvailibility" class="col-sm-3">Parts Availibility</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Conformity" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.PartsAvailibility"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div class="form-group" ng-if="Form.JSON.PartsAvailibility === 'Bad'">
+				<div class="form-group" ng-if="Form.JSON.PartsAvailibility !== 'Good' && Form.JSON.PartsAvailibility !== undefined">
 					<label for="PartsAvailibilityComment" class="col-sm-3">Comment</label>
 					<div class="col-sm-9"><input required id="PartsAvailibilityComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.PartsAvailibilityComment"/></div>
 				</div>
@@ -192,7 +192,7 @@
 					<label for="Facility" class="col-sm-3">Facility</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.PartsAvailibility" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Facility"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div class="form-group" ng-if="Form.JSON.Facility === 'Bad'">
+				<div class="form-group" ng-if="Form.JSON.Facility !== 'Good' && Form.JSON.Facility !== undefined">
 					<label for="FacilityComment" class="col-sm-3">Comment</label>
 					<div class="col-sm-9"><input required id="FacilityComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.FacilityComment"/></div>
 				</div>
@@ -201,7 +201,7 @@
 					<label for="Warranties" class="col-sm-3">Warranties</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Facility" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Warranties"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div class="form-group" ng-if="Form.JSON.Warranties === 'Bad'">
+				<div class="form-group" ng-if="Form.JSON.Warranties !== 'Good' && Form.JSON.Warranties !== undefined">
 					<label for="WarrantiesComment" class="col-sm-3">Comment</label>
 					<div class="col-sm-9"><input required id="WarrantiesComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.WarrantiesComment"/></div>
 				</div>
@@ -210,7 +210,7 @@
 					<label for="Warranties" class="col-sm-3">Bulletins</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Warranties" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Bulletins"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div class="form-group" ng-if="Form.JSON.Bulletins === 'Bad'">
+				<div class="form-group" ng-if="Form.JSON.Bulletins !== 'Good' && Form.JSON.Bulletins !== undefined">
 					<label for="BulletinsComment" class="col-sm-3">Comment</label>
 					<div class="col-sm-9"><input required id="BulletinsComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.BulletinsComment"/></div>
 				</div>
@@ -219,12 +219,12 @@
 					<label for="SpecialToolsTraining" class="col-sm-3">Special tools & training</label>
 					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Bulletins" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.SpecialToolsTraining"><option value="">-- please choose --</option></select></div>
 				</div>
-				<div ng-class="(Form.JSON.SpecialToolsTraining === 'Bad') ? 'well well-sm': ''">
-					<div class="form-group" ng-if="Form.JSON.SpecialToolsTraining === 'Bad'">
+				<div ng-class="(Form.JSON.SpecialToolsTraining !== 'Good' && Form.JSON.SpecialToolsTraining !== undefined) ? 'well well-sm': ''">
+					<div class="form-group" ng-if="Form.JSON.SpecialToolsTraining !== 'Good' && Form.JSON.SpecialToolsTraining !== undefined">
 						<label for="SpecialToolsTrainingComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="SpecialToolsTrainingComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.SpecialToolsTrainingComment"/></div>
 					</div>
-					<div ng-if="Form.JSON.SpecialToolsTraining === 'Bad'">
+					<div ng-if="Form.JSON.SpecialToolsTraining !== 'Good' && Form.JSON.SpecialToolsTraining !== undefined">
 						<div class="row">
 							<div ng-if="!isPhoneGap" class="col-xs-8">
 								<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">
@@ -251,7 +251,7 @@
 						<label for="TechComp" class="col-sm-3">Technical Competency</label>
 						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.SpecialToolsTraining" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.TechComp"><option value="">-- please choose --</option></select></div>
 					</div>
-					<div class="form-group" ng-if="Form.JSON.TechComp === 'Bad'">
+					<div class="form-group" ng-if="Form.JSON.TechComp !== 'Good' && Form.JSON.TechComp !== undefined">
 						<label for="TechCompComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="TechCompComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.TechCompComment"/></div>
 					</div>
@@ -260,7 +260,7 @@
 						<label for="CommSkills" class="col-sm-3">Communication Skills</label>
 						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.TechComp" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.CommSkills"><option value="">-- please choose --</option></select></div>
 					</div>
-					<div class="form-group" ng-if="Form.JSON.CommSkills === 'Bad'">
+					<div class="form-group" ng-if="Form.JSON.CommSkills !== 'Good' && Form.JSON.CommSkills !== undefined">
 						<label for="CommSkillsComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="CommSkillsComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.CommSkillsComment"/></div>
 					</div>
@@ -269,7 +269,7 @@
 						<label for="PhoneEtiquette" class="col-sm-3">Phone Etiquette</label>
 						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.CommSkills" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.PhoneEtiquette"><option value="">-- please choose --</option></select></div>
 					</div>
-					<div class="form-group" ng-if="Form.JSON.PhoneEtiquette === 'Bad'">
+					<div class="form-group" ng-if="Form.JSON.PhoneEtiquette !== 'Good' && Form.JSON.PhoneEtiquette !== undefined">
 						<label for="PhoneEtiquetteComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="PhoneEtiquetteComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.PhoneEtiquetteComment"/></div>
 					</div>
@@ -278,7 +278,7 @@
 						<label for="AuthLeadTime" class="col-sm-3">Authorisation Lead Time</label>
 						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.PhoneEtiquette" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.AuthLeadTime"><option value="">-- please choose --</option></select></div>
 					</div>
-					<div class="form-group" ng-if="Form.JSON.AuthLeadTime === 'Bad'">
+					<div class="form-group" ng-if="Form.JSON.AuthLeadTime !== 'Good' && Form.JSON.AuthLeadTime !== undefined">
 						<label for="AuthLeadTimeComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="AuthLeadTimeComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.AuthLeadTimeComment"/></div>
 					</div>
@@ -287,7 +287,7 @@
 						<label for="Professionalism" class="col-sm-3">Professionalism</label>
 						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.AuthLeadTime" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.Professionalism"><option value="">-- please choose --</option></select></div>
 					</div>
-					<div class="form-group" ng-if="Form.JSON.Professionalism === 'Bad'">
+					<div class="form-group" ng-if="Form.JSON.Professionalism !== 'Good' && Form.JSON.Professionalism !== undefined">
 						<label for="TechCompComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="ProfessionalismComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.ProfessionalismComment"/></div>
 					</div>
@@ -296,7 +296,7 @@
 						<label for="InvoicePayment" class="col-sm-3">Invoice Payment on Time with SLA</label>
 						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.Professionalism" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.InvoicePayment"><option value="">-- please choose --</option></select></div>
 					</div>
-					<div class="form-group" ng-if="Form.JSON.InvoicePayment === 'Bad'">
+					<div class="form-group" ng-if="Form.JSON.InvoicePayment !== 'Good' && Form.JSON.InvoicePayment !== undefined">
 						<label for="InvoicePaymentComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="InvoicePaymentComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.InvoicePaymentComment"/></div>
 					</div>
@@ -305,7 +305,7 @@
 						<label for="RFCNotifications" class="col-sm-3">RFC Notifications</label>
 						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.InvoicePayment" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.RFCNotifications"><option value="">-- please choose --</option></select></div>
 					</div>
-					<div class="form-group" ng-if="Form.JSON.RFCNotifications === 'Bad'">
+					<div class="form-group" ng-if="Form.JSON.RFCNotifications !== 'Good' && Form.JSON.RFCNotifications !== undefined">
 						<label for="RFCNotificationsComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="RFCNotificationsComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.RFCNotificationsComment"/></div>
 					</div>
@@ -314,7 +314,7 @@
 						<label for="GeneralComment" class="col-sm-3">General Comment</label>
 						<div class="col-sm-9"><select required ng-disabled="!Form.JSON.RFCNotifications" class="form-control" ng-options="item.name as item.name for item in options" ng-model="Form.JSON.GeneralComment"><option value="">-- please choose --</option></select></div>
 					</div>
-					<div class="form-group" ng-if="Form.JSON.GeneralComment === 'Bad'">
+					<div class="form-group" ng-if="Form.JSON.GeneralComment !== 'Good' && Form.JSON.GeneralComment !== undefined">
 						<label for="GeneralCommentComment" class="col-sm-3">Comment</label>
 						<div class="col-sm-9"><input required id="GeneralCommentComment"  type="text" class="form-control" placeholder="You must enter a comment" ng-model="Form.JSON.GeneralCommentComment"/></div>
 					</div>

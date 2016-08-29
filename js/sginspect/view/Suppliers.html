@@ -1,7 +1,7 @@
 <div ng-controller="SupplierCtrl">
     <div class="inset" style="padding-top: 15px;">
         <div ng-show="mode === 'list'" style="margin-bottom: 10px;">
-            <input ng-model="searchText" type="text" class="form-control" placeholder="Search for Suppliers">
+            <input ng-model="searchText" ng-model-options="{ debounce: 300 }" ng-change="filterList()" type="text" class="form-control" placeholder="Search for Suppliers">
             <span class="input-group-btn">
         </div>
         <div class=" list-group" ng-show="mode === 'list' " >

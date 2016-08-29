@@ -1,4 +1,4 @@
-coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, $filter){
+coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, $filter, SyncSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
 	$scope.image = "";
 	$scope.signature = {"inspector" : ""};
@@ -19,8 +19,8 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
-				CaptureImageSvc.savePhoto(key, $scope.image);
-				filenames.push(key)
+				CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+				filenames.push(key);
 			} else{
 				$scope.capture = true;
 			}
@@ -94,9 +94,9 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		}
 		// Now check if any items dont have comments or where pictures are needed
 		for (prop in $scope.Form.JSON) {
-			if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Yes") {
+			if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Average" || $scope.Form.JSON[prop] === "Yes") {
 				if (!$scope.Form.JSON[prop + "Comment"] && (prop !== "FireExtinguisher" && prop !== "AbuseRelatedCosts")){
-					$alert({ content: "Please enter comments when you have selected BAD", duration: 5, placement: 'top-right', type: 'danger', show: true});
+					$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop], duration: 5, placement: 'top-right', type: 'danger', show: true});
 		        	$scope.$emit('UNLOAD');
 		           	return;
 				}
@@ -114,50 +114,19 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 				$scope.$emit('UNLOAD');
 				return;
 			}
+			if ($scope.KilometersImages.length === 0) {
+			$alert({ content: "Please take picture(s) for Odometer reading", duration: 5, placement: 'top-right', type: 'danger', show: true});
+            $scope.$emit('UNLOAD');
+            return;
+			}
 		}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
 			$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			return;
 		}
-		appendImagesToJSON();
+		saveForm();
 	}
-
-	function appendImagesToJSON(){
-	var imageKeys = [];
-		DaoSvc.cursor('Unsent',
-			function(json){
-				//Checking if this is an image incase the are inspection that were saved offline 
-				if(json.ImageID){
-					//Ensure that we are only getting images belonging to this current Form
-					if(json.ImageID.indexOf($scope.Form.FormID) > -1){
-					$scope.Form.JSON[json.ImageID] = json.ImageData;
-					imageKeys.push(json.ImageID)
-					}
-				}
-			},
-			function(error){
-				console.log('Error fetching from Unsent ' + error);
-				$scope.$emit('UNLOAD');
-			}, function(){
-				//Recursively Deleting the Images out of unsent and executing the save form when done
-				deleteUnsentImages(0,imageKeys,saveForm);
-			}
-		);
-	}
-	function deleteUnsentImages(idx,keys,onComplete){
-		if(idx >= keys.length){
-		onComplete();
-		return;
-		}
-		DaoSvc.deleteItem('Unsent',keys[idx],undefined,function(){
-			idx = idx + 1;
-			deleteUnsentImages(idx,keys,onComplete)
-		}, function(){
-			idx = idx + 1;
-		deleteUnsentImages(idx, keys,onComplete)
-		});
-	}
-
+	
 	$scope.onBackClicked = function(){
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		savePartialForm();
@@ -170,6 +139,14 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			window.history.back();	
 		}
 	}
+	$scope.syncCompleted = function(reload){
+		$scope.$emit('UNLOAD');
+		$alert({ content: "Audit Form Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
+		sessionStorage.removeItem('currentImage');
+		sessionStorage.removeItem('currentLicenceImage');
+		sessionStorage.removeItem('currentForm');
+		$location.path('/jobs/ratings');
+	}
 
 	function saveForm(){
 		$scope.$emit('LOAD');
@@ -178,19 +155,16 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		delete $scope.Form.JobType;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
-			$scope.$emit('UNLOAD');
-			$alert({ content: "Audit Form Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
-			sessionStorage.removeItem('currentImage');
-			sessionStorage.removeItem('currentLicenceImage');
-			sessionStorage.removeItem('currentForm');
-			$location.path('/');	
+			// Now send images
+			SyncSvc.sync("SGInspector", GlobalSvc.getUser().UserID, $scope, false, true);
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
 			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
-			$location.path('/')
+			$location.path('/jobs/ratings');
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);

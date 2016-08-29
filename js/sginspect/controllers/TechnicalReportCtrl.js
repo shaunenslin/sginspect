@@ -1,4 +1,4 @@
-coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, $filter){
+coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, $filter, SyncSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
 	$scope.image = "";
 	$scope.signature = {"inspector" : ""};
@@ -13,7 +13,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
-				CaptureImageSvc.savePhoto(key, $scope.image);
+				CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image,$scope.Form.ClientID, $scope.Form.FormDate);
 				filenames.push(key);
 			} else{
 				$scope.capture = true;
@@ -64,13 +64,6 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		});
 	}
 
-	function deleteUnsentImages(idx,keys,onComplete){
-		if(idx >= keys.length){
-			onComplete();
-			return;
-		}
-	}
-
 	/** This method create an svg image of the signature captured **/
 	function createSignatureImage(datapair,type){
 		var image = {};
@@ -83,12 +76,12 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		return image;
 	}
 	function fetchServiceHistory(){
-    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID;
+    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID + '&VinNumber=' + $scope.Form.VinNumber;
     	$http.get (url)
     	.success(function(data){
     		$scope.serviceHistory = [];
     		$scope.serviceHistory =data.map(function(e){
-    			return moment(e).format('YYYY/MM/DD');
+    			return moment(e.servicehistory).format('YYYY/MM/DD');
     		});
     	})
     	.error(function(err){
@@ -96,44 +89,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
     		$scope.$emit('UNLOAD');
     	})
     }
-    function appendImagesToJSON(){
-		var imageKeys = [];
-		DaoSvc.cursor('Unsent',
-			function(json){
-				//Checking if this is an image incase the are inspection that were saved offline 
-				if(json.ImageID){
-					//Ensure that we are only getting images belonging to this current Form
-					if(json.ImageID.indexOf($scope.Form.FormID) > -1){
-						$scope.Form.JSON[json.ImageID] = json.ImageData;
-						imageKeys.push(json.ImageID)
-					}
-				}
-			},
-			function(error){
-				console.log('Error fetching from Unsent ' + error);
-				$scope.$emit('UNLOAD');
-			}, function(){
-				//Recursively Deleting the Images out of unsent and executing the save form when done
-				deleteUnsentImages(0,imageKeys,saveForm);
-			}
-        );
-	}
-	function deleteUnsentImages(idx,keys,onComplete){
-		if(idx >= keys.length){
-		onComplete();
-		return;
-		}
-		DaoSvc.deleteItem('Unsent',keys[idx],undefined,function(){
-			idx = idx + 1;
-			deleteUnsentImages(idx,keys,onComplete)
-			}, function(){
-				idx = idx + 1;
-				deleteUnsentImages(idx, keys,onComplete)
-			});
-	}
-
-
-	$scope.saveSignature = function(){
+    $scope.saveSignature = function(){
 		$scope.$emit('LOAD');
 		if(!$scope.Form.JSON.Conclusions){
 			$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
@@ -149,12 +105,27 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	           		return;
 				}
 			}
+			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
+			if($scope.Form.JSON[prop] === undefined){
+				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				$scope.$emit('UNLOAD');
+				return;
+			}
 		}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
 			$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			return;
 		}
-		appendImagesToJSON();
+		saveForm();
+	}
+
+	$scope.syncCompleted = function(reload){
+		$scope.$emit('UNLOAD');
+		$alert({ content: "Technical Report Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
+		sessionStorage.removeItem('currentImage');
+		sessionStorage.removeItem('currentLicenceImage');
+		sessionStorage.removeItem('currentForm');
+		$location.path('/jobs/ratings');	
 	}
 
 	function saveForm(){
@@ -164,19 +135,16 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		delete $scope.Form.JobType;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
-			$scope.$emit('UNLOAD');
-			$alert({ content: "Technical Report Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
-			sessionStorage.removeItem('currentImage');
-			sessionStorage.removeItem('currentLicenceImage');
-			sessionStorage.removeItem('currentForm');
-			$location.path('/');	
+			// Now send images
+			SyncSvc.sync("SGInspector", GlobalSvc.getUser().UserID, $scope, false, true);
 		}
 		var error = function(err){
 			$scope.$emit('UNLOAD');
 			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
-			$location.path('/');
+			$location.path('/jobs/ratings');
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
@@ -188,9 +156,9 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		    $alert({content:'Error removing image', duration: 5, placement: 'top-right', type: 'danger', show: true});
 		},function(){
 		    filenames.splice(idx,1);
-		     $scope.$apply();
+		    $scope.$apply();
 		});
-}
+	}
 
     function fetchClient(){
     	var Client = JSON.parse(sessionStorage.getItem('currentClientsCache'));

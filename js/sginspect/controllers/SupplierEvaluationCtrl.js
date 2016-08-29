@@ -54,7 +54,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
-				CaptureImageSvc.savePhoto(key, $scope.image);
+				CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 				filenames.push(key)
 			} else{
 				$scope.capture = true;
@@ -142,40 +142,11 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		}
 		return image;
 	}
-	function appendImagesToJSON(){
-		var imageKeys = [];
-		DaoSvc.cursor('Unsent',
-			function(json){
-				//Checking if this is an image incase the are inspection that were saved offline 
-				if(json.ImageID){
-					//Ensure that we are only getting images belonging to this current Form
-					if(json.ImageID.indexOf($scope.Form.FormID) > -1){
-						$scope.Form.JSON[json.ImageID] = json.ImageData;
-						imageKeys.push(json.ImageID)
-					}
-				}
-			},
-			function(error){
-				console.log('Error fetching from Unsent ' + error);
-				$scope.$emit('UNLOAD');
-			}, function(){
-				//Recursively Deleting the Images out of unsent and executing the save form when done
-				deleteUnsentImages(0,imageKeys,saveForm);
-			}
-		);
-	}
-	function deleteUnsentImages(idx,keys,onComplete){
-		if(idx >= keys.length){
-			onComplete();
-			return;
-		}
-		DaoSvc.deleteItem('Unsent',keys[idx],undefined,function(){
-			idx = idx + 1;
-			deleteUnsentImages(idx,keys,onComplete)
-		}, function(){
-			idx = idx + 1;
-			deleteUnsentImages(idx, keys,onComplete)
-		});
+	$scope.syncCompleted = function(reload){
+		sessionStorage.removeItem('currentForm');
+		$alert({ content: "Supplier Evaluation Complete", duration: 5, placement: 'top-right', type: 'success', show: true});
+		$scope.$emit('UNLOAD');
+		$location.path('/jobs/ratings');
 	}
 
 	$scope.saveSignature = function(){
@@ -188,15 +159,14 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	            return;
 			}
 		}
-
-		if(!$scope.supplierevaluationform.$valid){
+		// Check the very last field on format, if it has a value, assume other fields been filled in OK
+		if(!$scope.Form.JSON.SpecialToolsTraining){
 			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
             $scope.$emit('UNLOAD');
             return;
 		}
-
-		// Check the very last field on format, if it has a value, assume other fields been filled in OK
-		if(!$scope.Form.JSON.SpecialToolsTraining){
+		// Cater for  when filling existing form.
+		if(!$scope.Form.JSON.RFCNotifications && $scope.mode === 'existing'){
 			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
             $scope.$emit('UNLOAD');
             return;
@@ -204,9 +174,9 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 		// Now check if any items dont have comments or where pictures are needed
 		for (prop in $scope.Form.JSON) {
-			if ($scope.Form.JSON[prop] === "Bad") {
+			if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Average") {
 				if (!$scope.Form.JSON[prop + "Comment"]){
-					$alert({ content: "Please enter comments when you have selected BAD", duration: 5, placement: 'top-right', type: 'danger', show: true});
+					$alert({ content: "Please enter comments when you have selected " + $scope.Form.JSON[prop], duration: 5, placement: 'top-right', type: 'danger', show: true});
 		            $scope.$emit('UNLOAD');
 		            return;
 				}
@@ -242,7 +212,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
             return;
         }
  		deleteCurrentPartialForm($scope.Form.FormID);
-		appendImagesToJSON();
+		saveForm();
 	}
 
 	function fetchSuppliers(){
@@ -261,6 +231,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.Form.JobType = 'Open Jobs';
 		DaoSvc.put($scope.Form, 'InProgress', $scope.Form.FormID, function(){console.log('Partial Save of ' + $location.path() + ' successful')},function(){console.log('Partial Save of' + $location.path() + ' failed')},function(){$scope.$apply();});
 	}
+	
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
@@ -276,18 +247,18 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
 		$scope.Form.JSON[technicaladvisorSignature.ID] = technicaladvisorSignature.FileData;
 		$scope.Form.JSON[workshopmanagerSignature.ID] = workshopmanagerSignature.FileData;
+		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
-			sessionStorage.removeItem('currentForm');
-			$alert({ content: "Supplier Evaluation Complete", duration: 5, placement: 'top-right', type: 'success', show: true});
-			$location.path('/');
+			// Now send images
+			SyncSvc.sync("SGInspector", GlobalSvc.getUser().UserID, $scope, false, true);
 		}
 
 		var error = function(err){
 			$scope.$emit('UNLOAD');
 			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
 			sessionStorage.removeItem('currentForm');
-			$location.path('/');
+			$location.path('/jobs/ratings');
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);

@@ -1,4 +1,4 @@
-coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert){
+coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert, $filter){
     $scope.$emit('heading',{heading: 'Suppliers' , icon : 'glyphicon glyphicon-road'});
     $scope.newArr = [];
     $scope.splitArr = [];
@@ -38,14 +38,6 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
                 $scope.$emit('LOAD');
             });
     }
-
-    /*$scope.deleteSupplier = function(){
-        if (confirm('Are you sure you want to delete this Supplier?')){
-            $scope.$emit('LOAD');
-            $scope.supplierEdit.Active = 0;
-            save();
-        }        
-    };*/
 
     $scope.saveSupplier = function(){
         if(!$scope.supplierEdit.SupplierID){
@@ -125,11 +117,15 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         var newArr = [];
         while(data.length !== 0){
             var splitArr = data.splice(0, 25);
-            //$scope.suppliers.splice(0, 2);
             newArr.push(splitArr);
         }
         return newArr;
     };
+    $scope.filterList = function(){
+        var result  = $filter('filter')(JSON.parse(sessionStorage.getItem( "Supplierscache")), {$ : $scope.searchText});
+        result = arraySplit(result);
+        if (result.length > 0) $scope.splitArr  =  result;
+    }
 
     $scope.navigate = function(change){
         if(sessionStorage.getItem('navigateAfterSupplierSave')){

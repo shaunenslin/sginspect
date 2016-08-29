@@ -62,17 +62,29 @@
 					<option value="">-- please choose --</option>
 				</select>
 			</div>
+			<div ng-if="Form.JSON.radiatorConditionChecked !== 'Done' && Form.JSON.radiatorConditionChecked !== undefined" class="form-group">
+				<label for="radiator_coniditionchecked_comment">Please Specify</label>
+				<div><input name="radiator_coniditionchecked_comment" required class="form-control" placeholder="Enter Comment" id="radiator_coniditionchecked_comment" ng-model="Form.JSON.radiatorConditionCheckedComment" type="text"></div>
+			</div>
 			<div class="form-group">
 				<label for="engineOilLevelsChecked">Engine oil levels checked</label>
 				<select required ng-options="item.name as item.name for item in inspectInspectionTypes" ng-disabled="!Form.JSON.radiatorConditionChecked" class="form-control" name="engineOilLevelsChecked" id="engineOilLevelsChecked" ng-model="Form.JSON.engineOilLevelsChecked" >
 					<option value="">-- please choose --</option>
 				</select>
 			</div>
+			<div ng-if="Form.JSON.engineOilLevelsChecked !== 'Done' && Form.JSON.engineOilLevelsChecked !== undefined" class="form-group">
+				<label for="oil_levelschecked_comment">Please Specify</label>
+				<div><input name="oil_levelschecked_comment" required class="form-control" placeholder="Enter Comment" id="oil_levelschecked_comment" ng-model="Form.JSON.engineOilLevelsCheckedComment" type="text"></div>
+			</div>
 			<div class="form-group">
 				<label for="oilFiltersChecked">Oil filters checked</label>
 				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.engineOilLevelsChecked" class="form-control" id="oilFiltersChecked" name="oilFiltersChecked" ng-model="Form.JSON.oilFiltersChecked" >
 					<option value="">-- please choose --</option>
 				</select>
+			</div>
+			<div ng-if="Form.JSON.oilFiltersChecked !== 'Done' && Form.JSON.oilFiltersChecked !== undefined" class="form-group">
+				<label for="oil_filterschecked_comment">Please Specify</label>
+				<div><input name="oil_filterschecked_comment" required class="form-control" placeholder="Enter Comment" id="oil_filterschecked_comment" ng-model="Form.JSON.oilFiltersCheckedComment" type="text"></div>
 			</div>
 			<div class="form-group">
 				<label for="oilLeaks">Oil leaks</label>
@@ -82,11 +94,19 @@
 					<option Value="No">No</option>
 				</select>
 			</div>
+			<div ng-if="Form.JSON.oilLeaks === 'Yes'" class="form-group">
+				<label for="oilleaks_comment">Please Specify</label>
+				<div><input name="oilleaks_comment" required class="form-control" placeholder="Enter Comment" id="oilleaks_comment" ng-model="Form.JSON.oilLeaksComment" type="text"></div>
+			</div>
 			<div class="form-group">
 				<label for="airCleanerServiced">Air cleaner serviced as per WIM pro</label>
 				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.oilLeaks" class="form-control" id="airCleanerServiced" name="airCleanerServiced"  ng-model="Form.JSON.airCleanerServiced" >
 					<option value="">-- please choose --</option>
 				</select>
+			</div>
+			<div ng-if="Form.JSON.airCleanerServiced !== 'Done' && Form.JSON.airCleanerServiced !== undefined" class="form-group">
+				<label for="aircleanerservice_comment">Please Specify</label>
+				<div><input name="aircleanerservice_comment" required class="form-control" placeholder="Enter Comment" id="aircleanerservice_comment" ng-model="Form.JSON.airCleanerServicedComment" type="text"></div>
 			</div>
 			<div class="form-group">
 				<label for="FuelFilterChecked">Fuel filter checked</label>
@@ -94,17 +114,29 @@
 					<option value="">-- please choose --</option>
 				</select>
 			</div>
+			<div ng-if="Form.JSON.FuelFilterChecked !== 'Done' && Form.JSON.FuelFilterChecked !== undefined" class="form-group">
+				<label for="fuel_filterchecked_comment">Please Specify</label>
+				<div><input name="fuel_filterchecked_comment" required class="form-control" placeholder="Enter Comment" id="fuel_filterchecked_comment" ng-model="Form.JSON.FuelFilterCheckedComment" type="text"></div>
+			</div>
 			<div class="form-group">
 				<label for="gearBoxBreatherServiced">Gearbox breather serviced</label>
 				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.FuelFilterChecked" class="form-control" name="gearBoxBreatherServiced" id="gearBoxBreatherServiced" ng-model="Form.JSON.gearBoxBreatherServiced" >
 					<option value="">-- please choose --</option>
 				</select>
 			</div>
+			<div ng-if="Form.JSON.gearBoxBreatherServiced !== 'Done' && Form.JSON.gearBoxBreatherServiced !== undefined" class="form-group">
+				<label for="gearbox_breatherserviced_comment">Please Specify</label>
+				<div><input name="gearbox_breatherserviced_comment" required class="form-control" placeholder="Enter Comment" id="gearbox_breatherserviced_comment" ng-model="Form.JSON.gearBoxBreatherServicedComment" type="text"></div>
+			</div>
 			<div class="form-group">
 				<label for="diffBreatherServiced">Diff breather serviced</label>
 				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.gearBoxBreatherServiced" class="form-control" name="diffBreatherServiced" id="diffBreatherServiced" ng-model="Form.JSON.diffBreatherServiced" >
 					<option value="">-- please choose --</option>
 				</select>
+			</div>
+			<div ng-if="Form.JSON.diffBreatherServiced !== 'Done' && Form.JSON.diffBreatherServiced !== undefined" class="form-group">
+				<label for="diffbreather_serviced_comment">Please Specify</label>
+				<div><input name="diffbreather_serviced_comment" required class="form-control" placeholder="Enter Comment" id="diffbreather_serviced_comment" ng-model="Form.JSON.diffBreatherServicedComment" type="text"></div>
 			</div>
 			<div class="form-group">
 				<label for="diffsOilLeLeaks">Diff and rear axles free from oil leaks</label>
@@ -114,11 +146,19 @@
 					<option Value="No">No</option>
 				</select>
 			</div>
+			<div ng-if="Form.JSON.diffsOilLeLeaks === 'No'" class="form-group">
+				<label for="diffs_oilleaks_comment">Please Specify</label>
+				<div><input name="diffs_oilleaks_comment" required class="form-control" placeholder="Enter Comment" id="diffs_oilleaks_comment" ng-model="Form.JSON.diffsOilLeLeaksComment" type="text"></div>
+			</div>
 			<div class="form-group">
 				<label for="diffsOilLevelChecked">Diff(s) oil level checked</label>
 				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.diffsOilLeLeaks" class="form-control" name="diffsOilLevelChecked" name="diffsOilLevelChecked" id="diffsOilLevelChecked" ng-model="Form.JSON.diffsOilLevelChecked" >
 					<option value="">-- please choose --</option>
 				</select>
+			</div>
+			<div ng-if="Form.JSON.diffsOilLevelChecked !== 'Done' && Form.JSON.diffsOilLevelChecked !== undefined" class="form-group">
+				<label for="diffs_oillevelschecked_comment">Please Specify</label>
+				<div><input name="diffs_oillevelschecked_comment" required class="form-control" placeholder="Enter Comment" id="diffs_oillevelschecked_comment" ng-model="Form.JSON.diffsOilLevelCheckedComment" type="text"></div>
 			</div>
 			<div class="form-group">
 				<label for="diffAndRearAxleWashed">Diff and rear axles washed after service</label>
@@ -126,11 +166,19 @@
 					<option value="">-- please choose --</option>
 				</select>
 			</div>
+			<div ng-if="Form.JSON.diffAndRearAxleWashed !== 'Done' && Form.JSON.diffAndRearAxleWashed !== undefined" class="form-group">
+				<label for="diffand_rearaxlewashed">Please Specify</label>
+				<div><input name="diffand_rearaxlewashed" required class="form-control" placeholder="Enter Comment" id="diffand_rearaxlewashed" ng-model="Form.JSON.diffAndRearAxleWashedComment" type="text"></div>
+			</div>
 			<div class="form-group">
 				<label for="fithWheelCleaned">5th wheel cleaned and lubricated as per  WIM  pro</label>
 				<select ng-options="item.name as item.name for item in inspectInspectionTypesWithNA" required ng-disabled="!Form.JSON.diffAndRearAxleWashed" class="form-control" name="fithWheelCleaned" id="fithWheelCleaned" ng-model="Form.JSON.fithWheelCleaned" >
 					<option value="">-- please choose --</option>
 				</select>
+			</div>
+			<div ng-if="(Form.JSON.fithWheelCleaned !== 'Done' && Form.JSON.fithWheelCleaned !== 'N/A') && Form.JSON.fithWheelCleaned !== undefined" class="form-group">
+				<label for="fithwheel_cleaned_comment">Please Specify</label>
+				<div><input name="fithwheel_cleaned_comment" required class="form-control" placeholder="Enter Comment" id="fithwheel_cleaned_comment" ng-model="Form.JSON.fithWheelCleanedComment" type="text"></div>
 			</div>
 			<div class="form-group">
 				<label for="hardenedCInsert">Hardened C insert and king pin lockjaw measured for wear</label>
@@ -138,11 +186,19 @@
 					<option value="">-- please choose --</option>
 				</select>
 			</div>
+			<div ng-if="(Form.JSON.hardenedCInsert !== 'Done' && Form.JSON.hardenedCInsert !== 'N/A') && Form.JSON.hardenedCInsert !== undefined" class="form-group">
+				<label for="hardened_c_insert_comment">Please Specify</label>
+				<div><input name="hardened_c_insert_comment" required class="form-control" placeholder="Enter Comment" id="hardened_c_insert_comment" ng-model="Form.JSON.hardenedCInsertComment" type="text"></div>
+			</div>
 			<div class="form-group">
 				<label for="batteriesServiced">Batteries serviced as per WIM Pro</label>
 				<select ng-options="item.name as item.name for item in inspectInspectionTypes" type="text" required ng-disabled="!Form.JSON.hardenedCInsert" class="form-control" name="batteriesServiced" id="batteriesServiced" ng-model="Form.JSON.batteriesServiced" >
 					<option value="">-- please choose --</option>
 				</select>
+			</div>
+			<div ng-if="Form.JSON.batteriesServiced !== 'Done' && Form.JSON.batteriesServiced !== undefined" class="form-group">
+				<label for="batteriesserviced_comment">Please Specify</label>
+				<div><input name="batteriesserviced_comment" required class="form-control" placeholder="Enter Comment" id="batteriesserviced_comment" ng-model="Form.JSON.batteriesServicedComment" type="text"></div>
 			</div>
 			<div class="form-group">
 				<label for="springShaklesAndTrunionLubricated">Spring shackles and trunion lubricated as per WIM Pro</label>
@@ -150,17 +206,29 @@
 					<option value="">-- please choose --</option>	
 				</select>
 			</div>
+			<div ng-if="(Form.JSON.springShaklesAndTrunionLubricated !== 'Done' && Form.JSON.springShaklesAndTrunionLubricated !== 'N/A') && Form.JSON.springShaklesAndTrunionLubricated !== undefined" class="form-group">
+				<label for="springshackles_andtrunion_lubricated_comment">Please Specify</label>
+				<div><input name="springshackles_andtrunion_lubricated_comment" required class="form-control" placeholder="Enter Comment" id="springshackles_andtrunion_lubricated_comment" ng-model="Form.JSON.springShaklesAndTrunionLubricatedComment" type="text"></div>
+			</div>
 			<div class="form-group">
 				<label  for="kingsAndSteeringJointGreased">Kingpins and steering joints greased as per WIM Pro</label>
 				<select ng-options="item.name as item.name for item in inspectInspectionTypesWithNA" required ng-disabled="!Form.JSON.springShaklesAndTrunionLubricated" class="form-control" name="kingsAndSteeringJointGreased" id="kingsAndSteeringJointGreased" ng-model="Form.JSON.kingsAndSteeringJointGreased" >
 					<option value="">-- please choose --</option>
 				</select>
 			</div>
+			<div ng-if="(Form.JSON.kingsAndSteeringJointGreased !== 'Done' && Form.JSON.kingsAndSteeringJointGreased !== 'N/A') && Form.JSON.kingsAndSteeringJointGreased !== undefined" class="form-group">
+				<label for="kingsand_steeringjt_comment">Please Specify</label>
+				<div><input name="kingsand_steeringjt_comment" required class="form-control" placeholder="Enter Comment" id="kingsand_steeringjt_comment" ng-model="Form.JSON.kingsAndSteeringJointGreasedComment" type="text"></div>
+			</div>
 			<div class="form-group">
 				<label for="propsShaftUniversal">Propshaft universals and center bearings greased as per WIM Pro </label>
 				<select ng-options="item.name as item.name for item in inspectInspectionTypes" required ng-disabled="!Form.JSON.kingsAndSteeringJointGreased" class="form-control" name="propsShaftUniversal" id="propsShaftUniversal" ng-model="Form.JSON.propsShaftUniversal" >
 					<option value="">-- please choose --</option>
 				</select>
+			</div>
+			<div ng-if="Form.JSON.propsShaftUniversal !== 'Done' && Form.JSON.propsShaftUniversal !== undefined" class="form-group">
+				<label for="propshaft_universal_coment">Please Specify</label>
+				<div><input name="propshaft_universal_coment" required class="form-control" placeholder="Enter Comment" id="propshaft_universal_coment" ng-model="Form.JSON.propsShaftUniversalComment" type="text"></div>
 			</div>
 			<div class="form-group">
 				<label for="dateOfInspection">Date of inspection</label>

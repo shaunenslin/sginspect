@@ -1,4 +1,4 @@
-coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert){
+coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert, $filter){
     $scope.$emit('heading',{heading: 'Customer Management' , icon : 'glyphicon glyphicon-briefcase'});
     $scope.clients = [];
     $scope.clientEdit = {};
@@ -122,11 +122,15 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         var newArr = [];
         while(data.length !== 0){
             var splitArr = data.splice(0, 25);
-            //$scope.suppliers.splice(0, 2);
             newArr.push(splitArr);
         }
         return newArr;
     };
+    $scope.filterList = function(){
+        var result  = $filter('filter')( JSON.parse(sessionStorage.getItem( "Clientscache")), {$ : $scope.searchText});
+        result = arraySplit(result);
+        if (result.length > 0) $scope.splitArr  =  result; 
+    }
 
     $scope.navigate = function(change){
         if(sessionStorage.getItem('navigateAfterClientSave')){
