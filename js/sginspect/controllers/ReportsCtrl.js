@@ -1,6 +1,4 @@
 coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $location, $alert, $http, GlobalSvc, Settings, $route, $filter) {
-	$scope.Jobs = [];
-	$scope.data = [];
 	$scope.jobType = [
 		{name: 'Audit Form', value: 'audit'},
 		{name: 'Customer Visit Form', value: 'customervisit'},
@@ -9,6 +7,11 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 		{name: 'After Service Inspection', value: 'afterserviceevaluation'}
 	];
 	var newHeadings = ['Report Type', 'Technical Assessor', 'Date Submitted', 'Customer', 'Branch', 'Supplier', 'Performed Location', 'ExportedtoISO'];
+	$scope.Jobs = [];
+	$scope.data = [];
+	$scope.splitArr = [];
+    $scope.newArr = [];
+    $scope.idx = 0;
 
 	function fetchJobs(){
 		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=''&startdate=''&enddate=''" + "&ExportedtoISO=''";
@@ -19,7 +22,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 				e.timeString = moment(e.FormDate).format('DD-MMM-YY');
 				return e;
 			});
-			$scope.data = $scope.Jobs;
+			$scope.splitArr = arraySplit($scope.Jobs);
 			sessionStorage.setItem('JobsCache', JSON.stringify(json));
 			$scope.$emit('UNLOAD');
 		})
@@ -29,6 +32,22 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 			$scope.$emit('UNLOAD');
 		})
 	}
+
+	function arraySplit(data){
+        var newArr = [];
+        while(data.length !== 0){
+            var splitArr = data.splice(0, 25);
+            newArr.push(splitArr);
+        }
+        return newArr;
+    };
+
+    $scope.navigate = function(change){
+        changedVal = $scope.idx + change;
+        if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
+        $scope.idx = changedVal;
+    }
+    
 	$scope.onClearClicked = function(){
 		$scope.searchText = {"JobType": "", "UserID" :"", "startdate":"", "enddate":"", "ISO":""};
 		$scope.Jobs = $scope.data;

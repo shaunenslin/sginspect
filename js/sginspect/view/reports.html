@@ -30,7 +30,7 @@
 	        <button ng-click="onSearchClicked()" class="btn btn-success">Search <span class="fa fa-search"></span></button> <button ng-click="onClearClicked()" class="btn btn-danger">Clear</button>
 	    </form>  
 	</div>
-	 <a href=""><button ng-if="Jobs.length > 0" style="background-color: #31373B;bottom: 10px;" title="download csv file" type="button" class="round-btn" csv-header="getcsvHeader()" ng-csv="getCsvData()" filename="Report  For{{Jobs.FormType}}.csv"><span class="fa fa-cloud-download icon" aria-hidden="true"></span></button></a>
+	 <a href=""><button ng-if="Jobs.length > 0" style="background-color: #31373B;bottom: 10px;" title="download csv file" type="button" class="round-btn" csv-header="getcsvHeader()" ng-csv="getCsvData()" filename="Inspection Report.csv"><span class="fa fa-cloud-download icon" aria-hidden="true"></span></button></a>
 	<div class="container">
 		<div class="table-responsive">
 			<table class="table">
@@ -48,7 +48,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="item in Jobs">
+					<tr ng-repeat="item in splitArr[idx]">
 						<td ng-if="item.FormType === 'audit'">Audit Form</td>
 						<td ng-if="item.FormType === 'customervisit'">Customer Visit</td>
 						<td ng-if="item.FormType === 'supplierevaluation'">Supplier Evaluation</td>
@@ -67,8 +67,19 @@
 				</tbody>
 			</table>
 		</div>
+		<nav aria-label="...">
+            <ul class="pager">
+                <li><button class="btn btn-default btn-lg" type="button" ng-disabled="idx === 0" ng-click="navigate(-idx)">&laquo;</button></li>
+                <li><button class="btn btn-default btn-lg" type="button" ng-click="navigate(-1)" ng-disabled="idx === 0">&lsaquo;</button></li>
+                <li><button class="btn btn-default btn-lg" type="button">Page {{idx + 1}} of {{splitArr.length}}</button></li>
+                <li><button class="btn btn-default btn-lg" type="button" ng-click="navigate(1)" ng-disabled="idx === splitArr.length - 1">&rsaquo;</button></li>
+                <li><button class="btn btn-default btn-lg" type="button" ng-disabled="idx === splitArr.length - 1" ng-click="navigate(splitArr.length - idx - 1)">&raquo;</button></li>
+            </ul>
+        </nav>
 	</div>
-	  <div class="alert alert-warning" ng-if="Jobs.length === 0">
-        	<p><i class="fa fa-info"></i> No results found</p>
-        </div>
+	<div class="alert alert-warning" ng-if="splitArr[idx].length === 0">
+       <p><i class="fa fa-info"></i> No results found</p>
+    </div>
+    <pagination page="1" max-size="2" total-items="Jobs" items-per-page="25"></pagination>
+
 </div>
