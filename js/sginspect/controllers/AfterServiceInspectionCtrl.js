@@ -36,7 +36,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 
 	$scope.onPhotoClicked = function(field, filenames){
 		var reader = new FileReader();
-		reader.addEventListener("load", function () {
+		reader.onload = function() {
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
@@ -47,11 +47,20 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 			}
 			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.$apply();
-		}, false);
+		};
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
-				reader.readAsDataURL(img);
-			}
+                $scope.image = img;
+                if ($scope.image){
+                    var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
+                    CaptureImageSvc.savePhoto(key, $scope.image);
+                    filenames.push(key);
+                } else{
+                    $scope.capture = true;
+                }
+                $scope.$apply();
+            }
+
 			var onError = function(err){
 				$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
 			}
@@ -212,9 +221,9 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
         $scope.$emit('heading',{heading: 'After Service Inspection', icon : 'fa fa-car'});
         $scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
         $scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
-        $scope.Form.JSON.RegNumber = 'HTT 091 GP';
+        $scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
         $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
-        $scope.Form.JSON.LicenceExpiryDate = '25 July 2017';
+        $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
 		fetchGPS();
 		fetchClient();
 		savePartialForm();

@@ -215,9 +215,9 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		fetchClient();
 		fetchServiceHistory();
 		savePartialForm();
-		$scope.Form.JSON.RegNumber =  sessionStorage.getItem('currentRegNumber');
-		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
-		$scope.Form.JSON.LicenceExpiryDate = '25 July 2017';
+		$scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
+        $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
+        $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
 		$scope.inspectorSignatureBoxLabel = 'Inspector';
 	}
 	constructor();

@@ -93,31 +93,61 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	$scope.nfcScan = function(){
-		$scope.VinNumber = "IG1YY23671299872";
-		sessionStorage.setItem('currentRegNumber', 'HTT 091 GP');
-		sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
-		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully", duration:5, placement:'top-right', type:'success', show:true});
-		$scope.onNextClicked();
+	    if(Settings.isPhoneGap){
+            cordova.plugins.barcodeScanner.scan(
+                  function (result) {
+  					 if(result.cancelled) return;
+                     var barCodeData = result.text.split('%');
+                     $scope.VinNumber = barCodeData[12];
+                     sessionStorage.setItem('currentRegNumber', barCodeData[6]);
+                     sessionStorage.setItem('currentVinNumber', barCodeData[12]);
+                     sessionStorage.setItem('currentExpirayDate', barCodeData[14]);
+  					 $scope.onNextClicked();
+  					 $scope.$apply();
+                  },
+                  function (error) {
+                      alert("Scanning failed: " + error);
+                  },
+                  {
+                      "prompt" : "Place a barcode inside the scan area", // supported on Android only
+                      "formats" : "PDF_417", // default: all but PDF_417 and RSS_EXPANDED
+                      "orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
+                  }
+               );
+	    }else{
+	        $scope.VinNumber = "IG1YY23671299872";
+            sessionStorage.setItem('currentExpirayDate', '21 July 2017');
+            sessionStorage.setItem('currentRegNumber', 'HTT 091 GP');
+            sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
+        	$scope.onNextClicked();
+			$scope.$apply();
+        }
 	}
 
 	$scope.onPhotoClicked = function(field){
 		var reader = new FileReader();
-		reader.addEventListener("load", function () {
+		reader.onload  = function(e) {
 			$scope.image = reader.result;
-			if ($scope.image){
+			if ($routeParams.screennum == 6 && $scope.image){
 				var key = $scope.Form.FormID + '_' + field + '.png';
 				CaptureImageSvc.savePhoto(key, $scope.image);
 			} else{
 				$scope.capture = true;
 			}
 			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
-			$scope.onNextClicked();
 			$scope.$apply();
-		}, false);
+		};
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
-				reader.readAsDataURL(img);
+				console.log(field + '-image');
+				var imgtag = document.getElementById(field + '-image');
+				imgtag.src = "data:image/jpeg;base64," + img;
+				$scope.image = img;
+				$scope.capture = true;
+				$scope.onNextClicked();
+				$scope.$apply();
 			}
+
 			var onError = function(err){
 				$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
 			}
