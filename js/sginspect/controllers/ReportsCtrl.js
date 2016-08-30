@@ -56,6 +56,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
     	$scope.Report = JSON.parse(sessionStorage.getItem('currentReportCache'));
     	$scope.CentreLong = $scope.Report.JSON.Longitude;
     	$scope.CentreLat =  $scope.Report.JSON.Latitude;
+    	$scope.$emit('UNLOAD');
     }
     
 	$scope.onClearClicked = function(){
@@ -73,8 +74,9 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 			$alert({content:"Error  Searching Jobs " + err, duration:5, placement:'top-right', type:'danger', show:true});
 		})
 	}
-	$scope.editClicked = function(){
-
+	$scope.editClicked = function(idx){
+		sessionStorage.setItem('currentReportCache', JSON.stringify($scope.splitArr[$scope.idx][idx]));
+		$location.path('/report/' + $scope.splitArr[$scope.idx][idx].FormType + '/' + $scope.splitArr[$scope.idx][idx].FormID);
 	}
 	function getCSVData(scope){
         headings = getCSVHeadings(scope);
@@ -145,6 +147,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
     }
 
 	function constructor(){
+		$scope.$emit('LOAD');
 		if (!$routeParams.mode && !$routeParams.id){
 			$scope.$emit('heading',{heading: 'Search For Jobs' , icon : 'fa fa-search'});
 			$scope.mode = 'list';

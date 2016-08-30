@@ -62,7 +62,7 @@
 							<td>{{item.JSON.Branch}}</td>
 							<td ng-click="navigatetoReportMap($index)" style="cursor: pointer;">{{item.JSON.Latitude + ' ' + item.JSON.Longitude}}</td>
 							<td>{{(item.ExportedtoISO === 0 || !item.ExportedtoISO) ? 'No' : 'Yes'}}</td>
-							<td><button ng-click="editClicked()" class="btn btn-primary">Edit <span class="fa fa-pencil"></span></button></td>
+							<td><button ng-click="editClicked($index)" class="btn btn-primary"><span class="fa fa-pencil"></span></button></td>
 							<td></td>
 						</tr>
 					</tbody>
