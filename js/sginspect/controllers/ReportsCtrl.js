@@ -75,7 +75,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 	}
 	$scope.editClicked = function(idx){
 		sessionStorage.setItem('currentReportCache', JSON.stringify($scope.splitArr[$scope.idx][idx]));
-		$location.path('/report/' + $scope.splitArr[$scope.idx][idx].FormType + '/' + $scope.splitArr[$scope.idx][idx].FormID);
+		$location.path($scope.splitArr[$scope.idx][idx].FormType + '/report/' + $scope.splitArr[$scope.idx][idx].FormID);
 	}
 	function getCSVData(scope){
         headings = getCSVHeadings(scope);

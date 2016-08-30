@@ -7,7 +7,16 @@ coreApp.controller("AuditReportCtrl", function($scope, $routeParams, DaoSvc, $lo
 		$scope.$emit('UNLOAD');
 	}
 	function fetchImages(){
-		var url = Settings.url + ''
+		var url = Settings.url + 'Gett?method=SGIImages_readlist&ClientID=' + $scope.Report.ClientID + '&ImageID=' + $scope.Report.FormID;
+		$http.get (url)
+		.success(function(data){
+			$scope.images = data;
+			$scope.$emit('UNLOAD');
+		})
+		.error(function(){
+			$scope.$emit('UNLOAD');
+			$alert({content:"Error fetching images" + err, duration:5, placement:'top-right', type:'danger', show:true});
+		})
 	}
 
 	function constructor(){
@@ -15,6 +24,7 @@ coreApp.controller("AuditReportCtrl", function($scope, $routeParams, DaoSvc, $lo
 		$scope.$emit('heading',{heading: 'Audit Form' , icon : 'fa fa-check'});
 		$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back()}});
 		fetchReport();
+		fetchImages();
 	}
 	constructor();
 });
