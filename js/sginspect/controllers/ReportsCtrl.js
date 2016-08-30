@@ -7,7 +7,6 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 		{name: 'After Service Inspection', value: 'afterserviceevaluation'}
 	];
 	var newHeadings = ['Report Type', 'Technical Assessor', 'Date Submitted', 'Customer', 'Branch', 'Supplier', 'Performed Location', 'ExportedtoISO'];
-	$scope.Jobs = [];
 	$scope.data = [];
 	$scope.splitArr = [];
     $scope.newArr = [];
@@ -83,9 +82,9 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
         if (!headings) return;
         var data = [];
         // Add data
-        for (var i = 0 ; i < scope.Jobs.length; i++){
+        for (var i = 0 ; i < scope.splitArr[$scope.idx].length; i++){
         	var row = {};
-			row = matchJsonToHeadings(scope.Jobs[i]);
+			row = matchJsonToHeadings(scope.splitArr[$scope.idx][i]);
             data.push(row);
         }
         scope.csvHeadings = newHeadings;
@@ -132,7 +131,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
             if ($scope.Jobs[0].hasOwnProperty(prop) && (prop.toLowerCase() === 'formtype' || prop.toLowerCase() === 'formdate'|| prop.toLowerCase() === 'exportedtoiso')) headingFields.push(prop);
             if (prop.toLowerCase() === 'userid') headingFields.push('User_Name');
         }
-        for (var prop in $scope.Jobs[0].JSON){
+        for (var prop in $scope.splitArr[0].JSON){
             if (prop.toLowerCase() === 'customer' || prop.toLowerCase() === 'branch' || prop.toLowerCase() === 'latitude' || prop.toLowerCase() === 'longitude') headingFields.push(prop); 
 
         }

@@ -3,30 +3,18 @@ coreApp.controller("AuditReportCtrl", function($scope, $routeParams, DaoSvc, $lo
 
 	function fetchReport(){
 		$scope.Report = JSON.parse(sessionStorage.getItem('currentReportCache'));
-		switch ($scope.Report.FormType){
-			case 'audit' :
-				$scope.$emit('heading',{heading: 'Audit Form' , icon : 'fa fa-check'});
-				break;
-			case 'supplierevaluation':
-				$scope.$emit('heading',{heading: 'Supplier Evaluation' , icon : 'fa fa-check'});
-				break;
-			case 'technicalreport' :
-				$scope.$emit('heading',{heading: 'Technical Report' , icon : 'fa fa-check'});
-				break;
-			case 'afterserviceevaluation' :
-				$scope.$emit('heading',{heading: 'After Service Inspection' , icon : 'fa fa-check'});
-				break;
-			case 'customervisit' : 
-				$scope.$emit('heading',{heading: 'Customer Visit' , icon : 'fa fa-check'});
-	    		break;
-    	}
+		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.InspectionDate).format('YYYY/MM/DD HH:mm');
+		$scope.$emit('UNLOAD');
+	}
+	function fetchImages(){
+		var url = Settings.url + ''
 	}
 
 	function constructor(){
-		if ($routeParams.mode){
-			$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back()}});
-			fetchReport();
-		}
+		$scope.$emit('LOAD');
+		$scope.$emit('heading',{heading: 'Audit Form' , icon : 'fa fa-check'});
+		$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back()}});
+		fetchReport();
 	}
 	constructor();
 });
