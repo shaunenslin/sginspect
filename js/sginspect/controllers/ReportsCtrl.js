@@ -10,7 +10,6 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 	$scope.data = [];
 	$scope.splitArr = [];
     $scope.newArr = [];
-    var data = [];
     $scope.idx = 0;
 
 
@@ -26,6 +25,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 			$scope.splitArr = arraySplit($scope.Jobs);
 			data = json;
 			sessionStorage.setItem('JobsCache', JSON.stringify(json));
+			$scope.show = true;
 			$scope.$emit('UNLOAD');
 		})
 		.error(function(err){
@@ -83,10 +83,17 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
         headings = getCSVHeadings(scope);
         if (!headings) return;
         var data = [];
+        var Jobs = $scope.splitArr[0];
+        var arrayCount = 0;
+        while (arrayCount < $scope.splitArr.length){
+        	Jobs = Jobs.concat($scope.splitArr[arrayCount]);
+        	arrayCount++;
+
+        }
         // Add data
-        for (var i = 0 ; i < scope.Jobs.length; i++){
+        for (var i = 0 ; i < Jobs.length; i++){
         	var row = {};
-			row = matchJsonToHeadings(scope.Jobs[i]);
+			row = matchJsonToHeadings(Jobs[i]);
             data.push(row);
         }
         scope.csvHeadings = newHeadings;

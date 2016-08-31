@@ -1,6 +1,10 @@
 <div class="inset"  style="padding-top: 15px; padding-bottom: 50px;" ng-controller='TechReportCtrl'>
-<div style="margin-top: 10px;">
-    	<table class="table">
+	<div class="container" style="margin-top: 10px;">
+    	<div class="table-responsive">
+    		<label>Technical Report</label>
+			<label style="">Technical Report {{Report.FormDate}}</label>
+			<label style="float:right">Job Start :{{Report.FormDate}}</label>
+    		<table class="table table-hover table-striped table-bordered">
 			<thead>
 				<tr>
 			    	<th>Task</th>
@@ -40,6 +44,12 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
+			    <tr ng-repeat="img in descriptionImages">
+					<td>Description of Findings (image)</td>
+					<td><img id="desc-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
 			    <tr>
 					<td>Reccomendations</td>
 					<td>{{Report.JSON.Reccomendations}}</td>
@@ -51,8 +61,21 @@
 					<td>{{Report.JSON.Conclusions}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
-			    </tr>  
+			    </tr>
+			    <tr ng-repeat="img in otherPhotos">
+					<td>Other Photos</td>
+					<td><img id="other-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr> 
+			     <tr>
+					<td>Inspector Signature</td>
+					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature.ImageData}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
 	  		</tbody>
 		</table>
+    	</div>
     </div>
 </div>
