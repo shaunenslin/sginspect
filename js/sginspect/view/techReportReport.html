@@ -1,0 +1,58 @@
+<div class="inset"  style="padding-top: 15px; padding-bottom: 50px;" ng-controller='TechReportCtrl'>
+<div style="margin-top: 10px;">
+    	<table class="table">
+			<thead>
+				<tr>
+			    	<th>Task</th>
+					<th>Answer</th>
+					<th>Completed Date</th>
+					<th>Completed By</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Technical Report</td>
+					<td>{{Report.JSON.Customer}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+			    <tr>
+					<td>Investigation Reason</td>
+					<td>{{Report.JSON.InvestigationReason}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+				<tr>
+					<td>Customer User of Group</td>
+					<td>{{Report.JSON.ClientUserGroup}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Ref No : SF (Optional)</td>
+					<td>{{Report.JSON.Reference}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Description of Findings</td>
+					<td>{{Report.JSON.Description}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Reccomendations</td>
+					<td>{{Report.JSON.Reccomendations}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Conclusions</td>
+					<td>{{Report.JSON.Conclusions}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>  
+	  		</tbody>
+		</table>
+    </div>
+</div>

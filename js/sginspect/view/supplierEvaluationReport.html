@@ -1,0 +1,270 @@
+<div class="inset"  style="padding-top: 15px; padding-bottom: 50px;" ng-controller='SupplierEvaluationReportCtrl'>
+<div style="margin-top: 10px;">
+    	<table class="table">
+			<thead>
+				<tr>
+			    	<th>Task</th>
+					<th>Answer</th>
+					<th>Completed Date</th>
+					<th>Completed By</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Supplier Evaluation</td>
+					<td>{{Report.JSON.Customer}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+		    	<tr>
+					<td>Supplier</td>
+					<td>{{Report.JSON.Name}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+			    <tr>
+					<td>Address</td>
+					<td>{{Report.JSON.Address}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+				<tr>
+					<td>Evaluation Date</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Reception</td>
+					<td>{{Report.JSON.Reception}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			 	<tr ng-if="Report.JSON.ReceptionComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.ReceptionComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Procedures</td>
+					<td>{{Report.JSON.Procedures}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.ProceduresComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.ProceduresComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Workmanship</td>
+					<td>{{Report.JSON.Workmanship}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.WorkmanshipComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.WorkmanshipComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Downtime</td>
+					<td>{{Report.JSON.Downtime}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			   
+			  	<tr ng-if="Report.JSON.DowntimeComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.DowntimeComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Cleanliness</td>
+					<td>{{Report.JSON.Cleanliness}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.CleanlinessComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.CleanlinessComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Conformity</td>
+					<td>{{Report.JSON.Conformity}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.ConformityComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.ConformityComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Parts Availibility</td>
+					<td>{{Report.JSON.PartsAvailibility}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr ng-if="Report.JSON.PartsAvailibilityComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.PartsAvailibilityComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Facility</td>
+					<td>{{Report.JSON.Facility}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr ng-if="Report.JSON.FacilityComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.FacilityComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Warranties</td>
+					<td>{{Report.JSON.Warranties}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.WarrantiesComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.WarrantiesComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Bulletins</td>
+					<td>{{Report.JSON.Bulletins}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			   <tr ng-if="Report.JSON.BulletinsComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.BulletinsComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>SpecialToolsTraining</td>
+					<td>{{Report.JSON.SpecialToolsTraining}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.SpecialToolsTrainingComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.SpecialToolsTraining}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    	<tr>
+						<td>Technical Competency</td>
+						<td>{{Report.JSON.TechComp}}</td>
+						<td>{{Report.JSON.timeString}}</td>
+						<td>{{Report.JSON.User_Name}}</td>
+			    	</tr>
+			    	<tr>
+		    	<tr ng-if="Report.JSON.TechCompComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.TechCompComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+					<td>Communication Skills</td>
+					<td>{{Report.JSON.CommSkills}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+			    <tr ng-if="Report.JSON.CommSkills">
+					<td>Remarks</td>
+					<td>{{Report.JSON.CommSkillsComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Phone Etiquette</td>
+					<td>{{Report.JSON.PhoneEtiquette}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.PhoneEtiquetteComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.PhoneEtiquetteComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td> Authorisation Lead Time</td>
+					<td>{{Report.JSON.AuthLeadTime}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.AuthLeadTimeComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.AuthLeadTimeComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Professionalism</td>
+					<td>{{Report.JSON.Professionalism}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.ProfessionalismComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.ProfessionalismComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Invoice Payment on Time with SLA</td>
+					<td>{{Report.JSON.InvoicePayment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.InvoicePaymentComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.InvoicePaymentComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>RFC Notifications</td>
+					<td>{{Report.JSON.RFCNotifications}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.RFCNotificationsComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.RFCNotificationsComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>General Comment</td>
+					<td>{{Report.JSON.GeneralComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.GeneralCommentComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.GeneralCommentComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     
+	  		</tbody>
+		</table>
+    </div>
+</div>
