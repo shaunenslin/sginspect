@@ -10,7 +10,9 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 	$scope.data = [];
 	$scope.splitArr = [];
     $scope.newArr = [];
+    var data = [];
     $scope.idx = 0;
+
 
 	function fetchJobs(){
 		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=''&startdate=''&enddate=''" + "&ExportedtoISO=''";
@@ -22,12 +24,12 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 				return e;
 			});
 			$scope.splitArr = arraySplit($scope.Jobs);
+			data = json;
 			sessionStorage.setItem('JobsCache', JSON.stringify(json));
 			$scope.$emit('UNLOAD');
 		})
 		.error(function(err){
-			$alert({content:"Error  fetching Jobs " + err, duration:5, placement:'top-right', type:'danger', show:true});
-
+			$alert({content:"Error  fetching Jobs ", duration:5, placement:'top-right', type:'danger', show:true});
 			$scope.$emit('UNLOAD');
 		})
 	}
@@ -82,9 +84,9 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
         if (!headings) return;
         var data = [];
         // Add data
-        for (var i = 0 ; i < scope.splitArr[$scope.idx].length; i++){
+        for (var i = 0 ; i < scope.Jobs.length; i++){
         	var row = {};
-			row = matchJsonToHeadings(scope.splitArr[$scope.idx][i]);
+			row = matchJsonToHeadings(scope.Jobs[i]);
             data.push(row);
         }
         scope.csvHeadings = newHeadings;

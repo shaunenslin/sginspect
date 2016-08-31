@@ -1,6 +1,7 @@
 <div class="inset"  style="padding-top: 15px; padding-bottom: 50px;" ng-controller='AuditReportCtrl'>
-<div style="margin-top: 10px;">
-    	<table class="table">
+	<div class="container" style="margin-top: 10px;">
+    	<div class="table-responsive">
+    		<table class="table">
 			<thead>
 				<tr>
 			    	<th>Task</th>
@@ -28,9 +29,9 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr>
+			    <tr ng-repeat="img in kilometerImages">
 					<td>Kilometers (image)</td>
-					<td><div class=""><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{image}}"></div></td>
+					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
@@ -211,5 +212,7 @@
 			     
 	  		</tbody>
 		</table>
-    </div>
+    	</div>	
+	</div>
+ 
 </div>

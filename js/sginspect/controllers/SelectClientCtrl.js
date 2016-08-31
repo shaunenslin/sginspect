@@ -205,6 +205,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 			$scope.image = sessionStorage.getItem('currentLicenceImage');
 			$scope.RegNumber = sessionStorage.getItem('currentRegNumber');
+			console.log($scope.image);
 		}
 		if (parseInt($routeParams.screennum) !== 0) savePartialForm();
 	}
