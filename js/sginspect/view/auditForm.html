@@ -175,7 +175,7 @@
 			<div class="col-sm-9"><input name="cabexterior_comment" required class="form-control" placeholder="Enter Comment" id="cabexterior_comment" ng-model="Form.JSON.CabExteriorComment" type="text"></div>
 		</div>
     	<div class="form-group">
-	        <label for="rust" class="col-sm-3">Rust</label>
+	        <label for="rust" class="col-sm-3">Is the Vehicle Free of Rust ?</label>
 	        <div class="col-sm-9">
 	        	<select name="rust" required ng-disabled="!Form.JSON.CabExterior" class="form-control" id="rust" ng-model="Form.JSON.Rust" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>
@@ -196,7 +196,7 @@
 	        </div>
     	</div>
     	<div class="form-group">
-	        <label for="fluid_leaks" class="col-sm-3">Fluid Leaks</label>
+	        <label for="fluid_leaks" class="col-sm-3">Is the Vehicle Free of Fluid Leaks ?</label>
 	        <div class="col-sm-9">
 	        	<select name="fluid_leaks" required ng-disabled="!Form.JSON.LicenseCard" class="form-control" id="fluid_leaks" ng-model="Form.JSON.FluidLeaks" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>

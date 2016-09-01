@@ -20,6 +20,15 @@ coreApp.service('CaptureImageSvc', function(GlobalSvc, DaoSvc,$alert, Settings){
 		savePhoto : function(key, formid, img, ID, date){
 			var data = {};
 			data.key = key;
+			data.url = Settings.url + "PostImage"
+			data.json = {};
+			data.json.Id = key;
+			data.json.Name = key;
+			data.json.Type = "image/png;base64";
+			data.json.SupplierID = "SGINSPECTOR";
+			data.json.FileData = img.replace("data:image/png;base64,","");
+
+			/*
 			data.url = Settings.url + 'Post?method=SGIImages_modify';
 			data.json = {};
 			data.json.FormID = key;
@@ -27,6 +36,7 @@ coreApp.service('CaptureImageSvc', function(GlobalSvc, DaoSvc,$alert, Settings){
 			data.json.ImageID = formid;
 			data.json.ImageData = img;
 			data.json.CreatedOn = date;
+			*/
 			DaoSvc.put(data, 'Unsent', key, console.log('Image Saved to Unsent!'),undefined);
 		}
 

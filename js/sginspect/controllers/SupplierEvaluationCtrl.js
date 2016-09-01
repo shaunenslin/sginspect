@@ -28,7 +28,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 	function newSupplierObject(){
         return  {
-			SupplierID: $scope.Form.JSON.SupplierID,
+			SupplierID: "",
 			Name: $scope.Form.JSON.Name,
 			Active: 1,
 			Address: $scope.Form.JSON.Address,
@@ -108,7 +108,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		if (sessionStorage.getItem('fromJobsScreenCache')){
 			path = '/jobs/open';
 			sessionStorage.removeItem('fromJobsScreenCache');
-		}else{ 
+		}else{
 			path = 'selectclient/supplierevaluation/0';
 		}
 		$location.path(path);
@@ -151,14 +151,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if ($scope.mode == 'new') {
-			var found = $filter('filter')($scope.Suppliers,{SupplierID:$scope.Form.JSON.SupplierID});
-			if (found.length > 0) {
-				$alert({ content: "This supplierID already exists, please use another", duration: 5, placement: 'top-right', type: 'danger', show: true});
-	            $scope.$emit('UNLOAD');
-	            return;
-			}
-		}
 		// Check the very last field on format, if it has a value, assume other fields been filled in OK
 		if(!$scope.Form.JSON.SpecialToolsTraining){
 			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
@@ -231,7 +223,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.Form.JobType = 'Open Jobs';
 		DaoSvc.put($scope.Form, 'InProgress', $scope.Form.FormID, function(){console.log('Partial Save of ' + $location.path() + ' successful')},function(){console.log('Partial Save of' + $location.path() + ' failed')},function(){$scope.$apply();});
 	}
-	
+
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
@@ -243,6 +235,11 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		delete $scope.Form.JSON.existingSupplier;
+		$scope.Form.JSON.evaluationImages =  $scope.evaluationImages;
+		$scope.Form.JSON.CleanlinessImages = $scope.CleanlinessImages;
+		$scope.Form.JSON.SpecialToolsTrainingImages = $scope.SpecialToolsTrainingImages;
+		$scope.Form.JSON.ReceptionImages = $scope.ReceptionImages;
+
 		var technicaladvisorSignature =  createSignatureImage($scope.signature.technicaladvisor, 'technicaladvisor');
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
 		$scope.Form.JSON[technicaladvisorSignature.ID] = technicaladvisorSignature.FileData;
@@ -272,7 +269,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 					if (found.length > 0){
 						$scope.currentsupplier = found[0];
 						$scope.Form.JSON.Name = {"existingSupplier" : found[0].Name}
-					} 
+					}
 			  	}
 		  	}
 		 );
