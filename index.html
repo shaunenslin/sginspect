@@ -112,34 +112,40 @@ and open the template in the editor. this is a change
 
     <body>
         <nav id="navbar" class="navbar navbar navbar-default navbar-fixed-top bs-docs-nav" style="background-color: {{Settings.navColor}}; text-align:center;"  role="navigation">
-            <!-- These are right navigation button with the icon on the left -->
-            <a class="pull-right btn btn-nav navbuttonright" ng-if="right.href && !right.rightIcon" href="{{right.href}}" style="margin-right: 10px; margin-top:10px;"><span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span><span id="righttext" ng-cloak>{{right.label}}</span></a>
-            <a class="pull-right btn btn-nav navbuttonright" ng-if="right.onclick && !right.rightIcon" ng-click="right.onclick()" style="margin-right: 10px; margin-top:10px;"><span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span><span id="righttext" ng-cloak>{{right.label}}</span></a>
-            <!-- These are right navigation button with the icon on the right -->
-            <a class="pull-right btn btn-nav navbuttonright" ng-if="right.href && right.rightIcon" href="{{right.href}}" style="margin-right: 10px; margin-top:10px;"><span id="righttext" ng-cloak>{{right.label}}</span> <span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span></a>
-            <a class="pull-right btn btn-nav navbuttonright" ng-if="right.onclick && right.rightIcon" ng-click="right.onclick()" style="margin-right: 10px; margin-top:10px;"><span id="righttext" ng-cloak>{{right.label}}</span> <span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span></a>
+            
+            
+            <table style="width:100%; table-layout: fixed;" id="heading-table">
+                <tr>
+                    
+                    <td>
+                        <div class="pull-left hidden-sm hidden-xs" id="navbar-branding" style="height:55px;">
+                            <img style="display: block; margin:auto; margin-top:5px;" src="{{Settings.logo}}" ng-cloak>
+                        </div>
 
-            <button ng-if="!left.label" class="navbar-toggle ng-scope navbar-left" id="menubutton" type="button" data-template="js/core/view/aside.html" data-animation="am-slide-left" data-placement="left" title="Menu" data-container="body" bs-aside="aside" style="background-color:white">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+                        <button ng-if="!left.label" class="navbar-toggle ng-scope navbar-left" id="menubutton" type="button" data-template="js/core/view/aside.html" data-animation="am-slide-left" data-placement="left" title="Menu" data-container="body" bs-aside="aside" style="background-color:white">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>            
+                        <a class="pull-left btn btn-nav navbuttonleft" ng-if="left.label" ng-click="left.onclick()" ng-cloak><span id="lefticon" class="{{left.icon}}" ></span><span id="lefttext" >{{left.label}}</span></a>
+                    </td>
 
-            <div class="pull-left hidden-sm hidden-xs" id="navbar-branding" style="height:55px;">
-                <img style="display: block; margin:auto; margin-top:5px;" src="{{Settings.logo}}" ng-cloak>
-            </div>
-            <a class="pull-left btn btn-nav navbuttonleft" ng-if="left.label" ng-click="left.onclick()" ng-cloak><span id="lefticon" class="{{left.icon}}" ></span><span id="lefttext" >{{left.label}}</span></a>
+                    <td>
+                        <h4 style="color : white; line-height: 30px; text-align: center; vertical-align: middle; " class="headingText" ><span class="{{icon}} navicon"  style="margin-right : 5px;" ng-cloak></span> {{heading}}</h4>
+                    </td> 
+                    
+                    <td>
+                        <!-- These are right navigation button with the icon on the left -->
+                        <a class="pull-right btn btn-nav navbuttonright" ng-if="right.href && !right.rightIcon" href="{{right.href}}" style="margin-right: 10px; margin-top:10px;"><span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span><span id="righttext" ng-cloak>{{right.label}}</span></a>
+                        <a class="pull-right btn btn-nav navbuttonright" ng-if="right.onclick && !right.rightIcon" ng-click="right.onclick()" style="margin-right: 10px; margin-top:10px;"><span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span><span id="righttext" ng-cloak>{{right.label}}</span></a>
+                        <!-- These are right navigation button with the icon on the right -->
+                        <a class="pull-right btn btn-nav navbuttonright" ng-if="right.href && right.rightIcon" href="{{right.href}}" style="margin-right: 10px; margin-top:10px;"><span id="righttext" ng-cloak>{{right.label}}</span> <span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span></a>
+                        <a class="pull-right btn btn-nav navbuttonright" ng-if="right.onclick && right.rightIcon" ng-click="right.onclick()" style="margin-right: 10px; margin-top:10px;"><span id="righttext" ng-cloak>{{right.label}}</span> <span id="righticon" class="{{right.icon}}" style="margin-right : 5px;"></span></a>
+                    </td>
 
-            <!--<div id="nav-heading" class="navtext">
-                <div id="block" class="h4">
-                    <span class="navfiller"></span>
-                    <span class="{{icon}} navicon" style="margin-right : 5px;"></span>
-                    {{heading}}
-                </div>
-            </div>-->
-            <h4 ng-if="right.label" style="color : white; line-height: 30px;"><span class="{{icon}} navicon" style="margin-right : 5px;" ng-cloak></span> {{heading}}</h4>
-            <h4 ng-if="!right.label"style="color : white; line-height: 30px; text-align: initial; margin-left: 43%;"><span class="{{icon}} navicon" style="margin-right : 5px;" ng-cloak></span> {{heading}}</h4>
+                </tr>
+            </table>
 
         </nav>
 

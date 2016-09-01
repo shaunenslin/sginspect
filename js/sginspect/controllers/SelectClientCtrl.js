@@ -134,6 +134,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$scope.capture = true;
 			}
 			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+			$scope.onNextClicked();
 			$scope.$apply();
 		};
 		if ($scope.isPhoneGap){

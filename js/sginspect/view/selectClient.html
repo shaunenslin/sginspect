@@ -35,7 +35,7 @@
             	<p><i class="fa fa-info"></i> Please capture a picture of the VIN number</p>
         </div>
 		<div style="margin-top:10px;" class="well well-sm">
-			<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked('vin')" class="btn btn-success">Capture <span class="fa fa-camera"></span></button>
+			<button class="btn btn-success btn-block" ng-if="isPhoneGap"  ng-click="onPhotoClicked('vin')" class="btn btn-success">Capture <span class="fa fa-camera"></span></button>
 			<form ng-if="!isPhoneGap" style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
 				<div class="form-group">
 				  <input class="col-xs-8" id="file-select" type="file" capture="camera" accept="image/*">
@@ -63,7 +63,7 @@
    		<img ng-if="!isPhoneGap" align="middle"  class="img-responsive center-img" ng-if="image" ng-src="{{image}}">
 	    <img ng-if="isPhoneGap" align="middle" id="license-image" class="img-responsive center-img" ng-if="image" >
 	    <div style="margin-top:10px;" class="well well-sm">
-        	<button class="btn btn-success" ng-if="isPhoneGap"  ng-click="onPhotoClicked('license')" class="btn btn-success">Capture <span class="fa fa-camera"></span></button>
+        	<button class="btn btn-success btn-block" ng-if="isPhoneGap"  ng-click="onPhotoClicked('license')" class="btn btn-success">Capture <span class="fa fa-camera"></span></button>
 			<form ng-if="!isPhoneGap" style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
 				<div class="form-group">
 				  <input class="col-xs-8" id="file-select" type="file" capture="camera" accept="image/*">
