@@ -45,8 +45,8 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			path = '/jobs/open';
 			sessionStorage.removeItem('fromJobsScreenCache');
 			$location.path(path);
-		}else{ 
-			window.history.back();	
+		}else{
+			window.history.back();
 		}
 	}
 
@@ -124,7 +124,6 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$alert({ content: "Technical Report Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
-		sessionStorage.removeItem('currentForm');
 		$location.path('/');	
 	}
 
@@ -133,6 +132,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		deleteCurrentPartialForm($scope.Form.FormID);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		$scope.Form.JSON.descriptionImages =  $scope.DescriptionImages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
