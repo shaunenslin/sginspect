@@ -28,7 +28,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 	function newSupplierObject(){
         return  {
-			SupplierID: $scope.Form.JSON.SupplierID,
+			SupplierID: "",
 			Name: $scope.Form.JSON.Name,
 			Active: 1,
 			Address: $scope.Form.JSON.Address,
