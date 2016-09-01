@@ -117,7 +117,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		}
 		saveForm();
 	}
-	
+
 	$scope.onBackClicked = function(){
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		savePartialForm();
@@ -126,8 +126,8 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			path = '/jobs/open';
 			sessionStorage.removeItem('fromJobsScreenCache');
 			$location.path(path);
-		}else{ 
-			window.history.back();	
+		}else{
+			window.history.back();
 		}
 	}
 	$scope.syncCompleted = function(reload){
@@ -144,6 +144,10 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		deleteCurrentPartialForm($scope.Form.FormID);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		$scope.Form.KilometersImages = $scope.KilometersImages;
+		$scope.Form.TyresImages = $scope.TyresImages;
+		$scope.Form.other_photosimages = $scope.other_photosimages;
+
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));

@@ -7,13 +7,13 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 
     $scope.kilometerImages = [];
     $scope.commentPhotoImages = [];
-	
+
     $scope.inspectInspectionTypes = [
         {  name : "Done"},
         {  name : "Attempted"},
         {  name : "Not Done"},
     ];
-	
+
     $scope.inspectInspectionTypesWithNA = [
         {  name : "Done"},
         {  name : "Attempted"},
@@ -28,7 +28,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		if (sessionStorage.getItem('fromJobsScreenCache')){
 			path = '/jobs/open';
 			sessionStorage.removeItem('fromJobsScreenCache');
-		}else{ 
+		}else{
 			window.history.back();
 		}
 		$location.path(path);
@@ -150,12 +150,15 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
 		sessionStorage.removeItem('currentForm');
-		$location.path('/jobs/ratings');	
+		$location.path('/jobs/ratings');
 	}
 	function saveForm(){
 		deleteCurrentPartialForm($scope.Form.FormID);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		$scope.Form.kilometerImages = $scope.kilometerImages;
+		$scope.Form.commentPhotoImages = $scope.commentPhotoImages;
+
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
@@ -170,7 +173,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 			$location.path('/jobs/ratings');
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
-		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true); 
+		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
 
     function fetchClient(){

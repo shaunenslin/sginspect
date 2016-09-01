@@ -99,7 +99,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		if (sessionStorage.getItem('fromJobsScreenCache')){
 			path = '/jobs/open';
 			sessionStorage.removeItem('fromJobsScreenCache');
-		}else{ 
+		}else{
 			path = 'selectclient/supplierevaluation/0';
 		}
 		$location.path(path);
@@ -222,7 +222,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.Form.JobType = 'Open Jobs';
 		DaoSvc.put($scope.Form, 'InProgress', $scope.Form.FormID, function(){console.log('Partial Save of ' + $location.path() + ' successful')},function(){console.log('Partial Save of' + $location.path() + ' failed')},function(){$scope.$apply();});
 	}
-	
+
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
@@ -234,6 +234,11 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		delete $scope.Form.JSON.existingSupplier;
+		$scope.Form.JSON.evaluationImages =  $scope.evaluationImages;
+		$scope.Form.JSON.CleanlinessImages = $scope.CleanlinessImages;
+		$scope.Form.JSON.SpecialToolsTrainingImages = $scope.SpecialToolsTrainingImages;
+		$scope.Form.JSON.ReceptionImages = $scope.ReceptionImages;
+
 		var technicaladvisorSignature =  createSignatureImage($scope.signature.technicaladvisor, 'technicaladvisor');
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
 		$scope.Form.JSON[technicaladvisorSignature.ID] = technicaladvisorSignature.FileData;
@@ -263,7 +268,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 					if (found.length > 0){
 						$scope.currentsupplier = found[0];
 						$scope.Form.JSON.Name = {"existingSupplier" : found[0].Name}
-					} 
+					}
 			  	}
 		  	}
 		 );
