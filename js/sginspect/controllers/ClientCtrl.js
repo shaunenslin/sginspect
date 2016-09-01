@@ -5,6 +5,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     $scope.splitArr = [];
     $scope.newArr = [];
     $scope.idx = 0;
+    $scope.pageIdx = 0;
     $scope.checkboxs = {'Active' : true};
     var user_exists = false;
     var user = GlobalSvc.getUser();
@@ -81,8 +82,9 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 
     function fetchClients(){
     	if (sessionStorage.getItem("Clientscache")) {
-    		$scope.clients = JSON.parse(sessionStorage.getItem( "Clientscache"));
-            $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "Clientscache")));
+    		$scope.clients = arraySplit(JSON.parse(sessionStorage.getItem( "Clientscache")));
+            $scope.splitArr = $scope.clients;
+            $scope.pageIdx = $scope.splitArr.length -1;
     		$scope.$emit('UNLOAD');
     	} else {
 	        var url = Settings.url + 'Get?method=Clients_readlist';
@@ -90,8 +92,9 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 	        $http.get(url)
             .success(function(data){
                 sessionStorage.setItem("Clientscache",JSON.stringify(data));
-	            $scope.clients = data;
-                $scope.splitArr = arraySplit(data);
+	            $scope.clients =arraySplit(data);
+                $scope.splitArr = $scope.clients;
+                $scope.pageIdx = $scope.splitArr.length -1;
 	            $scope.$emit('UNLOAD');
                 console.log($scope.clients);
 	        })
@@ -129,7 +132,8 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     $scope.filterList = function(){
         var result  = $filter('filter')( JSON.parse(sessionStorage.getItem( "Clientscache")), {$ : $scope.searchText});
         result = arraySplit(result);
-        if (result.length > 0) $scope.splitArr  =  result; 
+        $scope.splitArr  =  result; 
+        $scope.pageIdx = ($scope.splitArr.length > 1) ? ($scope.splitArr.length - 1) : $scope.splitArr.length;
     }
 
     $scope.navigate = function(change){
@@ -138,7 +142,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             arrayLength = parseInt(sessionStorage.getItem('ClientarrayLength'));
             if(changedVal < 0 || changedVal >= arrayLength) return;
             $scope.idx = changedVal;
-            sessionStorage.setItem('currIdx', $scope.idx);    
+            sessionStorage.setItem('currIdx', $scope.pageIdx);    
         }else{
             sessionStorage.removeItem('currIdx');
             sessionStorage.removeItem('ClientarrayLength');
@@ -146,6 +150,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             sessionStorage.setItem('ClientarrayLength', $scope.splitArr.length);
             if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
             $scope.idx = changedVal;
+            $scope.pageIdx += change;
             sessionStorage.setItem('currIdx', $scope.idx);
         }
     }
