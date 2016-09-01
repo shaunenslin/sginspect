@@ -133,7 +133,9 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         var result  = $filter('filter')( JSON.parse(sessionStorage.getItem( "Clientscache")), {$ : $scope.searchText});
         result = arraySplit(result);
         $scope.splitArr  =  result; 
-        $scope.pageIdx = ($scope.splitArr.length > 1) ? ($scope.splitArr.length - 1) : $scope.splitArr.length;
+        // $scope.idx = $scope.idx < $scope.clients.length ? 0 : ($scope.pageIdx - 1);
+        // $scope.pageIdx = ($scope.splitArr.length > 1) ? ($scope.splitArr.length - 1) : $scope.splitArr.length;
+        $scope.idx = ($scope.splitArr.length > 1) ? $scope.pageIdx -1 : 0;
     }
 
     $scope.navigate = function(change){
@@ -151,7 +153,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
             $scope.idx = changedVal;
             $scope.pageIdx += change;
-            sessionStorage.setItem('currIdx', $scope.idx);
+            sessionStorage.setItem('currIdx', $scope.pageIdx);
         }
     }
     
