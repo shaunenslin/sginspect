@@ -142,14 +142,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if ($scope.mode == 'new') {
-			var found = $filter('filter')($scope.Suppliers,{SupplierID:$scope.Form.JSON.SupplierID});
-			if (found.length > 0) {
-				$alert({ content: "This supplierID already exists, please use another", duration: 5, placement: 'top-right', type: 'danger', show: true});
-	            $scope.$emit('UNLOAD');
-	            return;
-			}
-		}
 		// Check the very last field on format, if it has a value, assume other fields been filled in OK
 		if(!$scope.Form.JSON.SpecialToolsTraining){
 			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
