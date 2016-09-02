@@ -87,37 +87,39 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if(!$scope.Form.JSON.AbuseRelatedCosts || ($scope.Form.JSON.AbuseRelatedCosts === "Yes" && !$scope.Form.JSON.Costs)){
-			$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
-			$scope.$emit('UNLOAD');
-			return;
-		}
-		// Now check if any items dont have comments or where pictures are needed
-		for (prop in $scope.Form.JSON) {
-			if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Average" || $scope.Form.JSON[prop] === "Yes") {
-				if (!$scope.Form.JSON[prop + "Comment"] && (prop !== "FireExtinguisher" && prop !== "AbuseRelatedCosts")){
-					$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop], duration: 5, placement: 'top-right', type: 'danger', show: true});
-		        	$scope.$emit('UNLOAD');
-		           	return;
-				}
-				if ($scope[prop + "Images"]) {
-					if ($scope[prop + "Images"].length == 0) {
-						$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
-		           		$scope.$emit('UNLOAD');
-		           		return;
-					}
-				}
-			}
-			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
-			if($scope.Form.JSON[prop] === undefined){
-				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+		if($scope.Form.JSON.vinmatch && $scope.Form.regmatch){
+			if(!$scope.Form.JSON.AbuseRelatedCosts || ($scope.Form.JSON.AbuseRelatedCosts === "Yes" && !$scope.Form.JSON.Costs)){
+				$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 				$scope.$emit('UNLOAD');
 				return;
 			}
-			if ($scope.KilometersImages.length === 0) {
-			$alert({ content: "Please take picture(s) for Odometer reading", duration: 5, placement: 'top-right', type: 'danger', show: true});
-            $scope.$emit('UNLOAD');
-            return;
+			// Now check if any items dont have comments or where pictures are needed
+			for (prop in $scope.Form.JSON) {
+				if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Average" || $scope.Form.JSON[prop] === "Yes") {
+					if (!$scope.Form.JSON[prop + "Comment"] && (prop !== "FireExtinguisher" && prop !== "AbuseRelatedCosts")){
+						$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop], duration: 5, placement: 'top-right', type: 'danger', show: true});
+			        	$scope.$emit('UNLOAD');
+			           	return;
+					}
+					if ($scope[prop + "Images"]) {
+						if ($scope[prop + "Images"].length == 0) {
+							$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
+			           		$scope.$emit('UNLOAD');
+			           		return;
+						}
+					}
+				}
+				//Doing an extra validation of the whole form incase the last value is filled in but another value is null
+				if($scope.Form.JSON[prop] === undefined){
+					$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+					$scope.$emit('UNLOAD');
+					return;
+				}
+				if ($scope.KilometersImages.length === 0) {
+				$alert({ content: "Please take picture(s) for Odometer reading", duration: 5, placement: 'top-right', type: 'danger', show: true});
+	            $scope.$emit('UNLOAD');
+	            return;
+				}
 			}
 		}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
@@ -141,11 +143,12 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	}
 	$scope.syncCompleted = function(reload){
 		$scope.$emit('UNLOAD');
+		var path = (JSON.parse(sessionStorage.getItem('currentForm')).JSON.vinmatch && JSON.parse(sessionStorage.getItem('currentForm')).JSON.regmatch) ? '/jobs/ratings' : '/';
 		$alert({ content: "Audit Form Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
 		sessionStorage.removeItem('currentForm');
-		$location.path('/jobs/ratings');
+		$location.path(path);
 	}
 
 	function saveForm(){

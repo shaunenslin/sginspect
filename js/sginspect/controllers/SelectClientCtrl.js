@@ -169,6 +169,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		} else{
 			$scope.Form.JSON.regmatch = (clickVal.length > 0) ? true : false;
 		}
+		if (clickVal.length === 0) {$location.path('/' + $scope.Form.FormType); sessionStorage.setItem('currentForm', JSON.stringify($scope.Form)); return;};
 		$scope.onNextClicked();
 	}
 	function savePartialForm(){
