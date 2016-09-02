@@ -9,7 +9,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	$scope.onPhotoClicked = function(field, filenames){
 		var reader = new FileReader();
-		reader.addEventListener("load", function () {
+		reader.onload = function () {
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
@@ -20,11 +20,20 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			}
 			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.$apply();
-		}, false);
+		};
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
-				reader.readAsDataURL(img);
-			}
+                $scope.image = img;
+                if ($scope.image){
+                    var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
+                    CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+                    filenames.push(key);
+                } else{
+                    $scope.capture = true;
+                }
+                $alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+                $scope.$apply();
+            }
 			var onError = function(err){
 				$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
 			}
@@ -117,7 +126,6 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$alert({ content: "Technical Report Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
-		sessionStorage.removeItem('currentForm');
 		$location.path('/');
 	}
 
@@ -129,7 +137,6 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$scope.Form.JSON.descriptionImages =  $scope.DescriptionImages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
-		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			// Now send images
@@ -178,9 +185,9 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		fetchClient();
 		fetchServiceHistory();
 		savePartialForm();
-		$scope.Form.JSON.RegNumber =  sessionStorage.getItem('currentRegNumber');
-		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
-		$scope.Form.JSON.LicenceExpiryDate = '25 July 2017';
+		$scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
+        $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
+        $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
 		$scope.inspectorSignatureBoxLabel = 'Inspector';
 	}
 	constructor();

@@ -197,6 +197,11 @@ div.panel.panel-default.group-panel img{
 
 }
 
+#listOpenView h4 {
+    font-size: 13px;
+    font-weight: 400;
+}
+
 div.panel-footer.group-footer{
     background-color: rgba(0,0,0,0);
     border : none;
@@ -206,6 +211,14 @@ div.panel-footer.group-footer{
 @media all and (min-width: 500px) {
     .cardBox {
         height:200px;
+    }
+}
+
+@media only screen and (min-width: 300px) and (max-width : 680px){
+    .inset {margin: 8px;}
+    .headingText {
+        white-space : nowrap !important;
+        font-size: 14px !important;
     }
 }
 

@@ -50,7 +50,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 	$scope.onPhotoClicked = function(field, filenames){
 		var reader = new FileReader();
-		reader.addEventListener("load", function () {
+		reader.onload = function() {
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
@@ -61,11 +61,20 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			}
 			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.$apply();
-		}, false);
+		};
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
-				reader.readAsDataURL(img);
-			}
+                $scope.image = img;
+                if ($scope.image){
+                    var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
+                    CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+                    filenames.push(key);
+                } else{
+                    $scope.capture = true;
+                }
+                $alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+                $scope.$apply();
+            }
 			var onError = function(err){
 				$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
 			}

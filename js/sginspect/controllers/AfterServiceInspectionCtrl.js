@@ -29,7 +29,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 
 	$scope.onPhotoClicked = function(field, filenames){
 		var reader = new FileReader();
-		reader.addEventListener("load", function () {
+		reader.onload = function() {
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
@@ -40,11 +40,20 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 			}
 			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.$apply();
-		}, false);
+		};
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
-				reader.readAsDataURL(img);
-			}
+                $scope.image = img;
+                if ($scope.image){
+                    var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
+					CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+                    filenames.push(key);
+                } else{
+                    $scope.capture = true;
+                }
+                $scope.$apply();
+            }
+
 			var onError = function(err){
 				$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
 			}
@@ -143,7 +152,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
 		sessionStorage.removeItem('currentForm');
-		$location.path('/jobs/ratings');
+		$location.path('/');	
 	}
 	function saveForm(){
 		deleteCurrentPartialForm($scope.Form.FormID);
@@ -154,7 +163,6 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
-		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			// Now send images
@@ -163,7 +171,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		var error = function(err){
 			$scope.$emit('UNLOAD');
 			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
-			$location.path('/jobs/ratings');
+			$location.path('/');
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
@@ -191,9 +199,9 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
         $scope.$emit('heading',{heading: 'After Service Inspection', icon : 'fa fa-car'});
         $scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
         $scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
-        $scope.Form.JSON.RegNumber = 'HTT 091 GP';
+        $scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
         $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
-        $scope.Form.JSON.LicenceExpiryDate = '25 July 2017';
+        $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
 		fetchGPS();
 		fetchClient();
 		savePartialForm();
