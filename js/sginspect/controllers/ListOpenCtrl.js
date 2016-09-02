@@ -147,7 +147,6 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
             function(){
             	$scope.data = inspection_forms;
             	$scope.InspectionForms = $scope.data;
-            	if ($scope.InspectionForms.length === 0) showWarning;
                 $scope.$emit('UNLOAD');
                 $scope.$apply();
             }
