@@ -102,42 +102,45 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if(!$scope.Form.JSON.commentsOrPhotos){
-			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
-            $scope.$emit('UNLOAD');
-            return;
-		}
+		if ($scope.Form.JSON.vinmatch && $scope.Form.regmatch){
+			if(!$scope.Form.JSON.commentsOrPhotos){
+				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+	            $scope.$emit('UNLOAD');
+	            return;
+			}
 
-		for (prop in $scope.Form.JSON) {
-			if (($scope.Form.JSON[prop] === "Not Done"|| $scope.Form.JSON[prop] === "Attempted") && !$scope.Form.JSON[prop + "Comment"]){
-				$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
-	        	$scope.$emit('UNLOAD');
-	           	return;
+			for (prop in $scope.Form.JSON) {
+				if (($scope.Form.JSON[prop] === "Not Done"|| $scope.Form.JSON[prop] === "Attempted") && !$scope.Form.JSON[prop + "Comment"]){
+					$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
+		        	$scope.$emit('UNLOAD');
+		           	return;
+					}
+				if ($scope[prop + "Images"]) {
+					if ($scope[prop + "Images"].length == 0) {
+						$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
+						$scope.$emit('UNLOAD');
+						return;
+					}
 				}
-			if ($scope[prop + "Images"]) {
-				if ($scope[prop + "Images"].length == 0) {
-					$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
+				if (($scope.Form.JSON[prop] === "No" && prop === 'diffsOilLeLeaks') && !$scope.Form.JSON[prop + "Comment"]){
+					$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
+		        	$scope.$emit('UNLOAD');
+		           	return;
+				}
+				if (($scope.Form.JSON[prop] === "Yes" && prop === 'oilLeaks') && !$scope.Form.JSON[prop + "Comment"]){
+					$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
+		        	$scope.$emit('UNLOAD');
+		           	return;
+				}
+				//Doing an extra validation of the whole form incase the last value is filled in but another value is null
+				if($scope.Form.JSON[prop] === undefined){
+					$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 					$scope.$emit('UNLOAD');
 					return;
 				}
 			}
-			if (($scope.Form.JSON[prop] === "No" && prop === 'diffsOilLeLeaks') && !$scope.Form.JSON[prop + "Comment"]){
-				$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
-	        	$scope.$emit('UNLOAD');
-	           	return;
-			}
-			if (($scope.Form.JSON[prop] === "No" && prop === 'oilLeaks') && !$scope.Form.JSON[prop + "Comment"]){
-				$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
-	        	$scope.$emit('UNLOAD');
-	           	return;
-			}
-			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
-			if($scope.Form.JSON[prop] === undefined){
-				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
-				$scope.$emit('UNLOAD');
-				return;
-			}
 		}
+		
 
         if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
             $alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
@@ -148,21 +151,22 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	}
 	$scope.syncCompleted = function(reload){
 		$scope.$emit('UNLOAD');
+		var path = (JSON.parse(sessionStorage.getItem('currentForm')).JSON.vinmatch && JSON.parse(sessionStorage.getItem('currentForm')).JSON.regmatch) ? '/jobs/ratings' : '/';
 		$alert({ content: "Your Form has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
 		sessionStorage.removeItem('currentForm');
-		$location.path('/');	
+		$location.path(path);	
 	}
 	function saveForm(){
-		deleteCurrentPartialForm($scope.Form.FormID);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		deleteCurrentPartialForm($scope.Form.FormID);
 		$scope.Form.kilometerImages = $scope.kilometerImages;
 		$scope.Form.commentPhotoImages = $scope.commentPhotoImages;
-
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			// Now send images
@@ -190,7 +194,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
-	$scope.$watch("Form.JSON", function(){savePartialForm();}, true);
+	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
 		$scope.$emit('LOAD');

@@ -87,12 +87,13 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if(!$scope.Form.JSON.AbuseRelatedCosts || ($scope.Form.JSON.AbuseRelatedCosts === "Yes" && !$scope.Form.JSON.Costs)){
-			$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
-			$scope.$emit('UNLOAD');
-			return;
-		}
-		// Now check if any items dont have comments or where pictures are needed
+		if($scope.Form.JSON.vinmatch && $scope.Form.regmatch){
+			if(!$scope.Form.JSON.AbuseRelatedCosts || ($scope.Form.JSON.AbuseRelatedCosts === "Yes" && !$scope.Form.JSON.Costs)){
+				$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+				$scope.$emit('UNLOAD');
+				return;
+			}
+			// Now check if any items dont have comments or where pictures are needed
 		for (prop in $scope.Form.JSON) {
 			if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Average" || $scope.Form.JSON[prop] === "No") {
 				if (!$scope.Form.JSON[prop + "Comment"] && (prop !== "FireExtinguisher" && prop !== "AbuseRelatedCosts")){
@@ -114,12 +115,19 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 				$scope.$emit('UNLOAD');
 				return;
 			}
-			if ($scope.KilometersImages.length === 0) {
-			$alert({ content: "Please take picture(s) for Odometer reading", duration: 5, placement: 'top-right', type: 'danger', show: true});
-            $scope.$emit('UNLOAD');
-            return;
-			}
+				//Doing an extra validation of the whole form incase the last value is filled in but another value is null
+				if($scope.Form.JSON[prop] === undefined){
+					$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+					$scope.$emit('UNLOAD');
+					return;
+				}
+				if ($scope.KilometersImages.length === 0) {
+				$alert({ content: "Please take picture(s) for Odometer reading", duration: 5, placement: 'top-right', type: 'danger', show: true});
+	            $scope.$emit('UNLOAD');
+	            return;
+				}
 		}
+	}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
 			$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
 			return;
@@ -131,26 +139,25 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		sessionStorage.removeItem('fromJobsScreenCache');
 		$location.path('/jobs/open');
-		}
 	}
 	$scope.syncCompleted = function(reload){
 		$scope.$emit('UNLOAD');
+		var path = (JSON.parse(sessionStorage.getItem('currentForm')).JSON.vinmatch && JSON.parse(sessionStorage.getItem('currentForm')).JSON.regmatch) ? '/jobs/ratings' : '/';
 		$alert({ content: "Audit Form Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
 		sessionStorage.removeItem('currentForm');
-		$location.path('/jobs/ratings');
+		$location.path(path);
 	}
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		deleteCurrentPartialForm($scope.Form.FormID);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		deleteCurrentPartialForm($scope.Form.FormID);
 		$scope.Form.KilometersImages = $scope.KilometersImages;
 		$scope.Form.TyresImages = $scope.TyresImages;
 		$scope.Form.other_photosimages = $scope.other_photosimages;
-
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
@@ -181,7 +188,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
-    $scope.$watch("Form.JSON", function(){savePartialForm();}, true);
+   $scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
