@@ -93,25 +93,27 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
     }
     $scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if(!$scope.Form.JSON.Conclusions){
-			$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
-			$scope.$emit('UNLOAD');
-			return;
-		}
-			// Now check if any items dont have comments or where pictures are needed
-		for (prop in $scope.Form.JSON) {
-			if ($scope[prop + "Images"]) {
-				if ($scope[prop + "Images"].length == 0) {
-					$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
-	           		$scope.$emit('UNLOAD');
-	           		return;
-				}
-			}
-			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
-			if($scope.Form.JSON[prop] === undefined){
-				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+		if ($scope.Form.JSON.vinmatch && $scope.Form.regmatch){
+			if(!$scope.Form.JSON.Conclusions){
+				$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 				$scope.$emit('UNLOAD');
 				return;
+			}
+			// Now check if any items dont have comments or where pictures are needed
+			for (prop in $scope.Form.JSON) {
+				if ($scope[prop + "Images"]) {
+					if ($scope[prop + "Images"].length == 0) {
+						$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
+		           		$scope.$emit('UNLOAD');
+		           		return;
+					}
+				}
+				//Doing an extra validation of the whole form incase the last value is filled in but another value is null
+				if($scope.Form.JSON[prop] === undefined){
+					$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+					$scope.$emit('UNLOAD');
+					return;
+				}
 			}
 		}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
@@ -131,9 +133,9 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		deleteCurrentPartialForm($scope.Form.FormID);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		deleteCurrentPartialForm($scope.Form.FormID);
 		$scope.Form.JSON.descriptionImages =  $scope.DescriptionImages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
@@ -174,7 +176,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
-	$scope.$watch("Form.JSON", function(){savePartialForm();}, true);
+	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Technical Report', icon : 'fa fa-check-square-o'});

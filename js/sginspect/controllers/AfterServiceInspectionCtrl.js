@@ -159,9 +159,9 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		$location.path(path);	
 	}
 	function saveForm(){
-		deleteCurrentPartialForm($scope.Form.FormID);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		deleteCurrentPartialForm($scope.Form.FormID);
 		$scope.Form.kilometerImages = $scope.kilometerImages;
 		$scope.Form.commentPhotoImages = $scope.commentPhotoImages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
@@ -194,7 +194,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
-	$scope.$watch("Form.JSON", function(){savePartialForm();}, true);
+	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
 		$scope.$emit('LOAD');

@@ -1,6 +1,6 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="SupplierEvaluationCtrl">
    <!-- Screen 6 Inspection Form -->
-	  	<div >
+	  	<div ng-if="!hideForm">
 	  		<form style="margin-top: 10px;" class="form-horizontal" name="supplierevaluationform">
 				<div ng-if="mode==='existing'">
 					<h4>Supplier</h4>

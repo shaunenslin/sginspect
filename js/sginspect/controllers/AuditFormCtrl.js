@@ -139,7 +139,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		sessionStorage.removeItem('fromJobsScreenCache');
 		$location.path('/jobs/open');
-		}
 	}
 	$scope.syncCompleted = function(reload){
 		$scope.$emit('UNLOAD');
@@ -153,13 +152,12 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		deleteCurrentPartialForm($scope.Form.FormID);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		deleteCurrentPartialForm($scope.Form.FormID);
 		$scope.Form.KilometersImages = $scope.KilometersImages;
 		$scope.Form.TyresImages = $scope.TyresImages;
 		$scope.Form.other_photosimages = $scope.other_photosimages;
-
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
@@ -190,7 +188,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
-    $scope.$watch("Form.JSON", function(){savePartialForm();}, true);
+   $scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});

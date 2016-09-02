@@ -40,10 +40,10 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	function saveSupplier(){
         var url = Settings.url + "Post?method=Supplier_modify";
         GlobalSvc.postData(url,newSupplierObject(),function(){
-            $scope.$emit('UNLOAD');
+            // $scope.$emit('UNLOAD');
             $scope.$apply();
         },function(){
-            $scope.$emit('UNLOAD');
+            // $scope.$emit('UNLOAD');
             $scope.$apply();
         },'SGISuppliers','modify',false,true);
     }
@@ -223,12 +223,13 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		saveSupplier();
-		deleteCurrentPartialForm($scope.Form.FormID);
-		//Create Unique Key For Signature(s) and/or image(s)
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		delete $scope.Form.JSON.existingSupplier;
+		$scope.hideForm = true;
+		saveSupplier();
+		deleteCurrentPartialForm($scope.Form.FormID);
+		//Create Unique Key For Signature(s) and/or image(s)
 		$scope.Form.JSON.evaluationImages =  $scope.evaluationImages;
 		$scope.Form.JSON.CleanlinessImages = $scope.CleanlinessImages;
 		$scope.Form.JSON.SpecialToolsTrainingImages = $scope.SpecialToolsTrainingImages;
@@ -268,7 +269,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		  	}
 		 );
 	}
-	$scope.$watch("Form.JSON", function(){savePartialForm();}, true);
+	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
 		$scope.mode = $routeParams.mode;
