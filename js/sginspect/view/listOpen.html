@@ -94,7 +94,7 @@
             <div ng-if="additionalEquipmentRating > 0" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> Additional Equipment Rating :  {{additionalEquipmentRating + '%'}}</p>
             </div>
-             <div ng-if="jobType !== 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
+             <div ng-if="jobType !== 'supplierevaluation' && jobType !== 'afterserviceevaluation'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> Vehicle Fitness Rating :  {{vehicleFitnessRating}}</p>
             </div>
             <div ng-if="jobType === 'supplierevaluation' && supplierStatus !== 'New'" style="margin-top: 10px;" class="alert alert-info">

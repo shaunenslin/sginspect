@@ -23,7 +23,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	var audit_additional_equipment_ratings = {'fireextinguisher': 50, 'equipment': 50};
 	var afterservice_overall_ratings = {'radiatorconditionchecked' : 6,'engineoillevelschecked' : 15,'oilfilterschecked' : 15,'oilleaks' : 6,'aircleanerserviced' : 15,'fuelfilterchecked' : 15,'gearboxbreatherserviced' : 3,'diffbreatherserviced' : 3,'diffsoilleleaks' : 3,'diffsoillevelchecked' : 2,'diffandrearaxlewashed' : 2,'fithwheelcleaned' : 2,'hardenedcinsert' : 2,'batteriesserviced' : 3,'springshaklesandtrunionlubricated' : 3,'kingsandsteeringjointgreased' : 3,'propsshaftuniversal' : 2};
 	var supplier_overall_ratings = {'reception' : 9,'procedures' : 9,'workmanship' : 12,'downtime' : 9,'cleanliness' : 11,'conformity' : 8,'partsavailibility' : 8,'facility' : 8,'warranties' : 9,'bulletins' : 7,'specialtoolstraining' : 10};
-	var o = {'good': 1, 'bad': 0, 'average': 0.5, 'yes': 0, 'no' :1, 'valid': 1, 'expired': 0, 'done': 1, 'attempted': 0.5, 'not done': 0, 'n/a': 1};
+	var o = {'good': 1, 'bad': 0, 'average': 0.5, 'yes': 1, 'no' :0, 'valid': 1, 'expired': 0, 'done': 1, 'attempted': 0.5, 'not done': 0, 'n/a': 1};
 	var supplier_competency_ratings = {'techcomp' : 50,'commskills' : 50};
 	var supplier_etiquette_ratings = {'phoneetiquette' : 34, 'authleadtime' : 33, 'professionalism' : 33};
 	var supplier_rfcPayment_ratings = {'invoicepayment' : 50, 'rfcnotifications' : 50};
@@ -196,7 +196,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 				add_rating+= (prop.toLowerCase() === 'fireextinguisher') ? Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()]) : (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
 			}
 		}
-		if (!savedForm.JSON.vinmatch || !savedForm.JSON.regmatch || savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
+		if (savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
 		$scope.overallRating = rating;
 		$scope.additionalEquipmentRating = add_rating;
 	}
@@ -234,7 +234,6 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			} else{
 				calculateSupplierRating(savedForm, prop);
 			}
-			if (!savedForm.JSON.vinmatch || !savedForm.JSON.regmatch) $scope.vehicleFitnessRating = 'Fail';
 		}
 	}
 
