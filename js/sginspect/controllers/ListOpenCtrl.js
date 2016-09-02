@@ -7,7 +7,6 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.CloseJobsCount = 0;
 	$scope.selectOptions =[{name : 'audit'}, {name : 'customervisit'}, {name : 'afterserviceevaluation'}, {name : 'technicalreport'}, {name : 'supplierevaluation'}];
 	$scope.searchText = {"JobType" : "", "Date" : "", "Text": ""};
-	$scope.showWarning = false;
 	$scope.vehicleFitnessRating = 'Pass';
 	$scope.overallRating = 0;
 	$scope.additionalEquipmentRating = 0;
@@ -22,7 +21,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	var audit_overall_ratings = {'cabinterior': 7,'steeringplay': 6,'electrical': 6,'engine_smoke': 13,'clutchoperation': 7,'brakes': 14,'gearselector': 6,'propshaftplay': 5,'cabexterior': 7,'rust': 5,'licensecard': 8,'fluidleaks': 7,'tyres' : 9,'fireextinguisher': 0,'fireextisvalid': 0,'fireextinguisherdate': 0,'equipment': 0,'abuserelatedcosts': 0};
 	var audit_additional_equipment_ratings = {'fireextinguisher': 50, 'equipment': 50};
 	var supplier_overall_ratings = {'reception' : 9,'procedures' : 9,'workmanship' : 12,'downtime' : 9,'cleanliness' : 11,'conformity' : 8,'partsavailibility' : 8,'facility' : 8,'warranties' : 9,'bulletins' : 7,'specialtoolstraining' : 10};
-	var o = {'good': 1, 'bad': 0, 'average': 0.5, 'yes': 0, 'no' :1, 'valid': 1, 'expired': 0, 'done': 1, 'attempted': 0.5, 'not done': 0, 'n/a': 1};
+	var o = {'good': 1, 'bad': 0, 'average': 0.5, 'yes': 1, 'no' :0, 'valid': 1, 'expired': 0, 'done': 1, 'attempted': 0.5, 'not done': 0, 'n/a': 1};
 	var supplier_competency_ratings = {'techcomp' : 50,'commskills' : 50};
 	var supplier_etiquette_ratings = {'phoneetiquette' : 34, 'authleadtime' : 33, 'professionalism' : 33};
 	var supplier_rfcPayment_ratings = {'invoicepayment' : 50, 'rfcnotifications' : 50};
@@ -177,8 +176,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		            search_results.push(item);
 		        }
 	        	$scope.InspectionForms = search_results;
-    		}); 
-    		if ($scope.InspectionForms.length === 0) $scope.showWarning = true;    
+    		});    
 		}
 
 	}
