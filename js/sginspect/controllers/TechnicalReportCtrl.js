@@ -125,7 +125,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
 		sessionStorage.removeItem('currentForm');
-		$location.path('/jobs/ratings');
+		$location.path('/');
 	}
 
 	function saveForm(){
@@ -145,7 +145,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		var error = function(err){
 			$scope.$emit('UNLOAD');
 			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
-			$location.path('/jobs/ratings');
+			$location.path('/');
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);

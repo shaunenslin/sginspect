@@ -194,7 +194,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
             $scope.$emit('UNLOAD');
             return;
         }
- 		deleteCurrentPartialForm($scope.Form.FormID);
 		saveForm();
 	}
 
@@ -222,6 +221,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	function saveForm(){
 		$scope.$emit('LOAD');
 		saveSupplier();
+		deleteCurrentPartialForm($scope.Form.FormID);
 		//Create Unique Key For Signature(s) and/or image(s)
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
