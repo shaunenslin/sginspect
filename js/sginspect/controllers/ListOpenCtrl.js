@@ -7,7 +7,6 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.CloseJobsCount = 0;
 	$scope.selectOptions =[{name : 'audit'}, {name : 'customervisit'}, {name : 'afterserviceevaluation'}, {name : 'technicalreport'}, {name : 'supplierevaluation'}];
 	$scope.searchText = {"JobType" : "", "Date" : "", "Text": ""};
-	$scope.showWarning = false;
 	$scope.vehicleFitnessRating = 'Pass';
 	$scope.overallRating = 0;
 	$scope.additionalEquipmentRating = 0;
@@ -149,6 +148,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
             function(){
             	$scope.data = inspection_forms;
             	$scope.InspectionForms = $scope.data;
+            	if ($scope.InspectionForms.length === 0) showWarning;
                 $scope.$emit('UNLOAD');
                 $scope.$apply();
             }
@@ -178,8 +178,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		            search_results.push(item);
 		        }
 	        	$scope.InspectionForms = search_results;
-    		}); 
-    		if ($scope.InspectionForms.length === 0) $scope.showWarning = true;    
+    		});    
 		}
 
 	}

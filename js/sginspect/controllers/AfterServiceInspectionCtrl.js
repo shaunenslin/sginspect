@@ -22,16 +22,9 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
     ];
 
 	$scope.onBackClicked = function(){
-		var path = '';
-		savePartialForm();
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
-		if (sessionStorage.getItem('fromJobsScreenCache')){
-			path = '/jobs/open';
-			sessionStorage.removeItem('fromJobsScreenCache');
-		}else{
-			window.history.back();
-		}
-		$location.path(path);
+		sessionStorage.removeItem('fromJobsScreenCache');
+		$location.path('/jobs/open');
 	}
 
 	$scope.onPhotoClicked = function(field, filenames){
@@ -124,7 +117,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	        	$scope.$emit('UNLOAD');
 	           	return;
 			}
-			if (($scope.Form.JSON[prop] === "Yes" && prop === 'oilLeaks') && !$scope.Form.JSON[prop + "Comment"]){
+			if (($scope.Form.JSON[prop] === "No" && prop === 'oilLeaks') && !$scope.Form.JSON[prop + "Comment"]){
 				$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
 	        	$scope.$emit('UNLOAD');
 	           	return;
@@ -189,10 +182,11 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
+	$scope.$watch("Form.JSON", function(){savePartialForm();}, true);
 
 	function constructor(){
 		$scope.$emit('LOAD');
-	    $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
+	    if (sessionStorage.getItem('fromJobsScreenCache')) $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
         $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
         $scope.$emit('heading',{heading: 'After Service Inspection', icon : 'fa fa-car'});
         $scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
