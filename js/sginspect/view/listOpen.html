@@ -72,7 +72,7 @@
             <div class="alert alert-warning" ng-if="mode === 'open' && InspectionForms.length === 0">
                 <p><i class="fa fa-info"></i> No results found</p>
             </div>
-            <a style="margin-top: 10px;"  ng-if="mode === 'open' && InspectionForms.length > 0" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
+            <a style="margin-top: 10px;"  ng-if="mode === 'open'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
         </div>
         <div ng-if="mode === 'ratings'">
             <div ng-if="jobType == 'afterserviceevaluation'" style="margin-top: 10px;" class="alert alert-warning">
@@ -94,7 +94,7 @@
             <div ng-if="additionalEquipmentRating > 0" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> Additional Equipment Rating :  {{additionalEquipmentRating + '%'}}</p>
             </div>
-             <div ng-if="jobType !== 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-info">
+             <div ng-if="jobType !== 'supplierevaluation' && jobType !== 'afterserviceevaluation'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> Vehicle Fitness Rating :  {{vehicleFitnessRating}}</p>
             </div>
             <div ng-if="jobType === 'supplierevaluation' && supplierStatus !== 'New'" style="margin-top: 10px;" class="alert alert-info">
@@ -109,8 +109,5 @@
 
         </div>
         <a  ng-if="mode === 'jobs'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
-        <div style="margin-top: 10px;" class="alert alert-info" ng-if="mode === 'open' && showWarning">
-            <p><i class="fa fa-info"></i> There are currently no Open Jobs</p>
-        </div>
     </div>
 </div>

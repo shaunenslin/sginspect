@@ -104,14 +104,8 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 	$scope.onBackClicked = function(){
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
-		savePartialForm();
-		if (sessionStorage.getItem('fromJobsScreenCache')){
-			path = '/jobs/open';
-			sessionStorage.removeItem('fromJobsScreenCache');
-		}else{
-			path = 'selectclient/supplierevaluation/0';
-		}
-		$location.path(path);
+		sessionStorage.removeItem('fromJobsScreenCache');
+		$location.path('/jobs/open');
 	}
 
 	$scope.fetchGPS = function(){
@@ -203,7 +197,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
             $scope.$emit('UNLOAD');
             return;
         }
- 		deleteCurrentPartialForm($scope.Form.FormID);
 		saveForm();
 	}
 
@@ -231,6 +224,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	function saveForm(){
 		$scope.$emit('LOAD');
 		saveSupplier();
+		deleteCurrentPartialForm($scope.Form.FormID);
 		//Create Unique Key For Signature(s) and/or image(s)
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
@@ -274,12 +268,13 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		  	}
 		 );
 	}
+	$scope.$watch("Form.JSON", function(){savePartialForm();}, true);
 
 	function constructor(){
 		$scope.mode = $routeParams.mode;
 		DaoSvc.openDB();
         $scope.$emit('heading',{heading: 'Supplier Evaluation', icon : 'fa fa-check-square-o' });
-		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
+		if (sessionStorage.getItem('fromJobsScreenCache')) $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchSuppliers();

@@ -94,7 +94,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		}
 		// Now check if any items dont have comments or where pictures are needed
 		for (prop in $scope.Form.JSON) {
-			if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Average" || $scope.Form.JSON[prop] === "Yes") {
+			if ($scope.Form.JSON[prop] === "Bad" || $scope.Form.JSON[prop] === "Average" || $scope.Form.JSON[prop] === "No") {
 				if (!$scope.Form.JSON[prop + "Comment"] && (prop !== "FireExtinguisher" && prop !== "AbuseRelatedCosts")){
 					$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop], duration: 5, placement: 'top-right', type: 'danger', show: true});
 		        	$scope.$emit('UNLOAD');
@@ -129,14 +129,8 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	$scope.onBackClicked = function(){
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
-		savePartialForm();
-		var path = '';
-		if (sessionStorage.getItem('fromJobsScreenCache')){
-			path = '/jobs/open';
-			sessionStorage.removeItem('fromJobsScreenCache');
-			$location.path(path);
-		}else{
-			window.history.back();
+		sessionStorage.removeItem('fromJobsScreenCache');
+		$location.path('/jobs/open');
 		}
 	}
 	$scope.syncCompleted = function(reload){
@@ -187,16 +181,16 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
+    $scope.$watch("Form.JSON", function(){savePartialForm();}, true);
 
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
-		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
+		if (sessionStorage.getItem('fromJobsScreenCache')) $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchClient();
 		fetchGPs();
-		savePartialForm();
 		$scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
 		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
 		$scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');

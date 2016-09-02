@@ -183,7 +183,7 @@
 	        </div>
     	</div>
     	<!-- Rust Comment -->
-    	<div ng-if="Form.JSON.Rust === 'Yes'" class="form-group">
+    	<div ng-if="Form.JSON.Rust === 'No'" class="form-group">
 			<label for="rust_comment" class="col-sm-3">Please Specify</label>
 			<div class="col-sm-9"><input name="rust_comment" required class="form-control" placeholder="Enter Comment" id="rust_comment" ng-model="Form.JSON.RustComment" type="text"></div>
 		</div>
@@ -204,7 +204,7 @@
 	        </div>
     	</div>
     	<!-- Fluid Leaks Comment -->
-    	<div ng-if="Form.JSON.FluidLeaks === 'Yes'" class="form-group">
+    	<div ng-if="Form.JSON.FluidLeaks === 'No'" class="form-group">
 			<label for="fluid_leaks_comment" class="col-sm-3">Please Specify</label>
 			<div class="col-sm-9"><input name="fluid_leaks_comment" required class="form-control" placeholder="Enter Comment" id="fluid_leaks_comment" ng-model="Form.JSON.FluidLeaksComment" type="text"></div>
 		</div>
