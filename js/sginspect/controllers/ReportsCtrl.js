@@ -14,7 +14,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 
 
 	function fetchJobs(){
-		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=''&startdate=''&enddate=''" + "&ExportedtoISO=''";
+		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&startdate=''" + "&enddate=''&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=''" + "&ExportedtoISO=''&SearchString=''";
 		$http.get(url)
 		.success(function(json){
 			$scope.Jobs =json.map(function(e){
