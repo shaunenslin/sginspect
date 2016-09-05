@@ -70,7 +70,7 @@
    <!-- Screen 5 LicenceMatch -->
    <div style="margin-top: 10px;" ng-if="view === 'licensematch'">
    		<div style="margin-top: 15px" class="alert alert-info">
-            <p><i class="fa fa-info"></i> Does the Registration Number {{ RegNumber }} match the one on the vehicle ?</p>
+            <p><i class="fa fa-info"></i> Does the License Number {{ RegNumber }} match the one on the vehicle ?</p>
         </div>
    		<div class=" btn-group btn-block">
    			<button ng-click="matchClicked('match')" ng-class="(Form.JSON.regmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.JSON.regmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
