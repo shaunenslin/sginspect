@@ -103,6 +103,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
     }
 
 	$scope.onBackClicked = function(){
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		sessionStorage.removeItem('fromJobsScreenCache');
 		$location.path('/jobs/open');

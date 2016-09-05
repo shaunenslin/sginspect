@@ -47,6 +47,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		}
 	}
 	$scope.onBackClicked = function(){
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		sessionStorage.removeItem('fromJobsScreenCache');
 		$location.path('/jobs/open');

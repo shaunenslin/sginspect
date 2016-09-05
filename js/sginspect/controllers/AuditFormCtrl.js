@@ -136,6 +136,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	}
 
 	$scope.onBackClicked = function(){
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		sessionStorage.removeItem('fromJobsScreenCache');
 		$location.path('/jobs/open');
