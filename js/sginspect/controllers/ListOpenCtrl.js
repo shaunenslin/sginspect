@@ -5,7 +5,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.openJobsCount = 0
 	$scope.CompletedJobsCount = 0;
 	$scope.CloseJobsCount = 0;
-	$scope.selectOptions =[{name : 'audit'}, {name : 'customervisit'}, {name : 'afterserviceevaluation'}, {name : 'technicalreport'}, {name : 'supplierevaluation'}];
+	$scope.selectOptions =[{name : 'Audit Form', value : 'audit'}, {name : 'Customer Visit', value : 'customervisit'}, {name : 'After Service Inspection', value : 'afterserviceevaluation'}, {name : 'Technical Report', value : 'technicalreport'}, {name : 'Supplier Evaluation', value : 'supplierevaluation'}];
 	$scope.searchText = {"JobType" : "", "Date" : "", "Text": ""};
 	$scope.vehicleFitnessRating = 'Pass';
 	$scope.overallRating = 0;
