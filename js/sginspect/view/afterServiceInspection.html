@@ -274,9 +274,9 @@
 		<!-- Displays when other dropdown option is chosen from the menu -->
   		<div class="alert alert-info"><i class="fa fa-info"></i> Please Sign below before saving your request</div>
 		<!-- Signature box for * 4 forms except  supplierevaluation  -->
-		<div class="panel panel-default" ng-if="inspectiontype !== 'supplierevaluation'">
-			<div class="panel-heading">Signature  of Inspector</div>
-			<div class="panel-body">
+		<div ng-if="inspectiontype !== 'supplierevaluation'">
+			<label>Signature  of Inspector</label>
+			<div>
 				<signature ng-model="signature.inspector" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
 			</div>
 		</div>

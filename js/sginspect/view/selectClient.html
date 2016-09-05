@@ -27,10 +27,18 @@
 		<img  align="middle" class="img-responsive center-img" ng-src="./img/scan-img.png">
 		<button ng-click="nfcScan()" style="margin-top: 15px;" class="btn btn-primary btn-block"  type="button">Scan <span class="fa fa-search"></span></button>
 	</div>
-	<!-- Screen 2 VinPicture -->
-	<div style="margin-top: 10px;" ng-if="view ==='vinpicture'">
-		<img ng-if="!isPhoneGap" align="middle" class="img-responsive center-img" ng-if="image" ng-src="{{image}}">
-		<img ng-if="isPhoneGap"  align="middle" id="vin-image" class="img-responsive center-img" ng-if="image">
+	<!-- Screen 2 VinMatch -->
+	  <div style="margin-top: 10px;" ng-if="view === 'vinmatch'">
+   		<div style="margin-top: 15px" class="alert alert-info">
+            <p><i class="fa fa-info"></i> Does the Vin Number {{ VinNumber }} match the one on the Vehicle ?</p>
+        </div>
+   		<div class="btn-group btn-block" role="group">
+   			<button ng-click="matchClicked('match')" ng-class="(Form.JSON.vinmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.JSON.vinmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
+   		</div>
+   </div>
+   <!-- Screen 3 Upload VinPicture if !Match -->
+ 
+   <div style="margin-top: 10px;" ng-if="view ==='vinpicture'">
 		<div style="margin-top: 15px" ng-if="!capture" class="alert alert-info">
             	<p><i class="fa fa-info"></i> Please capture a picture of the VIN number</p>
         </div>
@@ -44,24 +52,11 @@
 			</form>
 		</div>
    </div>
-   <!-- Screen 3 VinMatch -->
-   <div style="margin-top: 10px;" ng-if="view === 'vinmatch'">
-   		<div style="margin-top: 15px" class="alert alert-info">
-            <p><i class="fa fa-info"></i> Do the VIN Numbers match ?</p>
-        </div>
-        <div class="well"><img id="vin-img" class="center-img img-responsive"  align="middle" ng-src="{{image}}"></div>
-   		<h4 style="margin-top: 10px; text-align: center; margin-right: 70px;"><b>Licence Disk : {{VinNumber}}</b></h4>
-   		<div class="btn-group btn-block" role="group">
-   			<button ng-click="matchClicked('match')" ng-class="(Form.JSON.vinmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.JSON.vinmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
-   		</div>
-   </div>
 	<!-- Screen 4 LicensePhoto -->
    <div style="margin-top: 10px;" ng-if="view === 'licensephoto'">
    		<div style="margin-top: 15px" ng-if="!capture" class="alert alert-info">
             <p><i class="fa fa-info"></i> Please capture a picture of the License Plate</p>
         </div>
-   		<img ng-if="!isPhoneGap" align="middle"  class="img-responsive center-img" ng-if="image" ng-src="{{image}}">
-	    <img ng-if="isPhoneGap" align="middle" id="license-image" class="img-responsive center-img" ng-if="image" >
 	    <div style="margin-top:10px;" class="well well-sm">
         	<button class="btn btn-success btn-block" ng-if="isPhoneGap"  ng-click="onPhotoClicked('license')" class="btn btn-success">Capture <span class="fa fa-camera"></span></button>
 			<form ng-if="!isPhoneGap" style="margin-top: 10px;"  id="file-form" method="POST" role="form" class="form-inline">
@@ -75,11 +70,8 @@
    <!-- Screen 5 LicenceMatch -->
    <div style="margin-top: 10px;" ng-if="view === 'licensematch'">
    		<div style="margin-top: 15px" class="alert alert-info">
-            <p><i class="fa fa-info"></i> Do the Registration Numbers Match ?</p>
+            <p><i class="fa fa-info"></i> Does the Registration Number {{ RegNumber }} match the one on the vehicle ?</p>
         </div>
-        <div class="well"><img id="reg-img" class="center-img img-responsive"  align="middle" ng-src="{{image}}"></div>
-
-   		<h4 style="margin-top: 10px; text-align: center; margin-right: 70px;"><b>Licence Plate : {{RegNumber}}</b></h4>
    		<div class=" btn-group btn-block">
    			<button ng-click="matchClicked('match')" ng-class="(Form.JSON.regmatch == true) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">Match</button><button ng-click="matchClicked('')" ng-class="(Form.JSON.regmatch == false) ? 'btn btn-primary col-xs-6' : 'btn btn-default col-xs-6'">No match</button>
    		</div>
