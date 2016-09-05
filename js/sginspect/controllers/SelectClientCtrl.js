@@ -180,6 +180,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	function constructor(){
 		$scope.$emit('LOAD');
+		window.scrollTo(0, 0);
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		switch ($scope.inspectiontype){
 			case 'technicalreport':

@@ -161,6 +161,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	function saveForm(){
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		window.scrollTo(0, 0);
 		deleteCurrentPartialForm($scope.Form.FormID);
 		$scope.Form.kilometerImages = $scope.kilometerImages;
 		$scope.Form.commentPhotoImages = $scope.commentPhotoImages;
