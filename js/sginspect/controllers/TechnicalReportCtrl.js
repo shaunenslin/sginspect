@@ -78,7 +78,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		return image;
 	}
 	function fetchServiceHistory(){
-    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID + '&VinNumber=' + $scope.Form.VinNumber;
+    	var url = Settings.url + "Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation&ClientID='" + $scope.Form.ClientID + "'&UserID='" + $scope.Form.UserID + "'&VinNumber='" + $scope.Form.VinNumber + "'";
     	$http.get (url)
     	.success(function(data){
     		$scope.serviceHistory = [];
