@@ -18,8 +18,8 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         };
 	}
 
-    function userExistsCheck(CsvCustomer){
-    var url = Settings.url + 'Get?method=Client_ReadSingle2&clientid=' + CsvCustomer.ClientID;
+    function userExistsCheck(ClientID){
+    var url = Settings.url + 'Get?method=Client_ReadSingle2&clientid=' + ClientID;
     $http.get(url)
         .success(function(data){                //get the First Object because it comes back as array
             if(data.length){
@@ -197,7 +197,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             json[i].ClientID = json[i].ClientID;
             json[i].Name = json[i].Name;
             json[i].Active = (json[i].Active = true);
-            userExistsCheck(json[i]);
+            userExistsCheck(json[i].ClientID);
         }            
     };
 
