@@ -4,7 +4,7 @@
                                                             -moz-background-size: cover;
                                                             -o-background-size: cover;
                                                             background-size: cover;">
-    <div class="inset" style="padding-top: 10px; padding-bottom: 50px;">
+    <div class="inset" style="padding-top: 5px; padding-bottom: 50px;">
         <div ng-if="mode === 'jobs'" class="list-group inset">
             <div style="margin-top: 10px;" class="alert alert-warning" ng-if="CompletedJobsCount > 0">
                 <p><i class="fa fa-info"></i> You have {{CompletedJobsCount}} unsent invoice(s). <a href="#/sync">Click here to Sync</a></p>
@@ -37,41 +37,47 @@
              </div>
              <a style="margin-top: 10px;" ng-if="mode === 'jobs'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
         </div>
-        <div class="list-group inset">
-            <div style="margin-top: 10px;" class="alert alert-info" ng-if="mode === 'open' && InspectionForms.length >  0">
+        <div class="list-group">
+            <!--
+            <div class="alert alert-info" ng-if="mode === 'open' && InspectionForms.length >  0">
                 <p><i class="fa fa-info"></i> Please enter in any of the below fields  and Click Search.</p>
             </div>
-            <div ng-if="mode === 'open'"  class="well">
-                <form style="margin-top:10px;" class="form-horizontal">
+        -->
+            <div ng-if="mode === 'open'"  class="well" style="padding:5px;">
+                <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="job_type" class="col-sm-3">Job Type</label>
+                        <!--<label for="job_type" class="col-sm-3">Job Type</label>-->
                         <div class="col-sm-9">
-                            <select name="job_type" class="form-control" id="job_type" ng-model="searchText.JobType" ng-options="item.value as item.name for item in selectOptions"><option value="">-- Please select an option --</option></select>
+                            <select name="job_type" class="form-control" id="job_type" ng-model="searchText.JobType" ng-options="item.value as item.name for item in selectOptions"><option value="">-- Select a job type --</option></select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="date_complete" class="col-sm-3">Date Complete</label>
+                        <!--<<label for="date_complete" class="col-sm-3">Date Complete</label>-->
                         <div class="col-sm-9"><input name="date_complete" placeholder="Search by Date"  class="form-control" id="date_complete" ng-model="searchText.Date" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
                     </div>
                     <div class="form-group">
-                        <label for="identifier" class="col-sm-3">Identifier</label>
-                        <div class="col-sm-9"><input name="identifier" class="form-control" placeholder="Search by Registration Number/  Supplier Name / Customer Name" id="identifier" ng-model="searchText.Text" type="text"></div>
+                        <!--<<label for="identifier" class="col-sm-3">Identifier</label>-->
+                        <div class="col-sm-9"><input name="identifier" class="form-control" placeholder="Search by Rego/Supplier/Customer" id="identifier" ng-model="searchText.Text" type="text"></div>
                     </div>
                     <button ng-click="onSearchClicked()" class="btn btn-success">Search <span class="fa fa-search"></span></button> <button ng-click="onClearClicked()" class="btn btn-danger">Clear</button>
                 </form>
             </div>
-            <div style="padding: 19px;">
+            <div style="padding: 16px;">
                 <a ng-click="onInspectionClicked($index)" ng-repeat="row in InspectionForms" class="row list-group-item">
-                    <span class=" glyphicon glyphicon-chevron-right pull-right"></span>
-                    <div class="col-xs-4">
-                        <div  ng-if="row.FormType === 'afterserviceevaluation'">After Service Inspection Form</div>
-                        <div  ng-if="row.FormType === 'audit'">Audit Form</div>
-                        <div  ng-if="row.FormType === 'customervisit'">Customer Visit Form</div>
-                        <div  ng-if="row.FormType === 'supplierevaluation'">Supplier Evaluation Form</div>
-                        <div  ng-if="row.FormType === 'technicalreport'">Technical Report Form</div>
+                    <div class="row">
+                        <div class="col-xs-10">
+                            <div class="col-xs-12">
+                                <div  ng-if="row.FormType === 'afterserviceevaluation'">After Service Inspection</div>
+                                <div  ng-if="row.FormType === 'audit'">Audit</div>
+                                <div  ng-if="row.FormType === 'customervisit'">Customer Visit</div>
+                                <div  ng-if="row.FormType === 'supplierevaluation'">Supplier Evaluation</div>
+                                <div  ng-if="row.FormType === 'technicalreport'">Technical Report</div>
+                            </div>
+                            <div class="col-xs-12">{{row.timeString}}</div>
+                        </div>
+
+                        <div ng-click="fetchOpenJobImages($index);$event.stopPropagation();" class="col-xs-2"><span class=" btn btn-danger  fa fa-trash-o pull-right"></span></div>
                     </div>
-                    <div class="col-xs-5">{{row.timeString}}</div>
-                    <div ng-click="fetchOpenJobImages($index);$event.stopPropagation();" style="margin-left:10px;" class="col-xs-1"><span class=" btn btn-danger  fa fa-trash-o pull-right"></span></div>
                 </a>
             </div>
             <div class="alert alert-warning" ng-if="mode === 'open' && InspectionForms.length === 0">
