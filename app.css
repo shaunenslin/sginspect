@@ -32,6 +32,12 @@ body {
 }
 */
 
+.btn-primary, .btn-primary:hover {
+    background-color: #006b49;
+    border-color:  #006b49;
+    color : white
+}
+
 .viewbody {
 //background: url('img/viewbg.jpg'); //no-repeat center center fixed;
     background-repeat: repeat-y;
@@ -167,7 +173,7 @@ breadcrumback:hover{
 .cardBox {
     position: relative;
     /* width:200px; */
-    height:160px;
+    /*height:160px;*/
     margin-left: auto;
     margin-right: auto;
     position: relative;

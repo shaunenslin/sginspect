@@ -1,36 +1,41 @@
-<div id="listOpenView" ng-controller="ListOpenCtrl">  
+<div id="listOpenView" ng-controller="ListOpenCtrl" style="background: url('{{settings.splash}}') no-repeat center center fixed;
+                                                            height: 100vh;
+                                                            -webkit-background-size: cover;
+                                                            -moz-background-size: cover;
+                                                            -o-background-size: cover;
+                                                            background-size: cover;">
     <div class="inset" style="padding-top: 10px; padding-bottom: 50px;">
-        <div ng-if="mode === 'jobs'" class="list-group inset">  
+        <div ng-if="mode === 'jobs'" class="list-group inset">
             <div style="margin-top: 10px;" class="alert alert-warning" ng-if="CompletedJobsCount > 0">
                 <p><i class="fa fa-info"></i> You have {{CompletedJobsCount}} unsent invoice(s). <a href="#/sync">Click here to Sync</a></p>
-            </div> 
+            </div>
             <div class="btn-group btn-group-justified" role="group"  style="margin-top:10px;">
                 <div  class="btn-group" role="group">
-                    <button ng-click="onJobClicked('open')" class="btn btn-default">
+                    <button ng-click="onJobClicked('open')" class="btn btn-default" style="background-color: rgba(0,0,0,.6); color: white">
                         <h4>Open Jobs</h4>
                         <p style="visibility:hidden;">(Not Synced)</p>
-                        <h1>{{openJobsCount}}</h1>
+                        <h1 style="color: white">{{openJobsCount}}</h1>
                     </button>
                 </div>
                 <div  class="btn-group" role="group">
-                    <button ng-click="onJobClicked('completed')" class="btn btn-default">
+                    <button ng-click="onJobClicked('completed')" class="btn btn-default" style="background-color: rgba(0,0,0,.6); color: white">
                         <h4>Completed Jobs</h4>
                         <p>(Not Synced)</p>
-                        <h1>{{CompletedJobsCount}}</h1>
+                        <h1 style="color: white">{{CompletedJobsCount}}</h1>
                     </button>
                 </div>
             </div>
              <div class="btn-group btn-group-justified" role="group">
                 <div  class="btn-group" role="group">
-                    <button class="btn btn-default">
+                    <button class="btn btn-default" style="background-color: rgba(0,0,0,.6); color: white">
                         <h4>Closed Jobs for this month</h4>
                          <p>(Synced)</p>
-                        <h1>{{CloseJobsCount.result}}</h1>
+                        <h1 style="color: white">{{CloseJobsCount.result}}</h1>
                         <h3 ng-if="!CloseJobsCount">(Unavailable as you are offline)</h3>
                     </button>
                 </div>
              </div>
-
+             <a style="margin-top: 10px;" ng-if="mode === 'jobs'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
         </div>
         <div class="list-group inset">
             <div style="margin-top: 10px;" class="alert alert-info" ng-if="mode === 'open' && InspectionForms.length >  0">
@@ -53,7 +58,7 @@
                         <div class="col-sm-9"><input name="identifier" class="form-control" placeholder="Search by Registration Number/  Supplier Name / Customer Name" id="identifier" ng-model="searchText.Text" type="text"></div>
                     </div>
                     <button ng-click="onSearchClicked()" class="btn btn-success">Search <span class="fa fa-search"></span></button> <button ng-click="onClearClicked()" class="btn btn-danger">Clear</button>
-                </form>  
+                </form>
             </div>
             <div style="padding: 19px;">
                 <a ng-click="onInspectionClicked($index)" ng-repeat="row in InspectionForms" class="row list-group-item">
@@ -72,7 +77,7 @@
             <div class="alert alert-warning" ng-if="mode === 'open' && InspectionForms.length === 0">
                 <p><i class="fa fa-info"></i> No results found</p>
             </div>
-            <a style="margin-top: 10px;"  ng-if="mode === 'open'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
+            <a ng-if="mode === 'open'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
         </div>
         <div ng-if="mode === 'ratings'">
             <div ng-if="jobType == 'afterserviceevaluation'" style="margin-top: 10px;" class="alert alert-warning">
@@ -80,13 +85,13 @@
             </div>
             <div ng-if="jobType == 'audit'" style="margin-top: 10px;" class="alert alert-warning">
                 <p><i class="fa fa-info"></i> Remarks For Audit</p>
-            </div> 
+            </div>
             <div ng-if="jobType == 'technicalreport'" style="margin-top: 10px;" class="alert alert-warning">
                 <p><i class="fa fa-info"></i> Remarks For Technical Report</p>
-            </div> 
+            </div>
              <div ng-if="jobType == 'supplierevaluation'" style="margin-top: 10px;" class="alert alert-warning">
                 <p><i class="fa fa-info"></i> Remarks For {{supplierStatus == 'New' ? 'New ' : 'Existing ' }} Supplier</p>
-            </div> 
+            </div>
 
             <div ng-if="jobType !== 'technicalreport'" style="margin-top: 10px;" class="alert alert-info">
                 <p><i class="fa fa-info"></i> Overall Rating : {{overallRating + '%'}}</p>
@@ -108,6 +113,5 @@
             </div>
 
         </div>
-        <a  ng-if="mode === 'jobs'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
     </div>
 </div>

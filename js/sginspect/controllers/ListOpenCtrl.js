@@ -13,6 +13,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.supplierCompetencyRating = 0
 	$scope.supplierEtiquetteRating = 0;
 	$scope.supplierPaymentRating = 0;
+	$scope.settings = Settings;
 	var rating = 0;
 	var add_rating = 0;
 	var competency_rating = 0;
@@ -94,7 +95,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		var index = index;
 		DaoSvc.cursor('Unsent',
 			function(json){
-				//Checking if this is an image incase the are inspection that were saved offline 
+				//Checking if this is an image incase the are inspection that were saved offline
 				if(json.ImageID){
 					//Ensure that we are only getting images belonging to this current Form
 					if(json.ImageID.indexOf($scope.InspectionForms[index].FormID) > -1){
@@ -173,11 +174,11 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		}else{
 			var search_results = [];
 			$filter('filter')($scope.InspectionForms, function(item) {
-		        if(item.JSON.includes($scope.searchText.Text)){             
+		        if(item.JSON.includes($scope.searchText.Text)){
 		            search_results.push(item);
 		        }
 	        	$scope.InspectionForms = search_results;
-    		});    
+    		});
 		}
 
 	}
@@ -211,7 +212,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			rating += isNaN(supplier_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 			competency_rating += isNaN(supplier_competency_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_competency_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 			etiquette_rating += isNaN(supplier_etiquette_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_etiquette_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-			payment_rating += isNaN(supplier_rfcPayment_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_rfcPayment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);	
+			payment_rating += isNaN(supplier_rfcPayment_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_rfcPayment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 		}
 		$scope.overallRating = rating;
 		$scope.supplierCompetencyRating = competency_rating ;
