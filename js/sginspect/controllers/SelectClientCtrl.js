@@ -21,6 +21,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		var path = '';
 		if ($routeParams.screennum == 0){
 			if (!$scope.Form.ClientID) {$alert({content: "Please select a Customer before continuing !", duration:5, placement:'top-right', type:'danger', show:true}); return;};
+			$filter('filter')($scope.Clients, function(e){if (e.ClientID === $scope.Form.ClientID) {$scope.Form.JSON.CustomerName = e.Name; return;}} );
 
 		}else if ($routeParams.screennum == 1){
 			if (!$scope.VinNumber){
@@ -28,20 +29,19 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				return;
 			}
 
-		}else if($routeParams.screennum == 2){
-			if(!$scope.image) {
-				$alert({content: "Please capture the VIN picture before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
-				return;
-			}
-			var key = $scope.Form.FormID + '_vin.png';
-			$scope.Form.JSON.vinimage = key;
-			sessionStorage.setItem('currentImage', $scope.image);
-			CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
-		}else if ($routeParams.screennum == 3){
+		} else if ($routeParams.screennum == 2){
 			if ($scope.Form.JSON.vinmatch === undefined){
 				$alert({content: "Please select an option below before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
 				return;
 			}
+		} else if($routeParams.screennum == 3){
+			if(!$scope.image){
+				$alert({content: "Please capture the VIN picture before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
+				return;
+			}
+			var key = $scope.Form.FormID + '_vin.png';
+			$scope.Form.JSON.regimage = key;
+			CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 		} else if ($routeParams.screennum == 4){
 			if(!$scope.image) {
 				$alert({content: "Please capture the Licene Plate Number picture before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
@@ -49,13 +49,12 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			}
 			var key = $scope.Form.FormID + '_reg.png';
 			$scope.Form.JSON.regimage = key;
-			sessionStorage.setItem('currentLicenceImage', $scope.image);
 			CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 		}
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		 // Path is generic to cater for all navigation scenarios
 		if ($scope.inspectiontype !== 'supplierevaluation') {
-			path = ($routeParams.screennum == 5 || $routeParams.inspectiontype === 'customervisit') ? $routeParams.inspectiontype : Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
+			path = ($routeParams.screennum == 5 || $routeParams.inspectiontype === 'customervisit' || (!$scope.Form.JSON.vinmatch && $routeParams.screennum == 3) || (!$scope.Form.JSON.regmatch && $routeParams.screennum == 4)) ? $routeParams.inspectiontype : Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
 		}else{
 			path = $scope.inspectiontype + '/' + $scope.Form.JSON.SupplierStatus.toLowerCase();
 			delete $scope.Form.JSON.SupplierStatus;	
@@ -87,23 +86,48 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			path = '/jobs/open';
 			sessionStorage.removeItem('fromJobsScreenCache');
 		}else{ 
-			path = $routeParams.screennum == 0 ? '/' : Settings.workflow['audit'][parseInt($routeParams.screennum) - 1].route  + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) - 1);
+			path = window.history.back();
 		}
 		$location.path(path);
 	}
 
 	$scope.nfcScan = function(){
-		$scope.VinNumber = "IG1YY23671299872";
-		$scope.Form.VinNumber = $scope.VinNumber;
-		sessionStorage.setItem('currentRegNumber', 'HTT 091 GP');
-		sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
-		$alert({content: "Vehicle number " + $scope.VinNumber + " scanned successfully", duration:5, placement:'top-right', type:'success', show:true});
-		$scope.onNextClicked();
+	    if(Settings.isPhoneGap){
+            cordova.plugins.barcodeScanner.scan(
+                  function (result) {
+  					 if(result.cancelled) return;
+                     var barCodeData = result.text.split('%');
+                     $scope.VinNumber = barCodeData[12];
+					 $scope.Form.VinNumber = $scope.VinNumber;
+                     sessionStorage.setItem('currentRegNumber', barCodeData[6]);
+                     sessionStorage.setItem('currentVinNumber', barCodeData[12]);
+                     sessionStorage.setItem('currentExpirayDate', barCodeData[14]);
+  					 $scope.onNextClicked();
+  					 $scope.$apply();
+                  },
+                  function (error) {
+                      alert("Scanning failed: " + error);
+                  },
+                  {
+                      "prompt" : "Place a barcode inside the scan area", // supported on Android only
+                      "formats" : "PDF_417", // default: all but PDF_417 and RSS_EXPANDED
+                      "orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
+                  }
+               );
+	    }else{
+	        $scope.VinNumber = "IG1YY23671299872";
+            $scope.Form.VinNumber = $scope.VinNumber;
+			sessionStorage.setItem('currentExpirayDate', '21 July 2017');
+            sessionStorage.setItem('currentRegNumber', 'HTT 091 GP');
+            sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
+        	$scope.onNextClicked();
+			$scope.$apply();
+        }
 	}
 
 	$scope.onPhotoClicked = function(field){
 		var reader = new FileReader();
-		reader.addEventListener("load", function () {
+		reader.onload  = function(e) {
 			$scope.image = reader.result;
 			if(!$scope.image){
 				$scope.capture = true;
@@ -111,11 +135,18 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.onNextClicked();
 			$scope.$apply();
-		}, false);
+		};
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
-				reader.readAsDataURL(img);
+				console.log(field + '-image');
+				var imgtag = document.getElementById(field + '-image');
+				imgtag.src = "data:image/jpeg;base64," + img;
+				$scope.image = img;
+				$scope.capture = true;
+				$scope.onNextClicked();
+				$scope.$apply();
 			}
+
 			var onError = function(err){
 				$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
 			}
@@ -131,11 +162,22 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	}
 
 	$scope.matchClicked = function(clickVal){
-		if($routeParams.screennum == 3){
-		$scope.Form.JSON.vinmatch = (clickVal.length > 0) ? true : false;
+		if($routeParams.screennum == 2){
+			$scope.Form.JSON.vinmatch = (clickVal.length > 0) ? true : false;
+			if ($scope.Form.JSON.vinmatch){
+				sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
+				$location.path('/licensematch/' + $routeParams.inspectiontype +'/5');
+				return;
+			}
 
 		} else{
 			$scope.Form.JSON.regmatch = (clickVal.length > 0) ? true : false;
+			if(!$scope.Form.JSON.regmatch){
+				sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
+				$location.path('/licensephoto/' + $routeParams.inspectiontype + '/4');
+				return;
+			}
+				
 		}
 		$scope.onNextClicked();
 	}
@@ -147,6 +189,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 
 	function constructor(){
 		$scope.$emit('LOAD');
+		window.scrollTo(0, 0);
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		switch ($scope.inspectiontype){
 			case 'technicalreport':
@@ -172,34 +215,26 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			fetchClients();
 		} else if ($routeParams.screennum == 1){
 			$scope.$emit('UNLOAD');
-			sessionStorage.removeItem('currentImage');
 			sessionStorage.removeItem('currentVinNumber');
 			$scope.view = 'licence';
             $scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
 		} else if ($routeParams.screennum == 2){
 			$scope.$emit('UNLOAD');
-			$scope.view = 'vinpicture';
-			$scope.image = sessionStorage.getItem('currentImage');
-			$scope.capture = $scope.image ? true : false;
-			$scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
-		} else if ($routeParams.screennum == 3){
-			$scope.$emit('UNLOAD');
-			$scope.image = sessionStorage.removeItem('currentLicenceImage');
 			$scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
 			$scope.view = 'vinmatch';
-			$scope.image = sessionStorage.getItem('currentImage');
 			$scope.VinNumber = sessionStorage.getItem('currentVinNumber');
+		} else if ($routeParams.screennum == 3){
+			$scope.$emit('UNLOAD');
+			$scope.view = 'vinpicture';
+			$scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
 		} else if ($routeParams.screennum == 4){
 			$scope.$emit('UNLOAD');
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 			$scope.view = 'licensephoto';
-			$scope.image = sessionStorage.getItem('currentLicenceImage');
-			$scope.capture = $scope.image ? true : false;
 		} else{
 			$scope.$emit('UNLOAD');
 			$scope.view = 'licensematch';
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
-			$scope.image = sessionStorage.getItem('currentLicenceImage');
 			$scope.RegNumber = sessionStorage.getItem('currentRegNumber');
 		}
 		if (parseInt($routeParams.screennum) !== 0) savePartialForm();

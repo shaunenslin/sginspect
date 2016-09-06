@@ -1,11 +1,11 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="AfterServiceInspectionCtrl">
-	
+	<div  ng-if="(Form.JSON.vinmatch === true && Form.JSON.regmatch === true)">
 		<h3>Vehicle Basic Details</h3>
 		<div class="panel panel-default">
 			<div class="panel-body form-horizontal">
 				<div class="form-group">
 					<label for="client" class="col-sm-3">Customer</label>
-					<div class="col-sm-9"><p> {{Client.Name}}</p></div>
+					<div class="col-sm-9"><p> {{Form.JSON.CustomerName}}</p></div>
 				</div>
 				<div class="form-group">
 					<label for="vin" class="col-sm-3">VIN</label>
@@ -87,14 +87,14 @@
 				<div><input name="oil_filterschecked_comment" required class="form-control" placeholder="Enter Comment" id="oil_filterschecked_comment" ng-model="Form.JSON.oilFiltersCheckedComment" type="text"></div>
 			</div>
 			<div class="form-group">
-				<label for="oilLeaks">Oil leaks</label>
+				<label for="oilLeaks">Is the vehicle free of Oil leaks ?</label>
 				<select required ng-disabled="!Form.JSON.oilFiltersChecked" class="form-control" name="oilLeaks" id="oilLeaks" ng-model="Form.JSON.oilLeaks" >
 					<option value="">-- please choose --</option>
 					<option value="Yes">Yes</option>
 					<option Value="No">No</option>
 				</select>
 			</div>
-			<div ng-if="Form.JSON.oilLeaks === 'Yes'" class="form-group">
+			<div ng-if="Form.JSON.oilLeaks === 'No'" class="form-group">
 				<label for="oilleaks_comment">Please Specify</label>
 				<div><input name="oilleaks_comment" required class="form-control" placeholder="Enter Comment" id="oilleaks_comment" ng-model="Form.JSON.oilLeaksComment" type="text"></div>
 			</div>
@@ -269,16 +269,16 @@
 				<input type="text" required class="form-control" id="actionByService" ng-disabled="!Form.JSON.commentsOrPhotos" name="actionByService" ng-model="Form.JSON.actionByService" placeholder="Enter Action">
 			</div>
 		</form>
-		
-		<div style="margin-top:10px;">
-			<!-- Displays when other dropdown option is chosen from the menu -->
-	  		<div class="alert alert-info"><i class="fa fa-info"></i> Please Sign below before saving your request</div>
-			<!-- Signature box for * 4 forms except  supplierevaluation  -->
-			<div class="panel panel-default" ng-if="inspectiontype !== 'supplierevaluation'">
-				<div class="panel-heading">Signature  of Inspector</div>
-				<div class="panel-body">
-					<signature ng-model="signature.inspector" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
-				</div>
+	</div>
+	<div style="margin-top:10px;">
+		<!-- Displays when other dropdown option is chosen from the menu -->
+  		<div class="alert alert-info"><i class="fa fa-info"></i> Please Sign below before saving your request</div>
+		<!-- Signature box for * 4 forms except  supplierevaluation  -->
+		<div ng-if="inspectiontype !== 'supplierevaluation'">
+			<label>Signature  of Inspector</label>
+			<div>
+				<signature ng-model="signature.inspector" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
 			</div>
 		</div>
+	</div>
 </div>

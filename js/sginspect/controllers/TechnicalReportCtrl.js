@@ -9,7 +9,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	$scope.onPhotoClicked = function(field, filenames){
 		var reader = new FileReader();
-		reader.addEventListener("load", function () {
+		reader.onload = function () {
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
@@ -20,11 +20,20 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			}
 			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.$apply();
-		}, false);
+		};
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
-				reader.readAsDataURL(img);
-			}
+                $scope.image = img;
+                if ($scope.image){
+                    var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
+                    CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+                    filenames.push(key);
+                } else{
+                    $scope.capture = true;
+                }
+                $alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+                $scope.$apply();
+            }
 			var onError = function(err){
 				$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
 			}
@@ -38,16 +47,10 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		}
 	}
 	$scope.onBackClicked = function(){
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
-		savePartialForm();
-		var path = '';
-		if (sessionStorage.getItem('fromJobsScreenCache')){
-			path = '/jobs/open';
-			sessionStorage.removeItem('fromJobsScreenCache');
-			$location.path(path);
-		}else{ 
-			window.history.back();	
-		}
+		sessionStorage.removeItem('fromJobsScreenCache');
+		$location.path('/jobs/open');
 	}
 
 	$scope.fetchGPS = function(){
@@ -76,7 +79,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		return image;
 	}
 	function fetchServiceHistory(){
-    	var url = Settings.url + 'Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation' + '&ClientID=' + $scope.Form.ClientID + '&UserID=' + $scope.Form.UserID + '&VinNumber=' + $scope.Form.VinNumber;
+    	var url = Settings.url + "Get?method=SGI_FETCH_SERVICE_HISTORY&FormType=afterserviceevaluation&ClientID='" + $scope.Form.ClientID + "'&UserID='" + $scope.Form.UserID + "'&VinNumber='" + $scope.Form.VinNumber + "'";
     	$http.get (url)
     	.success(function(data){
     		$scope.serviceHistory = [];
@@ -91,25 +94,27 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
     }
     $scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if(!$scope.Form.JSON.Conclusions){
-			$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
-			$scope.$emit('UNLOAD');
-			return;
-		}
-			// Now check if any items dont have comments or where pictures are needed
-		for (prop in $scope.Form.JSON) {
-			if ($scope[prop + "Images"]) {
-				if ($scope[prop + "Images"].length == 0) {
-					$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
-	           		$scope.$emit('UNLOAD');
-	           		return;
-				}
-			}
-			//Doing an extra validation of the whole form incase the last value is filled in but another value is null
-			if($scope.Form.JSON[prop] === undefined){
-				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+		if ($scope.Form.JSON.vinmatch && $scope.Form.regmatch){
+			if(!$scope.Form.JSON.Conclusions){
+				$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 				$scope.$emit('UNLOAD');
 				return;
+			}
+			// Now check if any items dont have comments or where pictures are needed
+			for (prop in $scope.Form.JSON) {
+				if ($scope[prop + "Images"]) {
+					if ($scope[prop + "Images"].length == 0) {
+						$alert({ content: "Please take pictures for " + prop, duration: 5, placement: 'top-right', type: 'danger', show: true});
+		           		$scope.$emit('UNLOAD');
+		           		return;
+					}
+				}
+				//Doing an extra validation of the whole form incase the last value is filled in but another value is null
+				if($scope.Form.JSON[prop] === undefined){
+					$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
+					$scope.$emit('UNLOAD');
+					return;
+				}
 			}
 		}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
@@ -124,18 +129,17 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$alert({ content: "Technical Report Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
-		sessionStorage.removeItem('currentForm');
-		$location.path('/jobs/ratings');	
+		$location.path('/');
 	}
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		deleteCurrentPartialForm($scope.Form.FormID);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		deleteCurrentPartialForm($scope.Form.FormID);
+		$scope.Form.JSON.descriptionImages =  $scope.DescriptionImages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
-		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			// Now send images
@@ -144,7 +148,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		var error = function(err){
 			$scope.$emit('UNLOAD');
 			$alert({ content:   "Warning: Items have been saved, please sync as soon as possible as you appear to be offline", duration: 5, placement: 'top-right', type: 'warning', show: true});
-			$location.path('/jobs/ratings');
+			$location.path('/');
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
@@ -159,11 +163,6 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		    $scope.$apply();
 		});
 	}
-
-    function fetchClient(){
-    	var Client = JSON.parse(sessionStorage.getItem('currentClientsCache'));
-    	$scope.Client = $filter('filter')(Client, {ClientID : $scope.Form.ClientID})[0];
-    }
     function savePartialForm(){
 		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
 		$scope.Form.JSON.Path = $location.path();
@@ -173,19 +172,20 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
+	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
+		window.scrollTo(0, 0);
 		$scope.$emit('heading',{heading: 'Technical Report', icon : 'fa fa-check-square-o'});
-		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
+		if (sessionStorage.getItem('fromJobsScreenCache')) $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
-		fetchClient();
 		fetchServiceHistory();
 		savePartialForm();
-		$scope.Form.JSON.RegNumber =  sessionStorage.getItem('currentRegNumber');
-		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
-		$scope.Form.JSON.LicenceExpiryDate = '25 July 2017';
+		$scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
+        $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
+        $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
 		$scope.inspectorSignatureBoxLabel = 'Inspector';
 	}
 	constructor();

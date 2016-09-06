@@ -1,6 +1,6 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="CustomerVisitCtrl">
    <!-- Screen 6 Inspection Form -->
-	  	<div >
+	  	<div ng-if="!hideForm" >
 	  		<form style="margin-top: 10px;" class="form-horizontal" name="customervisitform">
                 <div class="form-group">
 					<label for="Customer" class="col-sm-3">Customer Branch</label>
@@ -45,9 +45,9 @@
 	  		</form>
 	  	</div>
 			<!-- Signature box for * 4 forms except  supplierevaluation  -->
-			<div class="panel panel-default">
-				<div class="panel-heading">Signature  Of Inspector</div>
-				<div class="panel-body">
+			<div>
+				<label>Signature  Of Inspector</label>
+				<div>
 					<signature ng-model="signature.inspector" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
 				</div>
 			</div>

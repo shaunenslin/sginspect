@@ -30,18 +30,10 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	}
 
 	$scope.onBackClicked = function(){
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
-		savePartialForm();
-		var path = '';
-		sessionStorage.setItem('currentFormID', $scope.Form.FormID);
-		if (sessionStorage.getItem('fromJobsScreenCache')){
-			path = '/jobs/open';
-			sessionStorage.removeItem('fromJobsScreenCache');
-			$location.path(path);
-		}else{ 
-			path = 'selectclient/customervisit/0'
-		}
-		$location.path(path);
+		sessionStorage.removeItem('fromJobsScreenCache');
+		$location.path('/jobs/open');
 	}
 
 	$scope.fetchGPS = function(){
@@ -140,10 +132,12 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		deleteCurrentPartialForm($scope.Form.FormID);
-		//Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
+		window.scrollTo(0, 0);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
+		deleteCurrentPartialForm($scope.Form.FormID);
+		$scope.hideForm = true;
+		//Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		//Get client
 		$scope.CurrentClient = JSON.parse(sessionStorage.getItem('currentClientsCache'));
@@ -169,13 +163,13 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
+	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
         $scope.$emit('heading',{heading: 'Customer Visit', icon : 'fa fa-check-square-o'});
-		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
+		if (sessionStorage.getItem('fromJobsScreenCache')) $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
-		savePartialForm();
 	}
 	constructor();
 });

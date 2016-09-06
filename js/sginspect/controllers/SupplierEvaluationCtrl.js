@@ -28,7 +28,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 	function newSupplierObject(){
         return  {
-			SupplierID: $scope.Form.JSON.SupplierID,
+			SupplierID: "",
 			Name: $scope.Form.JSON.Name,
 			Active: 1,
 			Address: $scope.Form.JSON.Address,
@@ -40,17 +40,17 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	function saveSupplier(){
         var url = Settings.url + "Post?method=Supplier_modify";
         GlobalSvc.postData(url,newSupplierObject(),function(){
-            $scope.$emit('UNLOAD');
+            // $scope.$emit('UNLOAD');
             $scope.$apply();
         },function(){
-            $scope.$emit('UNLOAD');
+            // $scope.$emit('UNLOAD');
             $scope.$apply();
         },'SGISuppliers','modify',false,true);
     }
 
 	$scope.onPhotoClicked = function(field, filenames){
 		var reader = new FileReader();
-		reader.addEventListener("load", function () {
+		reader.onload = function() {
 			$scope.image = reader.result;
 			if ($scope.image){
 				var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
@@ -61,11 +61,20 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			}
 			$alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.$apply();
-		}, false);
+		};
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
-				reader.readAsDataURL(img);
-			}
+                $scope.image = img;
+                if ($scope.image){
+                    var key = $scope.Form.FormID + '_' + field + filenames.length  + '.png';
+                    CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
+                    filenames.push(key);
+                } else{
+                    $scope.capture = true;
+                }
+                $alert({content:"Image captured successfully", duration:5, placement:'top-right', type:'success', show:true});
+                $scope.$apply();
+            }
 			var onError = function(err){
 				$alert({content:'Error: ' + err, duration: 5, placement: 'top-right', type: 'danger', show: true});
 			}
@@ -94,15 +103,10 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
     }
 
 	$scope.onBackClicked = function(){
+		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
-		savePartialForm();
-		if (sessionStorage.getItem('fromJobsScreenCache')){
-			path = '/jobs/open';
-			sessionStorage.removeItem('fromJobsScreenCache');
-		}else{ 
-			path = 'selectclient/supplierevaluation/0';
-		}
-		$location.path(path);
+		sessionStorage.removeItem('fromJobsScreenCache');
+		$location.path('/jobs/open');
 	}
 
 	$scope.fetchGPS = function(){
@@ -142,14 +146,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if ($scope.mode == 'new') {
-			var found = $filter('filter')($scope.Suppliers,{SupplierID:$scope.Form.JSON.SupplierID});
-			if (found.length > 0) {
-				$alert({ content: "This supplierID already exists, please use another", duration: 5, placement: 'top-right', type: 'danger', show: true});
-	            $scope.$emit('UNLOAD');
-	            return;
-			}
-		}
 		// Check the very last field on format, if it has a value, assume other fields been filled in OK
 		if(!$scope.Form.JSON.SpecialToolsTraining){
 			$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
@@ -202,7 +198,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
             $scope.$emit('UNLOAD');
             return;
         }
- 		deleteCurrentPartialForm($scope.Form.FormID);
 		saveForm();
 	}
 
@@ -222,18 +217,25 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.Form.JobType = 'Open Jobs';
 		DaoSvc.put($scope.Form, 'InProgress', $scope.Form.FormID, function(){console.log('Partial Save of ' + $location.path() + ' successful')},function(){console.log('Partial Save of' + $location.path() + ' failed')},function(){$scope.$apply();});
 	}
-	
+
 	function deleteCurrentPartialForm(FormID){
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		saveSupplier();
-		//Create Unique Key For Signature(s) and/or image(s)
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		delete $scope.Form.JSON.existingSupplier;
+		$scope.hideForm = true;
+		saveSupplier();
+		deleteCurrentPartialForm($scope.Form.FormID);
+		//Create Unique Key For Signature(s) and/or image(s)
+		$scope.Form.JSON.evaluationImages =  $scope.evaluationImages;
+		$scope.Form.JSON.CleanlinessImages = $scope.CleanlinessImages;
+		$scope.Form.JSON.SpecialToolsTrainingImages = $scope.SpecialToolsTrainingImages;
+		$scope.Form.JSON.ReceptionImages = $scope.ReceptionImages;
+
 		var technicaladvisorSignature =  createSignatureImage($scope.signature.technicaladvisor, 'technicaladvisor');
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
 		$scope.Form.JSON[technicaladvisorSignature.ID] = technicaladvisorSignature.FileData;
@@ -263,17 +265,19 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 					if (found.length > 0){
 						$scope.currentsupplier = found[0];
 						$scope.Form.JSON.Name = {"existingSupplier" : found[0].Name}
-					} 
+					}
 			  	}
 		  	}
 		 );
 	}
+	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
 		$scope.mode = $routeParams.mode;
+		window.scrollTo(0, 0);
 		DaoSvc.openDB();
         $scope.$emit('heading',{heading: 'Supplier Evaluation', icon : 'fa fa-check-square-o' });
-		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
+		if (sessionStorage.getItem('fromJobsScreenCache')) $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchSuppliers();
