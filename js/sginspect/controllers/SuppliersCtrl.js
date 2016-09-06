@@ -4,6 +4,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     $scope.splitArr = [];
     $scope.suppliers = [];
     $scope.idx = 0;
+    $scope.pageIdx = 0;
     $scope.supplierEdit = {};
     $scope.checkboxs = {'Active' : true};
     var user_exists = false;
@@ -79,6 +80,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     	if (sessionStorage.getItem( "Supplierscache")) {
     		$scope.suppliers = JSON.parse(sessionStorage.getItem( "Supplierscache"));
             $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "Supplierscache")));
+            $scope.pageIdx = $scope.splitArr.length -1;
     		$scope.$emit('UNLOAD');
     	} else {
 	        var url = Settings.url + 'Get?method=Suppliers_ReadList';
@@ -88,6 +90,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
 	            sessionStorage.setItem( "Supplierscache",JSON.stringify(data));
                 $scope.suppliers = data;
                 $scope.splitArr =  arraySplit(data);
+                $scope.pageIdx = $scope.splitArr.length -1;
 	            $scope.$emit('UNLOAD');
 	        })
             .error(function(){
@@ -124,7 +127,8 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     $scope.filterList = function(){
         var result  = $filter('filter')(JSON.parse(sessionStorage.getItem( "Supplierscache")), {$ : $scope.searchText});
         result = arraySplit(result);
-        if (result.length > 0) $scope.splitArr  =  result;
+        $scope.splitArr  =  result;
+        $scope.idx = ($scope.splitArr.length > 1) ? $scope.pageIdx -1 : 0;
     }
 
     $scope.navigate = function(change){
@@ -133,7 +137,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             arrayLength = parseInt(sessionStorage.getItem('SupplierArrayLength'));
             if(changedVal < 0 || changedVal >= arrayLength) return;
             $scope.idx = changedVal;
-            sessionStorage.setItem('suplierCurrIdx', $scope.idx);
+            sessionStorage.setItem('suplierCurrIdx', $scope.pageIdx);
         }else{
             sessionStorage.removeItem('suplierCurrIdx');
             sessionStorage.removeItem('SupplierArrayLength');
@@ -141,7 +145,8 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             sessionStorage.setItem('SupplierArrayLength', $scope.splitArr.length);
             if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
             $scope.idx = changedVal;
-            sessionStorage.setItem('suplierCurrIdx', $scope.idx);
+             $scope.pageIdx += change;
+            sessionStorage.setItem('suplierCurrIdx', $scope.pageIdx);
         }
     }
 
