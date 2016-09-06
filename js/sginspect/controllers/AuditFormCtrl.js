@@ -177,10 +177,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
 
-    function fetchClient(){
-    	var Client = JSON.parse(sessionStorage.getItem('currentClientsCache'));
-    	$scope.Client = $filter('filter')(Client, {ClientID : $scope.Form.ClientID})[0];
-    }
     function savePartialForm(){
 		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
 		$scope.Form.JSON.Path = $location.path();
@@ -198,7 +194,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
-		fetchClient();
 		fetchGPs();
 		$scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
 		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
