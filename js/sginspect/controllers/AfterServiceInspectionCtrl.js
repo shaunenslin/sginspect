@@ -182,11 +182,6 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
-
-    function fetchClient(){
-    	var Client = JSON.parse(sessionStorage.getItem('currentClientsCache'));
-    	$scope.Client = $filter('filter')(Client, {ClientID : $scope.Form.ClientID})[0];
-    }
     function savePartialForm(){
 		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
 		$scope.Form.JSON.Path = $location.path();
@@ -209,7 +204,6 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
         $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
         $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
 		fetchGPS();
-		fetchClient();
 		savePartialForm();
         $scope.$emit('UNLOAD');
 	}

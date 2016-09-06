@@ -163,11 +163,6 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		    $scope.$apply();
 		});
 	}
-
-    function fetchClient(){
-    	var Client = JSON.parse(sessionStorage.getItem('currentClientsCache'));
-    	$scope.Client = $filter('filter')(Client, {ClientID : $scope.Form.ClientID})[0];
-    }
     function savePartialForm(){
 		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
 		$scope.Form.JSON.Path = $location.path();
@@ -186,7 +181,6 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
-		fetchClient();
 		fetchServiceHistory();
 		savePartialForm();
 		$scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
