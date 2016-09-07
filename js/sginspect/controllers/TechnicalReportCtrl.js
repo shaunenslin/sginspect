@@ -139,7 +139,9 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		deleteCurrentPartialForm($scope.Form.FormID);
 		$scope.Form.JSON.descriptionImages =  $scope.DescriptionImages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
-		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		var key = $scope.Form.FormID + '_inspectorSig.svgx';
+		$scope.Form.JSON.DescriptionImages = $scope.DescriptionImages;
+		CaptureImageSvc.savePhoto(key, $scope.Form.FormID,inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			// Now send images

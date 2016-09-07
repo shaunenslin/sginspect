@@ -238,8 +238,10 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 
 		var technicaladvisorSignature =  createSignatureImage($scope.signature.technicaladvisor, 'technicaladvisor');
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
-		var key_advisor = $scope.Form.FormID + '_techAdvisorSig.png';
-		var key_manager = $scope.Form.FormID + '_workshopManagerSig.png';
+		var key_advisor = $scope.Form.FormID + '_techAdvisorSig.svgx';
+		var key_manager = $scope.Form.FormID + '_workshopManagerSig.svgx';
+		$scope.Form.JSON.TechAdvisorSignature = key_advisor;
+		$scope.Form.JSON.ManagerSignature = key_manager;
 		CaptureImageSvc.savePhoto(key_advisor, $scope.Form.FormID, technicaladvisorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
 		CaptureImageSvc.savePhoto(key_manager, $scope.Form.FormID, workshopmanagerSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));

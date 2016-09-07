@@ -160,7 +160,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		$scope.Form.JSON.TyresImages = $scope.TyresImages;
 		$scope.Form.JSON.other_photosimages = $scope.other_photosimages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
-		var key = $scope.Form.FormID + '_inspectorSig.png';
+		var key = $scope.Form.FormID + '_inspectorSig.svgx';
 		$scope.Form.JSON.Signature = key;
 		CaptureImageSvc.savePhoto(key, $scope.Form.FormID,inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
 		deleteCurrentPartialForm($scope.Form.FormID);

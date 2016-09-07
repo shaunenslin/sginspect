@@ -2,9 +2,9 @@
 	<div style="margin-top: 10px;">
     	<div class="table-responsive">
     		<label>Supplier Evaluation</label>
-			<label style="">Supplier Evaluation {{Report.FormDate}}</label>
+			<label style="padding-left: 300px;">Supplier Evaluation {{Report.FormDate}}</label>
 			<label style="float:right">Job Start :{{Report.FormDate}}</label>
-    		<table class="table table-hover table-striped table-bordered">
+    		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
 			    	<th>Task</th>
@@ -32,9 +32,9 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr ng-repeat="img in evaluationImages">
+			    <tr ng-repeat="id in evaluationImages">
 					<td>Evaluation (image)</td>
-					<td><img id="evaluation-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
+					<td><img id="evaluation-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
@@ -50,9 +50,9 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr ng-repeat="img in receptionImages">
+			    <tr ng-repeat="id in ReceptionImages">
 					<td>Reception (image)</td>
-					<td><img id="reception-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
+					<td><img id="reception-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
@@ -105,9 +105,9 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr ng-repeat="img in cleanlinessImages">
+			    <tr ng-repeat="id in CleanlinessImages">
 					<td>Cleanliness (image)</td>
-					<td><img id="cleanliness-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
+					<td><img id="cleanliness-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl+ id}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
@@ -183,9 +183,9 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr ng-repeat="img in otherPhotos">
+			    <tr ng-repeat="id in SpecialToolsTrainingImages">
 					<td>Evaluation (image)</td>
-					<td><img id="tools-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
+					<td><img id="tools-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
@@ -197,13 +197,13 @@
 			    </tr>
 			     <tr ng-if="Report.JSON.SupplierStatus === 'New'">
 					<td>Technical Advisor Signature</td>
-					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature[0].ImageData}}"></td>
+					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{techAdvisorSignature}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
 			     <tr ng-if="Report.JSON.SupplierStatus === 'New'">
 					<td>Workshop Manager Signature</td>
-					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature[1].ImageData}}"></td>
+					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{managerSignature}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
@@ -307,13 +307,13 @@
 			    </tr>
 			     <tr ng-if="Report.JSON.SupplierStatus !== 'New'">
 					<td>Technical Advisor Signature</td>
-					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature[0].ImageData}}"></td>
+					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{techAdvisorSignature}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
 			     <tr ng-if="Report.JSON.SupplierStatus !== 'New'">
 					<td>Workshop Manager Signature</td>
-					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature[1].ImageData}}"></td>
+					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{managerSignature}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>

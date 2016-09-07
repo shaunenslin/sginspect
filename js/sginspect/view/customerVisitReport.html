@@ -1,10 +1,10 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="CustomerVisitReportCtrl">
 	<div clas="container" style="margin-top: 10px;">
 		<div class="table-responsive">
-			<table class="table table-hover table-striped table-bordered">
+			<table class="table table-hover table-bordered">
 			<thead>
 				<label>Customer Visit</label>
-				<label style="">Customer Visit {{Report.FormDate}}</label>
+				<label style="padding-left: 300px;">Customer Visit {{Report.FormDate}}</label>
 				<label style="float:right">Job Start :{{Report.FormDate}}</label>
 				<tr>
 					<th>Task</th>
@@ -37,10 +37,16 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-				<tr ng-repeat="row in Report.JSON.SpecialRequests">
+				<tr ng-repeat="row in SpecialRequests">
 					<td>Special Request</td>
 					<td>{{row.RequestDate}}</td>
-					<td>{{Report.JSON.SpecialRequestDate}}</td>
+					<td>{{row.SpecialRequestDate}}</td>
+			    </tr>
+			    <tr>
+					<td>Inspector Signature</td>
+					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
 				</tbody>
 			</thead>

@@ -241,9 +241,9 @@
 			<div class="well well-sm">
 				<div class="form-group" >
 					<label for="commentsOrPhotos">Comments/Photo's</label>
-					<input type="text" required class="form-control" ng-disabled="!Form.JSON.placeForInspection" id="commentsOrPhotos" name="commentsOrPhotos" ng-model="Form.JSON.commentsOrPhotos" placeholder="Enter comments or photos">
+					<input type="text" required class="form-control" ng-disabled="!Form.JSON.Branch" id="commentsOrPhotos" name="commentsOrPhotos" ng-model="Form.JSON.commentsOrPhotos" placeholder="Enter comments or photos">
 				</div>
-				<div ng-hide="!Form.JSON.placeForInspection">
+				<div ng-hide="!Form.JSON.Branch">
 					<div class="row">
 						<div ng-if="!isPhoneGap" class="col-xs-8">
 							<form id="upload-form" method="POST" role="form" class="form-inline" enctype="multipart/form-data">

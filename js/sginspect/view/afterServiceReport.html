@@ -3,9 +3,9 @@
 	<div class="container">
 		<div class="table-responsive">
 			<label>After Service Inspection</label>
-				<label style="">After Service Inspection {{Report.FormDate}}</label>
-				<label style="float:right">Job Start :{{Report.FormDate}}</label>
-			<table class="table table-hover table-striped table-bordered">
+			<label style="padding-left: 300px;">After Service Inspection {{Report.FormDate}}</label>
+			<label style="float:right">Job Start :{{Report.FormDate}}</label>
+			<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
 			    	<th>Task</th>
@@ -17,7 +17,7 @@
 			<tbody>
 				<tr>
 					<td>After Service Inspection</td>
-					<td>{{Report.JSON.Customer}}</td>
+					<td>{{Report.JSON.CustomerName}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 		    	</tr>
@@ -33,9 +33,9 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr ng-repeat="img in kilometerImages">
+			    <tr ng-repeat="id in kilometerImages">
 					<td>Kilometers (image)</td>
-					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
+					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
@@ -243,9 +243,9 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			     <tr ng-repeat="img in otherPhotos">
+			     <tr ng-repeat="id in commentPhotoImages">
 					<td>Comments/Photo's</td>
-					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td></td>
+					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
@@ -263,7 +263,7 @@
 			    </tr>
 			     <tr>
 					<td>Signature</td>
-					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature.ImageData}}"></td>
+					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + Report.JSON.Signature}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>

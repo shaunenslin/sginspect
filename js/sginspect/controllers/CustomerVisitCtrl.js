@@ -138,15 +138,15 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		window.scrollTo(0, 0);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		deleteCurrentPartialForm($scope.Form.FormID);
 		$scope.hideForm = true;
 		//Create Unique Key For Signature(s) and/or image(s) in IF ELSE BLOCK
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
-		var key = $scope.Form.FormID + '_inspectorSig.png';
+		var key = $scope.Form.FormID + '_inspectorSig.svgx';
 		CaptureImageSvc.savePhoto(key, $scope.Form.FormID, inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
+		$scope.Form.JSON.Signature = key;
 		deleteCurrentPartialForm($scope.Form.FormID);
 		//Get client
 		$scope.CurrentClient = JSON.parse(sessionStorage.getItem('currentClientsCache'));
@@ -172,6 +172,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
+		window.scrollTo(0, 0);
         $scope.$emit('heading',{heading: 'Customer Visit', icon : 'fa fa-check-square-o'});
 		if (sessionStorage.getItem('fromJobsScreenCache')) $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
