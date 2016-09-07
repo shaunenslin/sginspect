@@ -24,6 +24,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		if ($routeParams.screennum == 0){
 			if (!$scope.Form.ClientID) {$alert({content: "Please select a Customer before continuing !", duration:5, placement:'top-right', type:'danger', show:true}); return;};
 			$filter('filter')($scope.Clients, function(e){if (e.ClientID === $scope.Form.ClientID) {$scope.Form.JSON.CustomerName = e.Name; return;}} );
+			$scope.Form.JSON.User_Name = GlobalSvc.getUser().Name;
 
 		}else if ($routeParams.screennum == 1){
 			if (!$scope.VinNumber){

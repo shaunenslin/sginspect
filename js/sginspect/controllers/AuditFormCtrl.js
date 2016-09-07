@@ -153,7 +153,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		window.scrollTo(0, 0);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		deleteCurrentPartialForm($scope.Form.FormID);
@@ -191,6 +190,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
    $scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
+		window.scrollTo(0, 0);
 		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
 		if (sessionStorage.getItem('fromJobsScreenCache')) $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});

@@ -18,7 +18,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 		$http.get(url)
 		.success(function(json){
 			$scope.Jobs =json.map(function(e){
-				e.JSON = JSON.parse(e.JSON);
+				e.JSON = (e.JSON && typeof(e.JSON) === 'string')? (JSON.parse(e.JSON)) : e.JSON;
 				e.timeString = moment(e.FormDate).format('DD-MMM-YY');
 				return e;
 			});

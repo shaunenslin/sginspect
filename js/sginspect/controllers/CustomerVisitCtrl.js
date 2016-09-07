@@ -130,6 +130,12 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
 
+	$scope.syncCompleted = function(reload){
+		$scope.$emit('UNLOAD');
+		$alert({ content: "Customer Visit Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
+		$location.path('/');
+	}
+
 	function saveForm(){
 		$scope.$emit('LOAD');
 		window.scrollTo(0, 0);
