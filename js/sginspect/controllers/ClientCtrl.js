@@ -17,8 +17,8 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         };
 	}
 
-    function userExistsCheck(CsvCustomer){
-    var url = Settings.url + 'Get?method=Client_ReadSingle2&clientid=' + CsvCustomer.ClientID;
+    function userExistsCheck(csvJson){
+    var url = Settings.url + 'Get?method=Client_ReadSingle2&clientid=' + csvJson.ClientID;
     $http.get(url)
         .success(function(data){                //get the First Object because it comes back as array
             if(data.length){
@@ -27,7 +27,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
                 return user_exists;
             } else{
                 if($scope.id === 'new') save();
-                if($scope.mode === 'list') uploadClient(CsvCustomer);
+                if($scope.mode === 'list') uploadClient(csvJson);
             }
         })
         .error(function(){
@@ -81,8 +81,8 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 
     function fetchClients(){
     	if (sessionStorage.getItem("Clientscache")) {
-    		$scope.clients = JSON.parse(sessionStorage.getItem( "Clientscache"));
-            $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "Clientscache")));
+    		$scope.clients = arraySplit(JSON.parse(sessionStorage.getItem( "Clientscache")));
+            $scope.splitArr = $scope.clients;
     		$scope.$emit('UNLOAD');
     	} else {
 	        var url = Settings.url + 'Get?method=Clients_readlist';
@@ -90,8 +90,8 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
 	        $http.get(url)
             .success(function(data){
                 sessionStorage.setItem("Clientscache",JSON.stringify(data));
-	            $scope.clients = data;
-                $scope.splitArr = arraySplit(data);
+	            $scope.clients =arraySplit(data);
+                $scope.splitArr = $scope.clients;
 	            $scope.$emit('UNLOAD');
                 console.log($scope.clients);
 	        })
@@ -129,7 +129,9 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     $scope.filterList = function(){
         var result  = $filter('filter')( JSON.parse(sessionStorage.getItem( "Clientscache")), {$ : $scope.searchText});
         result = arraySplit(result);
-        if (result.length > 0) $scope.splitArr  =  result; 
+        $scope.splitArr  =  result; 
+        $scope.idx = 0;
+        sessionStorage.setItem('currIdx', $scope.idx);
     }
 
     $scope.navigate = function(change){
