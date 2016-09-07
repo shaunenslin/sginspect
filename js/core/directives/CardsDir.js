@@ -31,7 +31,7 @@ coreApp.directive("jsoncards", function(GlobalSvc, $http, $sce, DaoSvc, Settings
             '   <div class="panel panel-default group-panel">' +
             '     <a ng-click="onClick($index)"  href="{{ hrefField ? json[$index][hrefField] : \'#/\' + href + \'/\' + json[$index][idField]  }}">' +
             '       <div class="panel-body cardBox">' +
-            '          <div style="text-align:center" ng-if="json[$index+0].icon" ><span style="color:#494949;font-size:100px;margin-top:50px;" class="{{json[$index+0].icon}}"></span></div>' +
+            '          <div style="text-align:center" ng-if="json[$index+0].icon" ><span style="color:#494949;font-size:100px;" class="{{json[$index+0].icon}}"></span></div>' +
             '          <img class="imageCenter" ng-if="!json[$index+0].icon" src="{{json[$index+0].image}}"/> ' +
             '       </div>' +
             '       <div class="panel-footer text-center group-footer" style="color:#31373D;">{{json[$index][headingField]}}   </div>' +
