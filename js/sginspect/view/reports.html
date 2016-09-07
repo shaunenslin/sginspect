@@ -9,7 +9,7 @@
 		            </div>
 		            <label for="tech_assessor" class="col-sm-2">Technical Assessor</label>
 		            <div class="col-sm-4">
-		                <select name="tech_assessor" class="form-control" id="tech_assessor" ng-model="searchText.UserID" ng-options="item.UserID as item.UserID for item in Jobs"><option value="">-- Please select an option --</option></select>
+		                <select name="tech_assessor" class="form-control" id="tech_assessor" ng-model="searchText.UserID" ng-options="item.JSON.UserID as item.User_Name for item in Jobs"><option value="">-- Please select an option --</option></select>
 		            </div>
 		        </div>
 		        <div class="form-group">

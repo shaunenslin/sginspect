@@ -156,11 +156,12 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		deleteCurrentPartialForm($scope.Form.FormID);
-		$scope.Form.KilometersImages = $scope.KilometersImages;
-		$scope.Form.TyresImages = $scope.TyresImages;
-		$scope.Form.other_photosimages = $scope.other_photosimages;
+		$scope.Form.JSON.KilometersImages = $scope.KilometersImages;
+		$scope.Form.JSON.TyresImages = $scope.TyresImages;
+		$scope.Form.JSON.other_photosimages = $scope.other_photosimages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		var key = $scope.Form.FormID + '_inspectorSig.png';
+		$scope.Form.JSON.Signature = key;
 		CaptureImageSvc.savePhoto(key, $scope.Form.FormID,inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
 		deleteCurrentPartialForm($scope.Form.FormID);
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));

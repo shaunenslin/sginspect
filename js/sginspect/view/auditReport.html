@@ -32,15 +32,15 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr ng-repeat="img in kilometerImages">
+			    <tr ng-repeat="id in kilometersImages">
 					<td>Kilometers (image)</td>
-					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
-					<td>{{Report.JSON.timeString}}</td>
+					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl +  id}}"></td>
+					<td>{{imageUrl +  id}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
 			    <tr>
 					<td>Customer</td>
-					<td>{{Report.JSON.Customer}}</td>
+					<td>{{Report.JSON.CustomerName}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
@@ -194,9 +194,9 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr ng-repeat="img in tyreImages">
+			    <tr ng-repeat="id in TyresImages">
 					<td>Kilometers (image)</td>
-					<td><img id="tyres-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
+					<td><img id="tyres-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
@@ -218,15 +218,15 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr ng-repeat="row in otherPhotos">
+			    <tr ng-repeat="id in otherImages">
 					<td>Other Photos</td>
-					<td><img id="other_photos" class="center-img img-responsive"  align="middle" ng-src="{{row.ImageData}}"></td>
+					<td><img id="other_photos" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
 			     <tr>
 					<td>Inspector Signature</td>
-					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature.ImageData}}"></td>
+					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{Report.JSON.Signature}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>

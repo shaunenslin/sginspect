@@ -11,6 +11,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 	$scope.splitArr = [];
     $scope.newArr = [];
     $scope.idx = 0;
+    $scope.searchText = {"JobType": "", "UserID" :"", "startdate":"", "enddate":"", "ISO":""};
 
 
 	function fetchJobs(){
@@ -65,7 +66,11 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 		$scope.Jobs = $scope.data;
 	}
 	$scope.onSearchClicked = function(){
-		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=" + $scope.searchText.FormType + "&startdate=" + $scope.searchText.startdate + "&enddate=" +$scope.searchText.enddate + "&ExportedtoISO=" + $scope.searchText.ISO;
+		if (!$scope.searchText.startdate){
+			$alert({content:"Date range required !", duration:5, placement:'top-right', type:'danger', show:true});
+			return;
+		}
+		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=" + $scope.searchText.FormType + "&startdate='" + moment($scope.searchText.startdate).format("DD-MMM-YY HH:mm:ss") + "'&enddate='" + moment($scope.searchText.enddate).format("DD-MMM-YY HH:mm:ss") + "'&ExportedtoISO=" + $scope.searchText.ISO;
 		$http.get(url)
 		.success(function(json){
 			$scope.Jobs = json;
