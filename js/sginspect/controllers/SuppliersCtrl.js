@@ -4,7 +4,6 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     $scope.splitArr = [];
     $scope.suppliers = [];
     $scope.idx = 0;
-    $scope.pageIdx = 0;
     $scope.supplierEdit = {};
     $scope.checkboxs = {'Active' : true};
     var user_exists = false;
@@ -22,7 +21,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
 	}
 
     function userExistsCheck(CsvCustomer){
-        var url = Settings.url + 'Get?method=Supplier_ReadSingle2&supplierid=' + CsvCustomer.SupplierID;
+        var url = Settings.url + "Get?method=Supplier_ReadSingle2&supplierid='" + CsvCustomer.SupplierID + "'";
         $http.get(url)
             .success(function(data){                //get the First Object because it comes back as array
                 if(data.length){
@@ -80,7 +79,6 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
     	if (sessionStorage.getItem( "Supplierscache")) {
     		$scope.suppliers = JSON.parse(sessionStorage.getItem( "Supplierscache"));
             $scope.splitArr = arraySplit(JSON.parse(sessionStorage.getItem( "Supplierscache")));
-            $scope.pageIdx = $scope.splitArr.length -1;
     		$scope.$emit('UNLOAD');
     	} else {
 	        var url = Settings.url + 'Get?method=Suppliers_ReadList';
@@ -90,7 +88,6 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
 	            sessionStorage.setItem( "Supplierscache",JSON.stringify(data));
                 $scope.suppliers = data;
                 $scope.splitArr =  arraySplit(data);
-                $scope.pageIdx = $scope.splitArr.length -1;
 	            $scope.$emit('UNLOAD');
 	        })
             .error(function(){
@@ -102,7 +99,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         if (sessionStorage.getItem('navigateAfterSupplierSave')) $scope.navigate(parseInt(sessionStorage.getItem('suplierCurrIdx')));
     }
     function fetchSupplier(){
-        var url = Settings.url + 'Get?method=Supplier_ReadSingle2&supplierid='+ $scope.id ;
+        var url = Settings.url + "Get?method=Supplier_ReadSingle2&supplierid='"+ $scope.id + "'" ;
         console.log(url);
         $http.get(url)
         .success(function(data){
@@ -128,7 +125,8 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         var result  = $filter('filter')(JSON.parse(sessionStorage.getItem( "Supplierscache")), {$ : $scope.searchText});
         result = arraySplit(result);
         $scope.splitArr  =  result;
-        $scope.idx = ($scope.splitArr.length > 1) ? $scope.pageIdx -1 : 0;
+        $scope.idx = 0;
+        sessionStorage.setItem('currIdx', $scope.idx);
     }
 
     $scope.navigate = function(change){
@@ -137,7 +135,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             arrayLength = parseInt(sessionStorage.getItem('SupplierArrayLength'));
             if(changedVal < 0 || changedVal >= arrayLength) return;
             $scope.idx = changedVal;
-            sessionStorage.setItem('suplierCurrIdx', $scope.pageIdx);
+            sessionStorage.setItem('suplierCurrIdx', $scope.idx);
         }else{
             sessionStorage.removeItem('suplierCurrIdx');
             sessionStorage.removeItem('SupplierArrayLength');
@@ -145,8 +143,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             sessionStorage.setItem('SupplierArrayLength', $scope.splitArr.length);
             if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
             $scope.idx = changedVal;
-             $scope.pageIdx += change;
-            sessionStorage.setItem('suplierCurrIdx', $scope.pageIdx);
+            sessionStorage.setItem('suplierCurrIdx', $scope.idx);
         }
     }
 
@@ -212,6 +209,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             return;
         }
         $scope.$emit('LOAD');
+        window.scrollTo(0,0);
         $scope.id = $routeParams.id;
         if ($routeParams.mode && $scope.id !== 'new') {
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveSupplier});

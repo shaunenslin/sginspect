@@ -5,7 +5,6 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     $scope.splitArr = [];
     $scope.newArr = [];
     $scope.idx = 0;
-    $scope.pageIdx = 0;
     $scope.checkboxs = {'Active' : true};
     var user_exists = false;
     var user = GlobalSvc.getUser();
@@ -18,8 +17,8 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         };
 	}
 
-    function userExistsCheck(ClientID){
-    var url = Settings.url + 'Get?method=Client_ReadSingle2&clientid=' + ClientID;
+    function userExistsCheck(csvJson){
+    var url = Settings.url + 'Get?method=Client_ReadSingle2&clientid=' + csvJson.ClientID;
     $http.get(url)
         .success(function(data){                //get the First Object because it comes back as array
             if(data.length){
@@ -28,7 +27,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
                 return user_exists;
             } else{
                 if($scope.id === 'new') save();
-                if($scope.mode === 'list') uploadClient(CsvCustomer);
+                if($scope.mode === 'list') uploadClient(csvJson);
             }
         })
         .error(function(){
@@ -84,7 +83,6 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
     	if (sessionStorage.getItem("Clientscache")) {
     		$scope.clients = arraySplit(JSON.parse(sessionStorage.getItem( "Clientscache")));
             $scope.splitArr = $scope.clients;
-            $scope.pageIdx = $scope.splitArr.length -1;
     		$scope.$emit('UNLOAD');
     	} else {
 	        var url = Settings.url + 'Get?method=Clients_readlist';
@@ -94,7 +92,6 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
                 sessionStorage.setItem("Clientscache",JSON.stringify(data));
 	            $scope.clients =arraySplit(data);
                 $scope.splitArr = $scope.clients;
-                $scope.pageIdx = $scope.splitArr.length -1;
 	            $scope.$emit('UNLOAD');
                 console.log($scope.clients);
 	        })
@@ -133,9 +130,8 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         var result  = $filter('filter')( JSON.parse(sessionStorage.getItem( "Clientscache")), {$ : $scope.searchText});
         result = arraySplit(result);
         $scope.splitArr  =  result; 
-        // $scope.idx = $scope.idx < $scope.clients.length ? 0 : ($scope.pageIdx - 1);
-        // $scope.pageIdx = ($scope.splitArr.length > 1) ? ($scope.splitArr.length - 1) : $scope.splitArr.length;
-        $scope.idx = ($scope.splitArr.length > 1) ? $scope.pageIdx -1 : 0;
+        $scope.idx = 0;
+        sessionStorage.setItem('currIdx', $scope.idx);
     }
 
     $scope.navigate = function(change){
@@ -144,7 +140,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             arrayLength = parseInt(sessionStorage.getItem('ClientarrayLength'));
             if(changedVal < 0 || changedVal >= arrayLength) return;
             $scope.idx = changedVal;
-            sessionStorage.setItem('currIdx', $scope.pageIdx);    
+            sessionStorage.setItem('currIdx', $scope.idx);    
         }else{
             sessionStorage.removeItem('currIdx');
             sessionStorage.removeItem('ClientarrayLength');
@@ -152,8 +148,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             sessionStorage.setItem('ClientarrayLength', $scope.splitArr.length);
             if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
             $scope.idx = changedVal;
-            $scope.pageIdx += change;
-            sessionStorage.setItem('currIdx', $scope.pageIdx);
+            sessionStorage.setItem('currIdx', $scope.idx);
         }
     }
     
@@ -197,7 +192,7 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
             json[i].ClientID = json[i].ClientID;
             json[i].Name = json[i].Name;
             json[i].Active = (json[i].Active = true);
-            userExistsCheck(json[i].ClientID);
+            userExistsCheck(json[i]);
         }            
     };
 
