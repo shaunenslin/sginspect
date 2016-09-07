@@ -21,7 +21,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
 	}
 
     function userExistsCheck(CsvCustomer){
-        var url = Settings.url + 'Get?method=Supplier_ReadSingle2&supplierid=' + CsvCustomer.SupplierID;
+        var url = Settings.url + "Get?method=Supplier_ReadSingle2&supplierid='" + CsvCustomer.SupplierID + "'";
         $http.get(url)
             .success(function(data){                //get the First Object because it comes back as array
                 if(data.length){
@@ -99,7 +99,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         if (sessionStorage.getItem('navigateAfterSupplierSave')) $scope.navigate(parseInt(sessionStorage.getItem('suplierCurrIdx')));
     }
     function fetchSupplier(){
-        var url = Settings.url + 'Get?method=Supplier_ReadSingle2&supplierid='+ $scope.id ;
+        var url = Settings.url + "Get?method=Supplier_ReadSingle2&supplierid='"+ $scope.id + "'" ;
         console.log(url);
         $http.get(url)
         .success(function(data){
@@ -121,10 +121,13 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         }
         return newArr;
     };
+    // set index to session to ensure we are in the correct page after saving.
     $scope.filterList = function(){
         var result  = $filter('filter')(JSON.parse(sessionStorage.getItem( "Supplierscache")), {$ : $scope.searchText});
         result = arraySplit(result);
-        if (result.length > 0) $scope.splitArr  =  result;
+        $scope.splitArr  =  result;
+        $scope.idx = 0;
+        sessionStorage.setItem('currIdx', $scope.idx);
     }
 
     $scope.navigate = function(change){
@@ -207,6 +210,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             return;
         }
         $scope.$emit('LOAD');
+        window.scrollTo(0,0);
         $scope.id = $routeParams.id;
         if ($routeParams.mode && $scope.id !== 'new') {
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveSupplier});

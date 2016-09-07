@@ -1,10 +1,11 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="AuditFormCtrl">
-	<h3>Vehicle Basic Details</h3>
+	<div ng-if="(Form.JSON.vinmatch === true && Form.JSON.regmatch === true)">
+		<h3>Vehicle Basic Details</h3>
 	<div class="panel panel-default">
 		<div class="panel-body form-horizontal">
 			<div class="form-group">
 				<label for="client" class="col-sm-3">Customer</label>
-				<div class="col-sm-9"><p> {{Form.JSON.Customer}}</p></div>
+				<div class="col-sm-9"><p> {{Form.JSON.CustomerName}}</p></div>
 			</div>
 			<div class="form-group">
 				<label for="vin" class="col-sm-3">VIN</label>
@@ -57,7 +58,7 @@
 		</div>
 		<div class="form-group">
 			<label for="inspectiondate" class="col-sm-3">Date of Inspection</label>
-			<div class="col-sm-9"><input name="inspectionDate" required class="form-control" id="inspection_date" ng-model="Form.JSON.InspectionDate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text" ng-disabled="!Form.JSON.Branch"></div>
+			<div class="col-sm-9"><input name="inspectionDate" required class="form-control" id="inspection_date" ng-model="Form.JSON.InspectionDate" date-format="longDate" data-autoclose="1" bs-datepicker data-date-format="yyyy-MM-dd"  type="text" ng-disabled="!Form.JSON.Branch"></div>
 		</div>
 
 			<!-- IF BAD OPTION CHOSEN THE USER MUST SPECIFY IN COMMENTS FIELD  -->
@@ -175,7 +176,7 @@
 			<div class="col-sm-9"><input name="cabexterior_comment" required class="form-control" placeholder="Enter Comment" id="cabexterior_comment" ng-model="Form.JSON.CabExteriorComment" type="text"></div>
 		</div>
     	<div class="form-group">
-	        <label for="rust" class="col-sm-3">Rust</label>
+	        <label for="rust" class="col-sm-3">Is the Vehicle Free of Rust ?</label>
 	        <div class="col-sm-9">
 	        	<select name="rust" required ng-disabled="!Form.JSON.CabExterior" class="form-control" id="rust" ng-model="Form.JSON.Rust" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>
@@ -183,7 +184,7 @@
 	        </div>
     	</div>
     	<!-- Rust Comment -->
-    	<div ng-if="Form.JSON.Rust === 'Yes'" class="form-group">
+    	<div ng-if="Form.JSON.Rust === 'No'" class="form-group">
 			<label for="rust_comment" class="col-sm-3">Please Specify</label>
 			<div class="col-sm-9"><input name="rust_comment" required class="form-control" placeholder="Enter Comment" id="rust_comment" ng-model="Form.JSON.RustComment" type="text"></div>
 		</div>
@@ -196,7 +197,7 @@
 	        </div>
     	</div>
     	<div class="form-group">
-	        <label for="fluid_leaks" class="col-sm-3">Fluid Leaks</label>
+	        <label for="fluid_leaks" class="col-sm-3">Is the Vehicle Free of Fluid Leaks ?</label>
 	        <div class="col-sm-9">
 	        	<select name="fluid_leaks" required ng-disabled="!Form.JSON.LicenseCard" class="form-control" id="fluid_leaks" ng-model="Form.JSON.FluidLeaks" ng-options="item.value as item.value for item in booleanValues">
     				<option value="">-- Please select an option --</option>
@@ -204,7 +205,7 @@
 	        </div>
     	</div>
     	<!-- Fluid Leaks Comment -->
-    	<div ng-if="Form.JSON.FluidLeaks === 'Yes'" class="form-group">
+    	<div ng-if="Form.JSON.FluidLeaks === 'No'" class="form-group">
 			<label for="fluid_leaks_comment" class="col-sm-3">Please Specify</label>
 			<div class="col-sm-9"><input name="fluid_leaks_comment" required class="form-control" placeholder="Enter Comment" id="fluid_leaks_comment" ng-model="Form.JSON.FluidLeaksComment" type="text"></div>
 		</div>
@@ -227,7 +228,7 @@
     	</div>
     	<div ng-if="Form.JSON.FireExtIsValid === 'Valid'" class="form-group">
 			<label for="fireExp_date" class="col-sm-3">What is the Expiration Date ?</label>
-			<div class="col-sm-9"><input name="fireExp_date" required class="form-control" id="fireExp_date" ng-model="Form.JSON.FireExtinguisherExpDate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd" type="text" ng-disabled="!Form.JSON.FireExtIsValid"></div>
+			<div class="col-sm-9"><input name="fireExp_date" required class="form-control" id="fireExp_date" ng-model="Form.JSON.FireExtinguisherExpDate" date-format="longDate" data-autoclose="1" bs-datepicker data-date-format="yyyy-MM-dd" type="text" ng-disabled="!Form.JSON.FireExtIsValid"></div>
 		</div>
 		<div ng-class="(Form.JSON.Tyres !== 'Good' && Form.JSON.Tyres !== undefined) ? 'well' : ''">
 			<div class="form-group">
@@ -311,12 +312,14 @@
 
 		</div>
 	</form>
+		
+	</div>
 
 	<div style="margin-top:10px;">
 		<div class="alert alert-info"><i class="fa fa-info"></i> Please Sign below before saving your request</div>
-		<div class="panel panel-default">
-			<div class="panel-heading">Signature  Of Inspector</div>
-			<div class="panel-body">
+		<div>
+			<label>Signature  Of Inspector</label>
+			<div>
 				<signature ng-model="signature.inspector" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
 			</div>
 		</div>

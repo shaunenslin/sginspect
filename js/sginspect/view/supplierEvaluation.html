@@ -1,13 +1,13 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="SupplierEvaluationCtrl">
    <!-- Screen 6 Inspection Form -->
-	  	<div >
+	  	<div ng-if="!hideForm">
 	  		<form style="margin-top: 10px;" class="form-horizontal" name="supplierevaluationform">
 				<div ng-if="mode==='existing'">
-					<h4>Supplier Being Evaluated</h4>
+					<h4>Supplier</h4>
 	                <div class="form-group">
-						<label for="SupplierID" class="col-sm-3">Supplier</label>
+						<label for="SupplierName" class="col-sm-3">Supplier Being Evaluated</label>
 				        <div class="col-sm-9" >
-							<input required id="Supplier" type="text" class="form-control" placeholder="Start typing a supplier, then select it" ng-model="Form.JSON.SupplierID" bs-typeahead bs-options="supplier.SupplierID as supplier.Name for supplier in Suppliers"/>
+							<input required id="SupplierName" type="text" class="form-control" placeholder="Start typing a supplier, then select it" ng-model="Form.JSON.SupplierID" bs-typeahead bs-options="supplier.SupplierID as supplier.Name for supplier in Suppliers"/>
 						</div>
 					</div>
 					<div class="well well-sm">
@@ -31,17 +31,11 @@
 				</div>
 
 				<div ng-if="mode==='new'">
-					<h4>Supplier Being Evaluated</h4>
+					<h4>Supplier</h4>
 					<div class="form-group" >
-						<label for="SupplierID" class="col-sm-3">SupplierID</label>
+						<label for="Name" class="col-sm-3">Supplier Being Evaluated</label>
 				        <div class="col-sm-9" >
-							<input  required id="Supplier"  type="text" class="form-control" placeholder="Enter a new Supplier ID" ng-model="Form.JSON.SupplierID"/>
-						</div>
-					</div>
-					<div class="form-group" >
-						<label for="Name" class="col-sm-3">Name</label>
-				        <div class="col-sm-9" >
-							<input  required id="Name" ng-disabled="!Form.JSON.SupplierID"  type="text" class="form-control" placeholder="Enter the suppliers name" ng-model="Form.JSON.Name"/>
+							<input  required id="Name" type="text" class="form-control" placeholder="Enter the suppliers name" ng-model="Form.JSON.Name"/>
 						</div>
 					</div>
 					<div class="form-group" style="margin-left:0px;margin-right:0px;">
@@ -50,7 +44,7 @@
 					<h4>Supplier Evaluation Details</h4>
 					<div class="form-group">
 						<label for="EvaluationDate" class="col-sm-3">Evaluation Date</label>
-						<div class="col-sm-9"><input required ng-disabled="!Form.JSON.SupplierID" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="Form.JSON.EvaluationDate"/></div>
+						<div class="col-sm-9"><input required ng-disabled="!Form.JSON.Name" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="Form.JSON.EvaluationDate"/></div>
 					</div>
 				</div>
 				<div class="form-group">
@@ -323,15 +317,15 @@
 	  		</form>
 	  	</div>
 			<!-- Signature box for * 4 forms except  supplierevaluation  -->
-			<div class="panel panel-default">
-				<div class="panel-heading">Signature  Of Technical Advisor</div>
-				<div class="panel-body">
+			<div>
+				<label>Signature  Of Technical Advisor</label>
+				<div>
 					<signature ng-model="signature.technicaladvisor" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
 				</div>
 			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">Signature  Of Workshop Manager</div>
-				<div class="panel-body">
+			<div>
+				<label>Signature  Of Workshop Manager</label>
+				<div>
 					<signature ng-model="signature.workshopmanager" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
 				</div>
 			</div>

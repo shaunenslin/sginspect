@@ -1,10 +1,11 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="TechnicalFormCtrl">
-	<h3>Vehicle Basic Details</h3>
+	<div ng-if="(Form.JSON.vinmatch === true && Form.JSON.regmatch === true)">
+		<h3>Vehicle Basic Details</h3>
 	<div class="panel panel-default">
 		<div class="panel-body form-horizontal">
 			<div class="form-group">
 				<label for="client" class="col-sm-3">Customer</label>
-				<div class="col-sm-9"><p> {{Form.JSON.Customer}}</p></div>
+				<div class="col-sm-9"><p> {{Form.JSON.CustomerName}}</p></div>
 			</div>
 			<div class="form-group">
 				<label for="vin" class="col-sm-3">VIN</label>
@@ -20,7 +21,7 @@
 			</div>
 		</div>
 	</div>
-	<h3>Service History(Latest - First)</h3>
+	<h3>Service History</h3>
 	<div ng-if="serviceHistory.length === 0" style="margin-top: 15px" class="alert alert-warning">
 		<p><i class="fa fa-info"></i> There is no service history available for this Customer</p>
 	</div>
@@ -38,7 +39,7 @@
 	<form name="auditform" style="margin-top:10px;" class="form-horizontal">
 		<div class="form-group">
 			<label for="investigation_date" class="col-sm-3">Date of Investigation</label>
-			<div class="col-sm-9"><input name="investigation_date" required class="form-control" id="investigation_date" ng-model="Form.JSON.InvestigationDate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
+			<div class="col-sm-9"><input name="investigation_date" required class="form-control" id="investigation_date" ng-model="Form.JSON.InvestigationDate" date-format="longDate" data-autoclose="1" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
 		</div>
 		<div class="form-group">
 			<label for="investigation_reason" class="col-sm-3">Reason for Investigation</label>
@@ -91,11 +92,12 @@
 
 		
 	</form>
+	</div>
 	<div style="margin-top:10px;">
 		<div  class="alert alert-info"><i class="fa fa-info"></i> Please Sign below before saving your request</div>
-		<div style="position: relative;" class="panel panel-default">
-			<div class="panel-heading">Signature  Of Inspector</div>
-			<div class="panel-body">
+		<div style="position: relative;">
+			<label>Signature  Of Inspector</label>
+			<div>
 				<signature ng-model="signature.inspector" cssclass="signatureField" color="#000000" bg-color="#222222"></signature>
 			</div>
 		</div>

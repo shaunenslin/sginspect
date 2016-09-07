@@ -1,4 +1,4 @@
-<div ng-controller="WelcomeCtrl" ng-show="loggedIn" style="background:; 
+<div ng-controller="WelcomeCtrl" ng-show="loggedIn" style="background: url('{{settings.splash}}') no-repeat center center fixed;  
                                                             height: 100vh;
                                                             -webkit-background-size: cover;
                                                             -moz-background-size: cover;
@@ -12,7 +12,7 @@
                 <a href='#/Suppliers' class="btn btn-default btn-lg" style="width:80%; padding: 30px; font-size:30px; font-family: Impact">Supplier Management</a>
             </div>
         </div>
-    </div>           
+    </div>
 <!--     <div ng-include="'views/welcome.html'"></div>
  -->
     <script type="text/ng-template" id="syncingModal.html">
@@ -27,10 +27,10 @@
                         <td>{{item.substr(0,80)}}</td>
                     </tr>
                 </table>
-            </div> 
+            </div>
 
         </div>
     </script>
-    
-    
+
+
 </div>

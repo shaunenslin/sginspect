@@ -5,25 +5,25 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.openJobsCount = 0
 	$scope.CompletedJobsCount = 0;
 	$scope.CloseJobsCount = 0;
-	$scope.selectOptions =[{name : 'audit'}, {name : 'customervisit'}, {name : 'afterserviceevaluation'}, {name : 'technicalreport'}, {name : 'supplierevaluation'}];
+	$scope.selectOptions =[{name : 'Audit Form', value : 'audit'}, {name : 'Customer Visit', value : 'customervisit'}, {name : 'After Service Inspection', value : 'afterserviceevaluation'}, {name : 'Technical Report', value : 'technicalreport'}, {name : 'Supplier Evaluation', value : 'supplierevaluation'}];
 	$scope.searchText = {"JobType" : "", "Date" : "", "Text": ""};
-	$scope.showWarning = false;
 	$scope.vehicleFitnessRating = 'Pass';
 	$scope.overallRating = 0;
 	$scope.additionalEquipmentRating = 0;
 	$scope.supplierCompetencyRating = 0
 	$scope.supplierEtiquetteRating = 0;
 	$scope.supplierPaymentRating = 0;
+	$scope.settings = Settings;
 	var rating = 0;
 	var add_rating = 0;
 	var competency_rating = 0;
 	var etiquette_rating = 0;
 	var payment_rating = 0;
+	var afterservice_overall_ratings = {'radiatorconditionchecked' : 6,'engineoillevelschecked' : 15,'oilfilterschecked' : 15,'oilleaks' : 6,'aircleanerserviced' : 15,'fuelfilterchecked' : 15,'gearboxbreatherserviced' : 3,'diffbreatherserviced' : 3,'diffsoilleleaks' : 3,'diffsoillevelchecked' : 2,'diffandrearaxlewashed' : 2,'fithwheelcleaned' : 2,'hardenedcinsert' : 2,'batteriesserviced' : 3,'springshaklesandtrunionlubricated' : 3,'kingsandsteeringjointgreased' : 3,'propsshaftuniversal' : 2};
 	var audit_overall_ratings = {'cabinterior': 7,'steeringplay': 6,'electrical': 6,'engine_smoke': 13,'clutchoperation': 7,'brakes': 14,'gearselector': 6,'propshaftplay': 5,'cabexterior': 7,'rust': 5,'licensecard': 8,'fluidleaks': 7,'tyres' : 9,'fireextinguisher': 0,'fireextisvalid': 0,'fireextinguisherdate': 0,'equipment': 0,'abuserelatedcosts': 0};
 	var audit_additional_equipment_ratings = {'fireextinguisher': 50, 'equipment': 50};
-	var afterservice_overall_ratings = {'radiatorconditionchecked' : 6,'engineoillevelschecked' : 15,'oilfilterschecked' : 15,'oilleaks' : 6,'aircleanerserviced' : 15,'fuelfilterchecked' : 15,'gearboxbreatherserviced' : 3,'diffbreatherserviced' : 3,'diffsoilleleaks' : 3,'diffsoillevelchecked' : 2,'diffandrearaxlewashed' : 2,'fithwheelcleaned' : 2,'hardenedcinsert' : 2,'batteriesserviced' : 3,'springshaklesandtrunionlubricated' : 3,'kingsandsteeringjointgreased' : 3,'propsshaftuniversal' : 2};
 	var supplier_overall_ratings = {'reception' : 9,'procedures' : 9,'workmanship' : 12,'downtime' : 9,'cleanliness' : 11,'conformity' : 8,'partsavailibility' : 8,'facility' : 8,'warranties' : 9,'bulletins' : 7,'specialtoolstraining' : 10};
-	var o = {'good': 1, 'bad': 0, 'average': 0.5, 'yes': 0, 'no' :1, 'valid': 1, 'expired': 0, 'done': 1, 'attempted': 0.5, 'not done': 0, 'n/a': 1};
+	var o = {'good': 1, 'bad': 0, 'average': 0.5, 'yes': 1, 'no' :0, 'valid': 1, 'expired': 0, 'done': 1, 'attempted': 0.5, 'not done': 0, 'n/a': 1};
 	var supplier_competency_ratings = {'techcomp' : 50,'commskills' : 50};
 	var supplier_etiquette_ratings = {'phoneetiquette' : 34, 'authleadtime' : 33, 'professionalism' : 33};
 	var supplier_rfcPayment_ratings = {'invoicepayment' : 50, 'rfcnotifications' : 50};
@@ -95,7 +95,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		var index = index;
 		DaoSvc.cursor('Unsent',
 			function(json){
-				//Checking if this is an image incase the are inspection that were saved offline 
+				//Checking if this is an image incase the are inspection that were saved offline
 				if(json.ImageID){
 					//Ensure that we are only getting images belonging to this current Form
 					if(json.ImageID.indexOf($scope.InspectionForms[index].FormID) > -1){
@@ -174,12 +174,11 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		}else{
 			var search_results = [];
 			$filter('filter')($scope.InspectionForms, function(item) {
-		        if(item.JSON.includes($scope.searchText.Text)){             
+		        if(item.JSON.includes($scope.searchText.Text)){
 		            search_results.push(item);
 		        }
 	        	$scope.InspectionForms = search_results;
-    		}); 
-    		if ($scope.InspectionForms.length === 0) $scope.showWarning = true;    
+    		});
 		}
 
 	}
@@ -196,7 +195,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 				add_rating+= (prop.toLowerCase() === 'fireextinguisher') ? Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()]) : (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
 			}
 		}
-		if (!savedForm.JSON.vinmatch || !savedForm.JSON.regmatch || savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
+		if (savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
 		$scope.overallRating = rating;
 		$scope.additionalEquipmentRating = add_rating;
 	}
@@ -213,7 +212,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			rating += isNaN(supplier_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 			competency_rating += isNaN(supplier_competency_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_competency_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 			etiquette_rating += isNaN(supplier_etiquette_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_etiquette_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-			payment_rating += isNaN(supplier_rfcPayment_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_rfcPayment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);	
+			payment_rating += isNaN(supplier_rfcPayment_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_rfcPayment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 		}
 		$scope.overallRating = rating;
 		$scope.supplierCompetencyRating = competency_rating ;
@@ -234,7 +233,6 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			} else{
 				calculateSupplierRating(savedForm, prop);
 			}
-			if (!savedForm.JSON.vinmatch || !savedForm.JSON.regmatch) $scope.vehicleFitnessRating = 'Fail';
 		}
 	}
 

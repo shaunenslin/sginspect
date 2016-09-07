@@ -38,8 +38,8 @@
             <ul class="pager">
                 <li><button class="btn btn-default btn-lg" type="button" ng-disabled="idx === 0" ng-click="navigate(-idx)">&laquo;</button></li>
                 <li><button class="btn btn-default btn-lg" type="button" ng-click="navigate(-1)" ng-disabled="idx === 0">&lsaquo;</button></li>
-                <li><button class="btn btn-default btn-lg" type="button">Page {{idx + 1}} of {{splitArr.length}}</button></li>
-                <li><button class="btn btn-default btn-lg" type="button" ng-click="navigate(1)" ng-disabled="idx === splitArr.length - 1">&rsaquo;</button></li>
+                <li><button class="btn btn-default btn-lg" type="button">Page {{idx + 1}} of {{clients.length}}</button></li>
+                <li><button class="btn btn-default btn-lg" type="button" ng-click="navigate(1)" ng-disabled="pageIdx === clients.length">&rsaquo;</button></li>
                 <li><button class="btn btn-default btn-lg" type="button" ng-disabled="idx === splitArr.length - 1" ng-click="navigate(splitArr.length - idx - 1)">&raquo;</button></li>
             </ul>
         </nav>    
