@@ -121,6 +121,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
         }
         return newArr;
     };
+    // set index to session to ensure we are in the correct page after saving.
     $scope.filterList = function(){
         var result  = $filter('filter')(JSON.parse(sessionStorage.getItem( "Supplierscache")), {$ : $scope.searchText});
         result = arraySplit(result);
