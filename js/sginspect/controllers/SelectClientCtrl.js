@@ -6,13 +6,15 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.supplierStatus = "";
 	function newObject(){
 		return {
-			FormType: $routeParams.inspectiontype,
-			ClientID: "",
-			FormID: GlobalSvc.getGUID(),
-			SupplierID  : "",
-			UserID 		: GlobalSvc.getUser().UserID,
-			FormDate	: moment().format('YYYY-MM-DD HH:mm:ss'),
-			JSON 		: {}
+			FormType 	  : $routeParams.inspectiontype,
+			ClientID 	  : "",
+			FormID 		  : GlobalSvc.getGUID(),
+			SupplierID    : "",
+			UserID 		  : GlobalSvc.getUser().UserID,
+			FormDate	  : moment().format('YYYY-MM-DD HH:mm:ss'),
+			VinNumber 	  : "",
+			ExportedtoISO : 0,
+			JSON 		  : {}
 		}
 	}
 
@@ -22,6 +24,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		if ($routeParams.screennum == 0){
 			if (!$scope.Form.ClientID) {$alert({content: "Please select a Customer before continuing !", duration:5, placement:'top-right', type:'danger', show:true}); return;};
 			$filter('filter')($scope.Clients, function(e){if (e.ClientID === $scope.Form.ClientID) {$scope.Form.JSON.CustomerName = e.Name; return;}} );
+			$scope.Form.JSON.User_Name = GlobalSvc.getUser().Name;
 
 		}else if ($routeParams.screennum == 1){
 			if (!$scope.VinNumber){
@@ -236,6 +239,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.view = 'licensematch';
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 			$scope.RegNumber = sessionStorage.getItem('currentRegNumber');
+			console.log($scope.image);
 		}
 		if (parseInt($routeParams.screennum) !== 0) savePartialForm();
 	}

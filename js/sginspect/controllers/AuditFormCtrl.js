@@ -153,15 +153,17 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	function saveForm(){
 		$scope.$emit('LOAD');
-		window.scrollTo(0, 0);
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		deleteCurrentPartialForm($scope.Form.FormID);
-		$scope.Form.KilometersImages = $scope.KilometersImages;
-		$scope.Form.TyresImages = $scope.TyresImages;
-		$scope.Form.other_photosimages = $scope.other_photosimages;
+		$scope.Form.JSON.KilometersImages = $scope.KilometersImages;
+		$scope.Form.JSON.TyresImages = $scope.TyresImages;
+		$scope.Form.JSON.other_photosimages = $scope.other_photosimages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
-		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		var key = $scope.Form.FormID + '_inspectorSig.svgx';
+		$scope.Form.JSON.Signature = key;
+		CaptureImageSvc.savePhoto(key, $scope.Form.FormID,inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
+		deleteCurrentPartialForm($scope.Form.FormID);
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
@@ -189,6 +191,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
    $scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
+		window.scrollTo(0, 0);
 		$scope.$emit('heading',{heading: 'Audit Form', icon : 'fa fa-check-square-o'});
 		if (sessionStorage.getItem('fromJobsScreenCache')) $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		$scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});

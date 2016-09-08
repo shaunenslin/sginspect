@@ -1,0 +1,242 @@
+<div class="inset"  style="padding-top: 30px; padding-bottom: 50px;" ng-controller='AuditReportCtrl'>
+	<div class="container" style="margin-top: 10px;">
+    	<div class="table-responsive">
+				<label>Audit Form</label>
+				<label style="padding-left: 300px;">Audit Form {{Report.FormDate}}</label>
+				<label style="float:right">Job Start :{{Report.FormDate}}</label>
+    		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+			    	<th>Task</th>
+					<th>Answer</th>
+					<th>Completed Date</th>
+					<th>Completed By</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Audit Form</td>
+					<td>{{Report.JSON.CustomerName}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+			    <tr>
+					<td>Registration Number</td>
+					<td>{{Report.VinNumber}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+				<tr>
+					<td>Kilometers</td>
+					<td>{{Report.JSON.Kilometers}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-repeat="id in kilometersImages">
+					<td>Kilometers (image)</td>
+					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl +  id}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Customer</td>
+					<td>{{Report.JSON.CustomerName}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Date</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Cab Interior</td>
+					<td>{{Report.JSON.CabInterior}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+			    <tr ng-if="Report.JSON.CabInteriorComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.CabInteriorComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+					<td>Steering Play</td>
+					<td>{{Report.JSON.SteeringPlay}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			   <tr ng-if="Report.JSON.SteeringPlayComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.SteeringPlayComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Electrical (general)</td>
+					<td>{{Report.JSON.Electrical}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			  	<tr ng-if="Report.JSON.ElectricalComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.ElectricalComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Engine (Smoke & Sound</td>
+					<td>{{Report.JSON.Engine_Smoke}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.Engine_SmokeComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.ElectricalComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Clutch Operation</td>
+					<td>{{Report.JSON.ClutchOperation}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.ClutchOperationComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.ClutchOperationComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Brakes (Foot & Hand)</td>
+					<td>{{Report.JSON.Brakes}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr ng-if="Report.JSON.BrakesComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.BrakesComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Gear Selection</td>
+					<td>{{Report.JSON.GearSelector}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr ng-if="Report.JSON.GearSelectorComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.GearSelectorComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Diff/Propshaft Play</td>
+					<td>{{Report.JSON.PropshaftPlay}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.PropshaftPlayComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.PropshaftPlayComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Cab Exterior (glass & dents)</td>
+					<td>{{Report.JSON.CabExterior}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			   <tr ng-if="Report.JSON.CabExteriorComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.CabExteriorComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Rust</td>
+					<td>{{Report.JSON.Rust}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.RustComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.RustComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>License COF/ Operator Card</td>
+					<td>{{Report.JSON.LicenseCard}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Fluid Leaks</td>
+					<td>{{Report.JSON.FluidLeaks}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.FluidLeaksComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.FluidLeaksComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Tyres</td>
+					<td>{{Report.JSON.Tyres}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-repeat="id in TyresImages">
+					<td>Kilometers (image)</td>
+					<td><img id="tyres-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Additional Equipment</td>
+					<td>{{Report.JSON.Equipment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Abuse Related Costs</td>
+					<td>{{Report.JSON.AbuseRelatedCosts}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Costs</td>
+					<td>{{Report.JSON.Costs ? Report.JSON.Costs : 0}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-repeat="id in otherImages">
+					<td>Other Photos</td>
+					<td><img id="other_photos" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
+					<td>Inspector Signature</td>
+	
+					<td><svg viewBox="0 0 100 100">
+  						<img ng-attrs-xlink:href="{{signature}}" x="0" y="0" height="100" width="100" />
+					</svg></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     
+	  		</tbody>
+		</table>
+    	</div>	
+	</div>
+ 
+</div>

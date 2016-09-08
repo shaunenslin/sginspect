@@ -164,10 +164,13 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		delete $scope.Form.JobType;
 		window.scrollTo(0, 0);
 		deleteCurrentPartialForm($scope.Form.FormID);
-		$scope.Form.kilometerImages = $scope.kilometerImages;
-		$scope.Form.commentPhotoImages = $scope.commentPhotoImages;
+		$scope.Form.JSON.kilometerImages = $scope.kilometerImages;
+		$scope.Form.JSON.commentPhotoImages = $scope.commentPhotoImages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
-		$scope.Form.JSON[inspectorSignature.ID] = inspectorSignature.FileData;
+		var key = $scope.Form.FormID + '_inspectorSig.svgx';
+		$scope.Form.JSON.Signature = key;
+		CaptureImageSvc.savePhoto(key, $scope.Form.FormID, inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
+		deleteCurrentPartialForm($scope.Form.FormID);
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){

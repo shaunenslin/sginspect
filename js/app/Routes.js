@@ -27,6 +27,12 @@ function AppRoutes($routeProvider, DaoSvc){
     $routeProvider.when('/job/:mode', {templateUrl : "js/sginspect/view/mainMenu.html"});
     $routeProvider.when('/jobs/:mode', {templateUrl : "js/sginspect/view/listOpen.html"});
     $routeProvider.when('/reports', {templateUrl : "js/sginspect/view/reports.html"});
+    $routeProvider.when('/reports/:mode/:id', {templateUrl : "js/sginspect/view/reports.html"});
+    $routeProvider.when('/audit/:mode/:id', {templateUrl : "js/sginspect/view/auditReport.html"});
+    $routeProvider.when('/supplierevaluation/:mode/:id', {templateUrl : "js/sginspect/view/supplierEvaluationReport.html"});
+    $routeProvider.when('/afterserviceevaluation/:mode/:id', {templateUrl : "js/sginspect/view/afterServiceReport.html"});
+    $routeProvider.when('/technicalreport/:mode/:id', {templateUrl : "js/sginspect/view/techReportReport.html"});
+    $routeProvider.when('/customervisit/:mode/:id', {templateUrl : "js/sginspect/view/customerVisitReport.html"});
 
 }
 

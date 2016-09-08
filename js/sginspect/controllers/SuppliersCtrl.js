@@ -142,7 +142,7 @@ coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,Glob
             sessionStorage.removeItem('SupplierArrayLength');
             changedVal = $scope.idx + change;
             sessionStorage.setItem('SupplierArrayLength', $scope.splitArr.length);
-            if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
+            // if(changedVal < 0 || changedVal >= $scope.splitArr.length) return;
             $scope.idx = changedVal;
             sessionStorage.setItem('suplierCurrIdx', $scope.idx);
         }

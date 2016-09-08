@@ -1,0 +1,92 @@
+<div class="inset"  style="padding-top: 15px; padding-bottom: 50px;" ng-controller='ReportsCtrl'>
+	<div ng-if="mode === 'list'">
+		<div  class="well">
+		    <form style="margin-top:10px;" class="form-horizontal">
+		       	<div class="form-group">
+		            <label for="job_type" class="col-sm-2">Report Type</label>
+		            <div class="col-sm-4">
+		                <select name="job_type" class="form-control" id="job_type" ng-model="searchText.JobType" ng-options="item.value as item.name for item in jobType"><option value="">-- Please select a job type --</option></select>
+		            </div>
+		            <label for="tech_assessor" class="col-sm-2">Technical Assessor</label>
+		            <div class="col-sm-4">
+		                <select name="tech_assessor" class="form-control" id="tech_assessor" ng-model="searchText.UserID" ng-options="item.UserID as item.JSON.User_Name for item in splitArr[idx]"><option value="">-- Please select an assessor --</option></select>
+		            </div>
+		        </div>
+		        <div class="form-group">
+		            <label for="from_complete" class="col-sm-2">Date From</label>
+		            <div class="col-sm-4"><input name="from_complete" placeholder="Search by Date"  class="form-control" id="from_complete" ng-model="searchText.startdate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
+		            <label for="to_complete" class="col-sm-2">Date To</label>
+		            <div class="col-sm-4"><input name="to_complete" placeholder="Search by Date"  class="form-control" id="date_complete" ng-model="searchText.enddate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
+		        </div>
+		        <div class="form-group">
+		            <label for="iso" class="col-sm-2">Exported to ISO</label>
+		            <div class="col-sm-10">
+		            	<select name="iso" class="form-control" id="iso" ng-model="searchText.ISO">
+		            	<option value="">-- Please select an option --</option>
+		            	<option>Yes</option>
+		            	<option>No</option>
+		            </select>
+		            </div>
+		        </div>
+		        <button ng-click="onSearchClicked()" class="btn btn-success">Search <span class="fa fa-search"></span></button> <button ng-click="onClearClicked()" class="btn btn-danger">Clear</button>
+		    </form>  
+		</div>
+	 	<a href=""><button style="background-color: #31373B;bottom: 10px;" title="download csv file" type="button" class="round-btn" csv-header="getcsvHeader()" ng-csv="getCsvData()" filename="Reports.csv"><span class="fa fa-cloud-download icon" aria-hidden="true"></span></button></a>
+		<div ng-if="show" class="container">
+			<div class="table-responsive">
+				<table class="table table-striped table-hover ">
+					<thead>
+						<tr>
+							<th scope="row">Report Type</th>
+							<th scope="row">Technical Assessor</th>
+							<th scope="row">Date Submitted</th>
+							<th scope="row">Customer</th>
+							<th scope="row">Branch</th>
+							<th scope="row">Supplier</th>
+							<th scope="row">Performed Location</th>
+							<th scope="row">Exported to ISO</th>
+							<th scope="row">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in splitArr[idx]">
+							<td ng-if="item.FormType === 'audit'">Audit Form</td>
+							<td ng-if="item.FormType === 'customervisit'">Customer Visit</td>
+							<td ng-if="item.FormType === 'supplierevaluation'">Supplier Evaluation</td>
+							<td ng-if="item.FormType === 'technicalreport'">Technical Report</td>
+							<td ng-if="item.FormType === 'afterserviceevaluation'">After Service Inspection</td>
+							<td>{{item.JSON.User_Name}}</td>
+							<td>{{item.timeString}}</td>
+							<td>{{item.JSON.CustomerName}}</td>
+							<td>{{item.JSON.Branch}}</td>
+							<td>{{item.JSON.Branch}}</td>
+							<td ng-click="navigatetoReportMap($index)" style="cursor: pointer;">{{item.JSON.Latitude + ' ' + item.JSON.Longitude}}</td>
+							<td>{{(item.ExportedtoISO === 0 || !item.ExportedtoISO) ? 'No' : 'Yes'}}</td>
+							<td><button ng-click="editClicked($index)" class="btn btn-primary"><span class="fa fa-eye"></span></button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<nav aria-label="...">
+	            <ul class="pager">
+	                <li><button class="btn btn-default btn-lg" type="button" ng-disabled="idx === 0" ng-click="paginate(-idx)">&laquo;</button></li>
+	                <li><button class="btn btn-default btn-lg" type="button" ng-click="paginate(-1)" ng-disabled="idx === 0">&lsaquo;</button></li>
+	                <li><button class="btn btn-default btn-lg" type="button">Page {{idx + 1}} of {{splitArr.length}}</button></li>
+	                <li><button class="btn btn-default btn-lg" type="button" ng-click="paginate(1)" ng-disabled="idx === splitArr.length - 1">&rsaquo;</button></li>
+	                <li><button class="btn btn-default btn-lg" type="button" ng-disabled="idx === splitArr.length - 1" ng-click="paginate(splitArr.length - idx - 1)">&raquo;</button></li>
+	            </ul>
+	        </nav>
+		</div>
+		<div class="alert alert-warning" ng-if="splitArr[idx].length === 0">
+	       <p><i class="fa fa-info"></i> No results found</p>
+	    </div>
+	</div>
+     <div ng-if="mode ==='map'" style="margin-top:10px;">
+        <div id="icon">
+            <map center="[{{CentreLat}},{{CentreLong}}]" zoom="9" class="img-responsive" style="height :500px;">
+                <marker position="[{{CentreLat}}, {{CentreLong}}]" label="0"></marker>
+            </map>
+        </div>
+        </div>
+
+</div>

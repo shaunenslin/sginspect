@@ -1,0 +1,57 @@
+<div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="CustomerVisitReportCtrl">
+	<div clas="container" style="margin-top: 10px;">
+		<div class="table-responsive">
+			<table class="table table-hover table-bordered">
+			<thead>
+				<label>Customer Visit</label>
+				<label style="padding-left: 300px;">Customer Visit {{Report.FormDate}}</label>
+				<label style="float:right">Job Start :{{Report.FormDate}}</label>
+				<tr>
+					<th>Task</th>
+					<th>Answer</th>
+					<th>Completed Date</th>
+					<th>Completed By</th>
+				</tr>
+				<tbody>
+					<tr>
+						<td>Customer Vist</td>
+						<td>{{Report.JSON.CustomerName}}</td>
+						<td>{{Report.JSON.timeString}}</td>
+						<td>{{Report.JSON.User_Name}}</td>
+					</tr>
+					<tr>
+						<td>Branch</td>
+						<td>{{Report.JSON.Branch}}</td>
+						<td>{{Report.JSON.timeString}}</td>
+						<td>{{Report.JSON.User_Name}}</td>
+				    </tr>
+			    <tr>
+					<td>Parties Present</td>
+					<td>{{Report.JSON.PartiesPresent}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Issues Discussed</td>
+					<td>{{Report.JSON.IssuesDiscussed}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+				<tr ng-repeat="row in SpecialRequests">
+					<td>Special Request</td>
+					<td>{{row.RequestDate}}</td>
+					<td>{{row.SpecialRequestDate}}</td>
+			    </tr>
+			    <tr>
+					<td>Inspector Signature</td>
+					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+				</tbody>
+			</thead>
+		</table>
+		</div>
+	</div>
+	
+</div>

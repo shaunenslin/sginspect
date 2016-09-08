@@ -26,6 +26,7 @@
             <li ng-if="!noUser"><a href="#/profile" ng-click="$hide()"><i class="fa fa-user fa-fw" style="margin-right:5px;"></i>My Profile</a></li>
             <li ng-if="!noUser"><a href="#/sync" ng-click="$hide()"><i class="fa fa-exchange" style="margin-right:5px;"></i>Synchronize</a></li>
             <li ng-if="!noUser"><a href="#/admin" ng-click="$hide()"><i class="fa fa-wrench fa-fw" style="margin-right:5px;"></i>Admin</a></li>
+            <li ng-if="!noUser"><a href="#/reports" ng-click="$hide()"><i class="fa  fa-file-text" style="margin-right:5px;"></i>Reports</a></li>
             <li ng-if="!noUser"><a href="#/logout" ng-click="$hide()"><i class="fa fa-times-circle-o fa-fw" style="margin-right:5px;"></i>Logout</a></li>
         </ul>
         <div ng-if="showVersion" id="appVersion"><span>{{versionNumber}}</span> <span ng-if="osversion" style="margin-left : 150px">OS Version : {{osversion}}</span></div>
