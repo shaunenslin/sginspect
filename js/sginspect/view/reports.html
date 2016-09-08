@@ -5,11 +5,11 @@
 		       	<div class="form-group">
 		            <label for="job_type" class="col-sm-2">Report Type</label>
 		            <div class="col-sm-4">
-		                <select name="job_type" class="form-control" id="job_type" ng-model="searchText.JobType" ng-options="item.value as item.name for item in jobType"><option value="">-- Please select an option --</option></select>
+		                <select name="job_type" class="form-control" id="job_type" ng-model="searchText.JobType" ng-options="item.value as item.name for item in jobType"><option value="">-- Please select a job type --</option></select>
 		            </div>
 		            <label for="tech_assessor" class="col-sm-2">Technical Assessor</label>
 		            <div class="col-sm-4">
-		                <select name="tech_assessor" class="form-control" id="tech_assessor" ng-model="searchText.UserID" ng-options="item.JSON.UserID as item.User_Name for item in Jobs"><option value="">-- Please select an option --</option></select>
+		                <select name="tech_assessor" class="form-control" id="tech_assessor" ng-model="searchText.UserID" ng-options="item.UserID as item.JSON.User_Name for item in splitArr[idx]"><option value="">-- Please select an assessor --</option></select>
 		            </div>
 		        </div>
 		        <div class="form-group">
