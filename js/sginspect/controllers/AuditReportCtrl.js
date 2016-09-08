@@ -8,8 +8,8 @@ coreApp.controller("AuditReportCtrl", function($scope, $routeParams, DaoSvc, $lo
 
 	function fetchReport(){
 		$scope.Report = JSON.parse(sessionStorage.getItem('currentReportCache'));
-		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.InspectionDate).format('YYYY/MM/DD HH:mm');
-		$scope.Report.FormDate = moment($scope.Report.FormDate).format('YYYY/MM/DD HH:mm');
+		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.InspectionDate).format('YYYY/MM/DD');
+		$scope.Report.FormDate = moment($scope.Report.FormDate).format('YYYY/MM/DD');
 		$scope.kilometersImages = $scope.Report.JSON.KilometersImages;
 		$scope.TyresImages = $scope.Report.JSON.TyresImages;
 		$scope.otherImages = $scope.Report.JSON.other_photosimages;

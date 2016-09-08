@@ -7,9 +7,9 @@ coreApp.controller("AfterServiceReportCtrl", function($scope, $routeParams, DaoS
 
 	function fetchReport(){
 		$scope.Report = JSON.parse(sessionStorage.getItem('currentReportCache'));
-		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.dateOfService).format('YYYY/MM/DD HH:mm');
-		$scope.Report.JSON.dateOfService = moment($scope.Report.JSON.dateOfInspection).format('YYYY/MM/DD HH:mm');
-		$scope.Report.FormDate = moment($scope.Report.FormDate).format('YYYY/MM/DD HH:mm');
+		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.dateOfService).format('YYYY/MM/DD');
+		$scope.Report.JSON.dateOfService = moment($scope.Report.JSON.dateOfInspection).format('YYYY/MM/DD');
+		$scope.Report.FormDate = moment($scope.Report.FormDate).format('YYYY/MM/DD');
 		$scope.kilometerImages = $scope.Report.JSON.kilometerImages;
 		$scope.commentPhotoImages = $scope.Report.JSON.commentPhotoImages;
 		$scope.signature = $scope.imageUrl + $scope.Report.JSON.Signature;

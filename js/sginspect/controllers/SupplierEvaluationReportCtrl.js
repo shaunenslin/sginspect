@@ -9,8 +9,8 @@ coreApp.controller("SupplierEvaluationReportCtrl", function($scope, $routeParams
 
 	function fetchReport(){
 		$scope.Report = JSON.parse(sessionStorage.getItem('currentReportCache'));
-		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.EvaluationDate).format('YYYY/MM/DD HH:mm');
-		$scope.Report.FormDate = moment($scope.Report.FormDate).format('YYYY/MM/DD HH:mm');
+		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.EvaluationDate).format('YYYY/MM/DD');
+		$scope.Report.FormDate = moment($scope.Report.FormDate).format('YYYY/MM/DD');
 		$scope.evaluationImages = $scope.Report.JSON.evaluationImages;
 		$scope.CleanlinessImages = $scope.Report.JSON.CleanlinessImages;
 		$scope.SpecialToolsTrainingImages =  $scope.Report.JSON.SpecialToolsTrainingImages;
