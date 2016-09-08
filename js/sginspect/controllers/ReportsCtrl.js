@@ -41,7 +41,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
     		$scope.users = JSON.parse(sessionStorage.getItem( "UsersCache"));
     		$scope.$emit('UNLOAD');
     	} else {
-	        var url = Settings.url + 'Get?method==usp_user_readlist&SupplierID='+ GlobalSvc.getUser().SupplierID;
+	        var url = Settings.url + "Get?method=usp_user_readlist&SupplierID="+ GlobalSvc.getUser().SupplierID;
 	        console.log(url);
 	        $http.get(url).success(function(data){
 	            $scope.users = data;
