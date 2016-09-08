@@ -43,7 +43,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				return;
 			}
 			var key = $scope.Form.FormID + '_vin.png';
-			$scope.Form.JSON.regimage = key;
+			$scope.Form.JSON.vinimage = key;
 			CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 		} else if ($routeParams.screennum == 4){
 			if(!$scope.image) {
@@ -141,9 +141,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		};
 		if ($scope.isPhoneGap){
 			var onSuccess = function(img){
-				console.log(field + '-image');
-				var imgtag = document.getElementById(field + '-image');
-				imgtag.src = "data:image/jpeg;base64," + img;
 				$scope.image = img;
 				$scope.capture = true;
 				$scope.onNextClicked();

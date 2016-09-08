@@ -45,6 +45,18 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
+			    <tr ng-if="Report.JSON.vinimage">
+					<td>VIN no. No Match </td>
+					<td><img id="vin-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + Report.JSON.vinimage}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.regimage">
+					<td>Registration no. No Match</td>
+					<td><img id="reg-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + Report.JSON.regimage}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
 			    <tr>
 					<td>Radiator condition checked</td>
 					<td>{{Report.JSON.radiatorConditionChecked}}</td>
