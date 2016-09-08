@@ -154,6 +154,18 @@
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
 			     <tr>
+					<td>Diff and rear axles free from oil leaks</td>
+					<td>{{Report.JSON.diffsOilLeLeaks}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.diffsOilLeLeaksComment">
+					<td>Remarks</td>
+					<td>{{Report.JSON.diffsOilLeLeaksComment}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			     <tr>
 					<td>Diff and rear axles washed after service</td>
 					<td>{{Report.JSON.diffAndRearAxleWashed}}</td>
 					<td>{{Report.JSON.timeString}}</td>
@@ -249,6 +261,12 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
+			    <tr ng-if="Report.JSON.commentsOrPhotos">
+			    	<td>Comments/ Photo's</td>
+			    	<td>{{Report.JSON.commentsOrPhotos}}</td>
+			    	<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
 			     <tr>
 					<td>Date of inspection</td>
 					<td>{{Report.JSON.dateOfService}}</td>
@@ -263,7 +281,7 @@
 			    </tr>
 			    <tr>
 					<td>Place of Inspection</td>
-					<td>{{Report.JSON.placeForInspection}}</td>
+					<td>{{Report.JSON.Branch}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>

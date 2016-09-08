@@ -17,6 +17,14 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 
 
 	function fetchJobs(){
+		if(sessionStorage.getItem('currentSearchResultCache')){
+			$scope.splitArr = JSON.parse(sessionStorage.getItem('currentSearchResultCache'));
+			$scope.idx = parseInt(sessionStorage.getItem('currIdx'));
+			$scope.searchText = JSON.parse(sessionStorage.getItem('searchTextCache'));
+			$scope.show = $scope.splitArr[$scope.idx].length > 0 ? true : false;
+			$scope.$emit('UNLOAD');
+			return;
+		}
 		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&startdate=" + moment().format('YYYYMMDD') + "&enddate=" + moment().format('YYYYMMDD') + "&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=&ExportedtoISO=&SearchString=";
 		$http.get(url)
 		.success(function(json){
@@ -26,9 +34,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 				return e;
 			});
 			$scope.splitArr = arraySplit($scope.Jobs);
-			$scope.data = $scope.Jobs;
-			sessionStorage.setItem('JobsCache', JSON.stringify(json));
-			$scope.show = true;
+			$scope.show = json.length > 0 ? true : false;
 			$scope.$emit('UNLOAD');
 		})
 		.error(function(err){
@@ -79,7 +85,6 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
     
 	$scope.onClearClicked = function(){
 		$scope.searchText = {"JobType": "", "UserID" :"", "startdate":"", "enddate":"", "ISO":"", "SearchString":""};
-		$scope.Jobs = $scope.data;
 	}
 	$scope.onSearchClicked = function(){
 		if (!$scope.searchText.startdate || !$scope.searchText.enddate){
@@ -87,6 +92,8 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 			return;
 
 		}
+		sessionStorage.removeItem('currentSearchResultCache');
+		sessionStorage.removeItem('currIdx');
 		var searchStr = $scope.searchText.SearchString ? $scope.searchText.SearchString : '';
 		var userid = $scope.searchText.UserID ? $scope.searchText.UserID : '';
 		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&startdate=" + moment($scope.searchText.startdate).format("YYYYMMDD") + "&enddate=" + moment($scope.searchText.enddate).format("YYYYMMDD") + "&UserID='" + userid  + "'&FormType=" + $scope.searchText.JobType   + "&ExportedtoISO=" + $scope.searchText.ISO + "&SearchString=" + searchStr;
@@ -97,9 +104,11 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 				e.timeString = moment(e.FormDate).format('DD-MMM-YY');
 				return e;
 			});
+			sessionStorage.setItem('searchTextCache', JSON.stringify($scope.searchText));
 			$scope.splitArr = arraySplit($scope.Jobs);
-			$scope.data = $scope.Jobs;
-			sessionStorage.setItem('JobsCache', JSON.stringify(json));
+			sessionStorage.setItem('currentSearchResultCache', JSON.stringify($scope.splitArr));
+			sessionStorage.setItem('currIdx', $scope.idx);
+			sessionStorage.setItem('currentSearchItems', JSON.stringify($scope.searchText));
 			$scope.show = $scope.splitArr.length > 0 ? true : false;
 			$scope.$emit('UNLOAD');
 		})
