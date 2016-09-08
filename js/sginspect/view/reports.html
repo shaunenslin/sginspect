@@ -9,7 +9,7 @@
 		            </div>
 		            <label for="tech_assessor" class="col-sm-2">Technical Assessor</label>
 		            <div class="col-sm-4">
-		                <select name="tech_assessor" class="form-control" id="tech_assessor" ng-model="searchText.UserID" ng-options="item.UserID as item.JSON.User_Name for item in splitArr[idx]"><option value="">-- Please select an assessor --</option></select>
+		                <select name="tech_assessor" class="form-control" id="tech_assessor" ng-model="searchText.UserID" ng-options="item.UserID as item.Name for item in users"><option value="">-- Please select an assessor --</option></select>
 		            </div>
 		        </div>
 		        <div class="form-group">
@@ -18,13 +18,17 @@
 		            <label for="to_complete" class="col-sm-2">Date To</label>
 		            <div class="col-sm-4"><input name="to_complete" placeholder="Search by Date"  class="form-control" id="date_complete" ng-model="searchText.enddate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
 		        </div>
+		         <div class="form-group">
+		            <label for="iso" class="col-sm-2">Search by</label>
+		            <div class="col-sm-10">
+		            	<input name="search_str" placeholder=""  class="form-control" id="search_str" ng-model="searchText.SearchString" type="text">
+		            </div>
+		        </div>
 		        <div class="form-group">
 		            <label for="iso" class="col-sm-2">Exported to ISO</label>
 		            <div class="col-sm-10">
-		            	<select name="iso" class="form-control" id="iso" ng-model="searchText.ISO">
+		            	<select name="iso" class="form-control" id="iso" ng-model="searchText.ISO"  ng-options="item.value as item.name for item in isoOptions">
 		            	<option value="">-- Please select an option --</option>
-		            	<option>Yes</option>
-		            	<option>No</option>
 		            </select>
 		            </div>
 		        </div>
@@ -77,7 +81,7 @@
 	            </ul>
 	        </nav>
 		</div>
-		<div class="alert alert-warning" ng-if="splitArr[idx].length === 0">
+		<div class="alert alert-warning" ng-if="show === false">
 	       <p><i class="fa fa-info"></i> No results found</p>
 	    </div>
 	</div>

@@ -6,16 +6,18 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 		{name: 'Supplier Evaluation', value: 'supplierevaluation'},
 		{name: 'After Service Inspection', value: 'afterserviceevaluation'}
 	];
+	$scope.isoOptions = [{'name': 'Yes', value: 1}, {'name': 'No', value: 0}];
 	var newHeadings = ['Report Type', 'Technical Assessor', 'Date Submitted', 'Customer', 'Branch', 'Supplier', 'Performed Location', 'ExportedtoISO'];
 	$scope.data = [];
 	$scope.splitArr = [];
     $scope.newArr = [];
     $scope.idx = 0;
-    $scope.searchText = {"JobType": "", "UserID" :"", "startdate":"", "enddate":"", "ISO":""};
+    $scope.searchText = {"JobType": "", "UserID" :"", "startdate":"", "enddate":"", "ISO":"", "SearchString":""};
+    $scope.users = [];
 
 
 	function fetchJobs(){
-		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&startdate=''" + "&enddate=''&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=''" + "&ExportedtoISO=''&SearchString=''";
+		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&startdate=" + moment().format('YYYYMMDD') + "&enddate=" + moment().format('YYYYMMDD') + "&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=&ExportedtoISO=&SearchString=";
 		$http.get(url)
 		.success(function(json){
 			$scope.Jobs =json.map(function(e){
@@ -34,6 +36,20 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 			$scope.$emit('UNLOAD');
 		})
 	}
+	function fetchUsers(){
+    	if (sessionStorage.getItem( "UsersCache")) {
+    		$scope.users = JSON.parse(sessionStorage.getItem( "UsersCache"));
+    		$scope.$emit('UNLOAD');
+    	} else {
+	        var url = Settings.url + 'Get?method==usp_user_readlist&SupplierID='+ GlobalSvc.getUser().SupplierID;
+	        console.log(url);
+	        $http.get(url).success(function(data){
+	            $scope.users = data;
+	            $scope.$emit('UNLOAD');
+	            sessionStorage.setItem( "UsersCache",JSON.stringify($scope.users) );
+	        });
+    	}
+    }
 
 	function arraySplit(data){
         var newArr = [];
@@ -62,20 +78,29 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
     }
     
 	$scope.onClearClicked = function(){
-		$scope.searchText = {"JobType": "", "UserID" :"", "startdate":"", "enddate":"", "ISO":""};
+		$scope.searchText = {"JobType": "", "UserID" :"", "startdate":"", "enddate":"", "ISO":"", "SearchString":""};
 		$scope.Jobs = $scope.data;
 	}
 	$scope.onSearchClicked = function(){
-		if (!$scope.searchText.startdate){
-			$alert({content:"Date range required !", duration:5, placement:'top-right', type:'danger', show:true});
+		if (!$scope.searchText.startdate || !$scope.searchText.enddate){
+			$alert({content:"Date range required!" , duration:5, placement:'top-right', type:'danger', show:true});
 			return;
-		}
-		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=" + $scope.searchText.JobType + "&startdate='" + moment($scope.searchText.startdate).format('YYYY-MM-DD') + "'&enddate='" + moment($scope.searchText.enddate).format('YYYY-MM-DD') + "'&ExportedtoISO=" + $scope.searchText.ISO;
 
-		// var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&UserID='" + GlobalSvc.getUser().UserID  + "'&FormType=" + $scope.searchText.JobType + "&startdate=" + moment($scope.searchText.startdate).format("DD-MMM-YY HH:mm") + "&enddate=" + moment($scope.searchText.enddate).format("DD-MMM-YY HH:mm") + "&ExportedtoISO=" + $scope.searchText.ISO;
+		}
+		var searchStr = $scope.searchText.SearchString ? $scope.searchText.SearchString : '';
+		var userid = $scope.searchText.UserID ? $scope.searchText.UserID : '';
+		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&startdate=" + moment($scope.searchText.startdate).format("YYYYMMDD") + "&enddate=" + moment($scope.searchText.enddate).format("YYYYMMDD") + "&UserID='" + userid  + "'&FormType=" + $scope.searchText.JobType   + "&ExportedtoISO=" + $scope.searchText.ISO + "&SearchString=" + searchStr;
 		$http.get(url)
 		.success(function(json){
-			$scope.Jobs = json;
+			$scope.Jobs =json.map(function(e){
+				e.JSON = (e.JSON && typeof(e.JSON) === 'string')? (JSON.parse(e.JSON)) : e.JSON;
+				e.timeString = moment(e.FormDate).format('DD-MMM-YY');
+				return e;
+			});
+			$scope.splitArr = arraySplit($scope.Jobs);
+			$scope.data = $scope.Jobs;
+			sessionStorage.setItem('JobsCache', JSON.stringify(json));
+			$scope.show = $scope.splitArr.length > 0 ? true : false;
 			$scope.$emit('UNLOAD');
 		})
 		.error(function(err){
@@ -167,6 +192,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 			$scope.$emit('heading',{heading: 'Search For Jobs' , icon : 'fa fa-search'});
 			$scope.mode = 'list';
 			fetchJobs();
+			fetchUsers();
 		} else{
 			$scope.$emit('heading',{heading: 'Report Map' , icon : 'fa fa-map-marker'});
 			$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){onBackClicked();}});
