@@ -58,7 +58,7 @@
 							<td>{{item.JSON.CustomerName}}</td>
 							<td>{{item.JSON.Branch}}</td>
 							<td>{{item.JSON.Branch}}</td>
-							<td ng-click="navigatetoReportMap($index)"><a href="">{{item.JSON.Latitude + ' ' + item.JSON.Longitude}}</a></td>
+							<td ng-click="navigatetoReportMap($index)"><a href="">{{item.JSON.Latitude ? (item.JSON.Latitude + ', ' + item.JSON.Longitude) : ''}}</a></td>
 							<td>{{(item.ExportedtoISO === 0 || !item.ExportedtoISO) ? 'No' : 'Yes'}}</td>
 							<td><button ng-click="editClicked($index)" class="btn btn-primary"><span class="fa fa-eye"></span></button></td>
 						</tr>
