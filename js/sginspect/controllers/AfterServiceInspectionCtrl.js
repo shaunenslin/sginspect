@@ -103,8 +103,8 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if ($scope.Form.JSON.vinmatch && $scope.Form.regmatch){
-			if(!$scope.Form.JSON.commentsOrPhotos){
+		if ($scope.Form.JSON.vinmatch && $scope.Form.JSON.regmatch){
+			if(!$scope.Form.JSON.actionByService){
 				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 	            $scope.$emit('UNLOAD');
 	            return;
@@ -124,11 +124,6 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 					}
 				}
 				if (($scope.Form.JSON[prop] === "No" && prop === 'diffsOilLeLeaks') && !$scope.Form.JSON[prop + "Comment"]){
-					$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
-		        	$scope.$emit('UNLOAD');
-		           	return;
-				}
-				if (($scope.Form.JSON[prop] === "Yes" && prop === 'oilLeaks') && !$scope.Form.JSON[prop + "Comment"]){
 					$alert({ content: "Please enter comments where you have selected " + $scope.Form.JSON[prop] , duration: 5, placement: 'top-right', type: 'danger', show: true});
 		        	$scope.$emit('UNLOAD');
 		           	return;

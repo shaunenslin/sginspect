@@ -261,16 +261,16 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr ng-if="Report.JSON.commentsOrPhotos">
-			    	<td>Comments/ Photo's</td>
-			    	<td>{{Report.JSON.commentsOrPhotos}}</td>
-			    	<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-			    </tr>
 			     <tr>
 					<td>Date of inspection</td>
 					<td>{{Report.JSON.dateOfService}}</td>
 					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.commentsOrPhotos">
+			    	<td>Comments/ Photo's</td>
+			    	<td>{{Report.JSON.commentsOrPhotos}}</td>
+			    	<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
 			     <tr ng-repeat="id in commentPhotoImages">

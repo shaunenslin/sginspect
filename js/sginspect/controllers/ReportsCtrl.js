@@ -96,6 +96,9 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 		sessionStorage.removeItem('currIdx');
 		var searchStr = $scope.searchText.SearchString ? $scope.searchText.SearchString : '';
 		var userid = $scope.searchText.UserID ? $scope.searchText.UserID : '';
+		$scope.searchText.JobType = ($scope.searchText.JobType === null) ? '' : $scope.searchText.JobType; 
+		$scope.searchText.UserID =  ($scope.searchText.UserID === null) ? '' : $scope.searchText.UserID;
+		$scope.searchText.ISO = ($scope.searchText.ISO === null) ? '' : $scope.searchText.ISO;
 		var url = Settings.url + "Get?method=SGI_FormHeaders_readlist&startdate=" + moment($scope.searchText.startdate).format("YYYYMMDD") + "&enddate=" + moment($scope.searchText.enddate).format("YYYYMMDD") + "&UserID='" + userid  + "'&FormType=" + $scope.searchText.JobType   + "&ExportedtoISO=" + $scope.searchText.ISO + "&SearchString=" + searchStr;
 		$http.get(url)
 		.success(function(json){

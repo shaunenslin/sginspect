@@ -18,12 +18,6 @@
 		            <label for="to_complete" class="col-sm-2">Date To</label>
 		            <div class="col-sm-4"><input name="to_complete" placeholder="Search by Date"  class="form-control" id="date_complete" ng-model="searchText.enddate" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
 		        </div>
-		         <div class="form-group">
-		            <label for="iso" class="col-sm-2">Search by</label>
-		            <div class="col-sm-10">
-		            	<input name="search_str" placeholder=""  class="form-control" id="search_str" ng-model="searchText.SearchString" type="text">
-		            </div>
-		        </div>
 		        <div class="form-group">
 		            <label for="iso" class="col-sm-2">Exported to ISO</label>
 		            <div class="col-sm-10">
@@ -64,7 +58,7 @@
 							<td>{{item.JSON.CustomerName}}</td>
 							<td>{{item.JSON.Branch}}</td>
 							<td>{{item.JSON.Branch}}</td>
-							<td ng-click="navigatetoReportMap($index)" style="cursor: pointer;">{{item.JSON.Latitude + ' ' + item.JSON.Longitude}}</td>
+							<td ng-click="navigatetoReportMap($index)"><a href="">{{item.JSON.Latitude ? (item.JSON.Latitude + ', ' + item.JSON.Longitude) : ''}}</a></td>
 							<td>{{(item.ExportedtoISO === 0 || !item.ExportedtoISO) ? 'No' : 'Yes'}}</td>
 							<td><button ng-click="editClicked($index)" class="btn btn-primary"><span class="fa fa-eye"></span></button></td>
 						</tr>
