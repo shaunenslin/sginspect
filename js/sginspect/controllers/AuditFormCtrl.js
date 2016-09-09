@@ -8,6 +8,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	$scope.KilometersImages = [];
 	$scope.TyresImages = [];
 	$scope.other_photosimages = [];
+	$scope.currentDate = new Date();
 
 	$scope.selectOptions =[{name : "Good"}, {name : "Average"}, {name : "Bad"}];
 	$scope.booleanValues = [{value : "Yes"},{value : "No"}];

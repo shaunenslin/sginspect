@@ -29,7 +29,14 @@
 					</div>
 					<div class="form-group">
 						<label for="SpecialRequestDate" class="col-sm-3">Date</label>
-				        <div class="col-sm-9"><input required ng-disabled="!SpecialRequest" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="SpecialRequestDate"/></div>
+				        <div class="col-sm-9">
+				        	<div class="input-group">
+				        		<input required ng-disabled="!SpecialRequest" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="SpecialRequestDate"/>
+				        		<span class="input-group-btn">
+                                    <button ng-disabled="!SpecialRequest" class="btn btn-primary" ng-click="SpecialRequestDate = currentDate" type="button">Today</button>
+                                </span>
+				        	</div>
+				        </div>
 					</div>
 					<div class="form-group" style="margin-left:0px;margin-right:0px;">
 						<button ng-disabled="!SpecialRequestDate" class="btn btn-primary btn-block" ng-click="addSpecialRequest(SpecialRequest,SpecialRequestDate)">Add</button>

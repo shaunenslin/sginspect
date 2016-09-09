@@ -27,6 +27,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	var supplier_competency_ratings = {'techcomp' : 50,'commskills' : 50};
 	var supplier_etiquette_ratings = {'phoneetiquette' : 34, 'authleadtime' : 33, 'professionalism' : 33};
 	var supplier_rfcPayment_ratings = {'invoicepayment' : 50, 'rfcnotifications' : 50};
+	$scope.currentDate = new Date();
 
 	function fetchOpenCount(){
 		$scope.openJobsCount = 0;
@@ -165,6 +166,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.onClearClicked = function(){
 		$scope.searchText = {"JobType" : "", "Date" : "", "Text": ""};
 		$scope.InspectionForms = $scope.data;
+		
 	}
 	$scope.onSearchClicked = function(){
 		if ($scope.searchText.JobType.length > 0){
