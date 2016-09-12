@@ -31,7 +31,7 @@
                         <h4>Closed Jobs for this month</h4>
                          <p>(Synced)</p>
                         <h1 style="color: white">{{CloseJobsCount.result}}</h1>
-                        <h3 ng-if="!CloseJobsCount">(Unavailable as you are offline)</h3>
+                        <h3 ng-if="!CloseJobsCount">{{closedJobsMsg}}</h3>
                     </button>
                 </div>
              </div>

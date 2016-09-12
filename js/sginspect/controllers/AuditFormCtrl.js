@@ -88,7 +88,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if($scope.Form.JSON.vinmatch && $scope.Form.regmatch){
+		if($scope.Form.JSON.vinmatch && $scope.Form.licensematch){
 			if(!$scope.Form.JSON.AbuseRelatedCosts || ($scope.Form.JSON.AbuseRelatedCosts === "Yes" && !$scope.Form.JSON.Costs)){
 				$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 				$scope.$emit('UNLOAD');
@@ -144,7 +144,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	}
 	$scope.syncCompleted = function(reload){
 		$scope.$emit('UNLOAD');
-		var path = (JSON.parse(sessionStorage.getItem('currentForm')).JSON.vinmatch && JSON.parse(sessionStorage.getItem('currentForm')).JSON.regmatch) ? '/jobs/ratings' : '/';
+		var path = (JSON.parse(sessionStorage.getItem('currentForm')).JSON.vinmatch && JSON.parse(sessionStorage.getItem('currentForm')).JSON.licensematch) ? '/jobs/ratings' : '/';
 		$alert({ content: "Audit Form Complete!", duration: 5, placement: 'top-right', type: 'success', show: true});
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
@@ -199,7 +199,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchGPs();
-		$scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
+		$scope.Form.JSON.LicenseNumber = sessionStorage.getItem('currentLicenseNumber');
 		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
 		$scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
 		$scope.inspectorSignatureBoxLabel = 'Inspector';
