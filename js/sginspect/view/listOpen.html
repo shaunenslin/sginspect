@@ -38,25 +38,24 @@
              <a style="margin-top: 10px;" ng-if="mode === 'jobs'" href="#job/createnew" role="button" class="btn btn-primary btn-block">Create New</a>
         </div>
         <div class="list-group">
-            <!--
-            <div class="alert alert-info" ng-if="mode === 'open' && InspectionForms.length >  0">
-                <p><i class="fa fa-info"></i> Please enter in any of the below fields  and Click Search.</p>
-            </div>
-        -->
             <div ng-if="mode === 'open'"  class="well" style="padding:5px;">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <!--<label for="job_type" class="col-sm-3">Job Type</label>-->
                         <div class="col-sm-9">
                             <select name="job_type" class="form-control" id="job_type" ng-model="searchText.JobType" ng-options="item.value as item.name for item in selectOptions"><option value="">-- Select a job type --</option></select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <!--<<label for="date_complete" class="col-sm-3">Date Complete</label>-->
-                        <div class="col-sm-9"><input name="date_complete" placeholder="Search by Date"  class="form-control" id="date_complete" ng-model="searchText.Date" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text"></div>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input name="date_complete" placeholder="Search by Date"  class="form-control" id="date_complete" ng-model="searchText.Date" date-format="longDate" data-autoclose="1"  use-native="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-primary" ng-click="searchText.Date = currentDate" type="button">Today</button>
+                                  </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <!--<<label for="identifier" class="col-sm-3">Identifier</label>-->
                         <div class="col-sm-9"><input name="identifier" class="form-control" placeholder="Search by Rego/Supplier/Customer" id="identifier" ng-model="searchText.Text" type="text"></div>
                     </div>
                     <button ng-click="onSearchClicked()" class="btn btn-success">Search <span class="fa fa-search"></span></button> <button ng-click="onClearClicked()" class="btn btn-danger">Clear</button>

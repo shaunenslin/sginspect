@@ -14,6 +14,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.supplierEtiquetteRating = 0;
 	$scope.supplierPaymentRating = 0;
 	$scope.settings = Settings;
+	$scope.currentForm = {};
 	var rating = 0;
 	var add_rating = 0;
 	var competency_rating = 0;
@@ -27,6 +28,8 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	var supplier_competency_ratings = {'techcomp' : 50,'commskills' : 50};
 	var supplier_etiquette_ratings = {'phoneetiquette' : 34, 'authleadtime' : 33, 'professionalism' : 33};
 	var supplier_rfcPayment_ratings = {'invoicepayment' : 50, 'rfcnotifications' : 50};
+	$scope.currentDate = new Date();
+	var ratedResults = {};
 
 	function fetchOpenCount(){
 		$scope.openJobsCount = 0;
@@ -165,6 +168,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.onClearClicked = function(){
 		$scope.searchText = {"JobType" : "", "Date" : "", "Text": ""};
 		$scope.InspectionForms = $scope.data;
+		
 	}
 	$scope.onSearchClicked = function(){
 		if ($scope.searchText.JobType.length > 0){
@@ -209,15 +213,28 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	function calculateSupplierRating(savedForm, prop){
 		$scope.supplierStatus =  savedForm.JSON.SupplierStatus;
 		if (o[typeof(savedForm.JSON[prop]) === 'string' && savedForm.JSON[prop].toLowerCase()] !== undefined){
+			//Calculate ratings per overall, competency, payment &  etiquette criteria
 			rating += isNaN(supplier_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 			competency_rating += isNaN(supplier_competency_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_competency_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 			etiquette_rating += isNaN(supplier_etiquette_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_etiquette_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 			payment_rating += isNaN(supplier_rfcPayment_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_rfcPayment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
+
+			// ratedResults will be attached to form 
+			if (prop.toLowerCase() === 'phoneetiquette' || prop.toLowerCase() === 'professionalism' || prop.toLowerCase() === 'authleadtime')
+				ratedResults[prop + 'Rating'] = isNaN(supplier_etiquette_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_etiquette_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
+			else if(prop.toLowerCase() === 'techcomp' || prop.toLowerCase() === 'commskills')
+				ratedResults[prop + 'Rating'] = isNaN(supplier_competency_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_competency_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
+			else if(prop.toLowerCase() === 'invoicepayment' || prop.toLowerCase() === 'rfCnotifications')
+				ratedResults[prop + 'Rating'] = isNaN(supplier_rfcPayment_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_rfcPayment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
+
+			else
+				ratedResults[prop + 'Rating'] = isNaN(supplier_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
+			
+			$scope.overallRating = rating;
+			$scope.supplierCompetencyRating = competency_rating ;
+			$scope.supplierEtiquetteRating = etiquette_rating;
+			$scope.supplierPaymentRating = payment_rating;
 		}
-		$scope.overallRating = rating;
-		$scope.supplierCompetencyRating = competency_rating ;
-		$scope.supplierEtiquetteRating = etiquette_rating;
-		$scope.supplierPaymentRating = payment_rating;
 	}
 	/*
      - method runs a set of calculations for the inspection forms.
@@ -235,6 +252,21 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			}
 		}
 	}
+	function postFormWithRating(){
+		if(Object.keys(ratedResults).length > 0){
+			var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
+			var postOb = JSON.parse(sessionStorage.getItem('formTobeRatedCache'));
+			postOb.JSON = Object.assign(postOb.JSON, ratedResults);
+			postOb.JSON.overallRating = $scope.overallRating;
+			postOb.JSON.supplierEtiquetteRating = $scope.supplierEtiquetteRating;
+			postOb.JSON.supplierPaymentRating = $scope.supplierPaymentRating;
+			postOb.JSON.supplierCompetencyRating = $scope.supplierCompetencyRating;
+			postOb.JSON = JSON.stringify(postOb.JSON);
+			GlobalSvc.postData(url, postOb, function(){ console.log('Ratings posted');}, function(){console.log('error posting ratings')}, 'SGIFormHeaders', 'Modify', false, true);
+		}
+		sessionStorage.removeItem('formTobeRatedCache');
+		$location.path('/');
+	}
 
 	function constructor(){
 		if(!$routeParams.mode){
@@ -251,7 +283,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		} else if ($routeParams.mode === 'ratings'){
 			$scope.mode = $routeParams.mode;
 			$scope.$emit('heading',{heading: 'Remarks' , icon : 'fa fa-sticky-note'});
-			$scope.$emit('left',{label: 'Home' , icon : 'fa fa-home', onclick: function(){sessionStorage.removeItem('formTobeRatedCache'); $location.path('/');}});
+			$scope.$emit('left',{label: 'Home' , icon : 'fa fa-home', onclick: function(){postFormWithRating();}});
 			calculateRatings();
 
 		}
