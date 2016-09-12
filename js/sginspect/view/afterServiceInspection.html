@@ -1,5 +1,5 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="AfterServiceInspectionCtrl">
-	<div  ng-if="(Form.JSON.vinmatch === true && Form.JSON.regmatch === true)">
+	<div  ng-if="(Form.JSON.vinmatch === true && Form.JSON.licensematch === true)">
 		<h3>Vehicle Basic Details</h3>
 		<div class="panel panel-default">
 			<div class="panel-body form-horizontal">
@@ -12,8 +12,8 @@
 					<div class="col-sm-9"><p>{{Form.JSON.VinNumber}}</p></div>
 				</div>
 				<div class="form-group">
-					<label for="registration" class="col-sm-3">Registration</label>
-					<div class="col-sm-9"><p>{{Form.JSON.RegNumber}}</p></div>
+					<label for="license" class="col-sm-3">Registration</label>
+					<div class="col-sm-9"><p>{{Form.JSON.LicenseNumber}}</p></div>
 				</div>
 				<div class="form-group">
 					<label for="licence-exp-date" class="col-sm-3">License Disk Expiration Date</label>

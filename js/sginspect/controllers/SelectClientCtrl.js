@@ -50,14 +50,14 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				$alert({content: "Please capture the Licene Plate Number picture before continuing !", duration:5, placement:'top-right', type:'danger', show:true});
 				return;
 			}
-			var key = $scope.Form.FormID + '_reg.png';
+			var key = $scope.Form.FormID + '_license.png';
 			$scope.Form.JSON.regimage = key;
 			CaptureImageSvc.savePhoto(key, $scope.Form.FormID, $scope.image, $scope.Form.ClientID, $scope.Form.FormDate);
 		}
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 		 // Path is generic to cater for all navigation scenarios
 		if ($scope.inspectiontype !== 'supplierevaluation') {
-			path = ($routeParams.screennum == 5 || $routeParams.inspectiontype === 'customervisit' || (!$scope.Form.JSON.vinmatch && $routeParams.screennum == 3) || (!$scope.Form.JSON.regmatch && $routeParams.screennum == 4)) ? $routeParams.inspectiontype : Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
+			path = ($routeParams.screennum == 5 || $routeParams.inspectiontype === 'customervisit' || (!$scope.Form.JSON.vinmatch && $routeParams.screennum == 3) || (!$scope.Form.JSON.licensematch && $routeParams.screennum == 4)) ? $routeParams.inspectiontype : Settings.workflow['audit'][parseInt($routeParams.screennum) + 1].route + '/' + $routeParams.inspectiontype + '/' + (parseInt($routeParams.screennum) + 1);
 		}else{
 			path = $scope.inspectiontype + '/' + $scope.Form.JSON.SupplierStatus.toLowerCase();
 			delete $scope.Form.JSON.SupplierStatus;	
@@ -98,11 +98,21 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	    if(Settings.isPhoneGap){
             cordova.plugins.barcodeScanner.scan(
                   function (result) {
-  					 if(result.cancelled) return;
-                     var barCodeData = result.text.split('%');
-                     $scope.VinNumber = barCodeData[12];
-					 $scope.Form.VinNumber = $scope.VinNumber;
-                     sessionStorage.setItem('currentRegNumber', barCodeData[6]);
+						if(result.cancelled) return;
+		            	var barCodeData = result.text.split('%');
+		                $scope.VinNumber = barCodeData[12];
+						$scope.Form.VinNumber = $scope.VinNumber;
+						$scope.Form.JSON.ExpiryDate = barCodeData[6];
+						$scope.Form.JSON.LicenseNumber = '';
+			            $scope.Form.JSON.Tarre = '';
+			            $scope.Form.JSON.DiscNo = '';
+			            $scope.Form.JSON.RegistrationNo = '';
+			            $scope.Form.JSON.VehicleRegistrationNo = '';
+			            $scope.Form.JSON.Description = '';
+			            $scope.Form.JSON.Make = '';
+			            $scope.Form.JSON.EngineNo = ''
+			            $scope.Form.JSON.Color =  '';
+                     sessionStorage.setItem('currentLicenseNumber', barCodeData[6]);
                      sessionStorage.setItem('currentVinNumber', barCodeData[12]);
                      sessionStorage.setItem('currentExpirayDate', barCodeData[14]);
   					 $scope.onNextClicked();
@@ -120,8 +130,18 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	    }else{
 	        $scope.VinNumber = "IG1YY23671299872";
             $scope.Form.VinNumber = $scope.VinNumber;
+            $scope.Form.JSON.ExpiryDate = '21 July 2017';
+            $scope.Form.JSON.LicenseNumber = 'MVL1CC14';
+            $scope.Form.JSON.Tarre = '0145 kg';
+            $scope.Form.JSON.DiscNo = '100105611VVY';
+            $scope.Form.JSON.RegistrationNo = 'CY244872'
+            $scope.Form.JSON.VehicleRegistrationNo = 'VFN899W';
+            $scope.Form.JSON.VehicleDescription = 'Van body / Toebak';
+            $scope.Form.JSON.Make = 'NISSAN DIESEL';
+            $scope.Form.JSON.EngineNo = 'FE6308052F'
+            $scope.Form.JSON.Color =  'grey';
 			sessionStorage.setItem('currentExpirayDate', '21 July 2017');
-            sessionStorage.setItem('currentRegNumber', 'HTT 091 GP');
+            sessionStorage.setItem('currentLicenseNumber', 'HTT 091 GP');
             sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
         	$scope.onNextClicked();
 			$scope.$apply();
@@ -165,14 +185,15 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		if($routeParams.screennum == 2){
 			$scope.Form.JSON.vinmatch = (clickVal.length > 0) ? true : false;
 			if ($scope.Form.JSON.vinmatch){
+
 				sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 				$location.path('/licensematch/' + $routeParams.inspectiontype +'/5');
 				return;
 			}
 
 		} else{
-			$scope.Form.JSON.regmatch = (clickVal.length > 0) ? true : false;
-			if(!$scope.Form.JSON.regmatch){
+			$scope.Form.JSON.licensematch = (clickVal.length > 0) ? true : false;
+			if(!$scope.Form.JSON.licensematch){
 				sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
 				$location.path('/licensephoto/' + $routeParams.inspectiontype + '/4');
 				return;
@@ -235,7 +256,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			$scope.$emit('UNLOAD');
 			$scope.view = 'licensematch';
 			$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
-			$scope.RegNumber = sessionStorage.getItem('currentRegNumber');
+			$scope.LicenseNumber = sessionStorage.getItem('currentLicenseNumber');
 			console.log($scope.image);
 		}
 		if (parseInt($routeParams.screennum) !== 0) savePartialForm();

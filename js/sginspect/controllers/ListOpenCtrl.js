@@ -30,6 +30,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	var supplier_rfcPayment_ratings = {'invoicepayment' : 50, 'rfcnotifications' : 50};
 	$scope.currentDate = new Date();
 	var ratedResults = {};
+	$scope.closedJobsMsg = '(Please wait...)'
 
 	function fetchOpenCount(){
 		$scope.openJobsCount = 0;
@@ -54,6 +55,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 			$scope.$apply();
 		})
 		.error(function(err){
+			$scope.closedJobsMsg = '(Unavailable as you are offline)';
 			console.log('Error fetching closed jobs count ' + err);
 		})
 
@@ -196,17 +198,21 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		if (o[typeof(savedForm.JSON[prop]) === 'string' && savedForm.JSON[prop].toLowerCase()] !== undefined){
 			rating += Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 			if (audit_additional_equipment_ratings[prop.toLowerCase()] !== undefined){
-				add_rating+= (prop.toLowerCase() === 'fireextinguisher') ? Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()]) : (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
+				if(prop.toLowerCase() === 'fireextinguisher' || prop.toLowerCase() === 'equipment') 
+					ratedResults[prop + 'Rating'] = isNaN(audit_additional_equipment_ratings[prop.toLowerCase()]) ? 0 : (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
+					add_rating+= isNaN(audit_additional_equipment_ratings[prop.toLowerCase()]) ? 0 :  (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));	
 			}
+			ratedResults[prop + 'Rating'] = isNaN(audit_overall_ratings[prop.toLowerCase()]) ? 0 : (Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
+			if (savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
+			$scope.overallRating = rating;
+			$scope.additionalEquipmentRating = add_rating;
 		}
-		if (savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
-		$scope.overallRating = rating;
-		$scope.additionalEquipmentRating = add_rating;
 	}
 
 	function calculateAfterServiceRating(savedForm, prop){
 		if (o[typeof(savedForm.JSON[prop]) === 'string' && savedForm.JSON[prop].toLowerCase()] !== undefined){
 			rating += Math.ceil(afterservice_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
+			ratedResults[prop + 'Rating'] = isNaN(afterservice_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(afterservice_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
 		}
 		$scope.overallRating = rating;
 	}
@@ -253,14 +259,17 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		}
 	}
 	function postFormWithRating(){
-		if(Object.keys(ratedResults).length > 0){
+		if(Object.keys(ratedResults).length){
 			var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 			var postOb = JSON.parse(sessionStorage.getItem('formTobeRatedCache'));
 			postOb.JSON = Object.assign(postOb.JSON, ratedResults);
 			postOb.JSON.overallRating = $scope.overallRating;
-			postOb.JSON.supplierEtiquetteRating = $scope.supplierEtiquetteRating;
-			postOb.JSON.supplierPaymentRating = $scope.supplierPaymentRating;
-			postOb.JSON.supplierCompetencyRating = $scope.supplierCompetencyRating;
+			if (postOb.FormType === 'supplierevaluation'){
+				postOb.JSON.supplierEtiquetteRating = $scope.supplierEtiquetteRating;
+				postOb.JSON.supplierPaymentRating = $scope.supplierPaymentRating;
+				postOb.JSON.supplierCompetencyRating = $scope.supplierCompetencyRating;
+			}
+			if (postOb.FormType === 'audit') {postOb.JSON.additionalEquipmentRating =  $scope.additionalEquipmentRating; postOb.JSON.vehicleFitnessRating = $scope.vehicleFitnessRating;}
 			postOb.JSON = JSON.stringify(postOb.JSON);
 			GlobalSvc.postData(url, postOb, function(){ console.log('Ratings posted');}, function(){console.log('error posting ratings')}, 'SGIFormHeaders', 'Modify', false, true);
 		}

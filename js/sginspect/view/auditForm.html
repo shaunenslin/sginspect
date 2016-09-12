@@ -1,5 +1,5 @@
 <div style="padding-top: 15px; padding-bottom: 50px;" class="inset" ng-controller="AuditFormCtrl">
-	<div ng-if="(Form.JSON.vinmatch === true && Form.JSON.regmatch === true)">
+	<div ng-if="(Form.JSON.vinmatch === true && Form.JSON.licensematch === true)">
 		<h3>Vehicle Basic Details</h3>
 	<div class="panel panel-default">
 		<div class="panel-body form-horizontal">
@@ -12,8 +12,8 @@
 				<div class="col-sm-9"><p>{{Form.JSON.VinNumber}}</p></div>
 			</div>
 			<div class="form-group">
-				<label for="registration" class="col-sm-3">Registration</label>
-				<div class="col-sm-9"><p>{{Form.JSON.RegNumber}}</p></div>
+				<label for="license" class="col-sm-3">License Number</label>
+				<div class="col-sm-9"><p>{{Form.JSON.LicenseNumber}}</p></div>
 			</div>
 			<div class="form-group">
 				<label for="licence-exp-date" class="col-sm-3">License Disk Expiration Date</label>
@@ -233,7 +233,14 @@
     	</div>
     	<div ng-if="Form.JSON.FireExtIsValid === 'Valid'" class="form-group">
 			<label for="fireExp_date" class="col-sm-3">What is the Expiration Date ?</label>
-			<div class="col-sm-9"><input name="fireExp_date" required class="form-control" id="fireExp_date" ng-model="Form.JSON.FireExtinguisherExpDate" date-format="longDate" data-autoclose="1" bs-datepicker data-date-format="yyyy-MM-dd" type="text" ng-disabled="!Form.JSON.FireExtIsValid"></div>
+			<div class="col-sm-9">
+				<div class="input-group">
+					<input name="fireExp_date" required class="form-control" id="fireExp_date" ng-model="Form.JSON.FireExtinguisherExpDate" date-format="longDate" data-autoclose="1" bs-datepicker data-date-format="yyyy-MM-dd" type="text" ng-disabled="!Form.JSON.FireExtIsValid">
+					<span class="input-group-btn">
+					<button class="btn btn-primary" ng-disabled="!Form.JSON.FireExtIsValid" ng-click="Form.JSON.FireExtinguisherExpDate = currentDate" type="button">Today</button></span>
+				</div>
+
+			</div>
 		</div>
 		<div ng-class="(Form.JSON.Tyres !== 'Good' && Form.JSON.Tyres !== undefined) ? 'well' : ''">
 			<div class="form-group">

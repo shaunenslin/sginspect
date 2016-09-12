@@ -14,9 +14,109 @@
 				</tr>
 			</thead>
 			<tbody>
+				<tr><h4>Vehicle Basic Details (VIN Scanning)</h4></tr>
+				<tr>
+					<td>License No.</td>
+					<td>{{Report.JSON.LicenseNumber}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+		    	<tr>
+					<td>Tarre</td>
+					<td>{{Report.JSON.Tarre}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+		    	<tr>
+					<td>Disc No.</td>
+					<td>{{Report.JSON.DiscNo}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+		    	<tr>
+					<td>Registration No.</td>
+					<td>{{Report.JSON.RegistrationNo}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+		    	<tr>
+					<td>Vehicle Registration No.</td>
+					<td>{{Report.JSON.VehicleRegistrationNo}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+		    	<tr>
+					<td>Description</td>
+					<td>{{Report.JSON.VehicleDescription}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+		    	<tr>
+					<td>Make</td>
+					<td>{{Report.JSON.Make}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+		    	<tr>
+					<td>Color</td>
+					<td>{{Report.JSON.Color}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+		    	<tr>
+					<td>VIN</td>
+					<td>{{Report.JSON.VinNumber}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+		    	<tr>
+					<td>Engine No.</td>
+					<td>{{Report.JSON.EngineNo}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+		    	<tr>
+					<td> License Expiry Date</td>
+					<td>{{Report.JSON.ExpiryDate}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+		    	</tr>
+
+			</tbody>
+			<tbody>
 				<tr>
 					<td>Technical Report</td>
 					<td>{{Report.JSON.CustomerName}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+		    	<tr>
+					<td>Registration Number</td>
+					<td>{{Report.JSON.RegistrationNo}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+		    	<tr>
+					<td> Vehicle Location</td>
+					<td>{{Report.JSON.Latitude ? (Report.JSON.Latitude + ', ' + Report.JSON.Longitude) : ''}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+
+		    	<tr>
+					<td>Vin Match No.</td>
+					<td>{{Report.JSON.vinmatch ? 'Yes' : 'False'}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 		    	</tr>
@@ -26,8 +126,14 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
+			    <tr>
+					<td>License match</td>
+					<td>{{Report.JSON.licensematch ? 'Yes' : 'False'}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
 			    <tr ng-if="Report.JSON.regimage">
-					<td>Registration no. No Match</td>
+					<td>License no. No Match</td>
 					<td><img id="reg-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + Report.JSON.regimage}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -38,6 +144,13 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
+			    <!-- TODO: ENQUIRE -->
+		    	<tr>
+					<td>Investigation Requested By</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
 				<tr>
 					<td>Customer User of Group</td>
 					<td>{{Report.JSON.ClientUserGroup}}</td>
@@ -47,6 +160,12 @@
 			    <tr>
 					<td>Ref No : SF (Optional)</td>
 					<td>{{Report.JSON.Reference}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr>
+					<td>Findings</td>
+					<td>{{Report.JSON.isFindings ? 'Yes' : 'No'}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>

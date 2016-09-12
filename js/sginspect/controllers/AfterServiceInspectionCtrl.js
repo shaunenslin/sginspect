@@ -104,7 +104,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if ($scope.Form.JSON.vinmatch && $scope.Form.JSON.regmatch){
+		if ($scope.Form.JSON.vinmatch && $scope.Form.JSON.licensematch){
 			if(!$scope.Form.JSON.actionByService){
 				$alert({ content: "Please enter in all fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 	            $scope.$emit('UNLOAD');
@@ -148,7 +148,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	}
 	$scope.syncCompleted = function(reload){
 		$scope.$emit('UNLOAD');
-		var path = (JSON.parse(sessionStorage.getItem('currentForm')).JSON.vinmatch && JSON.parse(sessionStorage.getItem('currentForm')).JSON.regmatch) ? '/jobs/ratings' : '/';
+		var path = (JSON.parse(sessionStorage.getItem('currentForm')).JSON.vinmatch && JSON.parse(sessionStorage.getItem('currentForm')).JSON.licensematch) ? '/jobs/ratings' : '/';
 		$alert({ content: "Your Form has been saved Ok.", duration: 5, placement: 'top-right', type: 'success', show: true});
 		sessionStorage.removeItem('currentImage');
 		sessionStorage.removeItem('currentLicenceImage');
@@ -199,7 +199,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
         $scope.$emit('heading',{heading: 'After Service Inspection', icon : 'fa fa-car'});
         $scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
         $scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
-        $scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
+        $scope.Form.JSON.LiceneNumber = sessionStorage.getItem('currentLicenseNumber');
         $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
         $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
 		fetchGPS();

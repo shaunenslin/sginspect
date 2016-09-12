@@ -95,7 +95,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
     }
     $scope.saveSignature = function(){
 		$scope.$emit('LOAD');
-		if ($scope.Form.JSON.vinmatch && $scope.Form.regmatch){
+		if ($scope.Form.JSON.vinmatch && $scope.Form.licensematch){
 			if(!$scope.Form.JSON.Conclusions){
 				$alert({ content: "Please enter in all fields fields before continuing", duration: 5, placement: 'top-right', type: 'danger', show: true});
 				$scope.$emit('UNLOAD');
@@ -142,6 +142,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		var key = $scope.Form.FormID + '_inspectorSig.svgx';
 		$scope.Form.JSON.DescriptionImages = $scope.DescriptionImages;
+		$scope.Form.JSON.isFindings = ($scope.Form.JSON.Description.length > 0) ? true : false;
 		CaptureImageSvc.savePhoto(key, $scope.Form.FormID,inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
@@ -186,7 +187,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchServiceHistory();
 		savePartialForm();
-		$scope.Form.JSON.RegNumber = sessionStorage.getItem('currentRegNumber');
+		$scope.Form.JSON.LicenseNumber = sessionStorage.getItem('currentLicenseNumber');
         $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
         $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
 		$scope.inspectorSignatureBoxLabel = 'Inspector';
