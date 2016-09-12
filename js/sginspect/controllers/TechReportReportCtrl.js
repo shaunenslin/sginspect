@@ -15,7 +15,7 @@ coreApp.controller("TechReportCtrl", function($scope, $routeParams, DaoSvc, $loc
 
 	function constructor(){
 		$scope.$emit('LOAD');
-		$scope.$emit('heading',{heading: 'After Service  Inspection' , icon : 'fa fa-check'});
+		$scope.$emit('heading',{heading: 'Technical Report' , icon : 'fa fa-check'});
 		$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back()}});
 		fetchReport();
 	}
