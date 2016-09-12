@@ -20,6 +20,12 @@
 						<td>{{Report.JSON.User_Name}}</td>
 					</tr>
 					<tr>
+						<td>Location</td>
+						<td>{{Report.JSON.Latitude ? (Report.JSON.Latitude + ', ' + Report.JSON.Longitude) : 'Uncaptured'}}</td>
+						<td>{{Report.JSON.timeString}}</td>
+						<td>{{Report.JSON.User_Name}}</td>
+					</tr>
+					<tr>
 						<td>Branch</td>
 						<td>{{Report.JSON.Branch}}</td>
 						<td>{{Report.JSON.timeString}}</td>
@@ -31,9 +37,15 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <tr>
+			    <tr ng-if="Report.JSON.IssuesDiscussed !=='Other (Please Specify)'">
 					<td>Issues Discussed</td>
 					<td>{{Report.JSON.IssuesDiscussed}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.IssuesDiscussed ==='Other (Please Specify)'">
+					<td>Other Issues Discussed</td>
+					<td>{{Report.JSON.IssueDescription}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
