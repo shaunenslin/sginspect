@@ -32,6 +32,18 @@
 					<td></td>
 		    	</tr>
 		    	<tr>
+					<td>AAA</td>
+					<td>{{Report.JSON.NatisLicenseNumber}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+		    	<tr>
+					<td>BBB</td>
+					<td>{{Report.JSON.RegistrationFrequency}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+		    	<tr>
 					<td>Disc No.</td>
 					<td>{{Report.JSON.DiscNo}}</td>
 					<td>{{Report.JSON.timeString}}</td>
@@ -65,6 +77,12 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>
+		    	</tr>
+		    	<tr>
+					<td>CCC</td>
+					<td>{{Report.JSON.Model}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
 		    	</tr>
 		    	<tr>
 					<td>Color</td>
@@ -397,7 +415,7 @@
 					<td></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.overallRating}}</td>
+					<td><label>{{Report.JSON.overallRating}}</label></td>
 			    </tr>
 			    <tr ng-if="Report.JSON.propsShaftUniversalComment">
 					<td>Remarks</td>

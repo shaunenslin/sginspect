@@ -28,6 +28,18 @@
 					<td>{{Report.JSON.User_Name}}</td>
 		    	</tr>
 		    	<tr>
+					<td>AAA</td>
+					<td>{{Report.JSON.NatisLicenseNumber}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+		    	<tr>
+					<td>BBB</td>
+					<td>{{Report.JSON.RegistrationFrequency}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+		    	<tr>
 					<td>Disc No.</td>
 					<td>{{Report.JSON.DiscNo}}</td>
 					<td>{{Report.JSON.timeString}}</td>
@@ -54,6 +66,12 @@
 		    	<tr>
 					<td>Make</td>
 					<td>{{Report.JSON.Make}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+		    	<tr>
+					<td>CCC</td>
+					<td>{{Report.JSON.Model}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 		    	</tr>
@@ -91,6 +109,12 @@
 					<td>{{Report.JSON.User_Name}}</td>
 		    	</tr>
 		    	<tr>
+					<td>Date of Failure</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td></td>
+					<td>{{Report.JSON.User_Name}}</td>
+		    	</tr>
+		    	<tr>
 					<td>Registration Number</td>
 					<td>{{Report.JSON.RegistrationNo}}</td>
 					<td>{{Report.JSON.timeString}}</td>
@@ -104,13 +128,13 @@
 		    	</tr>
 
 		    	<tr>
-					<td>Vin Match No.</td>
+					<td>VIN Match</td>
 					<td>{{Report.JSON.vinmatch ? 'Yes' : 'False'}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 		    	</tr>
 		    	<tr ng-if="Report.JSON.vinimage">
-					<td>VIN no. No Match </td>
+					<td>VIN Match (image) </td>
 					<td><img id="vin-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + Report.JSON.vinimage}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
