@@ -6,6 +6,16 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 	$scope.SpecialToolsTrainingImages = [];
 	$scope.ReceptionImages = [];
 	$scope.currentDate = new Date();
+	var competency_rating = 0;
+	var etiquette_rating = 0;
+	var payment_rating = 0;
+	var rating = 0;
+	var ratedResults = {};
+	var supplier_overall_ratings = {'reception' : 9,'procedures' : 9,'workmanship' : 12,'downtime' : 9,'cleanliness' : 11,'conformity' : 8,'partsavailibility' : 8,'facility' : 8,'warranties' : 9,'bulletins' : 7,'specialtoolstraining' : 10};
+	var o = {'good': 1, 'bad': 0, 'average': 0.5, 'yes': 1, 'no' :0, 'valid': 1, 'expired': 0, 'done': 1, 'attempted': 0.5, 'not done': 0, 'n/a': 1};
+	var supplier_competency_ratings = {'techcomp' : 50,'commskills' : 50};
+	var supplier_etiquette_ratings = {'phoneetiquette' : 34, 'authleadtime' : 33, 'professionalism' : 33};
+	var supplier_rfcPayment_ratings = {'invoicepayment' : 50, 'rfcnotifications' : 50};
 	/** The variable below is the svg represtion of an empty signature  **/
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 	var Imgfiles = [];
@@ -231,6 +241,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.hideForm = true;
 		saveSupplier();
 		deleteCurrentPartialForm($scope.Form.FormID);
+		calculateSupplierRating();
 		//Create Unique Key For Signature(s) and/or image(s)
 		$scope.Form.JSON.evaluationImages =  $scope.evaluationImages;
 		$scope.Form.JSON.CleanlinessImages = $scope.CleanlinessImages;
@@ -260,6 +271,39 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
+	}
+
+	/*
+	 - Reference variables declared at controller beginning to understand calculation
+	 - o contains the units by which we divide/multiply each value from the ratings obj's based off of properties of the JSON 
+	 - We do a safe check to avoid NaN values from the calculation
+	*/
+	function calculateSupplierRating(){
+		for (var prop in $scope.Form.JSON){
+			if (o[typeof($scope.Form.JSON[prop]) === 'string' && $scope.Form.JSON[prop].toLowerCase()] !== undefined){
+				//Calculate ratings per overall, competency, payment &  etiquette criteria
+				rating += isNaN(supplier_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+				competency_rating += isNaN(supplier_competency_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_competency_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+				etiquette_rating += isNaN(supplier_etiquette_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_etiquette_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+				payment_rating += isNaN(supplier_rfcPayment_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_rfcPayment_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+
+				// ratedResults will be attached to form 
+				if (prop.toLowerCase() === 'phoneetiquette' || prop.toLowerCase() === 'professionalism' || prop.toLowerCase() === 'authleadtime')
+					ratedResults[prop + 'Rating'] = isNaN(supplier_etiquette_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_etiquette_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+				else if(prop.toLowerCase() === 'techcomp' || prop.toLowerCase() === 'commskills')
+					ratedResults[prop + 'Rating'] = isNaN(supplier_competency_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_competency_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+				else if(prop.toLowerCase() === 'invoicepayment' || prop.toLowerCase() === 'rfCnotifications')
+					ratedResults[prop + 'Rating'] = isNaN(supplier_rfcPayment_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_rfcPayment_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+
+				else
+					ratedResults[prop + 'Rating'] = isNaN(supplier_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+			}
+		}
+		$scope.Form.JSON = Object.assign($scope.Form.JSON, ratedResults);
+		$scope.Form.JSON.overallRating = rating;
+		$scope.Form.JSON.supplierEtiquetteRating = etiquette_rating;
+		$scope.Form.JSON.supplierCompetencyRating = competency_rating; 
+		$scope.Form.JSON.InvoicePaymentRating = payment_rating;
 	}
 
 	function watchSupplierChanged(){

@@ -21,6 +21,10 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
         {  name : "Not Done"},
         {  name : "N/A"},
     ];
+    var afterservice_overall_ratings = {'radiatorconditionchecked' : 6,'engineoillevelschecked' : 15,'oilfilterschecked' : 15,'oilleaks' : 6,'aircleanerserviced' : 15,'fuelfilterchecked' : 15,'gearboxbreatherserviced' : 3,'diffbreatherserviced' : 3,'diffsoilleleaks' : 3,'diffsoillevelchecked' : 2,'diffandrearaxlewashed' : 2,'fithwheelcleaned' : 2,'hardenedcinsert' : 2,'batteriesserviced' : 3,'springshaklesandtrunionlubricated' : 3,'kingsandsteeringjointgreased' : 3,'propsshaftuniversal' : 2};
+	var o = {'good': 1, 'bad': 0, 'average': 0.5, 'yes': 1, 'no' :0, 'valid': 1, 'expired': 0, 'done': 1, 'attempted': 0.5, 'not done': 0, 'n/a': 1};
+	var rating = 0;
+	var ratedResults = {};
 
 	$scope.onBackClicked = function(){
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
@@ -160,6 +164,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		delete $scope.Form.JobType;
 		window.scrollTo(0, 0);
 		deleteCurrentPartialForm($scope.Form.FormID);
+		calculateAfterServiceRating();
 		$scope.Form.JSON.kilometerImages = $scope.kilometerImages;
 		$scope.Form.JSON.commentPhotoImages = $scope.commentPhotoImages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
@@ -181,6 +186,27 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
 	}
+
+
+	/*
+	 - Reference variables declared at controller beginning to understand calculation
+	 - o contains the units by which we divide/multiply each value from the ratings obj's based off of properties of the JSON
+	 - We do a safe check to avoid NaN values from the calculation
+	 - The fire extinguisher ONLY has a value for additional equipment rating 
+	*/
+
+	function calculateAfterServiceRating(){
+		 for(var prop in  $scope.Form.JSON){
+		 	if (o[typeof($scope.Form.JSON[prop]) === 'string' && $scope.Form.JSON[prop].toLowerCase()] !== undefined){
+				rating += Math.ceil(afterservice_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+				ratedResults[prop + 'Rating'] = isNaN(afterservice_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(afterservice_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+			}
+		 }
+		$scope.Form.JSON = Object.assign($scope.Form.JSON, ratedResults);
+		$scope.Form.JSON.overallRating = rating
+		
+	}
+
     function savePartialForm(){
 		// Partial Save of Form this.put = function (json, table, key, ponsuccesswrite, ponerror, poncomplete)
 		$scope.Form.JSON.Path = $location.path();

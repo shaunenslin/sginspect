@@ -134,10 +134,10 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	        $scope.VinNumber = "IG1YY23671299872";
             $scope.Form.VinNumber = $scope.VinNumber;
             $scope.Form.JSON.ExpiryDate = '21 July 2017';
-            $scope.Form.JSON.LicenseNumber = 'MVL1CC14';
-            $scope.Form.JSON.Tarre = '0145 kg';
+            $scope.Form.JSON.LicenseNumber = 'HTT 091 GP';
+            $scope.Form.JSON.Tarre = '0145';
             $scope.Form.JSON.DiscNo = '100105611VVY';
-            $scope.Form.JSON.RegistrationNo = 'CY244872'
+            $scope.Form.JSON.RegistrationNo = 'MVL1CC14'
             $scope.Form.JSON.VehicleRegistrationNo = 'VFN899W';
             $scope.Form.JSON.VehicleDescription = 'Van body / Toebak';
             $scope.Form.JSON.Make = 'NISSAN DIESEL';

@@ -9,10 +9,18 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	$scope.TyresImages = [];
 	$scope.other_photosimages = [];
 	$scope.currentDate = new Date();
-
+	$scope.vehicleFitnessRating = 'Pass';
 	$scope.selectOptions =[{name : "Good"}, {name : "Average"}, {name : "Bad"}];
 	$scope.booleanValues = [{value : "Yes"},{value : "No"}];
 	$scope.expiryStatus = [{status : "Valid"}, {status: "Expired"}];
+	$scope.overallRating = 0;
+	$scope.additionalEquipmentRating = 0;
+	var audit_overall_ratings = {'cabinterior': 7,'steeringplay': 6,'electrical': 6,'engine_smoke': 13,'clutchoperation': 7,'brakes': 14,'gearselector': 6,'propshaftplay': 5,'cabexterior': 7,'rust': 5,'licensecard': 8,'fluidleaks': 7,'tyres' : 9,'fireextinguisher': 0,'fireextisvalid': 0,'fireextinguisherdate': 0,'equipment': 0,'abuserelatedcosts': 0};
+	var audit_additional_equipment_ratings = {'fireextinguisher': 50, 'equipment': 50};
+	var rating = 0;
+	var add_rating = 0;
+	var ratedResults = {};
+	var o = {'good': 1, 'bad': 0, 'average': 0.5, 'yes': 1, 'no' :0, 'valid': 1, 'expired': 0, 'done': 1, 'attempted': 0.5, 'not done': 0, 'n/a': 1};
 
 	$scope.onPhotoClicked = function(field, filenames){
 		var reader = new FileReader();
@@ -157,6 +165,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		deleteCurrentPartialForm($scope.Form.FormID);
+		calculateAuditRating();
 		$scope.Form.JSON.KilometersImages = $scope.KilometersImages;
 		$scope.Form.JSON.TyresImages = $scope.TyresImages;
 		$scope.Form.JSON.other_photosimages = $scope.other_photosimages;
@@ -178,6 +187,33 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		}
 		var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
 		GlobalSvc.postData(url, $scope.Form, success, error, 'SGIFormHeaders', 'Modify', false, true);
+	}
+	
+	/*
+	 - Reference variables declared at controller beginning to understand calculation
+	 - o contains the units by which we divide/multiply each value from the ratings obj's based off of properties of the JSON 
+	 - We do a safe check to avoid NaN values from the calculation
+	*/
+	function calculateAuditRating(){
+		for (var prop in $scope.Form.JSON){
+			if (o[typeof($scope.Form.JSON[prop]) === 'string' && $scope.Form.JSON[prop].toLowerCase()] !== undefined){
+				rating += Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+				if (audit_additional_equipment_ratings[prop.toLowerCase()] !== undefined){
+					if(prop.toLowerCase() === 'fireextinguisher' || prop.toLowerCase() === 'equipment') 
+						ratedResults[prop + 'Rating'] = isNaN(audit_additional_equipment_ratings[prop.toLowerCase()]) ? 0 : (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]));
+						add_rating+= isNaN(audit_additional_equipment_ratings[prop.toLowerCase()]) ? 0 :  (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]));	
+				}
+				ratedResults[prop + 'Rating'] = isNaN(audit_overall_ratings[prop.toLowerCase()]) ? 0 : (Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]));
+				if ($scope.Form.JSON.Engine_Smoke == 'Bad' || $scope.Form.JSON.Brakes == 'Bad' || $scope.Form.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
+				$scope.overallRating = rating;
+				$scope.additionalEquipmentRating = add_rating;
+			}
+		}
+
+		$scope.Form.JSON = Object.assign($scope.Form.JSON, ratedResults);
+		$scope.Form.JSON.additionalEquipmentRating =  $scope.additionalEquipmentRating;
+		$scope.Form.JSON.vehicleFitnessRating = $scope.vehicleFitnessRating;
+		$scope.Form.JSON.overallRating = $scope.overallRating;
 	}
 
     function savePartialForm(){

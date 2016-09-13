@@ -7,29 +7,12 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	$scope.CloseJobsCount = 0;
 	$scope.selectOptions =[{name : 'Audit Form', value : 'audit'}, {name : 'Customer Visit', value : 'customervisit'}, {name : 'After Service Inspection', value : 'afterserviceevaluation'}, {name : 'Technical Report', value : 'technicalreport'}, {name : 'Supplier Evaluation', value : 'supplierevaluation'}];
 	$scope.searchText = {"JobType" : "", "Date" : "", "Text": ""};
-	$scope.vehicleFitnessRating = 'Pass';
-	$scope.overallRating = 0;
-	$scope.additionalEquipmentRating = 0;
 	$scope.supplierCompetencyRating = 0
 	$scope.supplierEtiquetteRating = 0;
 	$scope.supplierPaymentRating = 0;
 	$scope.settings = Settings;
 	$scope.currentForm = {};
-	var rating = 0;
-	var add_rating = 0;
-	var competency_rating = 0;
-	var etiquette_rating = 0;
-	var payment_rating = 0;
-	var afterservice_overall_ratings = {'radiatorconditionchecked' : 6,'engineoillevelschecked' : 15,'oilfilterschecked' : 15,'oilleaks' : 6,'aircleanerserviced' : 15,'fuelfilterchecked' : 15,'gearboxbreatherserviced' : 3,'diffbreatherserviced' : 3,'diffsoilleleaks' : 3,'diffsoillevelchecked' : 2,'diffandrearaxlewashed' : 2,'fithwheelcleaned' : 2,'hardenedcinsert' : 2,'batteriesserviced' : 3,'springshaklesandtrunionlubricated' : 3,'kingsandsteeringjointgreased' : 3,'propsshaftuniversal' : 2};
-	var audit_overall_ratings = {'cabinterior': 7,'steeringplay': 6,'electrical': 6,'engine_smoke': 13,'clutchoperation': 7,'brakes': 14,'gearselector': 6,'propshaftplay': 5,'cabexterior': 7,'rust': 5,'licensecard': 8,'fluidleaks': 7,'tyres' : 9,'fireextinguisher': 0,'fireextisvalid': 0,'fireextinguisherdate': 0,'equipment': 0,'abuserelatedcosts': 0};
-	var audit_additional_equipment_ratings = {'fireextinguisher': 50, 'equipment': 50};
-	var supplier_overall_ratings = {'reception' : 9,'procedures' : 9,'workmanship' : 12,'downtime' : 9,'cleanliness' : 11,'conformity' : 8,'partsavailibility' : 8,'facility' : 8,'warranties' : 9,'bulletins' : 7,'specialtoolstraining' : 10};
-	var o = {'good': 1, 'bad': 0, 'average': 0.5, 'yes': 1, 'no' :0, 'valid': 1, 'expired': 0, 'done': 1, 'attempted': 0.5, 'not done': 0, 'n/a': 1};
-	var supplier_competency_ratings = {'techcomp' : 50,'commskills' : 50};
-	var supplier_etiquette_ratings = {'phoneetiquette' : 34, 'authleadtime' : 33, 'professionalism' : 33};
-	var supplier_rfcPayment_ratings = {'invoicepayment' : 50, 'rfcnotifications' : 50};
 	$scope.currentDate = new Date();
-	var ratedResults = {};
 	$scope.closedJobsMsg = '(Please wait...)'
 
 	function fetchOpenCount(){
@@ -188,93 +171,17 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		}
 
 	}
-	/*
-	 - Reference variables declared at controller beginning to understand calculation
-	 - o contains the units by which we divide/multiply each value from the ratings obj's based off of properties of the JSON  from each form
-	 - We do a safe check to avoid NaN values from the calculation in ln 194, 196,206, and 214-223.
-	 - The fire extinguisher ONLY has a value for additional equipment rating hence check on ln 198
-	*/
-	function calculateAuditRating(savedForm, prop){
-		if (o[typeof(savedForm.JSON[prop]) === 'string' && savedForm.JSON[prop].toLowerCase()] !== undefined){
-			rating += Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-			if (audit_additional_equipment_ratings[prop.toLowerCase()] !== undefined){
-				if(prop.toLowerCase() === 'fireextinguisher' || prop.toLowerCase() === 'equipment') 
-					ratedResults[prop + 'Rating'] = isNaN(audit_additional_equipment_ratings[prop.toLowerCase()]) ? 0 : (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
-					add_rating+= isNaN(audit_additional_equipment_ratings[prop.toLowerCase()]) ? 0 :  (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));	
-			}
-			ratedResults[prop + 'Rating'] = isNaN(audit_overall_ratings[prop.toLowerCase()]) ? 0 : (Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]));
-			if (savedForm.JSON.Engine_Smoke == 'Bad' || savedForm.JSON.Brakes == 'Bad' || savedForm.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
-			$scope.overallRating = rating;
-			$scope.additionalEquipmentRating = add_rating;
-		}
-	}
+	function fetchRating(){
+		var currentForm = JSON.parse(sessionStorage.getItem('formTobeRatedCache'));
+		$scope.jobType = currentForm.FormType
+		$scope.overallRating = currentForm.JSON.overallRating;
+		$scope.supplierCompetencyRating = currentForm.JSON.supplierCompetencyRating;
+		$scope.supplierEtiquetteRating = currentForm.JSON.supplierEtiquetteRating;
+		$scope.supplierPaymentRating = currentForm.JSON.InvoicePaymentRating;
+		$scope.additionalEquipmentRating = currentForm.JSON.additionalEquipmentRating;
+		$scope.supplierStatus =  currentForm.JSON.SupplierStatus;
+		$scope.vehicleFitnessRating = currentForm.JSON.vehicleFitnessRating;
 
-	function calculateAfterServiceRating(savedForm, prop){
-		if (o[typeof(savedForm.JSON[prop]) === 'string' && savedForm.JSON[prop].toLowerCase()] !== undefined){
-			rating += Math.ceil(afterservice_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-			ratedResults[prop + 'Rating'] = isNaN(afterservice_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(afterservice_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-		}
-		$scope.overallRating = rating;
-	}
-	function calculateSupplierRating(savedForm, prop){
-		$scope.supplierStatus =  savedForm.JSON.SupplierStatus;
-		if (o[typeof(savedForm.JSON[prop]) === 'string' && savedForm.JSON[prop].toLowerCase()] !== undefined){
-			//Calculate ratings per overall, competency, payment &  etiquette criteria
-			rating += isNaN(supplier_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-			competency_rating += isNaN(supplier_competency_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_competency_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-			etiquette_rating += isNaN(supplier_etiquette_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_etiquette_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-			payment_rating += isNaN(supplier_rfcPayment_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_rfcPayment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-
-			// ratedResults will be attached to form 
-			if (prop.toLowerCase() === 'phoneetiquette' || prop.toLowerCase() === 'professionalism' || prop.toLowerCase() === 'authleadtime')
-				ratedResults[prop + 'Rating'] = isNaN(supplier_etiquette_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_etiquette_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-			else if(prop.toLowerCase() === 'techcomp' || prop.toLowerCase() === 'commskills')
-				ratedResults[prop + 'Rating'] = isNaN(supplier_competency_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(supplier_competency_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-			else if(prop.toLowerCase() === 'invoicepayment' || prop.toLowerCase() === 'rfCnotifications')
-				ratedResults[prop + 'Rating'] = isNaN(supplier_rfcPayment_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_rfcPayment_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-
-			else
-				ratedResults[prop + 'Rating'] = isNaN(supplier_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_overall_ratings[prop.toLowerCase()] * o[savedForm.JSON[prop].toLowerCase()]);
-			
-			$scope.overallRating = rating;
-			$scope.supplierCompetencyRating = competency_rating ;
-			$scope.supplierEtiquetteRating = etiquette_rating;
-			$scope.supplierPaymentRating = payment_rating;
-		}
-	}
-	/*
-     - method runs a set of calculations for the inspection forms.
-	*/
-	function calculateRatings(){
-		var savedForm = JSON.parse(sessionStorage.getItem('formTobeRatedCache'));
-		$scope.jobType = savedForm.FormType;
-		for (var prop in savedForm.JSON){
-			if (savedForm.FormType === 'audit'){
-				calculateAuditRating(savedForm, prop);
-			} else if (savedForm.FormType === 'afterserviceevaluation'){
-				calculateAfterServiceRating(savedForm, prop);
-			} else{
-				calculateSupplierRating(savedForm, prop);
-			}
-		}
-	}
-	function postFormWithRating(){
-		if(Object.keys(ratedResults).length){
-			var url = Settings.url + 'Post?method=SGIFormHeaders_modify';
-			var postOb = JSON.parse(sessionStorage.getItem('formTobeRatedCache'));
-			postOb.JSON = Object.assign(postOb.JSON, ratedResults);
-			postOb.JSON.overallRating = $scope.overallRating;
-			if (postOb.FormType === 'supplierevaluation'){
-				postOb.JSON.supplierEtiquetteRating = $scope.supplierEtiquetteRating;
-				postOb.JSON.supplierPaymentRating = $scope.supplierPaymentRating;
-				postOb.JSON.supplierCompetencyRating = $scope.supplierCompetencyRating;
-			}
-			if (postOb.FormType === 'audit') {postOb.JSON.additionalEquipmentRating =  $scope.additionalEquipmentRating; postOb.JSON.vehicleFitnessRating = $scope.vehicleFitnessRating;}
-			postOb.JSON = JSON.stringify(postOb.JSON);
-			GlobalSvc.postData(url, postOb, function(){ console.log('Ratings posted');}, function(){console.log('error posting ratings')}, 'SGIFormHeaders', 'Modify', false, true);
-		}
-		sessionStorage.removeItem('formTobeRatedCache');
-		$location.path('/');
 	}
 
 	function constructor(){
@@ -292,9 +199,8 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		} else if ($routeParams.mode === 'ratings'){
 			$scope.mode = $routeParams.mode;
 			$scope.$emit('heading',{heading: 'Remarks' , icon : 'fa fa-sticky-note'});
-			$scope.$emit('left',{label: 'Home' , icon : 'fa fa-home', onclick: function(){postFormWithRating();}});
-			calculateRatings();
-
+			$scope.$emit('left',{label: 'Home' , icon : 'fa fa-home', onclick: function(){sessionStorage.removeItem('formTobeRatedCache');$location.path('/');}});
+			fetchRating();
 		}
 	}
 	constructor();
