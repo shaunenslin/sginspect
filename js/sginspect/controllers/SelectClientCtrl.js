@@ -112,6 +112,9 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			            $scope.Form.JSON.Make = '';
 			            $scope.Form.JSON.EngineNo = ''
 			            $scope.Form.JSON.Color =  '';
+			            $scope.Form.JSON.RegistrationFrequency = '';
+			            $scope.Form.JSON.NatisLicenseNumber = '';
+			            $scope.Form.JSON.Model = '';
                      sessionStorage.setItem('currentLicenseNumber', barCodeData[6]);
                      sessionStorage.setItem('currentVinNumber', barCodeData[12]);
                      sessionStorage.setItem('currentExpirayDate', barCodeData[14]);
@@ -140,6 +143,9 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
             $scope.Form.JSON.Make = 'NISSAN DIESEL';
             $scope.Form.JSON.EngineNo = 'FE6308052F'
             $scope.Form.JSON.Color =  'grey';
+            $scope.Form.JSON.NatisLicenseNumber = '4024R00X';
+            $scope.Form.JSON.RegistrationFrequency = 1;
+            $scope.Form.JSON.Model = 'NP300 HARDBODY';
 			sessionStorage.setItem('currentExpirayDate', '21 July 2017');
             sessionStorage.setItem('currentLicenseNumber', 'HTT 091 GP');
             sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
