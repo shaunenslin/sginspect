@@ -32,7 +32,7 @@
                 </div>
             </form>
         </div>
-        <a href=""><button data-toggle="collapse" style="background-color: #31373B;bottom: 70px;" data-target="#upload" type="button" class="round-btn" ng-show="mode === 'list'"><span class="fa fa-cloud-upload icon"></span></button>
+        <a href="" ng-if="splitArr.length > 0" ><button data-toggle="collapse" style="background-color: #31373B;bottom: 70px;" data-target="#upload" type="button" class="round-btn" ng-show="mode === 'list'"><span class="fa fa-cloud-upload icon"></span></button>
         </a>
         <nav aria-label="..." ng-if="mode === 'list'">
             <ul ng-if="splitArr.length > 0" class="pager">
