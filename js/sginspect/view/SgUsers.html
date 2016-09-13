@@ -1,11 +1,11 @@
 <div ng-controller="SgInspectUserCtrl">
     <div class="inset" style="padding-top: 15px;">
         <div ng-show="mode === 'list'" style="padding-bottom: 30px;">
-            <input ng-model="searchText" type="text" class="form-control" placeholder="Search for Users">
+            <input ng-model="searchText" ng-change="filterList()" type="text" class="form-control" placeholder="Search for Users">
             <span class="input-group-btn">
         </div>
         <div class=" list-group" ng-show="mode === 'list' " >
-            <div class="row">
+            <div ng-if="splitArr.length > 0" class="row">
                 <div class="row" style="margin-left:10px; margin-right:5px;">
                     <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2">User Name</div>
                     <div class="hidden-xs col-sm-4 col-md-3 col-lg-3">First Name</div>
@@ -29,13 +29,16 @@
             
         </div>
         <nav aria-label="..." ng-if="mode === 'list'">
-            <ul class="pager">
+            <ul ng-if="splitArr.length > 0" class="pager">
                 <li><button class="btn btn-default btn-lg" type="button" ng-disabled="idx === 0" ng-click="navigate(-idx)">&laquo;</button></li>
                 <li><button class="btn btn-default btn-lg" type="button" ng-click="navigate(-1)" ng-disabled="idx === 0">&lsaquo;</button></li>
                 <li><button class="btn btn-default btn-lg" type="button">Page {{idx + 1}} of {{splitArr.length}}</button></li>
                 <li><button class="btn btn-default btn-lg" type="button" ng-click="navigate(1)" ng-disabled="idx === splitArr.length - 1">&rsaquo;</button></li>
                 <li><button class="btn btn-default btn-lg" type="button" ng-disabled="idx === splitArr.length - 1" ng-click="navigate(splitArr.length - idx - 1)">&raquo;</button></li>
             </ul>
+            <div class="alert alert-warning" ng-if="splitArr.length === 0">
+                <p><i class="fa fa-info"></i> No results found</p>
+            </div>
         </nav>
         <!-- Deals With Weather The User Edits or Adds A New Record to the This SupplierID's User-->
         <div ng-show="mode ===  'form'" >

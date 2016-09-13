@@ -1,4 +1,4 @@
-coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$window,$location,$modal,$alert){
+coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$window,$location,$modal,$alert, $filter){
     $scope.$emit('heading',{heading: 'Users' , icon : 'fa fa-user'});
     
     $scope.users = [];
@@ -192,6 +192,13 @@ coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http
             $scope.idx = changedVal;
             sessionStorage.setItem('userCurrIdx', $scope.idx);
         }
+    }
+    $scope.filterList = function(){
+        var result  = $filter('filter')( JSON.parse(sessionStorage.getItem( "UsersCache")), {$ : $scope.searchText});
+        result = arraySplit(result);
+        $scope.splitArr  =  result; 
+        $scope.idx = 0;
+        sessionStorage.setItem('userCurrIdx', $scope.idx);
     }
 
     function onBackClicked(){

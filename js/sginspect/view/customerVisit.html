@@ -25,13 +25,13 @@
 				<div class="well">
 					<div class="form-group">
 						<label for="SpecialRequest" class="col-sm-3">Request</label>
-				        <div class="col-sm-9"><textarea required ng-disabled="!Form.JSON.PartiesPresent" class="form-control" rows="3" ng-model="SpecialRequest"></textarea></div>
+				        <div class="col-sm-9"><textarea ng-disabled="!Form.JSON.PartiesPresent" class="form-control" rows="3" ng-model="SpecialRequest"></textarea></div>
 					</div>
 					<div class="form-group">
 						<label for="SpecialRequestDate" class="col-sm-3">Date</label>
 				        <div class="col-sm-9">
 				        	<div class="input-group">
-				        		<input required ng-disabled="!SpecialRequest" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="SpecialRequestDate"/>
+				        		<input ng-disabled="!SpecialRequest" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker autoclose="1" data-date-format="yyyy-MM-dd"  ng-model="SpecialRequestDate"/>
 				        		<span class="input-group-btn">
                                     <button ng-disabled="!SpecialRequest" class="btn btn-primary" ng-click="SpecialRequestDate = currentDate" type="button">Today</button>
                                 </span>

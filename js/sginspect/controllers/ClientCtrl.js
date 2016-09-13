@@ -214,7 +214,6 @@ coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,Global
         $scope.id = $routeParams.id;
         if ($routeParams.mode && $scope.id !== 'new') {
             $scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){onBackClicked();}});
-        	/*$scope.$emit('left',{label: 'Back' , icon : 'glyphicon glyphicon-chevron-left', onclick: function(){window.history.back();}});*/
             $scope.$emit('right',{label: 'Save' , icon : 'glyphicon glyphicon-floppy-save', onclick: $scope.saveClient});
             $scope.mode = 'form';
             fetchClient();
