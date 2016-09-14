@@ -197,7 +197,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	function calculateAuditRating(){
 		for (var prop in $scope.Form.JSON){
 			if (o[typeof($scope.Form.JSON[prop]) === 'string' && $scope.Form.JSON[prop].toLowerCase()] !== undefined){
-				rating += Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
+				rating += isNaN(audit_overall_ratings[prop.toLowerCase()]) ? 0 : Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
 				if (audit_additional_equipment_ratings[prop.toLowerCase()] !== undefined){
 					if(prop.toLowerCase() === 'fireextinguisher' || prop.toLowerCase() === 'equipment') 
 						ratedResults[prop + 'Rating'] = isNaN(audit_additional_equipment_ratings[prop.toLowerCase()]) ? 0 : (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]));
