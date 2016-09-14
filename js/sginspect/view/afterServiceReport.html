@@ -120,7 +120,7 @@
 			<tbody>
 			<tbody>
 				<tr>
-					<td>After Service Inspection</td>
+					<td>Customer</td>
 					<td>{{Report.JSON.CustomerName}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -315,12 +315,12 @@
 					<td>{{Report.JSON.User_Name}}</td>
 					<td>{{Report.JSON.diffAndRearAxleWashedRating}}</td>
 			    </tr>
-			    <tr ng-if="Report.JSON.diffAndRearAxleWashedComment">
+			    <tr ng-if="Report.JSON.diffsOilLevelCheckedComment">
 					<td>Remarks</td>
-					<td>{{Report.JSON.diffAndRearAxleWashedComment}}</td>
+					<td>{{Report.JSON.diffsOilLevelCheckedComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.diffAndRearAxleWashedRating}}</td>
+					<td></td>
 			    </tr>
 			    <tr>
 					<td>Diff(s) oil level checked</td>
@@ -329,12 +329,12 @@
 					<td>{{Report.JSON.User_Name}}</td>
 					<td>{{Report.JSON.diffsOilLevelCheckedRating}}</td>
 			    </tr>
-			   <tr ng-if="Report.JSON.diffsOilLevelCheckedComment">
+			   	<tr ng-if="Report.JSON.diffAndRearAxleWashedComment">
 					<td>Remarks</td>
-					<td>{{Report.JSON.diffsOilLevelCheckedComment}}</td>
+					<td>{{Report.JSON.diffAndRearAxleWashedComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
-					<td></td>
+					<td>{{Report.JSON.diffAndRearAxleWashedRating}}</td>
 			    </tr>
 			     <tr>
 					<td>5th wheel cleaned and lubricated as per  WIM  pro</td>
