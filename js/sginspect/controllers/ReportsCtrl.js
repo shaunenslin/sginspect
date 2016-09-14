@@ -14,6 +14,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
     $scope.idx = 0;
     $scope.searchText = {"JobType": "", "UserID" :"", "startdate":"", "enddate":"", "ISO":"", "SearchString":""};
     $scope.users = [];
+    $scope.currentDate = new Date();
 
 
 	function fetchJobs(){

@@ -251,7 +251,20 @@
 			<div class="well well-sm">
 				<div class="form-group" >
 					<label for="commentsOrPhotos">Comments/Photo's</label>
-					<input type="text" required class="form-control" ng-disabled="!Form.JSON.Branch" id="commentsOrPhotos" name="commentsOrPhotos" ng-model="Form.JSON.commentsOrPhotos" placeholder="Enter comments or photos">
+					<div class="input-group">
+						<input type="text" required class="form-control" ng-disabled="!Form.JSON.Branch" id="commentsOrPhotos" name="commentsOrPhotos" ng-model="Form.JSON.Comments" placeholder="Enter comments or photos">
+						<span class="input-group-btn">
+                    		<button ng-disabled="!Form.JSON.Branch" class="btn btn-primary" ng-click="addComments(Form.JSON.Comments)" type="button">Add</button>
+                    	</span>
+					</div>
+					<div style="margin-top : 5px;">
+						<table>
+							<tr ng-repeat="row in Comments">
+								<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row.otherComment}}</td>
+								<td><button ng-click="removeRequest($index)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+							</tr>
+						</table>
+					</div>
 				</div>
 				<div ng-hide="!Form.JSON.Branch">
 					<div class="row">

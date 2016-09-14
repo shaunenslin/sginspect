@@ -26,6 +26,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	var rating = 0;
 	var ratedResults = {};
 
+
 	$scope.onBackClicked = function(){
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		sessionStorage.setItem('currentForm', JSON.stringify($scope.Form));
@@ -105,6 +106,16 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 			$scope.Form.JSON.Longitude =  "";
 		});
 	}
+	$scope.addComments = function(comment){
+		if (!comment) return;
+		if (!$scope.Form.JSON.commentsOrPhotos) $scope.Form.JSON.commentsOrPhotos = [];
+		$scope.Form.JSON.commentsOrPhotos.push({otherComment : comment});
+		$scope.Form.JSON.Comments = '';
+	}
+
+	$scope.removeRequest = function(idx){
+		$scope.Form.JSON.commentsOrPhotos.splice(idx,1);
+    }
 
 	$scope.saveSignature = function(){
 		$scope.$emit('LOAD');
@@ -160,9 +171,13 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		$location.path(path);	
 	}
 	function saveForm(){
+		if (!$scope.Form.JSON.commentsOrPhotos) {
+			$scope.Form.JSON.commentsOrPhotos = [];
+			$scope.Form.JSON.commentsOrPhotos[0] = {otherComment : $scope.Form.JSON.Comments};
+		}
+		delete $scope.Form.JSON.Comments;
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
-		window.scrollTo(0, 0);
 		deleteCurrentPartialForm($scope.Form.FormID);
 		calculateAfterServiceRating();
 		$scope.Form.JSON.kilometerImages = $scope.kilometerImages;
@@ -219,6 +234,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
 
 	function constructor(){
+		window.scrollTo(0, 0);
 		$scope.$emit('LOAD');
 	    if (sessionStorage.getItem('fromJobsScreenCache')) $scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
         $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});

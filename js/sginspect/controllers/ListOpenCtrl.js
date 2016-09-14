@@ -185,6 +185,7 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	}
 
 	function constructor(){
+		window.scrollTo(0, 0);
 		if(!$routeParams.mode){
 			$scope.$emit('heading',{heading: 'Jobs' , icon : 'fa fa-sticky-note'});
 			$scope.mode = 'jobs';

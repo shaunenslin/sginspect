@@ -108,7 +108,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			            $scope.Form.JSON.DiscNo = '';
 			            $scope.Form.JSON.RegistrationNo = '';
 			            $scope.Form.JSON.VehicleRegistrationNo = '';
-			            $scope.Form.JSON.Description = '';
+			            $scope.Form.JSON.VehicleDescription = '';
 			            $scope.Form.JSON.Make = '';
 			            $scope.Form.JSON.EngineNo = ''
 			            $scope.Form.JSON.Color =  '';

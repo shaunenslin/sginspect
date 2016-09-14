@@ -434,16 +434,16 @@
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>
 			    </tr>
-			    <tr ng-if="Report.JSON.commentsOrPhotos">
-			    	<td>Comments/ Photo's</td>
-			    	<td>{{Report.JSON.commentsOrPhotos}}</td>
+			    <tr ng-if="Report.JSON.commentsOrPhotos" ng-repeat="row in Report.JSON.commentsOrPhotos">
+			    	<td>Comments</td>
+			    	<td>{{row.otherComment}}</td>
 			    	<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>
 			    </tr>
 			     <tr ng-repeat="id in commentPhotoImages">
-					<td>Comments/Photo's</td>
-					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td></td>
+					<td>CommentsPhoto's</td>
+					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>
