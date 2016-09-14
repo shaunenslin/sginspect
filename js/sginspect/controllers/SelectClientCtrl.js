@@ -102,24 +102,24 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 		            	var barCodeData = result.text.split('%');
 		                $scope.VinNumber = barCodeData[12];
 						$scope.Form.VinNumber = $scope.VinNumber;
-						$scope.Form.JSON.ExpiryDate = barCodeData[6];
-						$scope.Form.JSON.LicenseNumber = '';
-			            $scope.Form.JSON.Tarre = '';
-			            $scope.Form.JSON.DiscNo = '';
-			            $scope.Form.JSON.RegistrationNo = '';
-			            $scope.Form.JSON.VehicleRegistrationNo = '';
-			            $scope.Form.JSON.VehicleDescription = '';
-			            $scope.Form.JSON.Make = '';
-			            $scope.Form.JSON.EngineNo = ''
-			            $scope.Form.JSON.Color =  '';
-			            $scope.Form.JSON.RegistrationFrequency = '';
-			            $scope.Form.JSON.NatisLicenseNumber = '';
-			            $scope.Form.JSON.Model = '';
-                     sessionStorage.setItem('currentLicenseNumber', barCodeData[6]);
-                     sessionStorage.setItem('currentVinNumber', barCodeData[12]);
-                     sessionStorage.setItem('currentExpirayDate', barCodeData[14]);
-  					 $scope.onNextClicked();
-  					 $scope.$apply();
+						$scope.Form.JSON.ExpiryDate = barCodeData[14];
+						$scope.Form.JSON.LicenseNumber = barCodeData[6];
+						$scope.Form.JSON.Tarre = barCodeData[2];
+						$scope.Form.JSON.DiscNo = barCodeData[5];
+						$scope.Form.JSON.RegistrationNo = barCodeData[1];
+						$scope.Form.JSON.VehicleRegistrationNo = barCodeData[7];
+						$scope.Form.JSON.VehicleDescription = barCodeData[8];
+						$scope.Form.JSON.Make = barCodeData[9];
+						$scope.Form.JSON.EngineNo = barCodeData[13]
+						$scope.Form.JSON.Color =  barCodeData[11];
+						$scope.Form.JSON.RegistrationFrequency = barCodeData[4];
+						$scope.Form.JSON.NatisLicenseNumber = barCodeData[3];
+						$scope.Form.JSON.Model = barCodeData[10];
+						sessionStorage.setItem('currentLicenseNumber', barCodeData[6]);
+						sessionStorage.setItem('currentVinNumber', barCodeData[12]);
+						sessionStorage.setItem('currentExpirayDate', barCodeData[14]);
+						$scope.onNextClicked();
+						$scope.$apply();
                   },
                   function (error) {
                       alert("Scanning failed: " + error);
