@@ -139,6 +139,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 	}
 		if($scope.signature.inspector[1] === emptySignature || !$scope.signature.inspector){
 			$alert({ content: "You cannot continue without adding the required signature", duration: 5, placement: 'top-right', type: 'danger', show: true});
+			$scope.$emit('UNLOAD');
 			return;
 		}
 		saveForm();
