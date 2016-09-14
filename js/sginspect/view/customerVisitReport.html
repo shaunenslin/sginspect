@@ -14,7 +14,7 @@
 				</tr>
 				<tbody>
 					<tr>
-						<td>Customer Vist</td>
+						<td>Customer</td>
 						<td>{{Report.JSON.CustomerName}}</td>
 						<td>{{Report.JSON.timeString}}</td>
 						<td>{{Report.JSON.User_Name}}</td>
@@ -49,13 +49,23 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-				<tr ng-repeat="row in SpecialRequests">
-					<td>Special Request</td>
-					<td>{{row.Request}}</td>
-					<td>{{row.RequestDate}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-			    </tr>
-			    <tr>
+				</tbody>
+				<tbody ng-repeat="row in SpecialRequests">
+					<tr>
+						<td>Special Request</td>
+						<td>{{row.Request}}</td>
+						<td>{{Report.JSON.timeString}}</td>
+						<td>{{Report.JSON.User_Name}}</td>
+			    	</tr>
+				    <tr>
+						<td>Date Actioned</td>
+						<td>{{row.RequestDate}}</td>
+						<td>{{Report.JSON.timeString}}</td>
+						<td>{{Report.JSON.User_Name}}</td>
+				    </tr>
+				</tbody>
+				<tbody>
+					<tr>
 					<td>Inspector Signature</td>
 					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
