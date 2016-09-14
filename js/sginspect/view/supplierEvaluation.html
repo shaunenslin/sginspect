@@ -28,7 +28,7 @@
 						<label for="EvaluationDate" class="col-sm-3">Evaluation Date</label>
 						<div class="col-sm-9">
 							<div class="input-group">
-								<input required ng-disabled="!Form.JSON.SupplierID" id="evalDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="Form.JSON.EvaluationDate"/>
+								<input required ng-disabled="!Form.JSON.SupplierID" useNative="true" id="evalDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="Form.JSON.EvaluationDate"/>
 								<span class="input-group-btn">
                                     <button ng-disabled="!Form.JSON.SupplierID" class="btn btn-primary" ng-click="Form.JSON.EvaluationDate = currentDate" type="button">Today</button>
                                 </span>
@@ -55,7 +55,7 @@
 							<div class="input-group">
 								<input required ng-disabled="!Form.JSON.Name" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker data-date-format="yyyy-MM-dd" autoclose="true"  ng-model="Form.JSON.EvaluationDate"/>
 								<span class="input-group-btn">
-                                    <button ng-disabled="!Form.JSON.Name" class="btn btn-primary" ng-click="Form.JSON.EvaluationDate = currentDate" type="button">Today</button>
+                                    <button ng-disabled="!Form.JSON.Name" useNative="true" class="btn btn-primary" ng-click="Form.JSON.EvaluationDate = currentDate" type="button">Today</button>
                                 </span>
 							</div>
 						</div>

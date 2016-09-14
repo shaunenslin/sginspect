@@ -60,7 +60,7 @@
 			<label for="inspectiondate" class="col-sm-3">Date of Inspection</label>
 			<div class="col-sm-9">
 				<div class="input-group">
-					<input name="inspectionDate" required class="form-control" id="inspection_date" ng-model="Form.JSON.InspectionDate" date-format="longDate" data-autoclose="1" bs-datepicker data-date-format="yyyy-MM-dd"  type="text" ng-disabled="!Form.JSON.Branch"><span class="input-group-btn">
+					<input name="inspectionDate" required class="form-control" id="inspection_date" ng-model="Form.JSON.InspectionDate" date-format="longDate" data-autoclose="1" useNative="true" bs-datepicker data-date-format="yyyy-MM-dd"  type="text" ng-disabled="!Form.JSON.Branch"><span class="input-group-btn">
 					<button class="btn btn-primary" ng-disabled="!Form.JSON.Branch" ng-click="Form.JSON.InspectionDate = currentDate" type="button">Today</button></span>
 				</div>
 			</div>
@@ -235,7 +235,7 @@
 			<label for="fireExp_date" class="col-sm-3">What is the Expiration Date ?</label>
 			<div class="col-sm-9">
 				<div class="input-group">
-					<input name="fireExp_date" required class="form-control" id="fireExp_date" ng-model="Form.JSON.FireExtinguisherExpDate" date-format="longDate" data-autoclose="1" bs-datepicker data-date-format="yyyy-MM-dd" type="text" ng-disabled="!Form.JSON.FireExtIsValid">
+					<input name="fireExp_date" required class="form-control" id="fireExp_date" ng-model="Form.JSON.FireExtinguisherExpDate" date-format="longDate" data-autoclose="1" useNative="true" bs-datepicker data-date-format="yyyy-MM-dd" type="text" ng-disabled="!Form.JSON.FireExtIsValid">
 					<span class="input-group-btn">
 					<button class="btn btn-primary" ng-disabled="!Form.JSON.FireExtIsValid" ng-click="Form.JSON.FireExtinguisherExpDate = currentDate" type="button">Today</button></span>
 				</div>

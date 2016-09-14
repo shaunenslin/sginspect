@@ -41,7 +41,7 @@
 			<label for="investigation_date" class="col-sm-3">Date of Failure</label>
 			<div class="col-sm-9">
 				<div class="input-group">
-					<input name="investigation_date" required class="form-control" id="investigation_date" ng-model="Form.JSON.InvestigationDate" date-format="longDate" data-autoclose="1" bs-datepicker data-date-format="yyyy-MM-dd"  type="text">
+					<input name="investigation_date" useNative="true" required class="form-control" id="investigation_date" ng-model="Form.JSON.InvestigationDate" date-format="longDate" data-autoclose="1" bs-datepicker data-date-format="yyyy-MM-dd"  type="text">
 					<span class="input-group-btn">
                         <button class="btn btn-primary" ng-click="Form.JSON.InvestigationDate = currentDate" type="button">Today</button>
                     </span>

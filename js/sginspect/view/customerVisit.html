@@ -31,7 +31,7 @@
 						<label for="SpecialRequestDate" class="col-sm-3">Date</label>
 				        <div class="col-sm-9">
 				        	<div class="input-group">
-				        		<input ng-disabled="!SpecialRequest" id="SpecialRequestDate"  type="text" class="form-control" name="date" bs-datepicker autoclose="1" data-date-format="yyyy-MM-dd"  ng-model="SpecialRequestDate"/>
+				        		<input ng-disabled="!SpecialRequest" id="SpecialRequestDate" useNative="true" type="text" class="form-control" name="date" bs-datepicker autoclose="1" data-date-format="yyyy-MM-dd"  ng-model="SpecialRequestDate"/>
 				        		<span class="input-group-btn">
                                     <button ng-disabled="!SpecialRequest" class="btn btn-primary" ng-click="SpecialRequestDate = currentDate" type="button">Today</button>
                                 </span>
