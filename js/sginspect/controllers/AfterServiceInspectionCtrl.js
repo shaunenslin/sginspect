@@ -109,11 +109,11 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	$scope.addComments = function(comment){
 		if (!comment) return;
 		if (!$scope.Form.JSON.commentsOrPhotos) $scope.Form.JSON.commentsOrPhotos = [];
-		$scope.Form.JSON.commentsOrPhotos.push({otherComment : comment});
+		$scope.Form.JSON.commentsOrPhotos.push(comment);
 		$scope.Form.JSON.Comments = '';
 	}
 
-	$scope.removeRequest = function(idx){
+	$scope.removeComment = function(idx){
 		$scope.Form.JSON.commentsOrPhotos.splice(idx,1);
     }
 

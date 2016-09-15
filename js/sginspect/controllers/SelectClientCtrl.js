@@ -150,7 +150,6 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
             sessionStorage.setItem('currentLicenseNumber', 'HTT 091 GP');
             sessionStorage.setItem('currentVinNumber', $scope.VinNumber);
         	$scope.onNextClicked();
-			$scope.$apply();
         }
 	}
 

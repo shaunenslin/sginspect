@@ -124,6 +124,13 @@
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>
 			    </tr>
+			    <tr>
+					<td>Customer Branch</td>
+					<td>{{Report.JSON.Branch}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+			    </tr>
 				<tr>
 					<td>Kilometers</td>
 					<td>{{Report.JSON.Kilometers}}</td>
@@ -167,7 +174,7 @@
 					<td></td>
 			    </tr>
 			    <tr>
-					<td>Date</td>
+					<td>Date of Inspection</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -182,7 +189,7 @@
 			    </tr>
 			    <tr>
 			    <tr ng-if="Report.JSON.CabInteriorComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.CabInteriorComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -195,7 +202,7 @@
 					<td>{{Report.JSON.SteeringPlayRating}}</td>
 			    </tr>
 			   <tr ng-if="Report.JSON.SteeringPlayComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.SteeringPlayComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -209,7 +216,7 @@
 					<td>{{Report.JSON.ElectricalRating}}</td>
 			    </tr>
 			  	<tr ng-if="Report.JSON.ElectricalComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.ElectricalComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -223,7 +230,7 @@
 					<td>{{Report.JSON.Engine_SmokeRating}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.Engine_SmokeComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.Engine_SmokeComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -237,7 +244,7 @@
 					<td>{{Report.JSON.ClutchOperationRating}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.ClutchOperationComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.ClutchOperationComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -252,7 +259,7 @@
 
 			    </tr>
 			     <tr ng-if="Report.JSON.BrakesComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.BrakesComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -266,7 +273,7 @@
 					<td>{{Report.JSON.GearSelectorRating}}</td>
 			    </tr>
 			     <tr ng-if="Report.JSON.GearSelectorComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.GearSelectorComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -280,7 +287,7 @@
 					<td>{{Report.JSON.PropshaftPlayRating}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.PropshaftPlayComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.PropshaftPlayComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -294,7 +301,7 @@
 					<td>{{Report.JSON.CabExteriorRating}}</td>
 			    </tr>
 			   <tr ng-if="Report.JSON.CabExteriorComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.CabExteriorComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -308,7 +315,7 @@
 					<td>{{Report.JSON.RustRating}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.RustComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.RustComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -321,6 +328,27 @@
 					<td>{{Report.JSON.User_Name}}</td>
 					<td>{{Report.JSON.LicenseCardRating}}</td>
 			    </tr>
+			    <tr>
+					<td>Does the vehicle have a Fire Extinguisher ?</td>
+					<td>{{(Report.JSON.FireExtinguisher === 'Yes') ? Report.JSON.FireExtinguisher : 'No'}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.FireExtinguisherRating}}</td>
+			    </tr>
+			    <tr ng-if="Report.JSON.FireExtinguisher === 'Yes'">
+					<td>Date valid / expired  ?</td>
+					<td>{{Report.JSON.FireExtIsValid}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+			    </tr>
+			    <tr ng-if="Report.JSON.FireExtIsValid === 'Valid'">
+					<td>Expiry Date</td>
+					<td>{{Report.JSON.FireExtinguisherExpDate}}</td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+			    </tr>
 			     <tr>
 					<td>Fluid Leaks</td>
 					<td>{{Report.JSON.FluidLeaks}}</td>
@@ -329,7 +357,7 @@
 					<td>{{Report.JSON.FluidLeaksRating}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.FluidLeaksComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.FluidLeaksComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -343,21 +371,21 @@
 					<td>{{Report.JSON.TyresRating}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.TyresComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.TyresComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>
 			    </tr>
 			    <tr ng-repeat="id in TyresImages">
-					<td>Kilometers (image)</td>
+					<td>Tyres (image)</td>
 					<td><img id="tyres-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>
 			    </tr>
 			    <tr>
-					<td>Additional Equipment</td>
+					<td>Condition of Additional Equipment</td>
 					<td>{{Report.JSON.Equipment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
@@ -365,7 +393,7 @@
 
 			    </tr>
 			    <tr ng-if="Report.JSON.EquipmentComment">
-					<td>Remarks</td>
+					<td>Comment</td>
 					<td>{{Report.JSON.EquipmentComment}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>

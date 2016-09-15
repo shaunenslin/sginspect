@@ -2,6 +2,7 @@ coreApp.controller("AfterServiceReportCtrl", function($scope, $routeParams, DaoS
 	$scope.Report = [];
 	$scope.kilometerImages = [];
     $scope.commentPhotoImages = [];
+    $scope.newArray = [];
 	$scope.signature = '';
 	$scope.imageUrl =  'https://s3.amazonaws.com/rapidtradeimages/' + GlobalSvc.getUser().SupplierID + '/';
 
@@ -12,6 +13,13 @@ coreApp.controller("AfterServiceReportCtrl", function($scope, $routeParams, DaoS
 		$scope.Report.FormDate = moment($scope.Report.FormDate).format('YYYY/MM/DD');
 		$scope.kilometerImages = $scope.Report.JSON.kilometerImages;
 		$scope.commentPhotoImages = $scope.Report.JSON.commentPhotoImages;
+		var newcommentsorPhotos = {"ImageID": "", "Comment":""};
+		for (var i = 0; i < $scope.commentPhotoImages.length; i++){
+			newcommentsorPhotos.ImageID = $scope.commentPhotoImages[i]
+			newcommentsorPhotos.Comment = $scope.Report.JSON.commentsOrPhotos[i];
+			$scope.newArray.push(newcommentsorPhotos);
+			newcommentsorPhotos = {"ImageID": "", "Comment":""};
+		}
 		$scope.signature = $scope.imageUrl + $scope.Report.JSON.Signature;
 		$scope.$emit('UNLOAD');
 	}

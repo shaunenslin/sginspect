@@ -35,7 +35,6 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 		.success(function(count){
 			$scope.CloseJobsCount = count[0];
 			$scope.$emit('UNLOAD');
-			$scope.$apply();
 		})
 		.error(function(err){
 			$scope.closedJobsMsg = '(Unavailable as you are offline)';

@@ -127,7 +127,6 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			$scope.Form.JSON.Longitude = position ? position.coords.longitude : "";
 			$alert({content:"GPS location captured successfully", duration:5, placement:'top-right', type:'success', show:true});
 			$scope.$emit('UNLOAD');
-			$scope.$emit('UNLOAD');
 			$scope.$apply();
 		},function(error){
 			$alert({content:"GPS location not captured. Please ensure your location settings are enabled ", duration:5, placement:'top-right', type:'danger', show:true});

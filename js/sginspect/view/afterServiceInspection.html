@@ -12,7 +12,7 @@
 					<div class="col-sm-9"><p>{{Form.JSON.VinNumber}}</p></div>
 				</div>
 				<div class="form-group">
-					<label for="license" class="col-sm-3">Registration</label>
+					<label for="license" class="col-sm-3">License Number</label>
 					<div class="col-sm-9"><p>{{Form.JSON.LicenseNumber}}</p></div>
 				</div>
 				<div class="form-group">
@@ -260,8 +260,8 @@
 					<div style="margin-top : 5px;">
 						<table>
 							<tr ng-repeat="row in Form.JSON.commentsOrPhotos">
-								<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row.otherComment}}</td>
-								<td><button ng-click="removeRequest($index)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
+								<td style="padding: 0; margin : 0; text-decoration: none; font-weight: 400">{{row}}</td>
+								<td><button ng-click="removeComment($index)" class="btn btn-danger btn-xs" style="margin-left: 15px; margin-bottom: 5px;">remove</button></td>
 							</tr>
 						</table>
 					</div>
