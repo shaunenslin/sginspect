@@ -298,7 +298,8 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 					ratedResults[prop + 'Rating'] = isNaN(supplier_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(supplier_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
 			}
 		}
-		$scope.Form.JSON = Object.assign($scope.Form.JSON, ratedResults);
+		//merging the two objects
+		for (var prop in ratedResults){$scope.Form.JSON[prop] = ratedResults[prop]};
 		$scope.Form.JSON.overallRating = rating;
 		$scope.Form.JSON.supplierEtiquetteRating = etiquette_rating;
 		$scope.Form.JSON.supplierCompetencyRating = competency_rating; 

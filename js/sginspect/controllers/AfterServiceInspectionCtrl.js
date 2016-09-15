@@ -217,7 +217,8 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 				ratedResults[prop + 'Rating'] = isNaN(afterservice_overall_ratings[prop.toLowerCase()]) ? 0 :  Math.ceil(afterservice_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]);
 			}
 		 }
-		$scope.Form.JSON = Object.assign($scope.Form.JSON, ratedResults);
+		//merging the two objects
+		for (var prop in ratedResults){$scope.Form.JSON[prop] = ratedResults[prop]};
 		$scope.Form.JSON.overallRating = rating
 		
 	}

@@ -211,7 +211,8 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 			}
 		}
 
-		$scope.Form.JSON = Object.assign($scope.Form.JSON, ratedResults);
+		//merging the two objects
+		for (var prop in ratedResults){$scope.Form.JSON[prop] = ratedResults[prop]};
 		$scope.Form.JSON.additionalEquipmentRating =  $scope.additionalEquipmentRating;
 		$scope.Form.JSON.vehicleFitnessRating = $scope.vehicleFitnessRating;
 		$scope.Form.JSON.overallRating = $scope.overallRating;
