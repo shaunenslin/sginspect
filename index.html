@@ -116,14 +116,14 @@ and open the template in the editor. this is a change
 
 
     <body>
-        <nav id="navbar" class="navbar navbar navbar-default navbar-fixed-top bs-docs-nav" style="background-color: {{Settings.navColor}}; text-align:center;"  role="navigation">
+        <nav id="navbar" class="navbar navbar navbar-default navbar-fixed-top bs-docs-nav" style="background-color: {{Settings.navColor}}; text-align:center; border-bottom : {{Settings.navBottom}}"  role="navigation">
             
             
             <table style="width:100%; table-layout: fixed;" id="heading-table">
                 <tr>
                     
                     <td>
-                        <div class="pull-left hidden-sm hidden-xs" id="navbar-branding" style="height:55px;">
+                        <div class="pull-left hidden-sm hidden-xs" id="navbar-branding" style="height:55px;background-color: #006b49;">
                             <img style="display: block; margin:auto; margin-top:5px;" src="{{Settings.logo}}" ng-cloak>
                         </div>
 

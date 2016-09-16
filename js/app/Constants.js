@@ -28,7 +28,8 @@ coreApp.constant('Settings', {
     url: 'http://www.super-trade.co.za:8084/sgirest/index.php/',
     dotnetPostUrl: 'http://www.super-trade.co.za:8084/sgirest/post/post.aspx',
     supplierID: 'SGA',
-    logo: 'http://www.sgadmin.co.za/logo/SG-Admin-sm.png',
+    // logo: 'http://www.sgadmin.co.za/logo/SG-Admin-sm.png',
+    logo: 'img/fleetafrica_logo.png',
     splash:  'img/mustang.jpg',
     phpServer: true,
     allowRequestRegister: false,
@@ -36,6 +37,7 @@ coreApp.constant('Settings', {
     allowTour: false,
     appName: 'SGInspect',
     navColor: '#ce180f',
+    navBottom: 'solid #F3B82E',
     firstPage: '/admin',
 
     db: 'SGInspect',
