@@ -10,6 +10,8 @@ coreApp.controller("AuditReportCtrl", function($scope, $routeParams, DaoSvc, $lo
 		$scope.Report = JSON.parse(sessionStorage.getItem('currentReportCache'));
 		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.InspectionDate).format('YYYY/MM/DD');
 		$scope.Report.FormDate = moment($scope.Report.FormDate).format('YYYY/MM/DD');
+		$scope.Report.JSON.Tarre = parseInt($scope.Report.JSON.Tarre);
+		$scope.Report.JSON.Tarre = $scope.Report.JSON.Tarre.toString();
 		$scope.kilometersImages = $scope.Report.JSON.KilometersImages;
 		$scope.Report.JSON.FireExtinguisherExpDate = moment($scope.Report.JSON.FireExtinguisherExpDate).format('YYYY/MM/DD');
 		$scope.TyresImages = $scope.Report.JSON.TyresImages;

@@ -11,6 +11,8 @@ coreApp.controller("AfterServiceReportCtrl", function($scope, $routeParams, DaoS
 		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.dateOfService).format('YYYY/MM/DD');
 		$scope.Report.JSON.dateOfService = moment($scope.Report.JSON.dateOfInspection).format('YYYY/MM/DD');
 		$scope.Report.FormDate = moment($scope.Report.FormDate).format('YYYY/MM/DD');
+		$scope.Report.JSON.Tarre = parseInt($scope.Report.JSON.Tarre);
+		$scope.Report.JSON.Tarre = $scope.Report.JSON.Tarre.toString();
 		$scope.kilometerImages = $scope.Report.JSON.kilometerImages;
 		$scope.commentPhotoImages = $scope.Report.JSON.commentPhotoImages;
 		var newcommentsorPhotos = {"ImageID": "", "Comment":""};

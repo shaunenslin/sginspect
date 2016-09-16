@@ -104,8 +104,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 						$scope.Form.VinNumber = $scope.VinNumber;
 						$scope.Form.JSON.ExpiryDate = barCodeData[14];
 						$scope.Form.JSON.LicenseNumber = barCodeData[6];
-						$scope.Form.JSON.Tarre = parseInt(barCodeData[2]);
-						$scope.Form.JSON.Tarre = $scope.Form.JSON.Tarre.toString();
+						$scope.Form.JSON.Tarre = barCodeData[2];
 						$scope.Form.JSON.DiscNo = barCodeData[5];
 						$scope.Form.JSON.RegistrationNo = barCodeData[1];
 						$scope.Form.JSON.VehicleRegistrationNo = barCodeData[7];

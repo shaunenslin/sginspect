@@ -8,6 +8,8 @@ coreApp.controller("TechReportCtrl", function($scope, $routeParams, DaoSvc, $loc
 		$scope.Report = JSON.parse(sessionStorage.getItem('currentReportCache'));
 		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.InvestigationDate).format('YYYY/MM/DD');
 		$scope.Report.FormDate =  moment($scope.Report.FormDate).format('YYYY/MM/DD');
+		$scope.Report.JSON.Tarre = parseInt($scope.Report.JSON.Tarre);
+		$scope.Report.JSON.Tarre = $scope.Report.JSON.Tarre.toString();
 		$scope.DescriptionImages = $scope.Report.JSON.DescriptionImages;
 		$scope.signature = 'https://s3.amazonaws.com/rapidtradeimages/' + GlobalSvc.getUser().SupplierID + '/' + $scope.Report.JSON.Signature;
 		$scope.$emit('UNLOAD');
