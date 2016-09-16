@@ -172,8 +172,9 @@ coreApp.controller("ListOpenCtrl", function ($scope, $routeParams, DaoSvc, $loca
 	}
 	function fetchRating(){
 		var currentForm = JSON.parse(sessionStorage.getItem('formTobeRatedCache'));
-		$scope.jobType = currentForm.FormType
-		$scope.overallRating = currentForm.JSON.overallRating;
+		currentForm.JSON = (typeof currentForm.JSON === 'string' ) ? JSON.parse(currentForm.JSON) : currentForm.JSON;
+		$scope.jobType = currentForm.FormType;
+		$scope.overallRating =currentForm.JSON.overallRating;
 		$scope.supplierCompetencyRating = currentForm.JSON.supplierCompetencyRating;
 		$scope.supplierEtiquetteRating = currentForm.JSON.supplierEtiquetteRating;
 		$scope.supplierPaymentRating = currentForm.JSON.InvoicePaymentRating;
