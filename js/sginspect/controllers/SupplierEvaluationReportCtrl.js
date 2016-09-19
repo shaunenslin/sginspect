@@ -15,9 +15,28 @@ coreApp.controller("SupplierEvaluationReportCtrl", function($scope, $routeParams
 		$scope.CleanlinessImages = $scope.Report.JSON.CleanlinessImages;
 		$scope.SpecialToolsTrainingImages =  $scope.Report.JSON.SpecialToolsTrainingImages;
 		$scope.ReceptionImages =  $scope.Report.JSON.ReceptionImages;
-		$scope.techAdvisorSignature = $scope.imageUrl + $scope.Report.JSON.TechAdvisorSignature;
-		$scope.managerSignature = $scope.imageUrl + $scope.Report.JSON.ManagerSignature;
+		var url  = $scope.imageUrl + $scope.Report.JSON.TechAdvisorSignature;
+		$http.get (url)
+		.success(function(sig1){
+	    	data = "data:image/svg+xml;base64," + btoa(sig1);
+	    	$scope.techAdvisorSignature = data;
+	    	fetchManagerSignature($scope.imageUrl + $scope.Report.JSON.ManagerSignature);
+		})
+		.error(function(){
+			console.log('Error fetching tech advisor signature');
+		})
 		$scope.$emit('UNLOAD');
+	}
+
+	function fetchManagerSignature(url){
+		$http.get (url)
+		.success(function(sig2){
+	    	data = "data:image/svg+xml;base64," + btoa(sig2);
+	    	$scope.managerSignature = data;
+		})
+		.error(function(){
+			console.log('Error fetching manager signature');
+		})
 	}
 	function constructor(){
 		$scope.$emit('LOAD');

@@ -141,6 +141,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$scope.Form.JSON.descriptionImages =  $scope.DescriptionImages;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		var key = $scope.Form.FormID + '_inspectorSig.svgx';
+		$scope.Form.JSON.Signature = key;
 		$scope.Form.JSON.DescriptionImages = $scope.DescriptionImages;
 		$scope.Form.JSON.isFindings = ($scope.Form.JSON.Description) ? true : false;
 		CaptureImageSvc.savePhoto(key, $scope.Form.FormID,inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);

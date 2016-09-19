@@ -11,7 +11,15 @@ coreApp.controller("TechReportCtrl", function($scope, $routeParams, DaoSvc, $loc
 		$scope.Report.JSON.Tarre = parseInt($scope.Report.JSON.Tarre);
 		$scope.Report.JSON.Tarre = $scope.Report.JSON.Tarre.toString();
 		$scope.DescriptionImages = $scope.Report.JSON.DescriptionImages;
-		$scope.signature = 'https://s3.amazonaws.com/rapidtradeimages/' + GlobalSvc.getUser().SupplierID + '/' + $scope.Report.JSON.Signature;
+		var url  = $scope.imageUrl + $scope.Report.JSON.Signature;
+		$http.get (url)
+		.success(function(img){
+	    	data = "data:image/svg+xml;base64," + btoa(img);
+	    	$scope.signature = data;
+		})
+		.error(function(){
+			console.log('Error fetching signature');
+		})
 		$scope.$emit('UNLOAD');
 	}
 

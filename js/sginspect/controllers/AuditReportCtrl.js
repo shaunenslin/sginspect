@@ -16,7 +16,15 @@ coreApp.controller("AuditReportCtrl", function($scope, $routeParams, DaoSvc, $lo
 		$scope.Report.JSON.FireExtinguisherExpDate = moment($scope.Report.JSON.FireExtinguisherExpDate).format('YYYY/MM/DD');
 		$scope.TyresImages = $scope.Report.JSON.TyresImages;
 		$scope.otherImages = $scope.Report.JSON.other_photosimages;
-		$scope.signature = $scope.imageUrl + $scope.Report.JSON.Signature;
+		var url  = $scope.imageUrl + $scope.Report.JSON.Signature;
+		$http.get (url)
+		.success(function(img){
+	    	data = "data:image/svg+xml;base64," + btoa(img);
+	    	$scope.signature = data;
+		})
+		.error(function(){
+			console.log('Error fetchig signature');
+		})
 		$scope.$emit('UNLOAD');
 	}
 	function constructor(){

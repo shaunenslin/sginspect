@@ -22,7 +22,15 @@ coreApp.controller("AfterServiceReportCtrl", function($scope, $routeParams, DaoS
 			$scope.newArray.push(newcommentsorPhotos);
 			newcommentsorPhotos = {"ImageID": "", "Comment":""};
 		}
-		$scope.signature = $scope.imageUrl + $scope.Report.JSON.Signature;
+		var url  = $scope.imageUrl + $scope.Report.JSON.Signature;
+		$http.get (url)
+		.success(function(img){
+	    	data = "data:image/svg+xml;base64," + btoa(img);
+	    	$scope.signature = data;
+		})
+		.error(function(){
+			console.log('Error fetchig signature');
+		})
 		$scope.$emit('UNLOAD');
 	}
 	function constructor(){
