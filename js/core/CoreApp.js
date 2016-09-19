@@ -26,28 +26,16 @@ var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap",
     FastClick.attach(document.body);
     if (!localStorage.getItem('currentUser')) {
         $location.path('/welcome');
-    } else {
-        // if we do not check did we alredy set value for "Injection"
-        // app will throw exception for trying to get injectors.length (in for(var y=0; y < injectors.length;....)) two lines below
-        if (localStorage.getItem("Injection")) {
-            var injectors = JSON.parse(localStorage.getItem("Injection"));
-            for (var y=0; y < injectors.length; y++){
-                var row = injectors[y];
-                $templateCache.put(row.ID, row.HTML);   //$templateCache.put('test.html', 'Hello {{ test.user.name }}!, we have made FIRE....');
-            }
-        }
     }
 })
 
-.factory("GlobalSvc", function(Settings, $location, DaoSvc,$alert, OptionSvc, UserCodeSvc){
+.factory("GlobalSvc", function(Settings, $location, DaoSvc,$alert, OptionSvc){
     return {
         url: function(){
-          return Settings.url; //'http://www.dedicatedsolutions.co.za:8082/rest2/';
-          //'http://54.206.28.119:8081/Rest/index.php/';//"http://app1.rapidtrade.biz/rest/";
+          return Settings.url;
         },
         resturl: function(){
-          return Settings.url; //'http://www.dedicatedsolutions.co.za:8082/rest2/';
-          //'http://54.206.28.119:8081/Rest/index.php/';//"http://app1.rapidtrade.biz/rest/";
+          return Settings.url;
         },
         hasUser: function(){
             if (localStorage.getItem('currentUser'))
@@ -72,30 +60,10 @@ var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap",
         },
         isOnline: function(showAlert) {
         	showAlert = (showAlert !== undefined) ? showAlert : true;
+            if (!navigator.onLine && showAlert)
+                g_alert('This feature is disabled in the offline mode.');
 
-//            if (g_deviceVersion !== undefined) {
-//                var networkState = navigator.network.connection.type;
-//
-//                var states = {};
-//                states[Connection.UNKNOWN]  = false; //'Unknown connection';
-//                states[Connection.ETHERNET] = true;  //'Ethernet connection';
-//                states[Connection.WIFI]     = true;  //'WiFi connection';
-//                states[Connection.CELL_2G]  = true;  //'Cell 2G connection';
-//                states[Connection.CELL_3G]  = true;  //'Cell 3G connection';
-//                states[Connection.CELL_4G]  = true;  //'Cell 4G connection';
-//                states[Connection.CELL]     = true;  //'Cell generic connection';
-//                states[Connection.NONE]     = false; //'No network connection';
-//
-//                if (!states[networkState] && showAlert)
-//                    g_alert('This feature is disabled in the offline mode.');
-//
-//                return states[networkState];
-//            } else {
-                if (!navigator.onLine && showAlert)
-                    g_alert('This feature is disabled in the offline mode.');
-
-                return navigator.onLine;
-//            }
+            return navigator.onLine;
         },
         getmenu: function(){
            return [
@@ -414,29 +382,7 @@ var coreApp = angular.module("coreApp",["ngRoute","ngResource","mgcrea.ngStrap",
             }else{
                 $alert({ content: "This item cannot be saved without capturing your current location. Please ensure your location settings are enabled", duration: 5, placement: 'top-right', type: 'danger', show: true});
             }
-        },
-        getCurrentWeekInCycle : function(date){
-            var code = UserCodeSvc.getCode('GetCurrentWeekInCycle.Calculate');
-            if (code) {
-                var userExit = new Function('date', 'user', code);
-                var weekInCycle = userExit(date, this.getUser());
-                return weekInCycle;
-            } else if (!OptionSvc.getBoolean('RollingCallCycle', true)) {
-                prefixes = [1,2,3,4,5];
-                return prefixes[0 | moment(date).date() / 7]
-            } else {
-                var numWeeks = this.getNumberWeeksInCycle();
-        		var now = moment(date);
-        		var weekoy = now.week();
-        		var cycle = Math.floor(weekoy / numWeeks);
-        		var weekInCycle = weekoy - (cycle * numWeeks);
-        		return weekInCycle ? weekInCycle : numWeeks;
-            }
-    	},
-        getNumberWeeksInCycle : function(){
-            if (OptionSvc.getBoolean('RollingCallCycle',true)) return parseInt(OptionSvc.getText('WeeksInCallCycle',4));
-            return 5;
-    	}
+        }
     };
 });
 var unPostedData = {};
