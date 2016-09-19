@@ -1,4 +1,4 @@
-coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert, $filter){
+coreApp.controller("SupplierCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,$location,$alert, $filter){
     $scope.$emit('heading',{heading: 'Suppliers' , icon : 'glyphicon glyphicon-road'});
     $scope.newArr = [];
     $scope.splitArr = [];

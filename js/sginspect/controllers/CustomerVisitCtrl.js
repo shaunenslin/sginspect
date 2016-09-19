@@ -1,4 +1,4 @@
-coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter, SyncSvc){
+coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, OptionSvc, $filter, SyncSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
     $scope.signature = {inspector : ""};
 	/** The variable below is the svg represtion of an empty signature  **/

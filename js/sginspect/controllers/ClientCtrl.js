@@ -1,4 +1,4 @@
-coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$location,$alert, $filter){
+coreApp.controller("ClientCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,$location,$alert, $filter){
     $scope.$emit('heading',{heading: 'Customer Management' , icon : 'glyphicon glyphicon-briefcase'});
     $scope.clients = [];
     $scope.clientEdit = {};

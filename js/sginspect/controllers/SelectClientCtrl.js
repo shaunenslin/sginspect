@@ -1,4 +1,4 @@
-coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter){
+coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, OptionSvc, $filter){
 	$scope.isPhoneGap = Settings.isPhoneGap;
 	$scope.image = "";
 	DaoSvc.openDB();

@@ -1,4 +1,4 @@
-coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter, SyncSvc){
+coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, OptionSvc, $filter, SyncSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
 	$scope.signature = {"inspector" : "", "techAdvisor" : "", "manager" : ""};
 	$scope.currentDate = new Date();

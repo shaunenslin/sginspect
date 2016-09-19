@@ -1,4 +1,5 @@
-coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,JsonFormSvc,$window,$location,$modal,$alert, $filter){
+
+coreApp.controller("SgInspectUserCtrl",function($scope,$route,$routeParams,$http,GlobalSvc,Settings,$window,$location,$modal,$alert, $filter){
     $scope.$emit('heading',{heading: 'Users' , icon : 'fa fa-user'});
     
     $scope.users = [];

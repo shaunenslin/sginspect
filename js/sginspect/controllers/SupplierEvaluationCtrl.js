@@ -1,4 +1,4 @@
-coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, JsonFormSvc, OptionSvc, $filter, SyncSvc){
+coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc, Settings, $http, $alert, $routeParams, $location, CaptureImageSvc, OptionSvc, $filter, SyncSvc){
 	$scope.isPhoneGap = Settings.isPhoneGap;
     $scope.signature = {technicaladvisor : "", workshopmanager: ""};
 	$scope.evaluationImages = [];
