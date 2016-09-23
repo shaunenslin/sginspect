@@ -206,12 +206,6 @@
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
-			    <!-- <tr ng-repeat="img in otherPhotos">
-					<td>Other Photos</td>
-					<td><img id="other-img" class="center-img img-responsive"  align="middle" ng-src="{{img.ImageData}}"></td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-			    </tr>  -->
 			     <tr>
 					<td>Inspector Signature</td>
 					<td><img id="signature_photo" class="center-img img-responsive"  align="middle" ng-src="{{signature}}"></td>
@@ -220,6 +214,7 @@
 			    </tr>
 	  		</tbody>
 		</table>
+		<a ng-href="{{xsl_download_path}}" download><button  style="background-color: #31373B;bottom: 10px;" title="download xsl file" type="button" class="round-btn"><span class="fa fa-cloud-download icon" aria-hidden="true"></span></button></a>
     	</div>
     </div>
 </div>

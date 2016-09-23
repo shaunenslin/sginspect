@@ -6,6 +6,7 @@ coreApp.constant('Settings', {
 	//SG Admin
     url: 'http://www.super-trade.co.za:8084/sgirest/index.php/',
     dotnetPostUrl: 'http://www.super-trade.co.za:8084/sgirest/post/post.aspx',
+    isoGetUrl: 'http://www.super-trade.co.za:8084/sgiso/',
     supplierID: 'SGA',
     logo: 'img/fleetafrica_logo.png',
     splash:  'img/mustang.jpg',

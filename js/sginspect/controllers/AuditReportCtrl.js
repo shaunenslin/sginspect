@@ -5,9 +5,11 @@ coreApp.controller("AuditReportCtrl", function($scope, $routeParams, DaoSvc, $lo
 	$scope.TyresImages = [];
 	$scope.signature = '';
 	$scope.imageUrl =  'https://s3.amazonaws.com/rapidtradeimages/' + GlobalSvc.getUser().SupplierID + '/';
+	$scope.xsl_download_path = Settings.isoGetUrl +  moment().format("MM") + ' ';
 
 	function fetchReport(){
 		$scope.Report = JSON.parse(sessionStorage.getItem('currentReportCache'));
+		$scope.xsl_download_path += moment($scope.Report.FormDate).format("MMM") + ' ' + moment($scope.Report.FormDate).format("YYYY") + '/Audits/' + $scope.Report.JSON.LicenseNumber.replace(" ", "") +'.xls'; 
 		$scope.Report.JSON.timeString =  moment($scope.Report.JSON.InspectionDate).format('YYYY/MM/DD');
 		$scope.Report.FormDate = moment($scope.Report.FormDate).format('YYYY/MM/DD');
 		$scope.Report.JSON.Tarre = parseInt($scope.Report.JSON.Tarre);
