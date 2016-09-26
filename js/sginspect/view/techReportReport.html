@@ -181,9 +181,9 @@
 			    <tr>
 					<td>Findings</td>
 					<td ng-if="Report.JSON.isFindings === true">Yes</td>
-					<td ng-if="Report.JSON.isFindings !== true">No</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td ng-if="Report.JSON.isFindings === false">{{Report.JSON.Description ? 'No' : ''}}</td>
+					<td>{{Report.JSON.Description ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Description ? Report.JSON.User_Name : ''}}</td>
 			    </tr>
 			    <tr>
 					<td>Description of Findings</td>
