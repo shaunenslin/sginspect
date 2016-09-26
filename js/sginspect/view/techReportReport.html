@@ -123,13 +123,14 @@
 		    	<tr>
 					<td> Vehicle Location</td>
 					<td>{{Report.JSON.Latitude ? (Report.JSON.Latitude + ', ' + Report.JSON.Longitude) : ''}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.Latitude ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Latitude ? Report.JSON.User_Name : ''}}</td>
 		    	</tr>
 
 		    	<tr>
 					<td>VIN Match</td>
-					<td>{{Report.JSON.vinmatch ? 'Yes' : 'False'}}</td>
+					<td ng-if="Report.JSON.vinmatch === true">{{Report.JSON.vinmatch ? 'Yes' : ''}}</td>
+					<td ng-if="Report.JSON.vinmatch !== true">{{Report.JSON.vinmatch === false ? 'No' : ''}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 		    	</tr>
@@ -140,8 +141,9 @@
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
 			    <tr>
-					<td>License match</td>
-					<td>{{Report.JSON.licensematch ? 'Yes' : 'False'}}</td>
+					<td>License Match</td>
+					<td ng-if="Report.JSON.licensematch === true">{{Report.JSON.licensematch ? 'Yes' : ''}}</td>
+					<td ng-if="Report.JSON.licensematch !== true">{{Report.JSON.licensematch ==  false ? 'No' : ''}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 		    	</tr>
@@ -154,39 +156,40 @@
 			    <tr>
 					<td>Investigation Reason</td>
 					<td>{{Report.JSON.InvestigationReason}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.InvestigationReason ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.InvestigationReason ? Report.JSON.User_Name : ''}}</td>
 			    </tr>
 			    <!-- TODO: ENQUIRE -->
 		    	<tr>
 					<td>Investigation Requested By</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.InvestigationReason ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.InvestigationReason ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.InvestigationReason ? Report.JSON.User_Name : ''}}</td>
 		    	</tr>
 				<tr>
 					<td>Customer User of Group</td>
 					<td>{{Report.JSON.ClientUserGroup}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.ClientUserGroup ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.ClientUserGroup ? Report.JSON.User_Name : ''}}</td>
 			    </tr>
 			    <tr>
 					<td>Ref No : SF (Optional)</td>
 					<td>{{Report.JSON.Reference}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.Reference ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Reference ? Report.JSON.User_Name : ''}}</td>
 			    </tr>
 			    <tr>
 					<td>Findings</td>
-					<td>{{Report.JSON.isFindings ? 'Yes' : 'No'}}</td>
+					<td ng-if="Report.JSON.isFindings === true">Yes</td>
+					<td ng-if="Report.JSON.isFindings !== true">No</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 			    </tr>
 			    <tr>
 					<td>Description of Findings</td>
 					<td>{{Report.JSON.Description}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.Description ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Description ? Report.JSON.User_Name : ''}}</td>
 			    </tr>
 			    <tr ng-repeat="id in DescriptionImages">
 					<td>Description of Findings (image)</td>
@@ -197,14 +200,14 @@
 			    <tr>
 					<td>Reccomendations</td>
 					<td>{{Report.JSON.Reccomendations}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.Reccomendations ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Reccomendations ? Report.JSON.User_Name : ''}}</td>
 			    </tr>
 			    <tr>
 					<td>Conclusions</td>
 					<td>{{Report.JSON.Conclusions}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.Conclusions ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Conclusions ? Report.JSON.User_Name : ''}}</td>
 			    </tr>
 			     <tr>
 					<td>Inspector Signature</td>

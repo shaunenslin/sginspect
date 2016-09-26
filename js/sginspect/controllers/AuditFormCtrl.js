@@ -205,7 +205,6 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 						add_rating+= isNaN(audit_additional_equipment_ratings[prop.toLowerCase()]) ? 0 :  (Math.ceil(audit_additional_equipment_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]));	
 				}
 				ratedResults[prop + 'Rating'] = isNaN(audit_overall_ratings[prop.toLowerCase()]) ? 0 : (Math.ceil(audit_overall_ratings[prop.toLowerCase()] * o[$scope.Form.JSON[prop].toLowerCase()]));
-				if ($scope.Form.JSON.Engine_Smoke == 'Bad' || $scope.Form.JSON.Brakes == 'Bad' || $scope.Form.JSON.LicenseCard == 'Expired') $scope.vehicleFitnessRating = 'Fail';
 				$scope.overallRating = rating;
 				$scope.additionalEquipmentRating = add_rating;
 			}
@@ -213,6 +212,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 
 		//merging the two objects
 		for (var prop in ratedResults){$scope.Form.JSON[prop] = ratedResults[prop]};
+		if ($scope.Form.JSON.Engine_Smoke == 'Bad' || !$scope.Form.JSON.Engine_Smoke || $scope.Form.JSON.Brakes == 'Bad' || !$scope.Form.JSON.Brakes || $scope.Form.JSON.LicenseCard == 'Expired' || !$scope.Form.JSON.LicenseCard) $scope.vehicleFitnessRating = 'Fail';
 		$scope.Form.JSON.additionalEquipmentRating =  $scope.additionalEquipmentRating;
 		$scope.Form.JSON.vehicleFitnessRating = $scope.vehicleFitnessRating;
 		$scope.Form.JSON.overallRating = $scope.overallRating;

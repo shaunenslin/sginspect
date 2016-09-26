@@ -146,18 +146,21 @@
 					<td></td>
 			    </tr>
 			    <tr>
-					<td>Vin match</td>
-					<td>{{Report.JSON.vinmatch ? 'Yes' : 'False'}}</td>
+					<td>VIN Match</td>
+					<td ng-if="Report.JSON.vinmatch === true">{{Report.JSON.vinmatch ? 'Yes' : ''}}</td>
+					<td ng-if="Report.JSON.vinmatch !== true">{{Report.JSON.vinmatch === false ? 'No' : ''}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>
 			    </tr>
 			    <tr>
-					<td>License match</td>
-					<td>{{Report.JSON.licensematch ? 'Yes' : 'False'}}</td>
+					<td>License Match</td>
+					<td ng-if="Report.JSON.licensematch === true">{{Report.JSON.licensematch ? 'Yes' : ''}}</td>
+					<td ng-if="Report.JSON.licensematch !== true">{{Report.JSON.licensematch === false ? 'No' : ''}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>
+					
 			    </tr>
 			    <tr ng-if="Report.JSON.vinimage">
 					<td>VIN no. No Match </td>
@@ -183,9 +186,9 @@
 			    <tr>
 					<td>Cab Interior</td>
 					<td>{{Report.JSON.CabInterior}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.CabInteriorRating}}</td>
+					<td>{{Report.JSON.CabInterior ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.CabInterior ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.CabInterior ? Report.JSON.CabInteriorRating : ''}}</td>
 			    </tr>
 			    <tr>
 			    <tr ng-if="Report.JSON.CabInteriorComment">
@@ -197,9 +200,9 @@
 			    </tr>
 					<td>Steering Play</td>
 					<td>{{Report.JSON.SteeringPlay}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.SteeringPlayRating}}</td>
+					<td>{{Report.JSON.SteeringPlay ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.SteeringPlay ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.SteeringPlay ? Report.JSON.SteeringPlayRating : ''}}</td>
 			    </tr>
 			   <tr ng-if="Report.JSON.SteeringPlayComment">
 					<td>Comment</td>
@@ -210,9 +213,9 @@
 			    </tr>
 			    <tr>
 					<td>Electrical (general)</td>
-					<td>{{Report.JSON.Electrical}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.Electrical ? Report.JSON.Electrical : ''}}</td>
+					<td>{{Report.JSON.Electrical ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Electrical ? Report.JSON.User_Name : ''}}</td>
 					<td>{{Report.JSON.ElectricalRating}}</td>
 			    </tr>
 			  	<tr ng-if="Report.JSON.ElectricalComment">
@@ -224,10 +227,10 @@
 			    </tr>
 			    <tr>
 					<td>Engine (Smoke & Sound)</td>
-					<td>{{Report.JSON.Engine_Smoke}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.Engine_SmokeRating}}</td>
+					<td>{{Report.JSON.Engine_Smoke ? Report.JSON.Engine_Smoke : ''}}</td>
+					<td>{{Report.JSON.Engine_Smoke ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Engine_Smoke ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.Engine_Smoke ? Report.JSON.Engine_SmokeRating : ''}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.Engine_SmokeComment">
 					<td>Comment</td>
@@ -239,9 +242,9 @@
 			     <tr>
 					<td>Clutch Operation</td>
 					<td>{{Report.JSON.ClutchOperation}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.ClutchOperationRating}}</td>
+					<td>{{Report.JSON.ClutchOperation ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.ClutchOperation ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.ClutchOperation ? Report.JSON.ClutchOperationRating : ''}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.ClutchOperationComment">
 					<td>Comment</td>
@@ -252,10 +255,10 @@
 			    </tr>
 			     <tr>
 					<td>Brakes (Foot & Hand)</td>
-					<td>{{Report.JSON.Brakes}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.BrakesRating}}</td>
+					<td>{{Report.JSON.Brakes ? Report.JSON.Brakes : ''}}</td>
+					<td>{{Report.JSON.Brakes ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Brakes ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.Brakes ? Report.JSON.BrakesRating : ''}}</td>
 
 			    </tr>
 			     <tr ng-if="Report.JSON.BrakesComment">
@@ -267,10 +270,10 @@
 			    </tr>
 			     <tr>
 					<td>Gear Selection</td>
-					<td>{{Report.JSON.GearSelector}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.GearSelectorRating}}</td>
+					<td>{{Report.JSON.GearSelector ? Report.JSON.GearSelector : ''}}</td>
+					<td>{{Report.JSON.GearSelector ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.GearSelector ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.GearSelector ? Report.JSON.GearSelectorRating : ''}}</td>
 			    </tr>
 			     <tr ng-if="Report.JSON.GearSelectorComment">
 					<td>Comment</td>
@@ -281,10 +284,10 @@
 			    </tr>
 			     <tr>
 					<td>Diff/Propshaft Play</td>
-					<td>{{Report.JSON.PropshaftPlay}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.PropshaftPlayRating}}</td>
+					<td>{{Report.JSON.PropshaftPlay ? Report.JSON.PropshaftPlay : ''}}</td>
+					<td>{{Report.JSON.PropshaftPlay ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.PropshaftPlay ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.PropshaftPlay ? Report.JSON.PropshaftPlayRating : ''}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.PropshaftPlayComment">
 					<td>Comment</td>
@@ -295,10 +298,10 @@
 			    </tr>
 			    <tr>
 					<td>Cab Exterior (glass & dents)</td>
-					<td>{{Report.JSON.CabExterior}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.CabExteriorRating}}</td>
+					<td>{{Report.JSON.CabExterior ? Report.JSON.CabExterior : ''}}</td>
+					<td>{{Report.JSON.CabExterior ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.CabExterior ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.CabExterior ? Report.JSON.CabExteriorRating : ''}}</td>
 			    </tr>
 			   <tr ng-if="Report.JSON.CabExteriorComment">
 					<td>Comment</td>
@@ -309,10 +312,10 @@
 			    </tr>
 			     <tr>
 					<td>Rust</td>
-					<td>{{Report.JSON.Rust}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.RustRating}}</td>
+					<td>{{Report.JSON.Rust ? Report.JSON.Rust : ''}}</td>
+					<td>{{Report.JSON.Rust ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Rust ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.Rust ? Report.JSON.RustRating : ''}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.RustComment">
 					<td>Comment</td>
@@ -323,17 +326,18 @@
 			    </tr>
 			     <tr>
 					<td>License COF/ Operator Card</td>
-					<td>{{Report.JSON.LicenseCard}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.LicenseCardRating}}</td>
+					<td>{{Report.JSON.LicenseCard ? Report.JSON.LicenseCard : ''}}</td>
+					<td>{{Report.JSON.LicenseCard ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.LicenseCard ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.LicenseCard ? Report.JSON.LicenseCardRating : ''}}</td>
 			    </tr>
 			    <tr>
 					<td>Does the vehicle have a Fire Extinguisher ?</td>
-					<td>{{(Report.JSON.FireExtinguisher === 'Yes') ? Report.JSON.FireExtinguisher : 'No'}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.FireExtinguisherRating}}</td>
+					<td ng-if="Report.JSON.FireExtinguisher === 'Yes'">Report.JSON.FireExtinguisher}}</td>
+					<td ng-if="Report.JSON.FireExtinguisher !== 'Yes'">{{(Report.JSON.FireExtinguisher === 'No') ? Report.JSON.FireExtinguisher : ''}}</td>
+					<td>{{Report.JSON.FireExtinguisher == 'Yes' ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.FireExtinguisher == 'Yes' ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.FireExtinguisher == 'Yes' ? Report.JSON.FireExtinguisherRating : ''}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.FireExtinguisher === 'Yes'">
 					<td>Date valid / expired  ?</td>
@@ -351,10 +355,10 @@
 			    </tr>
 			     <tr>
 					<td>Fluid Leaks</td>
-					<td>{{Report.JSON.FluidLeaks}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.FluidLeaksRating}}</td>
+					<td>{{Report.JSON.FluidLeaks ? Report.JSON.FluidLeaks : ''}}</td>
+					<td>{{Report.JSON.FluidLeaks ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.FluidLeaks ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.FluidLeaks ? Report.JSON.FluidLeaksRating : ''}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.FluidLeaksComment">
 					<td>Comment</td>
@@ -365,10 +369,10 @@
 			    </tr>
 			    <tr>
 					<td>Tyres</td>
-					<td>{{Report.JSON.Tyres}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.TyresRating}}</td>
+					<td>{{Report.JSON.Tyres ? Report.JSON.Tyres : ''}}</td>
+					<td>{{Report.JSON.Tyres ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Tyres ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.Tyres ? Report.JSON.TyresRating : ''}}</td>
 			    </tr>
 			    <tr ng-if="Report.JSON.TyresComment">
 					<td>Comment</td>
@@ -386,10 +390,10 @@
 			    </tr>
 			    <tr>
 					<td>Condition of Additional Equipment</td>
-					<td>{{Report.JSON.Equipment}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
-					<td>{{Report.JSON.EquipmentRating}}</td>
+					<td>{{Report.JSON.Equipment ? Report.JSON.Equipment : ''}}</td>
+					<td>{{Report.JSON.Equipment ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Equipment ? Report.JSON.User_Name : ''}}</td>
+					<td>{{Report.JSON.Equipment ? Report.JSON.EquipmentRating : ''}}</td>
 
 			    </tr>
 			    <tr ng-if="Report.JSON.EquipmentComment">
@@ -401,16 +405,16 @@
 			    </tr>
 			    <tr>
 					<td>Abuse Related Costs</td>
-					<td>{{Report.JSON.AbuseRelatedCosts}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.AbuseRelatedCosts ? Report.JSON.AbuseRelatedCosts : ''}}</td>
+					<td>{{Report.JSON.AbuseRelatedCosts ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.AbuseRelatedCosts ? Report.JSON.User_Name : ''}}</td>
 					<td></td>
 			    </tr>
 			     <tr>
 					<td>Costs</td>
-					<td>{{Report.JSON.Costs ? Report.JSON.Costs : 0}}</td>
-					<td>{{Report.JSON.timeString}}</td>
-					<td>{{Report.JSON.User_Name}}</td>
+					<td>{{Report.JSON.Costs ? Report.JSON.Costs : ''}}</td>
+					<td>{{Report.JSON.Costs ? Report.JSON.timeString : ''}}</td>
+					<td>{{Report.JSON.Costs ? Report.JSON.User_Name : ''}}</td>
 					<td></td>
 			    </tr>
 			    <tr ng-repeat="id in otherImages">
