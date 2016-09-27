@@ -7,7 +7,12 @@
 	                <div class="form-group">
 						<label for="SupplierName" class="col-sm-3">Supplier Being Evaluated</label>
 				        <div class="col-sm-9" >
-							<input  id="SupplierName" type="text" class="form-control" placeholder="Start typing a supplier, then select it" ng-model="Form.JSON.SupplierID" bs-typeahead bs-options="supplier.SupplierID as supplier.Name for supplier in Suppliers"/>
+							<div class="input-group">
+								<input  id="SupplierName" type="text" class="form-control" placeholder="Start typing a supplier, then select it" ng-model="Form.JSON.SupplierID" bs-typeahead bs-options="supplier.SupplierID as supplier.Name for supplier in Suppliers"/>
+								<span class="input-group-btn">
+                                    <button class="btn btn-primary" ng-click="clearClicked()" type="button">Clear</button>
+                                </span>
+							</div>
 						</div>
 					</div>
 					<div class="well well-sm">
