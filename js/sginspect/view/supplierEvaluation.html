@@ -47,7 +47,12 @@
 					<div class="form-group" >
 						<label for="Name" class="col-sm-3">Supplier Being Evaluated</label>
 				        <div class="col-sm-9" >
-							<input   id="Name" type="text" class="form-control" placeholder="Enter the suppliers name" ng-model="Form.JSON.Name"/>
+							<div class="input-group">
+								<input   id="Name" type="text" class="form-control" placeholder="Enter the suppliers name" ng-model="Form.JSON.Name"/>
+								<span class="input-group-btn">
+                                    <button class="btn btn-primary" ng-click="Form.JSON.Name = ''" type="button">Clear</button>
+                                </span>
+							</div>
 						</div>
 					</div>
 					<div class="form-group" style="margin-left:0px;margin-right:0px;">
