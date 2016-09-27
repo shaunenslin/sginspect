@@ -47,6 +47,11 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 			Latitude: $scope.Form.JSON.Latitude
 		};
 	}
+	$scope.clearClicked = function(){
+		$scope.Form.JSON.SupplierID = '';
+		$scope.currentsupplier.Address = '';
+		$scope.currentsupplier.Longitude = '';
+	}
 
 	function saveSupplier(){
         var url = Settings.url + "Post?method=Supplier_modify";
