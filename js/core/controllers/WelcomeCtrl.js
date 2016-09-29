@@ -93,7 +93,7 @@ coreApp.controller("WelcomeCtrl", function ($scope, GlobalSvc, $rootScope, Optio
                 if (status === 0 || data === null) {
                    $scope.errormessage = 'You seem to be offline. Please check your internet connection and try again.'
                 } else {
-                   $scope.errormessage = 'An error occurred' +  (data ? ': ' + data + '. ' : '. ') + 'Please contact support.';
+                   $scope.errormessage = "User ' " + $scope.user.UserID + " is inactive. Please contact support.";
                 }
                 $scope.message = undefined;
             });
