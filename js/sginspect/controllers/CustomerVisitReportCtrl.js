@@ -22,7 +22,7 @@ coreApp.controller('CustomerVisitReportCtrl', function($scope, $routeParams,$loc
 	}
 	function constructor(){
 		$scope.$emit('heading',{heading: 'Customer Visit Report' , icon : 'fa fa-check'});
-		$scope.$emit('left',{label: 'back' , icon : 'fa fa-chevron-left', onclick: function(){$location.path('/reports')}});
+		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: function(){$location.path('/reports')}});
 		fetchReport();
 	}
 	constructor();		
