@@ -188,9 +188,9 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchServiceHistory();
 		savePartialForm();
-		$scope.Form.JSON.LicenseNumber = sessionStorage.getItem('currentLicenseNumber');
-        $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
-        $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
+		$scope.Form.JSON.LicenseNumber = sessionStorage.getItem('fromJobsScreenCache') ? $scope.Form.JSON.LicenseNumber : sessionStorage.getItem('currentLicenseNumber');
+        $scope.Form.JSON.VinNumber = sessionStorage.getItem('fromJobsScreenCache') ? $scope.Form.JSON.VinNumber : sessionStorage.getItem('currentVinNumber');
+        $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('fromJobsScreenCache') ? $scope.Form.JSON.LicenceExpiryDate : sessionStorage.getItem('currentExpirayDate');
 		$scope.inspectorSignatureBoxLabel = 'Inspector';
 	}
 	constructor();

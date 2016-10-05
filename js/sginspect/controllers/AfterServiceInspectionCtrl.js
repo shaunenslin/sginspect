@@ -242,9 +242,9 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
         $scope.$emit('heading',{heading: 'After Service Inspection', icon : 'fa fa-car'});
         $scope.$emit('right', {label: 'Save', icon: 'fa fa-save', onclick: $scope.saveSignature});
         $scope.Form = JSON.parse(sessionStorage.getItem('currentForm'));
-        $scope.Form.JSON.LiceneNumber = sessionStorage.getItem('currentLicenseNumber');
-        $scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
-        $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
+        $scope.Form.JSON.LiceneNumber = sessionStorage.getItem('fromJobsScreenCache') ? $scope.Form.JSON.LiceneNumber : sessionStorage.getItem('currentLicenseNumber');
+        $scope.Form.JSON.VinNumber = sessionStorage.getItem('fromJobsScreenCache') ? $scope.Form.JSON.VinNumber : sessionStorage.getItem('currentVinNumber');
+        $scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('fromJobsScreenCache') ? $scope.Form.JSON.LicenceExpiryDate : sessionStorage.getItem('currentExpirayDate');
 		fetchGPS();
 		savePartialForm();
         $scope.$emit('UNLOAD');

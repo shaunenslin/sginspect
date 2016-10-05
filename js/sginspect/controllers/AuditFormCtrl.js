@@ -237,9 +237,9 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		$scope.Form =  JSON.parse(sessionStorage.getItem('currentForm'));
 		fetchGPs();
-		$scope.Form.JSON.LicenseNumber = sessionStorage.getItem('currentLicenseNumber');
-		$scope.Form.JSON.VinNumber = sessionStorage.getItem('currentVinNumber');
-		$scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('currentExpirayDate');
+		$scope.Form.JSON.LicenseNumber = sessionStorage.getItem('fromJobsScreenCache') ? $scope.Form.JSON.LicenseNumber :  sessionStorage.getItem('currentLicenseNumber');
+		$scope.Form.JSON.VinNumber = sessionStorage.getItem('fromJobsScreenCache') ? $scope.Form.JSON.VinNumber : sessionStorage.getItem('currentVinNumber');
+		$scope.Form.JSON.LicenceExpiryDate = sessionStorage.getItem('fromJobsScreenCache') ? $scope.Form.JSON.LicenceExpiryDate :  sessionStorage.getItem('currentExpirayDate');
 		$scope.inspectorSignatureBoxLabel = 'Inspector';
 	}
 	constructor();

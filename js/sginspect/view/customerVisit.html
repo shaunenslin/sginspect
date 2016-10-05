@@ -4,18 +4,18 @@
 	  		<form style="margin-top: 10px;" class="form-horizontal" name="customervisitform">
                 <div class="form-group">
 					<label for="Customer" class="col-sm-3">Customer Branch</label>
-			        <div class="col-sm-9"><input required id="Branch"  type="text" class="form-control" placeholder="Enter customer branch"  ng-model="Form.JSON.Branch"/></div>
+			        <div class="col-sm-9"><input id="Branch"  type="text" class="form-control" placeholder="Enter customer branch"  ng-model="Form.JSON.Branch"/></div>
 				</div>
 				<div class="form-group" style="margin-left:0px;margin-right:0px;">
 					<button ng-disabled="!Form.JSON.Branch" class="btn btn-primary btn-block" ng-click="fetchGPS()">Capture GPS</button>
 				</div>
                 <div class="form-group" >
 					<label for="PartiesPresent" class="col-sm-3">Parties Present</label>
-			        <div class="col-sm-9"><input required ng-disabled="!Form.JSON.Branch" id="PartiesPresent"  type="text" class="form-control"  ng-model="Form.JSON.PartiesPresent"/></div>
+			        <div class="col-sm-9"><input ng-disabled="!Form.JSON.Branch" id="PartiesPresent"  type="text" class="form-control"  ng-model="Form.JSON.PartiesPresent"/></div>
 				</div>
 				<div class="form-group">
 					<label for="IssuesDiscussed" class="col-sm-3">Issues Discussed</label>
-					<div class="col-sm-9"><select required ng-disabled="!Form.JSON.PartiesPresent" class="form-control" ng-options="item.name as item.name for item in issuesDiscussed" ng-model="Form.JSON.IssuesDiscussed"><option value="">-- please choose --</option></select></div>
+					<div class="col-sm-9"><select  ng-disabled="!Form.JSON.PartiesPresent" class="form-control" ng-options="item.name as item.name for item in issuesDiscussed" ng-model="Form.JSON.IssuesDiscussed"><option value="">-- please choose --</option></select></div>
 				</div>
 				<div class="form-group" ng-if="Form.JSON.IssuesDiscussed === 'Other (Please Specify)'">
 					<label for="client" class="col-sm-3">Issues Comment</label>
