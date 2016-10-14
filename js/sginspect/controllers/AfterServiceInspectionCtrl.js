@@ -7,7 +7,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	var emptySignature = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
 
     $scope.kilometerImages = [];
-    $scope.commentPhotoImages = [];
+    $scope.otherPhotos = [];
 
     $scope.inspectInspectionTypes = [
         {  name : "Done"},
@@ -108,13 +108,13 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	}
 	$scope.addComments = function(comment){
 		if (!comment) return;
-		if (!$scope.Form.JSON.commentsOrPhotos) $scope.Form.JSON.commentsOrPhotos = [];
-		$scope.Form.JSON.commentsOrPhotos.push(comment);
+		if (!$scope.Form.JSON.otherComments) $scope.Form.JSON.otherComments = [];
+		$scope.Form.JSON.otherComments.push(comment);
 		$scope.Form.JSON.Comments = '';
 	}
 
 	$scope.removeComment = function(idx){
-		$scope.Form.JSON.commentsOrPhotos.splice(idx,1);
+		$scope.Form.JSON.otherComments.splice(idx,1);
     }
 
 	$scope.saveSignature = function(){
@@ -171,9 +171,9 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		$location.path(path);	
 	}
 	function saveForm(){
-		if (!$scope.Form.JSON.commentsOrPhotos) {
-			$scope.Form.JSON.commentsOrPhotos = [];
-			$scope.Form.JSON.commentsOrPhotos[0] = {otherComment : $scope.Form.JSON.Comments};
+		if (!$scope.Form.JSON.otherComments) {
+			$scope.Form.JSON.otherComments = [];
+			$scope.Form.JSON.otherComments[0] = {otherComment : $scope.Form.JSON.Comments};
 		}
 		delete $scope.Form.JSON.Comments;
 		delete $scope.Form.JSON.Path;
@@ -181,7 +181,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		deleteCurrentPartialForm($scope.Form.FormID);
 		calculateAfterServiceRating();
 		$scope.Form.JSON.kilometerImages = $scope.kilometerImages;
-		$scope.Form.JSON.commentPhotoImages = $scope.commentPhotoImages;
+		$scope.Form.JSON.otherPhotos = $scope.otherPhotos;
 		var inspectorSignature =  createSignatureImage($scope.signature.inspector, 'Inspector');
 		var key = $scope.Form.FormID + '_inspectorSig.svgx';
 		$scope.Form.JSON.Signature = key;
