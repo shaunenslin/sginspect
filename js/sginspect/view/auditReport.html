@@ -333,7 +333,7 @@
 			    </tr>
 			    <tr>
 					<td>Does the vehicle have a Fire Extinguisher ?</td>
-					<td ng-if="Report.JSON.FireExtinguisher === 'Yes'">Report.JSON.FireExtinguisher}}</td>
+					<td ng-if="Report.JSON.FireExtinguisher === 'Yes'">{{Report.JSON.FireExtinguisher}}</td>
 					<td ng-if="Report.JSON.FireExtinguisher !== 'Yes'">{{(Report.JSON.FireExtinguisher === 'No') ? Report.JSON.FireExtinguisher : ''}}</td>
 					<td>{{Report.JSON.FireExtinguisher == 'Yes' ? Report.JSON.timeString : ''}}</td>
 					<td>{{Report.JSON.FireExtinguisher == 'Yes' ? Report.JSON.User_Name : ''}}</td>
