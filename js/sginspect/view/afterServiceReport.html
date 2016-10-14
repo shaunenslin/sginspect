@@ -436,9 +436,16 @@
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>
 			    </tr>
-			     <tr ng-repeat="id in newArray">
-					<td>Comments / Photo's</td>
-					<td>{{id.Comment}} <br><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id.ImageID}}"></td>
+			     <tr ng-repeat="id in Report.JSON.otherPhotos">
+					<td>Other Photo's</td>
+					<td><img id="odometer-img" class="center-img img-responsive"  align="middle" ng-src="{{imageUrl + id}}"></td>
+					<td>{{Report.JSON.timeString}}</td>
+					<td>{{Report.JSON.User_Name}}</td>
+					<td></td>
+			    </tr>
+			    <tr ng-repeat="row in Report.JSON.otherComments">
+					<td>Other Comments</td>
+					<td>{{row}}</td>
 					<td>{{Report.JSON.timeString}}</td>
 					<td>{{Report.JSON.User_Name}}</td>
 					<td></td>

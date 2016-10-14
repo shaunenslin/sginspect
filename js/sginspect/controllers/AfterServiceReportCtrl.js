@@ -2,7 +2,6 @@ coreApp.controller("AfterServiceReportCtrl", function($scope, $routeParams, DaoS
 	$scope.Report = [];
 	$scope.kilometerImages = [];
     $scope.commentPhotoImages = [];
-    $scope.newArray = [];
 	$scope.signature = '';
 	$scope.imageUrl =  'https://s3.amazonaws.com/rapidtradeimages/' + GlobalSvc.getUser().SupplierID + '/';
 	$scope.xsl_download_path = Settings.isoGetUrl +  moment().format("MM") + ' ';
@@ -16,14 +15,9 @@ coreApp.controller("AfterServiceReportCtrl", function($scope, $routeParams, DaoS
 		$scope.Report.JSON.Tarre = parseInt($scope.Report.JSON.Tarre);
 		$scope.Report.JSON.Tarre = $scope.Report.JSON.Tarre.toString();
 		$scope.kilometerImages = $scope.Report.JSON.kilometerImages;
-		$scope.commentPhotoImages = $scope.Report.JSON.commentPhotoImages;
-		var newcommentsorPhotos = {"ImageID": "", "Comment":""};
-		for (var i = 0; i < $scope.commentPhotoImages.length; i++){
-			newcommentsorPhotos.ImageID = $scope.commentPhotoImages[i]
-			newcommentsorPhotos.Comment = $scope.Report.JSON.commentsOrPhotos[i];
-			$scope.newArray.push(newcommentsorPhotos);
-			newcommentsorPhotos = {"ImageID": "", "Comment":""};
-		}
+		$scope.otherPhotos = $scope.Report.JSON.otherPhotos;
+		$scope.otherComments = $scope.Report.JSON.otherComments;
+		
 		var url  = $scope.imageUrl + $scope.Report.JSON.Signature;
 		$http.get (url)
 		.success(function(img){
