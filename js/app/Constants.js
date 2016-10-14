@@ -1,6 +1,6 @@
 coreApp.constant('Settings', {
 
-    version: '2.04',
+    version: '2.06',
     showVersion: true,
 
 	//SG Admin
