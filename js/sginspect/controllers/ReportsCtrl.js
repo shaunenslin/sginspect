@@ -51,7 +51,7 @@ coreApp.controller("ReportsCtrl", function ($scope, $routeParams, DaoSvc, $locat
 	        var url = Settings.url + "Get?method=usp_user_readlist&SupplierID="+ GlobalSvc.getUser().SupplierID;
 	        console.log(url);
 	        $http.get(url).success(function(data){
-	            $scope.users = $filter('filter')(data, {IsAdmin: false});
+	            $scope.users = data;
 	            $scope.$emit('UNLOAD');
 	            sessionStorage.setItem( "UsersCache",JSON.stringify($scope.users) );
 	        });
