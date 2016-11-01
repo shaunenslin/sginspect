@@ -3,6 +3,46 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	$scope.image = "";
 	DaoSvc.openDB();
 
+	function fetchAuditjsonFields(){
+		return {
+			Kilometers : 0,
+			Branch : '',
+			InspectionDate : '',
+			CabInterior : '',
+			CabInteriorComment : '',
+			SteeringPlay : '',
+			SteeringPlayComment : '',
+			Electrical : '',
+			ElectricalComment : '',
+			Engine_Smoke : '',
+			Engine_SmokeComment : '',
+			ClutchOperation : '',
+			ClutchOperationComment : '',
+			Brakes : '',
+			BrakesComment : '',
+			GearSelector : '',
+			GearSelectorComment : '',
+			PropshaftPlay : '',
+			PropshaftPlayComment : '',
+			CabExterior : '',
+			CabExteriorComment : '',
+			Rust : '',
+			LicenseCard: '',
+			RustComment : '',
+			FluidLeaks : '',
+			FluidLeaksComment : '',
+			FireExtinguisher : '',
+			FireExtIsValid : '',
+			FireExtinguisherExpDate : '',
+			Tyres : '',
+			TyresComment : '',
+			Equipment : '',
+			EquipmentComment : '',
+			AbuseRelatedCosts : '',
+			Costs : 0
+	}
+		
+	}
 	$scope.supplierStatus = "";
 	function newObject(){
 		return {
@@ -14,7 +54,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			FormDate	  : moment().format('YYYY-MM-DD HH:mm:ss'),
 			VinNumber 	  : "",
 			ExportedtoISO : 0,
-			JSON 		  : {}
+			JSON 		  : json
 		}
 	}
 
@@ -216,27 +256,34 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 	function constructor(){
 		$scope.$emit('LOAD');
 		window.scrollTo(0, 0);
+		var json = {};
 		$scope.inspectiontype = $routeParams.inspectiontype;
 		switch ($scope.inspectiontype){
 			case 'technicalreport':
 				$scope.$emit('heading',{heading: 'Technical Report', icon : 'fa fa-book'});
+				json = fetchTechjsonFields();
 				break;
 			case 'supplierevaluation' :
 				$scope.$emit('heading',{heading: 'Supplier Evaluation', icon : 'fa fa-thumbs-o-up'});
+				json = fetchSupplierjsonFields()
 				break;
 			case 'afterserviceevaluation' :
 				$scope.$emit('heading',{heading: 'After Service Inspection', icon : 'fa fa-car'});
+				json = fetchAfterServicejsonFields();
 				break;
 			case 'audit' :
+
+
 			case 'customervisit' :
 				$scope.$emit('heading',{heading: ($scope.inspectiontype === 'audit' ? 'Audit Form' : 'Customer Visit'), icon : 'fa fa-check-square-o'});
+				json = ($scope.inspectiontype === 'audit') ? fetchAuditjsonFields() : fetchCustomerActivityjsonFields();
 		}
 		$scope.$emit('left',{label: 'Back' , icon : 'fa fa-chevron-left', onclick: $scope.onBackClicked});
 		if ($routeParams.screennum == 0){
 			sessionStorage.removeItem('fromJobsScreenCache');
 			sessionStorage.removeItem('currentClientsCache');
 			$scope.view = 'client';
-			$scope.Form = sessionStorage.getItem('currentForm') ? JSON.parse(sessionStorage.getItem('currentForm')) : newObject();
+			$scope.Form = sessionStorage.getItem('currentForm') ? JSON.parse(sessionStorage.getItem('currentForm')) : newObject(json);
 			if ($scope.Form.ClientID.length > 0) $scope.$emit('right', {label: 'Next', icon: 'fa fa-chevron-right', onclick: $scope.onNextClicked, rightIcon: true});
 			fetchClients();
 		} else if ($routeParams.screennum == 1){
