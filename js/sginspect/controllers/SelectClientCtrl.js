@@ -40,9 +40,18 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 			EquipmentComment : '',
 			AbuseRelatedCosts : '',
 			Costs : 0
+		}
+
 	}
-		
+
+	function fetchSupplierjsonFields(){
+		return {
+			SupplierID : GlobalSvc.getUser().SupplierID,
+			EvaluationDate : '',
+		}
 	}
+	
+
 	$scope.supplierStatus = "";
 	function newObject(){
 		return {
@@ -265,7 +274,7 @@ coreApp.controller('SelectClientCtrl', function($scope, GlobalSvc, DaoSvc, Setti
 				break;
 			case 'supplierevaluation' :
 				$scope.$emit('heading',{heading: 'Supplier Evaluation', icon : 'fa fa-thumbs-o-up'});
-				json = fetchSupplierjsonFields()
+				json = fetchSupplierjsonFields();
 				break;
 			case 'afterserviceevaluation' :
 				$scope.$emit('heading',{heading: 'After Service Inspection', icon : 'fa fa-car'});
