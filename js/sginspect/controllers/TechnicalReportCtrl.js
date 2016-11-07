@@ -134,7 +134,6 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 	}
 
 	function saveForm(){
-		$scope.$emit('LOAD');
 		delete $scope.Form.JSON.Path;
 		delete $scope.Form.JobType;
 		deleteCurrentPartialForm($scope.Form.FormID);
