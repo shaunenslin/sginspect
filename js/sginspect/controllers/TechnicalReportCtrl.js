@@ -181,8 +181,8 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 
 	function fetchJson(){
 		return {
-			  "CustomerName": $scope.Form.JSON.CustomerName ? $scope.Form.JSON.CustomerName  : "",
-			  "User_Name": $scope.Form.JSON.User_Name ? $scope.Form.JSON.User_Name  : "",
+			"CustomerName": $scope.Form.JSON.CustomerName ? $scope.Form.JSON.CustomerName  : "",
+			"User_Name": $scope.Form.JSON.User_Name ? $scope.Form.JSON.User_Name  : "",
 			"ExpiryDate": $scope.Form.JSON.ExpiryDate ? $scope.Form.JSON.ExpiryDate  : "",
 			"LicenseNumber": $scope.Form.JSON.LicenseNumber ? $scope.Form.JSON.LicenseNumber  : "",
 			"Tarre": $scope.Form.JSON.Tarre ? $scope.Form.JSON.Tarre  : "",
@@ -204,8 +204,9 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			"Latitude": $scope.Form.JSON.Latitude ? $scope.Form.JSON.Latitude  : "",
 			"Longitude": $scope.Form.JSON.Longitude ? $scope.Form.JSON.Longitude  : "",
 			"vinmatch":$scope.Form.JSON.vinmatch,
+			"licensematch":$scope.Form.JSON.licensematch,
 			"vinimage": $scope.Form.JSON.vinimage ? $scope.Form.JSON.vinimage  : "",
-			"isFindings":$scope.Form.JSON.vinmatch,
+			"isFindings":$scope.Form.JSON.isFindings,
 			"InvestigationDate": $scope.Form.JSON.InvestigationDate ? $scope.Form.JSON.InvestigationDate : "",
 			"InvestigationReason":$scope.Form.JSON.InvestigationReason ? $scope.Form.JSON.InvestigationReason : "",
 			"ClientUserGroup":$scope.Form.JSON.ClientUserGroup ? $scope.Form.JSON.ClientUserGroup : "",

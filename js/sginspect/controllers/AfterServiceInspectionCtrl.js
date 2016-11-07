@@ -108,7 +108,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 	}
 	$scope.addComments = function(comment){
 		if (!comment) return;
-		if (!$scope.Form.JSON.otherComments) $scope.Form.JSON.otherComments = [];
+		if (!$scope.Form.JSON.otherCommentsp) $scope.Form.JSON.otherComments = [];
 		$scope.Form.JSON.otherComments.push(comment);
 		$scope.Form.JSON.Comments = '';
 	}
@@ -321,7 +321,8 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		    "vinimage": $scope.Form.JSON.vinimage ? $scope.Form.JSON.vinimage : "",
 		    "regimage": $scope.Form.JSON.regimage ? $scope.Form.JSON.regimage : "",
 		    "vinmatch": $scope.Form.JSON.vinmatch,
-		    "licensematch": $scope.Form.JSON.licensematch
+		    "licensematch": $scope.Form.JSON.licensematch,
+		    "Branch": $scope.Form.JSON.Branch ? $scope.Form.JSON.Branch : ""
 		};
 	}
 
