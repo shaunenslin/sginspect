@@ -41,7 +41,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			"PartiesPresent":$scope.Form.JSON.PartiesPresent ? $scope.Form.JSON.PartiesPresent : "",
 			"IssuesDiscussed":$scope.Form.JSON.IssuesDiscussed ? $scope.Form.JSON.IssuesDiscussed : "",
 			"IssueDescription":$scope.Form.JSON.IssueDescription ? $scope.Form.JSON.IssueDescription : "",
-			"SpecialRequests": $scope.Form.JSON.IssueDescription ? $scope.Form.JSON.IssueDescription : [{"Request": "","RequestDate": "",
+			"SpecialRequests": $scope.Form.JSON.SpecialRequests ? $scope.Form.JSON.SpecialRequests : [{"Request": "","RequestDate": "",
 			"$$hashKey": ""}],
 			"Signature":$scope.Form.JSON.Signature ? $scope.Form.JSON.Signature : ""
 		}
