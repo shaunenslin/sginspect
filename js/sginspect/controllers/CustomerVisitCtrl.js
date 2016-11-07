@@ -31,6 +31,21 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 			}
 		}
 	}
+	function fetchJson(){
+		return {
+			"CustomerName":$scope.Form.JSON.CustomerName ? $scope.Form.JSON.CustomerName : "",
+			"User_Name":$scope.Form.JSON.User_Name ? $scope.Form.JSON.User_Name : "",
+			"Branch":$scope.Form.JSON.Branch ? $scope.Form.JSON.Branch : "",
+			"Latitude": $scope.Form.JSON.Latitude ? $scope.Form.JSON.Latitude : "",
+			"Longitude": $scope.Form.JSON.Longitude ? $scope.Form.JSON.Longitude : "",
+			"PartiesPresent":$scope.Form.JSON.PartiesPresent ? $scope.Form.JSON.PartiesPresent : "",
+			"IssuesDiscussed":$scope.Form.JSON.IssuesDiscussed ? $scope.Form.JSON.IssuesDiscussed : "",
+			"IssueDescription":$scope.Form.JSON.IssueDescription ? $scope.Form.JSON.IssueDescription : "",
+			"SpecialRequests": $scope.Form.JSON.IssueDescription ? $scope.Form.JSON.IssueDescription : [{"Request": "","RequestDate": "",
+			"$$hashKey": ""}],
+			"Signature":$scope.Form.JSON.Signature ? $scope.Form.JSON.Signature : ""
+		}
+	}
 
 	$scope.onBackClicked = function(){
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
@@ -159,6 +174,7 @@ coreApp.controller('CustomerVisitCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 				$scope.Form.JSON.Name = $scope.CurrentClient.Name;
 			}
 		}
+		$scope.Form.JSON = fetchJson();
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			// Now send images
