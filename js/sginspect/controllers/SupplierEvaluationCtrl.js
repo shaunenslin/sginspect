@@ -251,7 +251,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		$scope.Form.JSON.CleanlinessImages = $scope.CleanlinessImages;
 		$scope.Form.JSON.SpecialToolsTrainingImages = $scope.SpecialToolsTrainingImages;
 		$scope.Form.JSON.ReceptionImages = $scope.ReceptionImages;
-
+		$scope.Form.$$hashKey = "";
 		var technicaladvisorSignature =  createSignatureImage($scope.signature.technicaladvisor, 'technicaladvisor');
 		var workshopmanagerSignature =  createSignatureImage($scope.signature.workshopmanager, 'workshopmanager');
 		var key_advisor = $scope.Form.FormID + '_techAdvisorSig.svgx';
@@ -261,6 +261,7 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		CaptureImageSvc.savePhoto(key_advisor, $scope.Form.FormID, technicaladvisorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
 		CaptureImageSvc.savePhoto(key_manager, $scope.Form.FormID, workshopmanagerSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
+		$scope.Form.JSON = fetchJson();
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			// Now send images
@@ -325,6 +326,104 @@ coreApp.controller('SupplierEvaluationCtrl', function($scope, GlobalSvc, DaoSvc,
 		 );
 	}
 	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
+	function fetchJson(){
+		return {
+		    "CustomerName": $scope.Form.JSON.CustomerName ? $scope.Form.JSON.CustomerName : "",
+		    "User_Name": $scope.Form.JSON.User_Name ? $scope.Form.JSON.User_Name : "",
+		    "ExpiryDate": $scope.Form.JSON.ExpiryDate ? $scope.Form.JSON.ExpiryDate : "",
+		    "LicenseNumber": $scope.Form.JSON.LicenseNumber ? $scope.Form.JSON.LicenseNumber : "",
+		    "Tarre": $scope.Form.JSON.Tarre ? $scope.Form.JSON.Tarre : "",
+		    "DiscNo": $scope.Form.JSON.DiscNo ? $scope.Form.JSON.DiscNo : "",
+		    "RegistrationNo": $scope.Form.JSON.RegistrationNo ? $scope.Form.JSON.RegistrationNo : "",
+		    "VehicleRegistrationNo": $scope.Form.JSON.VehicleRegistrationNo ? $scope.Form.JSON.VehicleRegistrationNo : "",
+		    "VehicleDescription": $scope.Form.JSON.VehicleDescription ? $scope.Form.JSON.VehicleDescription : "",
+		    "Make": $scope.Form.JSON.Make ? $scope.Form.JSON.Make : "",
+		    "EngineNo": $scope.Form.JSON.EngineNo ? $scope.Form.JSON.EngineNo : "",
+		    "Color": $scope.Form.JSON.Color ? $scope.Form.JSON.Color : "",
+		    "NatisLicenseNumber": $scope.Form.JSON.NatisLicenseNumber ? $scope.Form.JSON.NatisLicenseNumber : "",
+		    "RegistrationFrequency": $scope.Form.JSON.RegistrationFrequency ? $scope.Form.JSON.RegistrationFrequency : "",
+		    "Model": $scope.Form.JSON.Model ? $scope.Form.JSON.Model : "",
+		    "regimage": $scope.Form.JSON.regimage ? $scope.Form.JSON.regimage : "",
+		    "VinNumber": $scope.Form.JSON.VinNumber ? $scope.Form.JSON.VinNumber : "",
+		    "LicenceExpiryDate": $scope.Form.JSON.LicenceExpiryDate ? $scope.Form.JSON.LicenceExpiryDate : "",
+		    "Signature": $scope.Form.JSON.Signature ? $scope.Form.JSON.Signature : "",
+		    "DescriptionImages": $scope.Form.JSON.DescriptionImages ?  $scope.Form.JSON.DescriptionImages :  [],
+		    "Latitude": $scope.Form.JSON.Latitude ? $scope.Form.JSON.Latitude : "",
+		    "Longitude": $scope.Form.JSON.Longitude ? $scope.Form.JSON.Longitude : "",
+		    "SupplierID": $scope.Form.JSON.SupplierID ? $scope.Form.JSON.SupplierID: "",
+		    "Name": $scope.Form.JSON.Name ? $scope.Form.JSON.Name : "",
+		    "EvaluationDate": $scope.Form.JSON.Name ? $scope.Form.JSON.Name : "",
+		    "Address": $scope.Form.JSON.Address ? $scope.Form.JSON.Address : "",
+		    "SupplierFunction": $scope.Form.JSON.SupplierFunction ? $scope.Form.JSON.SupplierFunction : "",
+		    "Reception": $scope.Form.JSON.Reception ? $scope.Form.JSON.Reception : "",
+		    "ReceptionComment": $scope.Form.JSON.ReceptionComment ? $scope.Form.JSON.ReceptionComment : "",
+		    "Procedures": $scope.Form.JSON.Procedures ? $scope.Form.JSON.Procedures : "",
+		    "ProceduresComment": $scope.Form.JSON.ProceduresComment ? $scope.Form.JSON.ProceduresComment : "",
+		    "Workmanship": $scope.Form.JSON.Workmanship ? $scope.Form.JSON.Workmanship : "",
+		    "WorkmanshipComment": $scope.Form.JSON.WorkmanshipComment ? $scope.Form.JSON.WorkmanshipComment : "",
+		    "Downtime": $scope.Form.JSON.Downtime ? $scope.Form.JSON.Downtime: "",
+		    "DowntimeComment": $scope.Form.JSON.DowntimeComment ? $scope.Form.JSON.DowntimeComment : "",
+		    "Cleanliness": $scope.Form.JSON.Cleanliness ? $scope.Form.JSON.Cleanliness : "",
+		    "CleanlinessComment": $scope.Form.JSON.CleanlinessComment ? $scope.Form.JSON.CleanlinessComment : "",
+		    "Conformity": $scope.Form.JSON.Conformity ? $scope.Form.JSON.Conformity : "",
+		    "ConformityComment": $scope.Form.JSON.ConformityComment ? $scope.Form.JSON.ConformityComment : "",
+		    "PartsAvailibility": $scope.Form.JSON.PartsAvailibility ? $scope.Form.JSON.PartsAvailibility : "",
+		    "PartsAvailibilityComment": $scope.Form.JSON.PartsAvailibilityComment ? $scope.Form.JSON.PartsAvailibilityComment : "",
+		    "Facility": $scope.Form.JSON.Facility ? $scope.Form.JSON.Facility : "",
+		    "FacilityComment": $scope.Form.JSON.FacilityComment ? $scope.Form.JSON.FacilityComment : "",
+		    "Warranties": $scope.Form.JSON.Warranties ? $scope.Form.JSON.Warranties : "",
+		    "WarrantiesComment": $scope.Form.JSON.WarrantiesComment ? $scope.Form.JSON.WarrantiesComment : "",
+		    "Bulletins": $scope.Form.JSON.Bulletins ? $scope.Form.JSON.Bulletins : "",
+		    "BulletinsComment": $scope.Form.JSON.BulletinsComment ? $scope.Form.JSON.BulletinsComment : "",
+		    "SpecialToolsTraining": null,
+		    "SpecialToolsTrainingComment": $scope.Form.JSON.SpecialToolsTrainingComment ? $scope.Form.JSON.SpecialToolsTrainingComment : "",
+		    "TechComp": $scope.Form.JSON.TechComp ? $scope.Form.JSON.TechComp : "",
+		    "TechCompComment": $scope.Form.JSON.TechCompComment ? $scope.Form.JSON.TechCompComment : "",
+		    "CommSkills": $scope.Form.JSON.CommSkills ? $scope.Form.JSON.CommSkills : "",
+		    "CommSkillsComment": $scope.Form.JSON.CommSkillsComment ? $scope.Form.JSON.CommSkillsComment : "",
+		    "PhoneEtiquette": $scope.Form.JSON.PhoneEtiquette ? $scope.Form.JSON.PhoneEtiquette : "",
+		    "PhoneEtiquetteComment": $scope.Form.JSON.PhoneEtiquetteComment ? $scope.Form.JSON.PhoneEtiquetteComment : "",
+		    "AuthLeadTime": $scope.Form.JSON.AuthLeadTime ? $scope.Form.JSON.AuthLeadTime : "",
+		    "AuthLeadTimeComment": $scope.Form.JSON.AuthLeadTimeComment ? $scope.Form.JSON.AuthLeadTimeComment : "",
+		    "Professionalism": $scope.Form.JSON.Professionalism ? $scope.Form.JSON.Professionalism : "",
+		    "ProfessionalismComment": $scope.Form.JSON.ProfessionalismComment ? $scope.Form.JSON.ProfessionalismComment : "",
+		    "InvoicePayment": $scope.Form.JSON.InvoicePayment ? $scope.Form.JSON.InvoicePayment : "",
+		    "InvoicePaymentComment": $scope.Form.JSON.InvoicePaymentComment ? $scope.Form.JSON.InvoicePaymentComment : "",
+		    "RFCNotifications": $scope.Form.JSON.RFCNotifications ? $scope.Form.JSON.RFCNotifications : "",
+		    "RFCNotificationsComment": $scope.Form.JSON.RFCNotificationsComment ? $scope.Form.JSON.RFCNotificationsComment : "",
+		    "GeneralComment": $scope.Form.JSON.GeneralComment ? $scope.Form.JSON.GeneralComment : "",
+		    "GeneralCommentComment": $scope.Form.JSON.GeneralCommentComment ? $scope.Form.JSON.GeneralCommentComment : "",
+		    "ReceptionRating": $scope.Form.JSON.ReceptionRating ? $scope.Form.JSON.ReceptionRating : "",
+		    "ProceduresRating": $scope.Form.JSON.ProceduresRating ? $scope.Form.JSON.ProceduresRating : "",
+		    "WorkmanshipRating": $scope.Form.JSON.WorkmanshipRating ? $scope.Form.JSON.WorkmanshipRating : "",
+		    "DowntimeRating": $scope.Form.JSON.DowntimeRating ? $scope.Form.JSON.DowntimeRating : "",
+		    "CleanlinessRating": $scope.Form.JSON.CleanlinessRating ? $scope.Form.JSON.CleanlinessRating : "",
+		    "ConformityRating": $scope.Form.JSON.ConformityRating ? $scope.Form.JSON.ConformityRating : "",
+		    "PartsAvailibilityRating": $scope.Form.JSON.PartsAvailibilityRating ? $scope.Form.JSON.PartsAvailibilityRating : "",
+		    "FacilityRating": $scope.Form.JSON.FacilityRating ? $scope.Form.JSON.FacilityRating : "",
+		    "WarrantiesRating": $scope.Form.JSON.WarrantiesRating ? $scope.Form.JSON.WarrantiesRating : "",
+		    "BulletinsRating": $scope.Form.JSON.BulletinsRating ? $scope.Form.JSON.BulletinsRating : "",
+		    "SpecialToolsTrainingRating": $scope.Form.JSON.SpecialToolsTrainingRating ? $scope.Form.JSON.SpecialToolsTrainingRating : "",
+		    "TechCompRating": $scope.Form.JSON.TechCompRating ? $scope.Form.JSON.TechCompRating : "",
+		    "CommSkillsRating": $scope.Form.JSON.CommSkillsRating ? $scope.Form.JSON.CommSkillsRating : "",
+		    "PhoneEtiquetteRating": $scope.Form.JSON.PhoneEtiquetteRating ? $scope.Form.JSON.PhoneEtiquetteRating : "",
+		    "AuthLeadTimeRating": $scope.Form.JSON.AuthLeadTimeRating ? $scope.Form.JSON.AuthLeadTimeRating : "",
+		    "ProfessionalismRating": $scope.Form.JSON.ProfessionalismRating ? $scope.Form.JSON.ProfessionalismRating : "",
+		    "InvoicePaymentRating": $scope.Form.JSON.InvoicePaymentRating ? $scope.Form.JSON.InvoicePaymentRating : "",
+		    "RFCNotificationsRating": $scope.Form.JSON.RFCNotificationsRating ? $scope.Form.JSON.RFCNotificationsRating : "",
+		    "GeneralCommentRating": $scope.Form.JSON.GeneralCommentRating ? $scope.Form.JSON.GeneralCommentRating : "",
+		    "overallRating": $scope.Form.JSON.overallRating ? $scope.Form.JSON.overallRating : "",
+		    "supplierEtiquetteRating": $scope.Form.JSON.supplierEtiquetteRating ? $scope.Form.JSON.supplierEtiquetteRating : "",
+		    "supplierCompetencyRating": $scope.Form.JSON.supplierCompetencyRating ? $scope.Form.JSON.supplierCompetencyRating : "",
+		    "evaluationImages": $scope.Form.JSON.evaluationImages ? $scope.Form.JSON.evaluationImages : [],
+		    "CleanlinessImages": $scope.Form.JSON.CleanlinessImages ? $scope.Form.JSON.CleanlinessImages : [],
+		    "SpecialToolsTrainingImages": $scope.Form.JSON.SpecialToolsTrainingImages ? $scope.Form.JSON.SpecialToolsTrainingImages : [],
+		    "ReceptionImages": $scope.Form.JSON.ReceptionImages ? $scope.Form.JSON.ReceptionImages : [],
+		    "TechAdvisorSignature": $scope.Form.JSON.TechAdvisorSignature ? $scope.Form.JSON.TechAdvisorSignature : "",
+		    "ManagerSignature": $scope.Form.JSON.ManagerSignature ? $scope.Form.JSON.ManagerSignature : "",
+		    "SupplierStatus": $scope.Form.JSON.SupplierStatus  ? $scope.Form.JSON.SupplierStatus : ""
+		};
+	}
 
 	function constructor(){
 		$scope.mode = $routeParams.mode;

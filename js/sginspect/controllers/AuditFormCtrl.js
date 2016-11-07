@@ -176,6 +176,7 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		CaptureImageSvc.savePhoto(key, $scope.Form.FormID,inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
 		deleteCurrentPartialForm($scope.Form.FormID);
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
+		$scope.Form.JSON =  fetchJson();
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			// Now send images
@@ -228,6 +229,92 @@ coreApp.controller('AuditFormCtrl', function($scope, GlobalSvc, DaoSvc, Settings
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
    $scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
+   function fetchJson(){
+	   	return{
+			"CustomerName":$scope.Form.JSON.CustomerName ? $scope.Form.JSON.CustomerName :  "",
+			"User_Name":$scope.Form.JSON.User_Name ?  $scope.Form.JSON.User_Name :  "",
+			"ExpiryDate": $scope.Form.JSON.ExpiryDate ? $scope.Form.JSON.ExpiryDate : "",
+			"LicenseNumber":$scope.Form.JSON.LicenseNumber ? $scope.Form.JSON.LicenseNumber :  "",
+			"Tarre": $scope.Form.JSON.Tarre ? $scope.Form.JSON.Tarre : "",
+			"DiscNo":$scope.Form.JSON.DiscNo ? $scope.Form.JSON.DiscNo : "",
+			"RegistrationNo":$scope.Form.JSON.RegistrationNo ? $scope.Form.JSON.RegistrationNo : "",
+			"VehicleRegistrationNo":$scope.Form.JSON.VehicleRegistrationNo ? $scope.Form.JSON.VehicleRegistrationNo : "",
+			"VehicleDescription":$scope.Form.JSON.VehicleDescription ? $scope.Form.JSON.VehicleDescription : "",
+			"Make":$scope.Form.JSON.Make ? $scope.Form.JSON.Make : "",
+			"EngineNo":$scope.Form.JSON.EngineNo ? $scope.Form.JSON.EngineNo : "",
+			"Color":$scope.Form.JSON.Color ? $scope.Form.JSON.Color : "",
+			"NatisLicenseNumber":$scope.Form.JSON.NatisLicenseNumber ? $scope.Form.JSON.NatisLicenseNumber :  "",
+			"RegistrationFrequency": $scope.Form.JSON.RegistrationFrequency ? $scope.Form.JSON.RegistrationFrequency : "",
+			"Model":$scope.Form.JSON.Model? $scope.Form.JSON.Model : "",
+			"vinmatch": $scope.Form.JSON.vinmatch,
+			"licensematch": $scope.Form.JSON.licensematch,
+			"VinNumber":$scope.Form.JSON.VinNumber ? $scope.Form.JSON.VinNumber :  "",
+			"LicenceExpiryDate":$scope.Form.JSON.LicenceExpiryDate ? $scope.Form.JSON.LicenceExpiryDate : "",
+			"Latitude":$scope.Form.JSON.Latitude ? $scope.Form.JSON.Latitude : "",
+			"Longitude":$scope.Form.JSON.Longitude ? $scope.Form.JSON.Longitude : "",
+			"Kilometers": $scope.Form.JSON.Kilometers ? $scope.Form.JSON.Kilometers : "",
+			"Branch":$scope.Form.JSON.Branch ? $scope.Form.JSON.Branch : "",
+			"InspectionDate":$scope.Form.JSON.InspectionDate ? $scope.Form.JSON.InspectionDate : "",
+			"CabInterior":$scope.Form.JSON.CabInterior ? $scope.Form.JSON.CabInterior : "",
+			"CabInteriorComment":$scope.Form.JSON.CabInteriorComment ? $scope.Form.JSON.CabInteriorComment : "",
+			"SteeringPlay":$scope.Form.JSON.SteeringPlay ? $scope.Form.JSON.SteeringPlay : "",
+			"SteeringPlayComment":$scope.Form.JSON.SteeringPlayComment ? $scope.Form.JSON.SteeringPlayComment : "",
+			"Electrical":$scope.Form.JSON.Electrical ? $scope.Form.JSON.Electrical : "",
+			"ElectricalComment":$scope.Form.JSON.ElectricalComment ? $scope.Form.JSON.ElectricalComment : "",
+			"Engine_Smoke":$scope.Form.JSON.Engine_Smoke ? $scope.Form.JSON.Engine_Smoke :  "",
+			"Engine_SmokeComment":$scope.Form.JSON.Engine_SmokeComment ? $scope.Form.JSON.Engine_SmokeComment : "",
+			"ClutchOperation":$scope.Form.JSON.ClutchOperation ? $scope.Form.JSON.ClutchOperation : "",
+			"ClutchOperationComment":$scope.Form.JSON.ClutchOperationComment ? $scope.Form.JSON.ClutchOperationComment : "",
+			"Brakes":$scope.Form.JSON.Brakes ? $scope.Form.JSON.Brakes : "",
+			"BrakesComment":$scope.Form.JSON.BrakesComment ? $scope.Form.JSON.BrakesComment : "",
+			"GearSelector":$scope.Form.JSON.GearSelector ? $scope.Form.JSON.GearSelector : "",
+			"GearSelectorComment":$scope.Form.JSON.GearSelectorComment ? $scope.Form.JSON.GearSelectorComment : "",
+			"PropshaftPlay":$scope.Form.JSON.PropshaftPlay ? $scope.Form.JSON.PropshaftPlay : "",
+			"PropshaftPlayComment":$scope.Form.JSON.PropshaftPlayComment ? $scope.Form.JSON.PropshaftPlayComment : "",
+			"CabExterior":$scope.Form.JSON.CabExterior ? $scope.Form.JSON.CabExterior : "",
+			"CabExteriorComment":$scope.Form.JSON.CabExteriorComment ? $scope.Form.JSON.CabExteriorComment : "",
+			"Rust":$scope.Form.JSON.Rust,
+			"RustComment":$scope.Form.JSON.RustComment ? $scope.Form.JSON.RustComment : "",
+			"LicenseCard":$scope.Form.JSON.LicenseCard ? $scope.Form.JSON.LicenseCard : "",
+			"FluidLeaks":$scope.Form.JSON.FluidLeaks ? $scope.Form.JSON.FluidLeaks : "",
+			"FluidLeaksComment":$scope.Form.JSON.FluidLeaksComment ? $scope.Form.JSON.FluidLeaksComment : "",
+			"FireExtinguisher":$scope.Form.JSON.FireExtinguisher ? $scope.Form.JSON.FireExtinguisher : "",
+			"FireExtIsValid": $scope.Form.JSON.FireExtIsValid ? $scope.Form.JSON.FireExtIsValid : "",
+			"FireExtinguisherExpDate":$scope.Form.JSON.FireExtinguisherExpDate ? $scope.Form.JSON.FireExtinguisherExpDate : "",
+			"Tyres":$scope.Form.JSON.Tyres ? $scope.Form.JSON.Tyres :  "",
+			"TyresComment":$scope.Form.JSON.TyresComment ? $scope.Form.JSON.TyresComment : "",
+			"Equipment":$scope.Form.JSON.Equipment ? $scope.Form.JSON.Equipment : "",
+			"EquipmentComment":$scope.Form.JSON.EquipmentComment ? $scope.Form.JSON.EquipmentComment :  "",
+			"AbuseRelatedCosts":$scope.Form.JSON.AbuseRelatedCosts,
+			"Costs": $scope.Form.JSON.Costs ? $scope.Form.JSON.Costs : "",
+			"CabInteriorRating":$scope.Form.JSON.CabInteriorRating ? $scope.Form.JSON.CabInteriorRating : "",
+			"SteeringPlayRating":$scope.Form.JSON.SteeringPlayRating ? $scope.Form.JSON.SteeringPlayRating : "",
+			"ElectricalRating":$scope.Form.JSON.ElectricalRating ? $scope.Form.JSON.ElectricalRating : "",
+			"Engine_SmokeRating":$scope.Form.JSON.Engine_SmokeRating ? $scope.Form.JSON.Engine_SmokeRating : "",
+			"ClutchOperationRating":$scope.Form.JSON.ClutchOperationRating ? $scope.Form.JSON.ClutchOperationRating : "",
+			"BrakesRating":$scope.Form.JSON.BrakesRating ? $scope.Form.JSON.BrakesRating : "",
+			"GearSelectorRating":$scope.Form.JSON.GearSelectorRating ? $scope.Form.JSON.GearSelectorRating : "",
+			"PropshaftPlayRating":$scope.Form.JSON.PropshaftPlayRating ? $scope.Form.JSON.PropshaftPlayRating : "",
+			"CabExteriorRating":$scope.Form.JSON.CabExteriorRating ? $scope.Form.JSON.CabExteriorRating : "",
+			"RustRating":$scope.Form.JSON.RustRating ? $scope.Form.JSON.RustRating : "",
+			"LicenseCardRating":$scope.Form.JSON.LicenseCardRating ? $scope.Form.JSON.LicenseCardRating : "",
+			"FluidLeaksRating":$scope.Form.JSON.FluidLeaksRating ? $scope.Form.JSON.FluidLeaksRating : "",
+			"FireExtinguisherRating":$scope.Form.JSON.FireExtinguisherRating ? $scope.Form.JSON.FireExtinguisherRating : "",
+			"FireExtIsValidRating":$scope.Form.JSON.FireExtIsValidRating ? $scope.Form.JSON.FireExtIsValidRating : "",
+			"TyresRating":$scope.Form.JSON.TyresRating ? $scope.Form.JSON.TyresRating : "",
+			"EquipmentRating":$scope.Form.JSON.EquipmentRating ? $scope.Form.JSON.EquipmentRating : "",
+			"AbuseRelatedCostsRating":$scope.Form.JSON.AbuseRelatedCostsRating ? $scope.Form.JSON.AbuseRelatedCostsRating : "",
+			"additionalEquipmentRating":$scope.Form.JSON.additionalEquipmentRating ? $scope.Form.JSON.additionalEquipmentRating : "",
+			"vehicleFitnessRating":$scope.Form.JSON.vehicleFitnessRating ? $scope.Form.JSON.vehicleFitnessRating : "",
+			"overallRating":$scope.Form.JSON.overallRating ? $scope.Form.JSON.overallRating : "",
+			"KilometersImages":$scope.Form.JSON.KilometersImages ? $scope.Form.JSON.KilometersImages : [],
+			"TyresImages":$scope.Form.JSON.TyresImages ? $scope.Form.JSON.TyresImages : [],
+			"other_photosimages":$scope.Form.JSON.other_photosimages ? $scope.Form.JSON.other_photosimages : [],
+			"regimage" :  $scope.Form.JSON.regimage ? $scope.Form.JSON.regimage : "",
+			"vinimage" : $scope.Form.JSON.vinimage ? $scope.Form.JSON.vinimage : "", 
+			"Signature":$scope.Form.JSON.Signature ? $scope.Form.JSON.Signature : ""
+		}
+   }
 
 	function constructor(){
 		window.scrollTo(0, 0);

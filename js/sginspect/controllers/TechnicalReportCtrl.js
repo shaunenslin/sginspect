@@ -145,6 +145,7 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		$scope.Form.JSON.DescriptionImages = $scope.DescriptionImages;
 		$scope.Form.JSON.isFindings = ($scope.Form.JSON.Description) ? true : false;
 		CaptureImageSvc.savePhoto(key, $scope.Form.FormID,inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
+		$scope.Form.JSON = fetchJson();
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			// Now send images
@@ -178,6 +179,43 @@ coreApp.controller('TechnicalFormCtrl', function($scope, GlobalSvc, DaoSvc, Sett
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
 	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
+
+	function fetchJson(){
+		return {
+			  "CustomerName": $scope.Form.JSON.CustomerName ? $scope.Form.JSON.CustomerName  : "",
+			  "User_Name": $scope.Form.JSON.User_Name ? $scope.Form.JSON.User_Name  : "",
+			"ExpiryDate": $scope.Form.JSON.ExpiryDate ? $scope.Form.JSON.ExpiryDate  : "",
+			"LicenseNumber": $scope.Form.JSON.LicenseNumber ? $scope.Form.JSON.LicenseNumber  : "",
+			"Tarre": $scope.Form.JSON.Tarre ? $scope.Form.JSON.Tarre  : "",
+			"DiscNo": $scope.Form.JSON.DiscNo ? $scope.Form.JSON.DiscNo  : "",
+			"RegistrationNo": $scope.Form.JSON.RegistrationNo ? $scope.Form.JSON.RegistrationNo  : "",
+			"VehicleRegistrationNo": $scope.Form.JSON.VehicleRegistrationNo ? $scope.Form.JSON.VehicleRegistrationNo  : "",
+			"VehicleDescription": $scope.Form.JSON.VehicleDescription ? $scope.Form.JSON.VehicleDescription  : "",
+			"Make": $scope.Form.JSON.Make ? $scope.Form.JSON.Make  : "",
+			"EngineNo": $scope.Form.JSON.EngineNo ? $scope.Form.JSON.EngineNo  : "",
+			"Color": $scope.Form.JSON.Color ? $scope.Form.JSON.Color  : "",
+			"NatisLicenseNumber": $scope.Form.JSON.NatisLicenseNumber ? $scope.Form.JSON.NatisLicenseNumber  : "",
+			"RegistrationFrequency": $scope.Form.JSON.RegistrationFrequency ? $scope.Form.JSON.RegistrationFrequency  : "",
+			"Model": $scope.Form.JSON.Model ? $scope.Form.JSON.Model  : "",
+			"regimage": $scope.Form.JSON.regimage ? $scope.Form.JSON.regimage  : "",
+			"VinNumber": $scope.Form.JSON.VinNumber ? $scope.Form.JSON.VinNumber  : "",
+			"LicenceExpiryDate": $scope.Form.JSON.LicenceExpiryDate ? $scope.Form.JSON.LicenceExpiryDate  : "",
+			"Signature": $scope.Form.JSON.Signature ? $scope.Form.JSON.Signature  : "",
+			"DescriptionImages":$scope.Form.JSON.DescriptionImages ? $scope.Form.JSON.DescriptionImages : [],
+			"Latitude": $scope.Form.JSON.Latitude ? $scope.Form.JSON.Latitude  : "",
+			"Longitude": $scope.Form.JSON.Longitude ? $scope.Form.JSON.Longitude  : "",
+			"vinmatch":$scope.Form.JSON.vinmatch,
+			"vinimage": $scope.Form.JSON.vinimage ? $scope.Form.JSON.vinimage  : "",
+			"isFindings":$scope.Form.JSON.vinmatch,
+			"InvestigationDate": $scope.Form.JSON.InvestigationDate ? $scope.Form.JSON.InvestigationDate : "",
+			"InvestigationReason":$scope.Form.JSON.InvestigationReason ? $scope.Form.JSON.InvestigationReason : "",
+			"ClientUserGroup":$scope.Form.JSON.ClientUserGroup ? $scope.Form.JSON.ClientUserGroup : "",
+			"Reference":$scope.Form.JSON.Reference ? $scope.Form.JSON.Reference : "",
+			"Description":$scope.Form.JSON.Description ? $scope.Form.JSON.Description : "",
+			"Reccomendations":$scope.Form.JSON.Reccomendations ? $scope.Form.JSON.Reccomendations : "",
+			"Conclusions":$scope.Form.JSON.Conclusions ? $scope.Form.JSON.Conclusions : ""
+}
+	}
 
 	function constructor(){
 		window.scrollTo(0, 0);

@@ -188,6 +188,7 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		CaptureImageSvc.savePhoto(key, $scope.Form.FormID, inspectorSignature.FileData, $scope.Form.ClientID, $scope.Form.FormDate);
 		deleteCurrentPartialForm($scope.Form.FormID);
 		sessionStorage.setItem('formTobeRatedCache', JSON.stringify($scope.Form));
+		$scope.Form.JSON = fetchJson();
 		$scope.Form.JSON = JSON.stringify($scope.Form.JSON);
 		var success = function(){
 			// Now send images
@@ -233,6 +234,96 @@ coreApp.controller('AfterServiceInspectionCtrl', function($scope, GlobalSvc, Dao
 		DaoSvc.deleteItem('InProgress', FormID, undefined, function(){console.log('Error Clearing InProgress table');}, function(){console.log('InProgress table cleared successfully');$scope.$apply();});
 	}
 	$scope.$watch("Form.JSON", function(){if($scope.Form.JSON.Path !== undefined) savePartialForm();}, true);
+
+	function fetchJson(){
+		return {
+		    "Longitude": $scope.Form.JSON.Longitude ? $scope.Form.JSON.Longitude : "",
+		    "Latitude": $scope.Form.JSON.Latitude ? $scope.Form.JSON.Latitude : "",
+		    "User_Name": $scope.Form.JSON.User_Name ? $scope.Form.JSON.User_Name : "",
+		    "Signature": $scope.Form.JSON.Signature ? $scope.Form.JSON.Signature : "",
+		    "CustomerName": $scope.Form.JSON.CustomerName ? $scope.Form.JSON.CustomerName : "",
+		    "ExpiryDate": $scope.Form.JSON.ExpiryDate ? $scope.Form.JSON.ExpiryDate : "",
+		    "LicenseNumber": $scope.Form.JSON.LicenseNumber ? $scope.Form.JSON.LicenseNumber : "",
+		    "Tarre": $scope.Form.JSON.Tarre ? $scope.Form.JSON.Tarre : "",
+		    "DiscNo": $scope.Form.JSON.DiscNo ? $scope.Form.JSON.DiscNo : "",
+		    "RegistrationNo": $scope.Form.JSON.RegistrationNo ? $scope.Form.JSON.RegistrationNo : "",
+		    "VehicleRegistrationNo": $scope.Form.JSON.VehicleRegistrationNo ? $scope.Form.JSON.VehicleRegistrationNo : "",
+		    "VehicleDescription": $scope.Form.JSON.VehicleDescription ? $scope.Form.JSON.VehicleDescription : "",
+		    "Make": $scope.Form.JSON.Make ? $scope.Form.JSON.Make : "",
+		    "EngineNo": $scope.Form.JSON.EngineNo ? $scope.Form.JSON.EngineNo : "",
+		    "Color": $scope.Form.JSON.Color ? $scope.Form.JSON.Color : "",
+		    "NatisLicenseNumber": $scope.Form.JSON.NatisLicenseNumber ? $scope.Form.JSON.NatisLicenseNumber : "",
+		    "RegistrationFrequency": $scope.Form.JSON.RegistrationFrequency ? $scope.Form.JSON.RegistrationFrequency : "",
+		    "Model": $scope.Form.JSON.Model ? $scope.Form.JSON.Model : "",
+		    "LiceneNumber": $scope.Form.JSON.LiceneNumber ? $scope.Form.JSON.LiceneNumber : "",
+		    "VinNumber": $scope.Form.JSON.VinNumber ? $scope.Form.JSON.VinNumber : "",
+		    "LicenceExpiryDate": $scope.Form.JSON.LicenceExpiryDate ? $scope.Form.JSON.LicenceExpiryDate : "",
+		    "kilometer": $scope.Form.JSON.kilometer ? $scope.Form.JSON.kilometer : "",
+		    "serviceProvider": $scope.Form.JSON.serviceProvider ? $scope.Form.JSON.serviceProvider : "",
+		    "dateOfService": $scope.Form.JSON.dateOfService ? $scope.Form.JSON.dateOfService : "",
+		    "radiatorConditionChecked": $scope.Form.JSON.radiatorConditionChecked ? $scope.Form.JSON.radiatorConditionChecked : "",
+		    "radiatorConditionCheckedComment": $scope.Form.JSON.radiatorConditionCheckedComment ? $scope.Form.JSON.radiatorConditionCheckedComment : "",
+		    "engineOilLevelsChecked": $scope.Form.JSON.engineOilLevelsChecked ? $scope.Form.JSON.engineOilLevelsChecked : "",
+		    "engineOilLevelsCheckedComment": $scope.Form.JSON.engineOilLevelsCheckedComment ? $scope.Form.JSON.engineOilLevelsCheckedComment : "",
+		    "oilFiltersChecked": $scope.Form.JSON.oilFiltersChecked ? $scope.Form.JSON.oilFiltersChecked : "",
+		    "oilFiltersCheckedComment": $scope.Form.JSON.oilFiltersCheckedComment ? $scope.Form.JSON.oilFiltersCheckedComment : "",
+		    "oilLeaks": $scope.Form.JSON.oilLeaks ? $scope.Form.JSON.oilLeaks : "",
+		    "oilLeaksComment": $scope.Form.JSON.oilLeaksComment ? $scope.Form.JSON.oilLeaksComment : "",
+		    "airCleanerServiced": $scope.Form.JSON.airCleanerServiced ? $scope.Form.JSON.airCleanerServiced : "",
+		    "airCleanerServicedComment": $scope.Form.JSON.airCleanerServicedComment ? $scope.Form.JSON.airCleanerServicedComment : "",
+		    "FuelFilterChecked": $scope.Form.JSON.FuelFilterChecked ? $scope.Form.JSON.FuelFilterChecked : "",
+		    "FuelFilterCheckedComment": $scope.Form.JSON.FuelFilterCheckedComment ? $scope.Form.JSON.FuelFilterCheckedComment : "",
+		    "gearBoxBreatherServiced": $scope.Form.JSON.gearBoxBreatherServiced ? $scope.Form.JSON.gearBoxBreatherServiced : "",
+		    "gearBoxBreatherServicedComment": $scope.Form.JSON.gearBoxBreatherServiced ? $scope.Form.JSON.gearBoxBreatherServiced : "",
+		    "diffBreatherServiced": $scope.Form.JSON.gearBoxBreatherServiced ? $scope.Form.JSON.gearBoxBreatherServiced : "",
+		    "diffBreatherServicedComment": $scope.Form.JSON.diffBreatherServicedComment ? $scope.Form.JSON.diffBreatherServicedComment : "",
+		    "diffsOilLeLeaks": $scope.Form.JSON.diffsOilLeLeaks ? $scope.Form.JSON.diffsOilLeLeaks : "",
+		    "diffsOilLeLeaksComment": $scope.Form.JSON.diffsOilLeLeaksComment ? $scope.Form.JSON.diffsOilLeLeaksComment : "",
+		    "diffsOilLevelChecked": $scope.Form.JSON.diffsOilLevelChecked ? $scope.Form.JSON.diffsOilLevelChecked : "",
+		    "diffsOilLevelCheckedComment": $scope.Form.JSON.diffsOilLevelCheckedComment ? $scope.Form.JSON.diffsOilLevelCheckedComment : "",
+		    "diffAndRearAxleWashed": $scope.Form.JSON.diffAndRearAxleWashed ? $scope.Form.JSON.diffAndRearAxleWashed : "",
+		    "diffAndRearAxleWashedComment": $scope.Form.JSON.diffAndRearAxleWashedComment ? $scope.Form.JSON.diffAndRearAxleWashedComment : "",
+		    "fithWheelCleaned": $scope.Form.JSON.fithWheelCleaned ? $scope.Form.JSON.fithWheelCleaned : "",
+		    "fithWheelCleanedComment": $scope.Form.JSON.fithWheelCleanedComment ? $scope.Form.JSON.fithWheelCleanedComment : "",
+		    "hardenedCInsert": $scope.Form.JSON.hardenedCInsert ? $scope.Form.JSON.hardenedCInsert : "",
+		    "hardenedCInsertComment": $scope.Form.JSON.hardenedCInsertComment ? $scope.Form.JSON.hardenedCInsertComment : "",
+		    "batteriesServiced": $scope.Form.JSON.batteriesServiced ? $scope.Form.JSON.batteriesServiced : "",
+		    "batteriesServicedComment": $scope.Form.JSON.batteriesServicedComment ? $scope.Form.JSON.batteriesServicedComment : "",
+		    "springShaklesAndTrunionLubricated": $scope.Form.JSON.springShaklesAndTrunionLubricated ? $scope.Form.JSON.springShaklesAndTrunionLubricated : "",
+		    "springShaklesAndTrunionLubricatedComment": $scope.Form.JSON.springShaklesAndTrunionLubricatedComment ? $scope.Form.JSON.springShaklesAndTrunionLubricatedComment : "",
+		    "kingsAndSteeringJointGreased": $scope.Form.JSON.kingsAndSteeringJointGreased ? $scope.Form.JSON.kingsAndSteeringJointGreased : "",
+		    "kingsAndSteeringJointGreasedComment": $scope.Form.JSON.kingsAndSteeringJointGreasedComment ? $scope.Form.JSON.kingsAndSteeringJointGreasedComment : "",
+		    "propsShaftUniversal": $scope.Form.JSON.propsShaftUniversal ? $scope.Form.JSON.propsShaftUniversal : "",
+		    "propsShaftUniversalComment": $scope.Form.JSON.propsShaftUniversalComment ? $scope.Form.JSON.propsShaftUniversalComment : "",
+		    "dateOfInspection": $scope.Form.JSON.dateOfInspection ? $scope.Form.JSON.dateOfInspection : "",
+		    "otherComments": $scope.Form.JSON.otherComments ? $scope.Form.JSON.otherComments : [],
+		    "actionByService": $scope.Form.JSON.actionByService ? $scope.Form.JSON.actionByService : "",
+		    "radiatorConditionCheckedRating": $scope.Form.JSON.radiatorConditionCheckedRating ? $scope.Form.JSON.radiatorConditionCheckedRating : "",
+		    "engineOilLevelsCheckedRating": $scope.Form.JSON.engineOilLevelsCheckedRating ? $scope.Form.JSON.engineOilLevelsCheckedRating : "",
+		    "oilFiltersCheckedRating": $scope.Form.JSON.oilFiltersCheckedRating ? $scope.Form.JSON.oilFiltersCheckedRating : "",
+		    "oilLeaksRating": $scope.Form.JSON.oilLeaksRating ? $scope.Form.JSON.oilLeaksRating : "",
+		    "airCleanerServicedRating": $scope.Form.JSON.airCleanerServicedRating ? $scope.Form.JSON.airCleanerServicedRating : "",
+		    "FuelFilterCheckedRating": $scope.Form.JSON.FuelFilterCheckedRating ? $scope.Form.JSON.FuelFilterCheckedRating : "",
+		    "gearBoxBreatherServicedRating": $scope.Form.JSON.gearBoxBreatherServicedRating ? $scope.Form.JSON.gearBoxBreatherServicedRating : "",
+		    "diffBreatherServicedRating": $scope.Form.JSON.diffBreatherServicedRating ? $scope.Form.JSON.diffBreatherServicedRating : "",
+		    "diffsOilLeLeaksRating": $scope.Form.JSON.diffsOilLeLeaksRating ? $scope.Form.JSON.diffsOilLeLeaksRating : "",
+		    "diffsOilLevelCheckedRating": $scope.Form.JSON.diffsOilLevelCheckedRating ? $scope.Form.JSON.diffsOilLevelCheckedRating : "",
+		    "diffAndRearAxleWashedRating": $scope.Form.JSON.diffAndRearAxleWashedRating ? $scope.Form.JSON.diffAndRearAxleWashedRating : "",
+		    "fithWheelCleanedRating": $scope.Form.JSON.fithWheelCleanedRating ? $scope.Form.JSON.fithWheelCleanedRating : "",
+		    "hardenedCInsertRating": $scope.Form.JSON.hardenedCInsertRating ? $scope.Form.JSON.hardenedCInsertRating : "",
+		    "batteriesServicedRating": $scope.Form.JSON.batteriesServicedRating ? $scope.Form.JSON.batteriesServicedRating : "",
+		    "springShaklesAndTrunionLubricatedRating": $scope.Form.JSON.springShaklesAndTrunionLubricatedRating ? $scope.Form.JSON.springShaklesAndTrunionLubricatedRating : "",
+		    "kingsAndSteeringJointGreasedRating": $scope.Form.JSON.kingsAndSteeringJointGreasedRating ? $scope.Form.JSON.kingsAndSteeringJointGreasedRating : "",
+		    "propsShaftUniversalRating": $scope.Form.JSON.propsShaftUniversalRating ? $scope.Form.JSON.propsShaftUniversalRating : "",
+		    "overallRating": $scope.Form.JSON.overallRating ? $scope.Form.JSON.overallRating : "",
+		    "kilometerImages":  $scope.Form.JSON.kilometerImages ?  $scope.Form.JSON.kilometerImages : [],
+		    "otherPhotos": $scope.Form.JSON.otherPhotos ? $scope.Form.JSON.otherPhotos : [],
+		    "vinimage": $scope.Form.JSON.vinimage ? $scope.Form.JSON.vinimage : "",
+		    "regimage": $scope.Form.JSON.regimage ? $scope.Form.JSON.regimage : "",
+		    "vinmatch": $scope.Form.JSON.vinmatch,
+		    "licensematch": $scope.Form.JSON.licensematch
+		};
+	}
 
 	function constructor(){
 		window.scrollTo(0, 0);
